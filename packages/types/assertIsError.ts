@@ -7,7 +7,7 @@ export function assertIsError<T extends Error>(
 ): asserts error is T {
   if (error instanceof Error === false) {
     throw new AssertionError(
-      `Expected 'val' to be Error, but received ${error}`,
+      `Expected 'error' to be Error, but received ${error}`,
     )
   }
 }
