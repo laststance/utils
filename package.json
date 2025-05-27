@@ -6,7 +6,6 @@
   },
   "scripts": {
     "build": "pnpm -r build",
-    "tsd": "tsd packages/types/__tests__",
     "test": "pnpm -r test",
     "test:watch": "vitest",
     "lint": "pnpm -r lint",

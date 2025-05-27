@@ -180,8 +180,8 @@ const registerShutdown = (fn) => {
 
 const getNetworkAddress = () => {
   for (const name of Object.keys(interfaces)) {
-    for (const interface of interfaces[name]) {
-      const { address, family, internal } = interface
+    for (const _interface of interfaces[name]) {
+      const { address, family, internal } = _interface
       if (family === 'IPv4' && !internal) {
         return address
       }
@@ -364,10 +364,10 @@ const loadConfig = async (cwd, entry, args) => {
   }
 
   if (entry) {
-    const { public } = config
+    const { public: publicPath } = config
     config.public = path.relative(
       cwd,
-      public ? path.resolve(entry, public) : entry,
+      publicPath ? path.resolve(entry, publicPath) : entry,
     )
   }
 

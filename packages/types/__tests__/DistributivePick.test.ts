@@ -8,10 +8,12 @@ type ABC = A | B | C
 
 type PickA = DistributivePick<ABC, 'a'>
 
-expectType<PickA>({a: 'str'})
-//@ts-expect-error Property 'b' is missing in type '{ a: string; }' but required in type 'PickA'
-expectType<PickA>({a: 'str', b: 1})
-//@ts-expect-error Property 'c' is missing in type '{ a: string; }' but required in type 'PickA'
-expectType<PickA>({a: 'str', c: true})
-//@ts-expect-error Property 'd' is missing in type '{ a: string; }' but required in type 'PickA'
-expectType<PickA>({a: 'str', d: 'str'})
+test('DistributivePick', () => {
+  expectType<PickA>({ a: 'str' })
+  //@ts-expect-error Property 'b' is missing in type '{ a: string; }' but required in type 'PickA'
+  expectType<PickA>({ a: 'str', b: 1 })
+  //@ts-expect-error Property 'c' is missing in type '{ a: string; }' but required in type 'PickA'
+  expectType<PickA>({ a: 'str', c: true })
+  //@ts-expect-error Property 'd' is missing in type '{ a: string; }' but required in type 'PickA'
+  expectType<PickA>({ a: 'str', d: 'str' })
+})
