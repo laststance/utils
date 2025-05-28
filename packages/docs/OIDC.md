@@ -1,5 +1,5 @@
 | [README](../../README.md) | OpenID Connect (OIDC) | [run-s](run-s.md) | [run-p](run-p.md) | [Node API](node-api.md) |
-|-----------------------|-------------|-------------------|-------------------|-------------------------|
+| ------------------------- | --------------------- | ----------------- | ----------------- | ----------------------- |
 
 OpenID Connect (OIDC) is an authentication layer on top of the OAuth 2.0 protocol. It allows clients to verify the identity of an end-user based on the authentication performed by an authorization server, as well as to obtain basic profile information about the end-user in an interoperable and REST-like manner. OIDC uses JSON Web Tokens (JWTs) to securely pass the identity information between the identity provider (IdP) and a client.
 
@@ -39,6 +39,5 @@ sequenceDiagram
     AuthServer->>Client: Return UserInfo
     Client->>User: Provide access to resource/service
 ```
-
 
 This process ensures that the user's credentials are only known to the authorization server, and the client only receives tokens that are proof of the user's authentication and consent. OIDC is widely used for single sign-on (SSO) and for enabling applications to securely authenticate users.

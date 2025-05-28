@@ -16,7 +16,4 @@ Place for Storing useful code fragments from especially OSS library.
 │   ├── docs # Markdown Document something I've learned
 ```
 
-
-
 | README | [OpenID Connect (OIDC)](./packages/docs/OIDC.md) | [ASCII Table](./packages/docs/Hex_to_Binary_Table__0x00_to_0x7F_.md) | [TBD](TBD.md) | [TBD](TBD.md) |
-

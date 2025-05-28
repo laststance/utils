@@ -2,21 +2,21 @@
  * Combines two object types, `A` and `B`, into a new object type.
  * The resulting object type contains all properties from `A` that are not present in `B`,
  * as well as all properties from `B`.
- * 
+ *
  * @example
  * ```typescript
  * type Person = {
  *   name: string;
  *   age: number;
  * };
- * 
+ *
  * type Address = {
  *   street: string;
  *   city: string;
  * };
- * 
+ *
  * type ExtendedShape = extendShape<Person, Address>;
- * 
+ *
  * // ExtendedShape will be:
  * // {
  * //   name: string;
@@ -25,7 +25,7 @@
  * //   city: string;
  * // }
  * ```
- * 
+ *
  * @template A - The first object type.
  * @template B - The second object type.
  * @typedef extendShape

@@ -45,13 +45,13 @@ src/
 
 Yes, `src/**` matches `src/text/node.txt`.
 
-* The `**` wildcard matches zero or more directories, so any file under `src/`, no matter how deep, is matched.
-* Example matches include:
+- The `**` wildcard matches zero or more directories, so any file under `src/`, no matter how deep, is matched.
+- Example matches include:
 
-  * `src/index.js`
-  * `src/text/`
-  * `src/text/node.txt`
-  * `src/utils/helper.js`
+  - `src/index.js`
+  - `src/text/`
+  - `src/text/node.txt`
+  - `src/utils/helper.js`
 
 > 🔸 This is useful when you want to include all files in a directory tree using a single pattern.
 
@@ -59,35 +59,35 @@ Yes, `src/**` matches `src/text/node.txt`.
 
 ## ⚠️ Common Mistakes and Pitfalls
 
-* **Using backslashes (`\`) on Windows**: Always use forward slashes (`/`) in glob patterns.
-* **Assuming `*` is recursive**: `*` matches only a single directory level; use `**` for recursive matching.
-* **Tool-specific behavior**: Some environments require additional flags to support `**` (e.g., `recursive=True` in Python).
-* **Incorrect character class usage**: Watch out for `[abc]` vs `[!abc]` syntax errors.
-* **Brace expansion confusion**: Not all tools support `{foo,bar}` style expansion.
+- **Using backslashes (`\`) on Windows**: Always use forward slashes (`/`) in glob patterns.
+- **Assuming `*` is recursive**: `*` matches only a single directory level; use `**` for recursive matching.
+- **Tool-specific behavior**: Some environments require additional flags to support `**` (e.g., `recursive=True` in Python).
+- **Incorrect character class usage**: Watch out for `[abc]` vs `[!abc]` syntax errors.
+- **Brace expansion confusion**: Not all tools support `{foo,bar}` style expansion.
 
 ---
 
 ## 🔍 Environment-Specific Notes
 
-* **Python**: Use `glob.glob("src/**", recursive=True)` for recursive matches.
+- **Python**: Use `glob.glob("src/**", recursive=True)` for recursive matches.
   [Python glob documentation →](https://docs.python.org/3/library/glob.html?utm_source=chatgpt.com)
-* **Bash**: Enable `globstar` with `shopt -s globstar` to allow `**` matching in scripts.
+- **Bash**: Enable `globstar` with `shopt -s globstar` to allow `**` matching in scripts.
   [Unix Stack Exchange discussion →](https://unix.stackexchange.com/questions/379191/glob-to-match-subdirectories?utm_source=chatgpt.com)
-* **DeepSource**: Offers good practices on using glob patterns in config files.
+- **DeepSource**: Offers good practices on using glob patterns in config files.
   [DeepSource blog →](https://deepsource.com/blog/glob-file-patterns?utm_source=chatgpt.com)
 
 ---
 
 ## 🧪 Tools to Test Glob Patterns
 
-* [Glob Tester (DigitalOcean)](https://www.digitalocean.com/community/tools/glob)
-* [Globster.xyz](https://globster.xyz/)
+- [Glob Tester (DigitalOcean)](https://www.digitalocean.com/community/tools/glob)
+- [Globster.xyz](https://globster.xyz/)
 
 ---
 
 ## 📚 References
 
-* [VS Code Glob Patterns](https://code.visualstudio.com/docs/editor/glob-patterns)
-* [Python glob module](https://docs.python.org/3/library/glob.html)
-* [DeepSource on Globs](https://deepsource.com/blog/glob-file-patterns)
-* [Bash globstar](https://www.gnu.org/software/bash/manual/html_node/Pattern-Matching.html)
+- [VS Code Glob Patterns](https://code.visualstudio.com/docs/editor/glob-patterns)
+- [Python glob module](https://docs.python.org/3/library/glob.html)
+- [DeepSource on Globs](https://deepsource.com/blog/glob-file-patterns)
+- [Bash globstar](https://www.gnu.org/software/bash/manual/html_node/Pattern-Matching.html)

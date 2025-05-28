@@ -34,14 +34,14 @@ describe('assertIsError', () => {
     it('should throw when passed null', () => {
       expect(() => assertIsError(null)).toThrow()
       expect(() => assertIsError(null)).toThrow(
-        "Expected 'error' to be Error, but received null"
+        "Expected 'error' to be Error, but received null",
       )
     })
 
     it('should throw when passed undefined', () => {
       expect(() => assertIsError(undefined)).toThrow()
       expect(() => assertIsError(undefined)).toThrow(
-        "Expected 'error' to be Error, but received undefined"
+        "Expected 'error' to be Error, but received undefined",
       )
     })
 
@@ -49,7 +49,7 @@ describe('assertIsError', () => {
       const value = 'error string'
       expect(() => assertIsError(value)).toThrow()
       expect(() => assertIsError(value)).toThrow(
-        `Expected 'error' to be Error, but received ${value}`
+        `Expected 'error' to be Error, but received ${value}`,
       )
     })
 
@@ -57,19 +57,19 @@ describe('assertIsError', () => {
       const value = 42
       expect(() => assertIsError(value)).toThrow()
       expect(() => assertIsError(value)).toThrow(
-        `Expected 'error' to be Error, but received ${value}`
+        `Expected 'error' to be Error, but received ${value}`,
       )
     })
 
     it('should throw when passed a boolean', () => {
       expect(() => assertIsError(true)).toThrow()
       expect(() => assertIsError(true)).toThrow(
-        "Expected 'error' to be Error, but received true"
+        "Expected 'error' to be Error, but received true",
       )
 
       expect(() => assertIsError(false)).toThrow()
       expect(() => assertIsError(false)).toThrow(
-        "Expected 'error' to be Error, but received false"
+        "Expected 'error' to be Error, but received false",
       )
     })
 
@@ -77,7 +77,7 @@ describe('assertIsError', () => {
       const value = [1, 2, 3]
       expect(() => assertIsError(value)).toThrow()
       expect(() => assertIsError(value)).toThrow(
-        `Expected 'error' to be Error, but received ${value}`
+        `Expected 'error' to be Error, but received ${value}`,
       )
     })
 
@@ -85,7 +85,7 @@ describe('assertIsError', () => {
       const value = { message: 'looks like error', name: 'FakeError' }
       expect(() => assertIsError(value)).toThrow()
       expect(() => assertIsError(value)).toThrow(
-        `Expected 'error' to be Error, but received [object Object]`
+        `Expected 'error' to be Error, but received [object Object]`,
       )
     })
 
@@ -97,7 +97,7 @@ describe('assertIsError', () => {
       }
       expect(() => assertIsError(errorLike)).toThrow()
       expect(() => assertIsError(errorLike)).toThrow(
-        "Expected 'error' to be Error, but received [object Object]"
+        "Expected 'error' to be Error, but received [object Object]",
       )
     })
 
@@ -105,7 +105,7 @@ describe('assertIsError', () => {
       const fn = () => 'error'
       expect(() => assertIsError(fn)).toThrow()
       expect(() => assertIsError(fn)).toThrow(
-        'Expected \'error\' to be Error, but received () => "error"'
+        'Expected \'error\' to be Error, but received () => "error"',
       )
     })
   })
@@ -132,11 +132,11 @@ describe('assertIsError', () => {
   describe('TypeScript type assertion behavior', () => {
     it('should narrow the type after successful assertion', () => {
       const unknownValue: unknown = new Error('test')
-      
+
       // Before assertion, TypeScript doesn't know it's an Error
       // After assertion, TypeScript should know it's an Error
       assertIsError(unknownValue)
-      
+
       // If this compiles and runs without error, the type assertion worked
       expect(unknownValue.message).toBe('test')
       expect(unknownValue.name).toBe('Error')
@@ -144,12 +144,12 @@ describe('assertIsError', () => {
 
     it('should work with custom Error types', () => {
       const unknownValue: unknown = new CustomError('custom test')
-      
+
       assertIsError<CustomError>(unknownValue)
-      
+
       // TypeScript should now know this is a CustomError
       expect(unknownValue.message).toBe('custom test')
       expect(unknownValue.name).toBe('CustomError')
     })
   })
-}) 
+})
