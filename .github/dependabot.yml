@@ -4,7 +4,7 @@ updates:
     # Files stored in `app` directory
     directory: '/'
     schedule:
-      interval: 'daily'
+      interval: 'weekly'
     ignore:
       - dependency-name: 'storybook'
       - dependency-name: '@storybook/*'
