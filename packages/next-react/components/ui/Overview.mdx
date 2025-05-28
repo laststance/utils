@@ -1,0 +1,201 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="UI/Overview" />
+
+# UI Component Library
+
+A comprehensive collection of reusable React components built with TypeScript, Tailwind CSS, and Radix UI primitives.
+
+## 🎯 Purpose
+
+This component library provides a consistent design system for building modern web applications. Each component is:
+
+- **Accessible** - Built with ARIA standards and keyboard navigation
+- **Customizable** - Styled with Tailwind CSS and easy to extend
+- **Type-safe** - Full TypeScript support with proper type definitions
+- **Well-documented** - Comprehensive examples and usage guidelines
+
+## 📦 Components
+
+### Layout & Structure
+
+- **[Card](/?path=/docs/ui-card--docs)** - Container for grouping related content
+- **[Separator](/?path=/docs/ui-separator--docs)** - Visual divider between content sections
+- **[Aspect Ratio](/?path=/docs/ui-aspectratio--docs)** - Maintain consistent aspect ratios
+- **[Resizable](/?path=/docs/ui-resizable--docs)** - Resizable panel layouts
+- **[Scroll Area](/?path=/docs/ui-scrollarea--docs)** - Custom scrollable areas
+
+### Navigation
+
+- **[Navigation Menu](/?path=/docs/ui-navigationmenu--docs)** - Primary navigation component
+- **[Breadcrumb](/?path=/docs/ui-breadcrumb--docs)** - Hierarchical navigation trail
+- **[Pagination](/?path=/docs/ui-pagination--docs)** - Navigate through paginated content
+- **[Menubar](/?path=/docs/ui-menubar--docs)** - Desktop application-style menu
+- **[Sidebar](/?path=/docs/ui-sidebar--docs)** - Collapsible sidebar navigation
+
+### Form Controls
+
+- **[Button](/?path=/docs/ui-button--docs)** - Interactive button component
+- **[Input](/?path=/docs/ui-input--docs)** - Text input field
+- **[Textarea](/?path=/docs/ui-textarea--docs)** - Multi-line text input
+- **[Select](/?path=/docs/ui-select--docs)** - Dropdown selection component
+- **[Checkbox](/?path=/docs/ui-checkbox--docs)** - Binary choice input
+- **[Radio Group](/?path=/docs/ui-radiogroup--docs)** - Single choice from multiple options
+- **[Switch](/?path=/docs/ui-switch--docs)** - Toggle between two states
+- **[Slider](/?path=/docs/ui-slider--docs)** - Range input control
+- **[Label](/?path=/docs/ui-label--docs)** - Accessible form labels
+- **[Form](/?path=/docs/ui-form--docs)** - Form wrapper with validation
+
+### Data Display
+
+- **[Badge](/?path=/docs/ui-badge--docs)** - Status indicators and labels
+- **[Avatar](/?path=/docs/ui-avatar--docs)** - User profile images
+- **[Progress](/?path=/docs/ui-progress--docs)** - Progress indicators
+- **[Skeleton](/?path=/docs/ui-skeleton--docs)** - Loading state placeholders
+- **[Table](/?path=/docs/ui-table--docs)** - Tabular data display
+- **[Chart](/?path=/docs/ui-chart--docs)** - Data visualization components
+
+### Feedback & Overlay
+
+- **[Alert](/?path=/docs/ui-alert--docs)** - Important messages and notifications
+- **[Dialog](/?path=/docs/ui-dialog--docs)** - Modal dialogs
+- **[Alert Dialog](/?path=/docs/ui-alertdialog--docs)** - Confirmation dialogs
+- **[Sheet](/?path=/docs/ui-sheet--docs)** - Slide-out panels
+- **[Drawer](/?path=/docs/ui-drawer--docs)** - Mobile-friendly drawers
+- **[Popover](/?path=/docs/ui-popover--docs)** - Floating content containers
+- **[Tooltip](/?path=/docs/ui-tooltip--docs)** - Contextual help text
+- **[Hover Card](/?path=/docs/ui-hovercard--docs)** - Rich hover content
+- **[Sonner](/?path=/docs/ui-sonner--docs)** - Toast notifications
+
+### Interactive
+
+- **[Accordion](/?path=/docs/ui-accordion--docs)** - Collapsible content sections
+- **[Collapsible](/?path=/docs/ui-collapsible--docs)** - Simple show/hide content
+- **[Tabs](/?path=/docs/ui-tabs--docs)** - Tabbed content organization
+- **[Toggle](/?path=/docs/ui-toggle--docs)** - Pressable toggle button
+- **[Toggle Group](/?path=/docs/ui-togglegroup--docs)** - Grouped toggle buttons
+- **[Carousel](/?path=/docs/ui-carousel--docs)** - Image and content carousel
+- **[Command](/?path=/docs/ui-command--docs)** - Command palette interface
+- **[Calendar](/?path=/docs/ui-calendar--docs)** - Date selection component
+
+### Specialized Inputs
+
+- **[Input OTP](/?path=/docs/ui-inputotp--docs)** - One-time password input
+
+### Context Menus
+
+- **[Context Menu](/?path=/docs/ui-contextmenu--docs)** - Right-click context menus
+- **[Dropdown Menu](/?path=/docs/ui-dropdownmenu--docs)** - Dropdown action menus
+
+## 🎨 Design Principles
+
+### Consistency
+All components follow consistent design patterns for spacing, typography, colors, and interactions.
+
+### Accessibility First
+Every component is built with accessibility in mind, including:
+- Proper ARIA attributes
+- Keyboard navigation
+- Screen reader support
+- Focus management
+- Color contrast compliance
+
+### Performance
+Components are optimized for performance with:
+- Tree-shakable exports
+- Minimal bundle impact
+- Efficient re-renders
+- Lazy loading where appropriate
+
+### Developer Experience
+Built for developers with:
+- TypeScript support
+- Comprehensive documentation
+- Code examples
+- Storybook integration
+- Easy customization
+
+## 🚀 Getting Started
+
+### Installation
+
+Components are imported from the design system:
+
+```tsx
+import { Button, Card, Input } from "@/components/ui"
+```
+
+### Basic Usage
+
+```tsx
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+
+function MyComponent() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Welcome</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Button>Get Started</Button>
+      </CardContent>
+    </Card>
+  )
+}
+```
+
+### Customization
+
+All components can be customized using Tailwind CSS classes:
+
+```tsx
+<Button className="bg-blue-500 hover:bg-blue-600">
+  Custom Button
+</Button>
+```
+
+## 📖 Documentation
+
+Each component includes:
+- **Examples** - Live interactive examples
+- **API Reference** - Complete prop documentation
+- **Usage Guidelines** - When and how to use
+- **Accessibility** - A11y considerations
+- **Code Samples** - Copy-paste examples
+
+## 🛠 Development
+
+The component library is built with:
+- **React 18** - Latest React features
+- **TypeScript** - Type safety and better DX
+- **Tailwind CSS** - Utility-first styling
+- **Radix UI** - Accessible component primitives
+- **Lucide React** - Beautiful icons
+- **Storybook** - Component development environment
+
+## 📱 Responsive Design
+
+All components are designed to work seamlessly across:
+- Desktop computers
+- Tablets
+- Mobile devices
+- Different screen sizes and orientations
+
+## 🌙 Dark Mode
+
+The component library includes built-in dark mode support with automatic theme switching.
+
+## 📝 Contributing
+
+When adding new components:
+1. Follow established patterns and conventions
+2. Include comprehensive documentation
+3. Add Storybook stories with examples
+4. Ensure accessibility compliance
+5. Write TypeScript interfaces
+6. Test across different devices
+
+---
+
+*This component library is designed to help you build beautiful, accessible, and performant user interfaces quickly and consistently.* 

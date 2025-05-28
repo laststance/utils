@@ -1,0 +1,215 @@
+import { Meta, Title, Primary, Controls, Stories, Story, Canvas } from '@storybook/addon-docs';
+import * as CardStories from './Card.stories';
+
+<Meta of={CardStories} />
+
+<Title />
+
+# Card
+
+A card component for displaying content in a contained, organized manner.
+
+<Primary />
+
+## When to use
+
+- To group related information together
+- To create visual hierarchy on a page
+- To display content that can stand alone
+- For product listings, articles, or user profiles
+
+## Features
+
+- **Flexible Layout**: Modular components for header, content, footer, and actions
+- **Consistent Styling**: Unified look and feel across your application
+- **Responsive**: Works well on all screen sizes
+- **Accessible**: Proper semantic structure and keyboard navigation
+- **Customizable**: Easy to style and extend
+
+## Usage
+
+Import the card components:
+
+```tsx
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  CardAction,
+} from "@/components/ui/card"
+```
+
+## Examples
+
+### Basic Card
+
+<Canvas>
+  <Story of={CardStories.Default} />
+</Canvas>
+
+### Card with Action
+
+Cards can include action buttons in the header area:
+
+<Canvas>
+  <Story of={CardStories.WithAction} />
+</Canvas>
+
+### Product Card
+
+Perfect for showcasing products or pricing plans:
+
+<Canvas>
+  <Story of={CardStories.ProductCard} />
+</Canvas>
+
+### Article Card
+
+Great for blog posts, articles, or news items:
+
+<Canvas>
+  <Story of={CardStories.ArticleCard} />
+</Canvas>
+
+### Minimal Card
+
+Simple card with just content:
+
+<Canvas>
+  <Story of={CardStories.MinimalCard} />
+</Canvas>
+
+### Header Only
+
+For simple announcements or notices:
+
+<Canvas>
+  <Story of={CardStories.HeaderOnly} />
+</Canvas>
+
+### Content Only
+
+Clean content display without header or footer:
+
+<Canvas>
+  <Story of={CardStories.ContentOnly} />
+</Canvas>
+
+## API Reference
+
+<Controls />
+
+## Component Architecture
+
+The Card component is composed of several sub-components:
+
+### Card
+The root container component that provides the card's visual foundation.
+
+### CardHeader
+Contains the title, description, and optional action elements.
+
+### CardTitle
+The main heading of the card.
+
+### CardDescription
+Descriptive text providing context about the card content.
+
+### CardAction
+Action elements (buttons, icons) positioned in the header area.
+
+### CardContent
+The main content area of the card.
+
+### CardFooter
+Footer area for actions, metadata, or additional information.
+
+## Usage Examples
+
+### Basic Structure
+
+```tsx
+<Card>
+  <CardHeader>
+    <CardTitle>Title</CardTitle>
+    <CardDescription>Description</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <p>Content goes here</p>
+  </CardContent>
+  <CardFooter>
+    <Button>Action</Button>
+  </CardFooter>
+</Card>
+```
+
+### With Action Button
+
+```tsx
+<Card>
+  <CardHeader>
+    <CardTitle>Settings</CardTitle>
+    <CardDescription>Manage your preferences</CardDescription>
+    <CardAction>
+      <Button variant="ghost" size="icon">
+        <Settings className="h-4 w-4" />
+      </Button>
+    </CardAction>
+  </CardHeader>
+  <CardContent>
+    <p>Settings content</p>
+  </CardContent>
+</Card>
+```
+
+### Minimal Card
+
+```tsx
+<Card>
+  <CardContent>
+    <h3>Simple Content</h3>
+    <p>Just content, no header or footer</p>
+  </CardContent>
+</Card>
+```
+
+## Styling
+
+Cards use a consistent design system with:
+- Rounded corners for a modern look
+- Subtle shadows for depth
+- Consistent spacing and typography
+- Flexible layouts that adapt to content
+
+## Accessibility
+
+- Uses semantic HTML structure
+- Proper heading hierarchy
+- Keyboard navigable actions
+- Screen reader friendly
+- Focus management for interactive elements
+
+## Design Guidelines
+
+### Do
+- Keep card content focused and related
+- Use consistent card sizes in lists
+- Provide clear actions and next steps
+- Use appropriate heading levels
+
+### Don't
+- Overcrowd cards with too much information
+- Use cards for every piece of content
+- Make cards too wide on large screens
+- Forget to provide actions when needed
+
+## Related Components
+
+- [Button](/?path=/docs/ui-button--docs) - For card actions
+- [Badge](/?path=/docs/ui-badge--docs) - For status indicators
+- [Avatar](/?path=/docs/ui-avatar--docs) - For user information in cards
+
+<Stories /> 

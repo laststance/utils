@@ -1,0 +1,103 @@
+import { Meta, Title, Primary, Controls, Stories, Story, Canvas } from '@storybook/addon-docs';
+import * as AccordionStories from './Accordion.stories';
+
+<Meta of={AccordionStories} />
+
+<Title />
+
+# Accordion
+
+A vertically stacked set of interactive headings that each reveal a section of content.
+
+<Primary />
+
+## When to use
+
+- To organize related information that doesn't need to be displayed all at once
+- To save vertical space on the page
+- When you want to provide optional detailed information
+
+## Features
+
+- **Accessible**: Built with accessibility in mind, following WAI-ARIA design patterns
+- **Keyboard Navigation**: Full keyboard support with arrow keys
+- **Customizable**: Single or multiple items can be expanded
+- **Animated**: Smooth expand/collapse animations
+- **Flexible**: Can be styled and customized easily
+
+## Usage
+
+Import the accordion components:
+
+```tsx
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+```
+
+## Examples
+
+### Basic Accordion
+
+<Canvas>
+  <Story of={AccordionStories.Default} />
+</Canvas>
+
+### Multiple Items Open
+
+When `type="multiple"`, multiple accordion items can be open simultaneously.
+
+<Canvas>
+  <Story of={AccordionStories.Multiple} />
+</Canvas>
+
+### Single Item
+
+<Canvas>
+  <Story of={AccordionStories.SingleItem} />
+</Canvas>
+
+## API Reference
+
+<Controls />
+
+## Component Props
+
+### Accordion
+
+The root accordion component supports all props from Radix UI's Accordion.Root:
+
+- `type`: "single" | "multiple" - Whether multiple items can be opened at once
+- `collapsible`: boolean - Whether items can be collapsed when type is "single"
+- `defaultValue`: string | string[] - Default open items
+- `value`: string | string[] - Controlled open items
+- `onValueChange`: function - Callback when open items change
+
+### AccordionItem
+
+- `value`: string - Unique identifier for the item
+
+### AccordionTrigger
+
+The trigger button that toggles the accordion item. Accepts all button props.
+
+### AccordionContent
+
+The collapsible content area. Accepts all div props.
+
+## Accessibility
+
+- Uses proper ARIA attributes for screen readers
+- Keyboard navigation with Tab, Enter, and Space keys
+- Focus management when items are opened/closed
+- Semantic heading structure
+
+## Related Components
+
+- [Collapsible](/?path=/docs/ui-collapsible--docs) - For simpler show/hide functionality
+- [Tabs](/?path=/docs/ui-tabs--docs) - For mutually exclusive content sections
+
+<Stories /> 

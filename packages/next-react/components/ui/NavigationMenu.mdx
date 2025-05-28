@@ -1,0 +1,105 @@
+import { Meta, Title, Primary, Controls, Stories, Story, Canvas } from '@storybook/addon-docs';
+import * as NavigationMenuStories from './NavigationMenu.stories';
+
+<Meta of={NavigationMenuStories} />
+
+<Title />
+
+# NavigationMenu
+
+Navigation Menu component for building user interfaces.
+
+<Primary />
+
+## When to use
+
+- Add specific use cases for NavigationMenu
+- Describe when this component is most appropriate
+- List common scenarios
+
+## Features
+
+- **Feature 1**: Description of key feature
+- **Feature 2**: Description of another feature  
+- **Feature 3**: Description of additional feature
+- **Accessible**: Built with accessibility in mind
+- **Customizable**: Easy to style and extend
+
+## Usage
+
+Import the NavigationMenu component:
+
+```tsx
+import { NavigationMenu } from "@/components/ui/-navigation-menu"
+```
+
+## Examples
+
+### Basic Usage
+
+<Canvas>
+  <Story of={NavigationMenuStories.Default} />
+</Canvas>
+
+### Example Variation
+
+<Canvas>
+  <Story of={NavigationMenuStories.Example} />
+</Canvas>
+
+## API Reference
+
+<Controls />
+
+## Component Props
+
+The NavigationMenu component accepts the following props:
+
+- `className`: string - Additional CSS classes
+- Add other specific props here
+
+## Usage Examples
+
+### Basic NavigationMenu
+
+```tsx
+<NavigationMenu>
+  Content here
+</NavigationMenu>
+```
+
+### NavigationMenu with Props
+
+```tsx
+<NavigationMenu className="custom-class">
+  Custom content
+</NavigationMenu>
+```
+
+## Accessibility
+
+- Uses semantic HTML elements
+- Keyboard navigation support
+- Screen reader friendly
+- Proper ARIA attributes
+- Focus management
+
+## Design Guidelines
+
+### Do
+- Use clear and descriptive content
+- Follow consistent spacing patterns
+- Provide proper context
+
+### Don't
+- Overuse the component
+- Ignore accessibility requirements
+- Break established patterns
+
+## Related Components
+
+- [Button](/?path=/docs/ui-button--docs) - For interactive actions
+- [Card](/?path=/docs/ui-card--docs) - For content containers
+- Add other related components
+
+<Stories />

@@ -1,0 +1,203 @@
+import { Meta, Title, Primary, Controls, Stories, Story, Canvas } from '@storybook/addon-docs';
+import * as ButtonStories from './Button.stories';
+
+<Meta of={ButtonStories} />
+
+<Title />
+
+# Button
+
+Displays a button or a component that looks like a button.
+
+<Primary />
+
+## When to use
+
+- To trigger an action or event
+- To navigate to another page or section
+- To submit a form
+- As a call-to-action element
+
+## Features
+
+- **Multiple Variants**: Default, destructive, outline, secondary, ghost, and link styles
+- **Size Options**: Small, default, large, and icon-only sizes
+- **Accessible**: Full keyboard and screen reader support
+- **Flexible**: Can render as any element using the `asChild` prop
+- **Icons**: Built-in support for icons with proper spacing
+
+## Usage
+
+Import the button component:
+
+```tsx
+import { Button } from "@/components/ui/button"
+```
+
+## Examples
+
+### Variants
+
+<Canvas>
+  <Story of={ButtonStories.AllVariants} />
+</Canvas>
+
+### Sizes
+
+<Canvas>
+  <Story of={ButtonStories.AllSizes} />
+</Canvas>
+
+### With Icons
+
+<Canvas>
+  <Story of={ButtonStories.WithIcon} />
+</Canvas>
+
+### Icon Only
+
+<Canvas>
+  <Story of={ButtonStories.Icon} />
+</Canvas>
+
+### Loading State
+
+<Canvas>
+  <Story of={ButtonStories.Loading} />
+</Canvas>
+
+### Disabled
+
+<Canvas>
+  <Story of={ButtonStories.Disabled} />
+</Canvas>
+
+## Variants
+
+### Default
+The primary button style for main actions.
+
+<Canvas>
+  <Story of={ButtonStories.Default} />
+</Canvas>
+
+### Destructive
+For dangerous actions like deletion.
+
+<Canvas>
+  <Story of={ButtonStories.Destructive} />
+</Canvas>
+
+### Outline
+A subtle button with a border.
+
+<Canvas>
+  <Story of={ButtonStories.Outline} />
+</Canvas>
+
+### Secondary
+For secondary actions.
+
+<Canvas>
+  <Story of={ButtonStories.Secondary} />
+</Canvas>
+
+### Ghost
+Minimal styling for subtle actions.
+
+<Canvas>
+  <Story of={ButtonStories.Ghost} />
+</Canvas>
+
+### Link
+Styled to look like a link.
+
+<Canvas>
+  <Story of={ButtonStories.Link} />
+</Canvas>
+
+## API Reference
+
+<Controls />
+
+## Component Props
+
+### Button
+
+Extends all standard button HTML attributes plus:
+
+- `variant`: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link"
+- `size`: "default" | "sm" | "lg" | "icon"
+- `asChild`: boolean - Render as child element instead of button
+
+## Usage Examples
+
+### Basic Button
+
+```tsx
+<Button>Click me</Button>
+```
+
+### Button with Icon
+
+```tsx
+<Button>
+  <Mail className="mr-2 h-4 w-4" />
+  Send Email
+</Button>
+```
+
+### Icon Button
+
+```tsx
+<Button variant="outline" size="icon">
+  <Plus className="h-4 w-4" />
+</Button>
+```
+
+### As Link
+
+```tsx
+<Button asChild>
+  <a href="/dashboard">Go to Dashboard</a>
+</Button>
+```
+
+### Loading State
+
+```tsx
+<Button disabled>
+  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+  Please wait
+</Button>
+```
+
+## Accessibility
+
+- Uses semantic `button` element by default
+- Full keyboard support (Enter and Space)
+- Proper focus indicators
+- Screen reader friendly
+- Disabled state properly communicated to assistive technology
+
+## Design Guidelines
+
+### Do
+- Use clear, action-oriented labels
+- Choose appropriate variants for context
+- Provide loading states for async actions
+- Use icons to enhance understanding
+
+### Don't
+- Use too many primary buttons on one page
+- Make buttons too small to tap on mobile
+- Use destructive variant for non-destructive actions
+- Forget to provide feedback for user actions
+
+## Related Components
+
+- [Link](/?path=/docs/ui-link--docs) - For navigation without button styling
+- [Toggle](/?path=/docs/ui-toggle--docs) - For on/off states
+- [Badge](/?path=/docs/ui-badge--docs) - For status indicators
+
+<Stories /> 

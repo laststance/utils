@@ -1,0 +1,270 @@
+import { Meta, Title, Primary, Controls, Stories, Story, Canvas } from '@storybook/addon-docs';
+import * as InputStories from './Input.stories';
+
+<Meta of={InputStories} />
+
+<Title />
+
+# Input
+
+A form input component for collecting user input.
+
+<Primary />
+
+## When to use
+
+- To collect text, email, password, or other form data
+- For search functionality
+- In forms and data entry interfaces
+- When you need user input validation
+
+## Features
+
+- **Multiple Types**: Support for text, email, password, number, search, and more
+- **Icon Support**: Easy integration with icons for enhanced UX
+- **Validation States**: Visual feedback for errors and success states
+- **Accessible**: Full keyboard and screen reader support
+- **Responsive**: Works well on all screen sizes
+- **Customizable**: Easy to style and extend
+
+## Usage
+
+Import the Input component:
+
+```tsx
+import { Input } from "@/components/ui/input"
+```
+
+## Examples
+
+### Basic Input
+
+<Canvas>
+  <Story of={InputStories.Default} />
+</Canvas>
+
+### With Label
+
+Always pair inputs with labels for accessibility:
+
+<Canvas>
+  <Story of={InputStories.WithLabel} />
+</Canvas>
+
+### Password Input
+
+Password input with toggle visibility:
+
+<Canvas>
+  <Story of={InputStories.Password} />
+</Canvas>
+
+### With Icon
+
+Search input with icon:
+
+<Canvas>
+  <Story of={InputStories.WithIcon} />
+</Canvas>
+
+### Error State
+
+Input with error styling and message:
+
+<Canvas>
+  <Story of={InputStories.WithError} />
+</Canvas>
+
+### Login Form
+
+Complete login form example:
+
+<Canvas>
+  <Story of={InputStories.LoginForm} />
+</Canvas>
+
+### Input Types
+
+#### Number Input
+
+<Canvas>
+  <Story of={InputStories.NumberInput} />
+</Canvas>
+
+#### File Input
+
+<Canvas>
+  <Story of={InputStories.FileInput} />
+</Canvas>
+
+### States
+
+#### Disabled
+
+<Canvas>
+  <Story of={InputStories.Disabled} />
+</Canvas>
+
+#### Read Only
+
+<Canvas>
+  <Story of={InputStories.ReadOnly} />
+</Canvas>
+
+### Size Variants
+
+<Canvas>
+  <Story of={InputStories.SizeVariants} />
+</Canvas>
+
+## API Reference
+
+<Controls />
+
+## Component Props
+
+The Input component accepts all standard HTML input attributes plus:
+
+- `type`: "text" | "password" | "email" | "number" | "search" | "tel" | "url" | "file" | etc.
+- `placeholder`: string - Placeholder text
+- `disabled`: boolean - Whether the input is disabled
+- `readOnly`: boolean - Whether the input is read-only
+- `className`: string - Additional CSS classes
+
+## Usage Examples
+
+### Basic Input
+
+```tsx
+<Input placeholder="Enter text..." />
+```
+
+### Input with Label
+
+```tsx
+<div className="grid w-full max-w-sm items-center gap-1.5">
+  <Label htmlFor="email">Email</Label>
+  <Input type="email" id="email" placeholder="Enter your email" />
+</div>
+```
+
+### Input with Icon
+
+```tsx
+<div className="relative">
+  <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+  <Input placeholder="Search..." className="pl-8" />
+</div>
+```
+
+### Password Input with Toggle
+
+```tsx
+const [showPassword, setShowPassword] = useState(false);
+
+<div className="relative">
+  <Input
+    type={showPassword ? "text" : "password"}
+    placeholder="Enter password"
+    className="pr-10"
+  />
+  <Button
+    type="button"
+    variant="ghost"
+    size="icon"
+    className="absolute right-0 top-0 h-full px-3 py-2"
+    onClick={() => setShowPassword(!showPassword)}
+  >
+    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+  </Button>
+</div>
+```
+
+### Input with Error State
+
+```tsx
+<div className="grid w-full max-w-sm items-center gap-1.5">
+  <Label htmlFor="email">Email</Label>
+  <Input
+    type="email"
+    id="email"
+    placeholder="Enter your email"
+    className="border-destructive"
+    aria-invalid="true"
+  />
+  <p className="text-sm text-destructive">Please enter a valid email address.</p>
+</div>
+```
+
+## Input Types
+
+### Text Input
+Default text input for general text entry.
+
+### Email Input
+Includes built-in email validation in modern browsers.
+
+### Password Input
+Masks input for sensitive data. Consider adding show/hide functionality.
+
+### Number Input
+For numeric values with optional min/max constraints.
+
+### Search Input
+Optimized for search functionality with appropriate styling.
+
+### File Input
+For file uploads with proper styling integration.
+
+## Accessibility
+
+- Uses semantic `input` element
+- Supports all ARIA attributes
+- Compatible with screen readers
+- Full keyboard navigation support
+- Proper focus indicators
+- Error states announced to assistive technology
+
+## Form Integration
+
+The Input component works seamlessly with:
+- React Hook Form
+- Formik
+- Native HTML forms
+- Custom validation libraries
+
+```tsx
+// React Hook Form example
+const { register, handleSubmit } = useForm();
+
+<Input
+  {...register("email", { required: true })}
+  type="email"
+  placeholder="Enter email"
+/>
+```
+
+## Design Guidelines
+
+### Do
+- Always provide labels for accessibility
+- Use appropriate input types for data being collected
+- Provide clear error messages
+- Use placeholder text to clarify expected format
+- Group related inputs logically
+
+### Don't
+- Use placeholder text as the only label
+- Make inputs too narrow for expected content
+- Forget to handle error and loading states
+- Use password fields for non-sensitive data
+- Ignore keyboard navigation
+
+## Related Components
+
+- [Label](/?path=/docs/ui-label--docs) - For accessible input labels
+- [Button](/?path=/docs/ui-button--docs) - For form submission
+- [Form](/?path=/docs/ui-form--docs) - For complete form components
+- [Textarea](/?path=/docs/ui-textarea--docs) - For multi-line text input
+
+<Stories />
