@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import React from "react";
 import {
   ChartContainer,
   ChartTooltip,
@@ -56,9 +57,9 @@ const chartConfig = {
 export const BarChartExample: Story = {
   args: {
     config: chartConfig,
-  } as any,
+  } as Partial<React.ComponentProps<typeof ChartContainer>>,
   render: (args) => (
-    <ChartContainer {...(args as any)} className="min-h-[200px]">
+    <ChartContainer {...args} className="min-h-[200px]">
       <BarChart data={chartData}>
         <XAxis dataKey="month" />
         <YAxis />
@@ -74,9 +75,9 @@ export const BarChartExample: Story = {
 export const LineChartExample: Story = {
   args: {
     config: chartConfig,
-  } as any,
+  } as Partial<React.ComponentProps<typeof ChartContainer>>,
   render: (args) => (
-    <ChartContainer {...(args as any)} className="min-h-[200px]">
+    <ChartContainer {...args} className="min-h-[200px]">
       <LineChart data={chartData}>
         <XAxis dataKey="month" />
         <YAxis />

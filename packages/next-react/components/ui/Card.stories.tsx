@@ -129,7 +129,7 @@ export const ArticleCard: Story = {
       <CardContent>
         <p className="text-sm text-muted-foreground">
           React Hooks have revolutionized how we write React components. In this article, 
-          we'll explore the most commonly used hooks and their practical applications...
+          we&apos;ll explore the most commonly used hooks and their practical applications...
         </p>
       </CardContent>
       <CardFooter className="flex justify-between">
@@ -182,4 +182,4 @@ export const ContentOnly: Story = {
       </CardContent>
     </Card>
   ),
-}; 
+};  

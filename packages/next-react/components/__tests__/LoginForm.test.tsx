@@ -1,10 +1,9 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { server } from '../../__tests__/mocks/server'
 import { LoginForm } from '../LoginForm'
-import { debug } from 'console'
 
 describe('LoginForm', () => {
   describe('rendering', () => {
@@ -365,4 +364,4 @@ describe('LoginForm', () => {
       expect(await screen.findByText(/welcome back/i)).toBeInTheDocument()
     })
   })
-}) 
+})  
