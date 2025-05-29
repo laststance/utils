@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { Toaster } from "@/components/ui/sonner";
+import { toast } from "sonner";
 
 const meta = {
   title: "UI/Sonner",
@@ -9,15 +10,21 @@ const meta = {
     docs: {
       codePanel: true,
       description: {
-        component: "Sonner component for building user interfaces.",
+        component: "Toast notification system powered by Sonner.",
       },
     },
   },
   tags: ["autodocs"],
   argTypes: {
-    className: {
-      control: { type: "text" },
-      description: "Additional CSS classes",
+    position: {
+      control: { type: "select" },
+      options: ["top-left", "top-center", "top-right", "bottom-left", "bottom-center", "bottom-right"],
+      description: "Position of the toast",
+    },
+    theme: {
+      control: { type: "select" },
+      options: ["light", "dark", "system"],
+      description: "Theme of the toast",
     },
   },
 } satisfies Meta<typeof Toaster>;
@@ -26,19 +33,47 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: () => (
-    <Toaster>
-      {/* Add your component content here */}
-      Default Sonner
-    </Toaster>
+  render: (args) => (
+    <div>
+      <Toaster {...args} />
+      <button
+        onClick={() => toast("Hello world!")}
+        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+      >
+        Show Toast
+      </button>
+    </div>
   ),
 };
 
-export const Example: Story = {
-  render: () => (
-    <Toaster className="example-class">
-      {/* Add example usage here */}
-      Example Sonner
-    </Toaster>
+export const WithActions: Story = {
+  render: (args) => (
+    <div className="space-y-2">
+      <Toaster {...args} />
+      <button
+        onClick={() => toast.success("Successfully saved!")}
+        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+      >
+        Success Toast
+      </button>
+      <button
+        onClick={() => toast.error("Something went wrong!")}
+        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+      >
+        Error Toast
+      </button>
+      <button
+        onClick={() => toast("Event has been created", {
+          description: "Sunday, December 03, 2023 at 9:00 AM",
+          action: {
+            label: "Undo",
+            onClick: () => console.log("Undo"),
+          },
+        })}
+        className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600"
+      >
+        Toast with Action
+      </button>
+    </div>
   ),
 };

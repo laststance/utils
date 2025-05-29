@@ -1,5 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { AlertDialog } from "@/components/ui/alert-dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const meta = {
   title: "UI/AlertDialog",
@@ -9,15 +19,15 @@ const meta = {
     docs: {
       codePanel: true,
       description: {
-        component: "Alert Dialog component for building user interfaces.",
+        component: "An alert dialog component built on top of Radix UI AlertDialog.",
       },
     },
   },
   tags: ["autodocs"],
   argTypes: {
-    className: {
-      control: { type: "text" },
-      description: "Additional CSS classes",
+    open: {
+      control: { type: "boolean" },
+      description: "Controls whether the alert dialog is open",
     },
   },
 } satisfies Meta<typeof AlertDialog>;
@@ -26,19 +36,50 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: () => (
-    <AlertDialog>
-      {/* Add your component content here */}
-      Default AlertDialog
+  render: (args) => (
+    <AlertDialog {...args}>
+      <AlertDialogTrigger asChild>
+        <button className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+          Delete Account
+        </button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently delete your
+            account and remove your data from our servers.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction>Continue</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
     </AlertDialog>
   ),
 };
 
-export const Example: Story = {
-  render: () => (
-    <AlertDialog className="example-class">
-      {/* Add example usage here */}
-      Example AlertDialog
+export const Simple: Story = {
+  render: (args) => (
+    <AlertDialog {...args}>
+      <AlertDialogTrigger asChild>
+        <button className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600">
+          Show Alert
+        </button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Confirm Action</AlertDialogTitle>
+          <AlertDialogDescription>
+            Are you sure you want to proceed with this action?
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>No, cancel</AlertDialogCancel>
+          <AlertDialogAction>Yes, continue</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
     </AlertDialog>
   ),
 };

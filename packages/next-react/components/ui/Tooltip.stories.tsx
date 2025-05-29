@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Tooltip } from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
 
 const meta = {
   title: "UI/Tooltip",
@@ -14,12 +15,6 @@ const meta = {
     },
   },
   tags: ["autodocs"],
-  argTypes: {
-    className: {
-      control: { type: "text" },
-      description: "Additional CSS classes",
-    },
-  },
 } satisfies Meta<typeof Tooltip>;
 
 export default meta;
@@ -27,18 +22,30 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   render: () => (
-    <Tooltip>
-      {/* Add your component content here */}
-      Default Tooltip
-    </Tooltip>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button variant="outline">Hover me</Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>This is a tooltip</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   ),
 };
 
 export const Example: Story = {
   render: () => (
-    <Tooltip className="example-class">
-      {/* Add example usage here */}
-      Example Tooltip
-    </Tooltip>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button>Example Button</Button>
+        </TooltipTrigger>
+        <TooltipContent className="example-class">
+          <p>Example tooltip content</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   ),
 };

@@ -1,44 +1,98 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Resizable } from "@/components/ui/resizable";
+import {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from "@/components/ui/resizable";
 
 const meta = {
   title: "UI/Resizable",
-  component: Resizable,
+  component: ResizablePanelGroup,
   parameters: {
     layout: "centered",
     docs: {
       codePanel: true,
       description: {
-        component: "Resizable component for building user interfaces.",
+        component: "Resizable panels component built on top of react-resizable-panels.",
       },
     },
   },
   tags: ["autodocs"],
   argTypes: {
+    direction: {
+      control: { type: "select" },
+      options: ["horizontal", "vertical"],
+      description: "Direction of the panel group",
+    },
     className: {
       control: { type: "text" },
       description: "Additional CSS classes",
     },
   },
-} satisfies Meta<typeof Resizable>;
+} satisfies Meta<typeof ResizablePanelGroup>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: () => (
-    <Resizable>
-      {/* Add your component content here */}
-      Default Resizable
-    </Resizable>
+  args: {
+    direction: "horizontal",
+  },
+  render: (args) => (
+    <ResizablePanelGroup {...args} className="min-h-[200px] max-w-md rounded-lg border">
+      <ResizablePanel defaultSize={50}>
+        <div className="flex h-full items-center justify-center p-6">
+          <span className="font-semibold">Panel One</span>
+        </div>
+      </ResizablePanel>
+      <ResizableHandle />
+      <ResizablePanel defaultSize={50}>
+        <div className="flex h-full items-center justify-center p-6">
+          <span className="font-semibold">Panel Two</span>
+        </div>
+      </ResizablePanel>
+    </ResizablePanelGroup>
   ),
 };
 
-export const Example: Story = {
-  render: () => (
-    <Resizable className="example-class">
-      {/* Add example usage here */}
-      Example Resizable
-    </Resizable>
+export const Vertical: Story = {
+  args: {
+    direction: "vertical",
+  },
+  render: (args) => (
+    <ResizablePanelGroup {...args} className="min-h-[200px] max-w-md rounded-lg border">
+      <ResizablePanel defaultSize={25}>
+        <div className="flex h-full items-center justify-center p-6">
+          <span className="font-semibold">Header</span>
+        </div>
+      </ResizablePanel>
+      <ResizableHandle />
+      <ResizablePanel defaultSize={75}>
+        <div className="flex h-full items-center justify-center p-6">
+          <span className="font-semibold">Content</span>
+        </div>
+      </ResizablePanel>
+    </ResizablePanelGroup>
+  ),
+};
+
+export const WithHandle: Story = {
+  args: {
+    direction: "horizontal",
+  },
+  render: (args) => (
+    <ResizablePanelGroup {...args} className="min-h-[200px] max-w-md rounded-lg border">
+      <ResizablePanel defaultSize={50}>
+        <div className="flex h-full items-center justify-center p-6">
+          <span className="font-semibold">Left</span>
+        </div>
+      </ResizablePanel>
+      <ResizableHandle withHandle />
+      <ResizablePanel defaultSize={50}>
+        <div className="flex h-full items-center justify-center p-6">
+          <span className="font-semibold">Right</span>
+        </div>
+      </ResizablePanel>
+    </ResizablePanelGroup>
   ),
 };
