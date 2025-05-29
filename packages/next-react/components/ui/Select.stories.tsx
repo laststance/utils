@@ -22,7 +22,7 @@ const meta = {
       },
     },
   },
-  tags: ["autodocs"],
+
   argTypes: {
     value: {
       control: { type: "text" },

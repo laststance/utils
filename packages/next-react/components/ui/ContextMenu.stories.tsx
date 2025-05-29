@@ -19,7 +19,7 @@ const meta = {
       },
     },
   },
-  tags: ["autodocs"],
+
   argTypes: {
     modal: {
       control: { type: "boolean" },

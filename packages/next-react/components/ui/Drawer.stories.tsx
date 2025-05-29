@@ -22,7 +22,7 @@ const meta = {
       },
     },
   },
-  tags: ["autodocs"],
+
   argTypes: {
     open: {
       control: { type: "boolean" },

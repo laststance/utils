@@ -14,7 +14,7 @@ const meta = {
       },
     },
   },
-  tags: ["autodocs"],
+
 } satisfies Meta<typeof Tooltip>;
 
 export default meta;

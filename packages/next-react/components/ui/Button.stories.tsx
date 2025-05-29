@@ -14,7 +14,7 @@ const meta = {
       },
     },
   },
-  tags: ["autodocs"],
+
   argTypes: {
     variant: {
       control: { type: "radio" },

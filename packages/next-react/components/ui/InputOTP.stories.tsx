@@ -18,7 +18,7 @@ const meta = {
       },
     },
   },
-  tags: ["autodocs"],
+
 } satisfies Meta<typeof InputOTP>;
 
 export default meta;
