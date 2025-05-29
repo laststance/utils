@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import React from "react";
 import {
   InputOTP,
   InputOTPGroup,
@@ -22,14 +23,13 @@ const meta = {
 } satisfies Meta<typeof InputOTP>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type OTPStory = Omit<StoryObj<typeof meta>, 'args'> & {
+  render: () => React.ReactElement;
+};
 
-export const Default: Story = {
-  args: {
-    maxLength: 6,
-  } as any,
-  render: (args) => (
-    <InputOTP {...(args as any)}>
+export const Default: OTPStory = {
+  render: () => (
+    <InputOTP maxLength={6}>
       <InputOTPGroup>
         <InputOTPSlot index={0} />
         <InputOTPSlot index={1} />
@@ -42,12 +42,9 @@ export const Default: Story = {
   ),
 };
 
-export const WithSeparator: Story = {
-  args: {
-    maxLength: 6,
-  } as any,
-  render: (args) => (
-    <InputOTP {...(args as any)}>
+export const WithSeparator: OTPStory = {
+  render: () => (
+    <InputOTP maxLength={6}>
       <InputOTPGroup>
         <InputOTPSlot index={0} />
         <InputOTPSlot index={1} />
@@ -63,12 +60,9 @@ export const WithSeparator: Story = {
   ),
 };
 
-export const FourDigits: Story = {
-  args: {
-    maxLength: 4,
-  } as any,
-  render: (args) => (
-    <InputOTP {...(args as any)}>
+export const FourDigits: OTPStory = {
+  render: () => (
+    <InputOTP maxLength={4}>
       <InputOTPGroup>
         <InputOTPSlot index={0} />
         <InputOTPSlot index={1} />

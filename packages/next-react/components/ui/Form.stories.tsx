@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { useForm } from "react-hook-form";
+import React from "react";
 import {
   Form,
   FormControl,
@@ -27,10 +28,11 @@ const meta = {
 } satisfies Meta<typeof Form>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type FormStory = Omit<StoryObj<typeof meta>, 'args'> & {
+  render: () => React.ReactElement;
+};
 
-export const Default: Story = {
-  args: {} as any,
+export const Default: FormStory = {
   render: () => {
     const form = useForm({
       defaultValues: {
@@ -69,8 +71,7 @@ export const Default: Story = {
   },
 };
 
-export const WithValidation: Story = {
-  args: {} as any,
+export const WithValidation: FormStory = {
   render: () => {
     const form = useForm({
       defaultValues: {

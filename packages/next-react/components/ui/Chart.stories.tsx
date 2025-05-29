@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import React from "react";
 import {
   ChartContainer,
   ChartTooltip,
@@ -31,7 +32,9 @@ const meta = {
 } satisfies Meta<typeof ChartContainer>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type ChartStory = Omit<StoryObj<typeof meta>, 'args'> & {
+  render: () => React.ReactElement;
+};
 
 const chartData = [
   { month: "January", desktop: 186, mobile: 80 },
@@ -53,12 +56,9 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export const BarChartExample: Story = {
-  args: {
-    config: chartConfig,
-  } as any,
-  render: (args) => (
-    <ChartContainer {...(args as any)} className="min-h-[200px]">
+export const BarChartExample: ChartStory = {
+  render: () => (
+    <ChartContainer config={chartConfig} className="min-h-[200px]">
       <BarChart data={chartData}>
         <XAxis dataKey="month" />
         <YAxis />
@@ -71,12 +71,9 @@ export const BarChartExample: Story = {
   ),
 };
 
-export const LineChartExample: Story = {
-  args: {
-    config: chartConfig,
-  } as any,
-  render: (args) => (
-    <ChartContainer {...(args as any)} className="min-h-[200px]">
+export const LineChartExample: ChartStory = {
+  render: () => (
+    <ChartContainer config={chartConfig} className="min-h-[200px]">
       <LineChart data={chartData}>
         <XAxis dataKey="month" />
         <YAxis />
