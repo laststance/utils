@@ -1,0 +1,186 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Contribution Guide
+
+## Getting Started
+
+### Prerequisites
+- **Node.js 22.16.0** (use Volta as configured in [package.json](mdc:package.json))
+- **pnpm** package manager
+- **Git** for version control
+
+### Initial Setup
+```bash
+# Clone repository
+git clone <repository-url>
+cd utils
+
+# Install dependencies
+pnpm install
+
+# Verify setup
+pnpm typecheck
+pnpm test
+pnpm lint
+```
+
+## Development Workflow
+
+### Before Making Changes
+1. **Create a feature branch** from main
+2. **Check existing issues** and link your work
+3. **Run full test suite** to ensure clean starting state
+4. **Understand the package structure** using [project-structure.mdc](mdc:.cursor/rules/project-structure.mdc)
+
+### Making Changes
+
+#### Code Quality Checklist
+- [ ] Follow [development-standards.mdc](mdc:.cursor/rules/development-standards.mdc)
+- [ ] Add/update tests following [testing-workflow.mdc](mdc:.cursor/rules/testing-workflow.mdc)
+- [ ] Use English comments as per [language.mdc](mdc:.cursor/rules/language.mdc)
+- [ ] Follow TypeScript best practices
+- [ ] Maintain backward compatibility
+
+#### For Component Changes
+- [ ] Follow [component-development.mdc](mdc:.cursor/rules/component-development.mdc)
+- [ ] Update Storybook stories
+- [ ] Test with Playwright for UI changes
+- [ ] Take screenshots for visual verification
+
+### Package Development
+
+#### Adding New Utilities
+1. **Choose correct package** based on environment:
+   - Universal logic → `packages/universal`
+   - Browser-specific → `packages/browser`
+   - Node.js-specific → `packages/node`
+   - React components → `packages/next-react`
+   - Type definitions → `packages/types`
+
+2. **Create comprehensive tests**
+3. **Add TypeScript types**
+4. **Update package documentation**
+5. **Export from package index**
+
+#### Package Structure Standards
+```
+packages/your-package/
+├── src/                    # Source code
+├── __tests__/             # Test files
+├── package.json           # Package configuration
+├── tsconfig.json          # TypeScript config
+├── README.md              # Package documentation
+└── index.ts               # Main export
+```
+
+## Quality Assurance
+
+### Pre-Commit Checklist
+```bash
+# Run all quality checks
+pnpm typecheck          # TypeScript compilation
+pnpm lint               # ESLint checks
+pnpm prettier           # Code formatting
+pnpm test               # All tests
+pnpm build              # Build verification
+```
+
+### Testing Requirements
+- **Unit tests** for all new functions/components
+- **Integration tests** for complex workflows
+- **Visual tests** for UI components (Playwright)
+- **Cross-browser testing** for browser utilities
+- **Node.js compatibility** for universal packages
+
+### Documentation Requirements
+- **Update README.md** for significant changes
+- **Add JSDoc comments** for public APIs
+- **Update Storybook stories** for components
+- **Include examples** for complex utilities
+
+## Code Review Process
+
+### Before Requesting Review
+1. **Self-review your changes**
+2. **Verify all tests pass**
+3. **Check bundle size impact**
+4. **Update documentation**
+5. **Resolve merge conflicts**
+
+### Review Guidelines
+- **Focus on functionality** and maintainability
+- **Check test coverage** and quality
+- **Verify TypeScript types** are correct
+- **Ensure backward compatibility**
+- **Review performance implications**
+
+## Release Process
+
+### Version Management
+- Follow **semantic versioning** (SemVer)
+- Update version in relevant `package.json` files
+- Create changelog entries for user-facing changes
+
+### Release Checklist
+1. **All tests passing** across packages
+2. **Documentation updated**
+3. **Version numbers incremented**
+4. **Changelog updated**
+5. **Build verification** successful
+
+## Common Workflows
+
+### Adding a New Browser Utility
+```bash
+# Navigate to browser package
+cd packages/browser
+
+# Create new utility file
+touch src/new-utility.ts
+
+# Add tests
+touch __tests__/new-utility.test.ts
+
+# Export from index
+# Update packages/browser/index.ts
+
+# Test and verify
+pnpm test
+pnpm typecheck
+```
+
+### Creating a New React Component
+```bash
+# Navigate to next-react package
+cd packages/next-react
+
+# Create component
+touch components/NewComponent.tsx
+
+# Add tests and stories
+touch components/__tests__/NewComponent.test.tsx
+touch components/NewComponent.stories.tsx
+
+# Test with Storybook
+pnpm storybook
+
+# Verify with Playwright
+# Follow component-development.mdc guidelines
+```
+
+## Troubleshooting
+
+### Common Issues
+- **Port 3000 in use**: Check for existing dev servers
+- **TypeScript errors**: Verify imports and type definitions
+- **Test failures**: Check for environment-specific issues
+- **Build failures**: Verify all dependencies are installed
+
+### Getting Help
+- Check existing documentation in `packages/docs`
+- Review similar implementations in the codebase
+- Ask questions in pull request comments
+- Reference configuration files for setup issues
