@@ -5,6 +5,10 @@ updates:
     directory: '/'
     schedule:
       interval: 'weekly'
+    groups:
+      all-dependencies:
+        patterns:
+          - "*"
     ignore:
       - dependency-name: 'storybook'
       - dependency-name: '@storybook/*'
