@@ -5,7 +5,6 @@
 
 var ECMA_SIZES = require('./byte_size')
 
-// eslint-disable-next-line import/order
 var Buffer = require('buffer/').Buffer
 
 function allProperties(obj) {

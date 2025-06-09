@@ -1,6 +1,7 @@
 /** @type {import('@types/eslint').Linter.Config} */
 module.exports = {
   root: true,
+  ignorePatterns: ['*.d.ts'],
   env: {
     node: true,
     browser: true,
@@ -9,14 +10,42 @@ module.exports = {
   overrides: [
     {
       files: ['*.ts'],
-      extends: ['ts-prefixer'],
+      excludedFiles: ['*.d.ts', '__tests__/**'],
+      extends: ['eslint:recommended'],
       parser: '@typescript-eslint/parser',
       parserOptions: {
-        project: ['./tsconfig.json'],
+        ecmaVersion: 2020,
+        sourceType: 'module',
       },
       rules: {
         '@typescript-eslint/no-unused-vars': 'off',
         'no-console': 'off',
+        'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      },
+    },
+    {
+      files: ['__tests__/**/*.ts'],
+      extends: ['eslint:recommended'],
+      parser: '@typescript-eslint/parser',
+      parserOptions: {
+        ecmaVersion: 2020,
+        sourceType: 'module',
+      },
+      env: {
+        es6: true,
+        node: true,
+        browser: true,
+      },
+      globals: {
+        describe: 'readonly',
+        it: 'readonly',
+        test: 'readonly',
+        expect: 'readonly',
+      },
+      rules: {
+        '@typescript-eslint/no-unused-vars': 'off',
+        'no-console': 'off',
+        'no-undef': 'off',
       },
     },
     {

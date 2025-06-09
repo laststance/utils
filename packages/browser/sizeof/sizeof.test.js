@@ -4,7 +4,6 @@ var should = require('should')
 
 var sizeof = require('./index')
 
-// eslint-disable-next-line import/order
 const Buffer = require('buffer/').Buffer
 
 describe('sizeof', function () {

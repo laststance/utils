@@ -10,7 +10,7 @@ export function safeAssign<T extends Record<string, unknown>>(
 
 export function assertIsDefined<T>(x: T | undefined): asserts x is T {}
 
-function assertIsDefinedWithError<T>(
+export function assertIsDefinedWithError<T>(
   value: T,
 ): asserts value is NonNullable<T> {
   if (value === undefined || value === null) {

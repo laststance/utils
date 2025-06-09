@@ -1,6 +1,6 @@
 const isFunction = (
   functionToCheck: unknown,
-): functionToCheck is (...args: any[]) => any =>
+): functionToCheck is Function =>
   typeof functionToCheck === 'function'
 
 export default isFunction
