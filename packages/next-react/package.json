@@ -82,7 +82,7 @@
     "eslint-config-next": "15.3.3",
     "eslint-plugin-storybook": "^9.0.4",
     "happy-dom": "^17.5.6",
-    "msw": "^2.8.5",
+    "msw": "^2.10.2",
     "playwright": "^1.52.0",
     "serve": "^14.2.4",
     "storybook": "^9.0.0",
