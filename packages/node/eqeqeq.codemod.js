@@ -1,6 +1,6 @@
 export default function transformer(file, api) {
   const j = api.jscodeshift
-  const { expression, statement, statements } = j.template
+  const { expression } = j.template
 
   return j(file.source)
     .find(j.BinaryExpression, { operator: '==' })

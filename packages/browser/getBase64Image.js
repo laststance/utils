@@ -1,10 +1,7 @@
 // get an image blob from url using fetch
 const getImageBlob = async function (url) {
-  return new Promise(async (resolve) => {
-    const resposne = await fetch(url, { mode: 'no-cors' })
-    const blob = resposne.blob()
-    resolve(blob)
-  })
+  const response = await fetch(url, { mode: 'no-cors' })
+  return response.blob()
 }
 
 // convert a blob to base64

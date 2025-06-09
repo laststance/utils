@@ -66,11 +66,12 @@ function getCalculator(seen) {
         return ECMA_SIZES.BOOLEAN
       case 'number':
         return ECMA_SIZES.NUMBER
-      case 'symbol':
+      case 'symbol': {
         const isGlobalSymbol = Symbol.keyFor && Symbol.keyFor(object)
         return isGlobalSymbol
           ? Symbol.keyFor(object).length * ECMA_SIZES.STRING
           : (object.toString().length - 8) * ECMA_SIZES.STRING
+      }
       case 'object':
         if (Array.isArray(object)) {
           return object.map(getCalculator(seen)).reduce(function (acc, curr) {

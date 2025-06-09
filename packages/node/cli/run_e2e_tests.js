@@ -8,7 +8,7 @@ const { join } = require('path')
 
 const ROOT_PATH = join(__dirname)
 
-const TIMEOUT_DURATION = 60_000
+const TIMEOUT_DURATION = 60000
 
 let buildProcess = null
 let serverProcess = null
@@ -67,7 +67,7 @@ function build() {
       // exitWithCode(1);
     }
   })
-  buildProcess.on('close', (code) => {
+  buildProcess.on('close', () => {
     logBright('Project built')
 
     clearTimeout(timeoutID)
