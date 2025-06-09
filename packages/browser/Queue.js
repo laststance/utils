@@ -1,24 +1,20 @@
 // from https://github.com/mui-org/material-ui/tree/20f6450209de399917e40e36468e97d056dc0c1d/modules/waterfall
-import waitUntil from './waitUntil'
 
 class Queue {
-  pendingEntries = []
-
-  inFlight = 0
-
-  err = null
-
   constructor(worker, options = {}) {
     this.worker = worker
     this.concurrency = options.concurrency || 1
+    this.pendingEntries = []
+    this.inFlight = 0
+    this.err = null
   }
 
-  push = (entries) => {
+  push(entries) {
     this.pendingEntries = this.pendingEntries.concat(entries)
     this.process()
   }
 
-  process = () => {
+  process() {
     const scheduled = this.pendingEntries.splice(
       0,
       this.concurrency - this.inFlight,
@@ -39,24 +35,33 @@ class Queue {
     })
   }
 
-  wait = async (options = {}) =>
-    waitUntil(
-      () => {
-        if (this.err) {
-          this.pendingEntries = []
-          throw this.err
-        }
+  async wait(options = {}) {
+    const checkCondition = () => {
+      if (this.err) {
+        this.pendingEntries = []
+        throw this.err
+      }
 
-        return {
-          predicate: options.empty
-            ? this.inFlight === 0 && this.pendingEntries.length === 0
-            : this.concurrency > this.pendingEntries.length,
+      return options.empty
+        ? this.inFlight === 0 && this.pendingEntries.length === 0
+        : this.concurrency > this.pendingEntries.length
+    }
+
+    return new Promise((resolve, reject) => {
+      const poll = () => {
+        try {
+          if (checkCondition()) {
+            resolve()
+          } else {
+            setTimeout(poll, 50)
+          }
+        } catch (err) {
+          reject(err)
         }
-      },
-      {
-        delay: 50,
-      },
-    )
+      }
+      poll()
+    })
+  }
 }
 
 export default Queue

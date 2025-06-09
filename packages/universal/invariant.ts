@@ -15,8 +15,6 @@
  * will remain to ensure logic does not differ in production.
  */
 
-const NODE_ENV = process.env.NODE_ENV
-
 export const invariant = function (
   condition: any,
   format: string,
@@ -26,8 +24,9 @@ export const invariant = function (
   d?: any,
   e?: any,
   f?: any,
+  isDevelopment: boolean = true,
 ): void {
-  if (NODE_ENV !== 'production') {
+  if (isDevelopment) {
     if (format === undefined) {
       throw new Error('invariant requires an error message argument')
     }
