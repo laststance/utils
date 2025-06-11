@@ -1,3 +1,21 @@
+/**
+ * Console error suppression utility for testing environments.
+ * Filters out specific React-related error messages that are expected during tests.
+ * 
+ * This utility overrides console.error to suppress:
+ * - ReactDOM.render deprecation warnings in React 18+
+ * - React act() warnings during tests
+ * 
+ * All other error messages are passed through normally.
+ * 
+ * @example
+ * ```javascript
+ * // Import this file to suppress console errors in test setup
+ * import './suppressConsoleError'
+ * 
+ * // Now React 18 and act() warnings won't clutter test output
+ * ```
+ */
 const originalError = console.error
 
 console.error = (...args) => {

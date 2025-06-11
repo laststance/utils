@@ -1,10 +1,43 @@
 'use client'
 
+/**
+ * LoginForm component provides a complete authentication form with validation.
+ * 
+ * Features:
+ * - Email and password validation
+ * - Loading states with spinner
+ * - Error handling and display
+ * - Success callback for post-login actions
+ * - Accessibility compliance (ARIA labels, roles)
+ * - Auto-complete support
+ * 
+ * @example
+ * ```tsx
+ * function AuthPage() {
+ *   const handleLoginSuccess = (user) => {
+ *     console.log('User logged in:', user.email)
+ *     // Redirect or update app state
+ *   }
+ * 
+ *   return (
+ *     <div className="max-w-md mx-auto">
+ *       <h1>Sign In</h1>
+ *       <LoginForm onSuccess={handleLoginSuccess} />
+ *     </div>
+ *   )
+ * }
+ * ```
+ */
+
 import * as React from 'react'
 import { Button } from '@/components/ui/button'
 import { login } from '@/lib/api'
 
+/**
+ * Props for the LoginForm component
+ */
 interface LoginFormProps {
+  /** Callback function called when login is successful */
   onSuccess?: (user: { id: number; email: string }) => void
 }
 

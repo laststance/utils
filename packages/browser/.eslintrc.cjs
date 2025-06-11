@@ -82,5 +82,30 @@ module.exports = {
         afterAll: 'readonly',
       },
     },
+    {
+      files: ['**/sizeof.test.ts'],
+      extends: ['eslint:recommended'],
+      parser: '@typescript-eslint/parser',
+      parserOptions: {
+        ecmaVersion: 2022,
+        sourceType: 'module',
+      },
+      env: {
+        node: true,
+        browser: true,
+        es6: true,
+        jest: true,
+      },
+      globals: {
+        describe: 'readonly',
+        it: 'readonly',
+        expect: 'readonly',
+        test: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        beforeAll: 'readonly',
+        afterAll: 'readonly',
+      },
+    },
   ],
 }

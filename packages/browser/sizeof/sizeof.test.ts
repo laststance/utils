@@ -60,7 +60,7 @@ describe('sizeof', function () {
   })
 
   it('report an error for circular dependency objects', function () {
-    var firstLevel = { a: 1 }
+    var firstLevel: any = { a: 1 }
     var secondLevel = { b: 2, c: firstLevel }
     firstLevel.second = secondLevel
     should.exist(sizeof(firstLevel))

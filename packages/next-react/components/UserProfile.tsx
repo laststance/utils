@@ -1,10 +1,40 @@
 'use client'
 
+/**
+ * UserProfile component displays user information with loading and error states.
+ * 
+ * Features:
+ * - Fetches user data on mount and when userId changes
+ * - Loading spinner with accessibility
+ * - Error handling with retry functionality
+ * - Relative date formatting for user creation date
+ * - Responsive design with Tailwind CSS
+ * - ARIA compliance for screen readers
+ * 
+ * @example
+ * ```tsx
+ * function ProfilePage() {
+ *   const [selectedUserId, setSelectedUserId] = useState(123)
+ * 
+ *   return (
+ *     <div className="container mx-auto p-4">
+ *       <h1>User Profile</h1>
+ *       <UserProfile userId={selectedUserId} />
+ *     </div>
+ *   )
+ * }
+ * ```
+ */
+
 import * as React from 'react'
 import { Button } from '@/components/ui/button'
 import { getUser } from '@/lib/api'
 
+/**
+ * Props for the UserProfile component
+ */
 interface UserProfileProps {
+  /** The ID of the user to display */
   userId: number
 }
 

@@ -1,11 +1,27 @@
 /**
- * ひらがな、カタカナ、漢字、英数字(全角/半角)、アンダースコア以外を取り除きます。
- *
- * \w : 半角英数字とアンダースコア
- * \u3040-\u309F : ひらがな
- * \u30A0-\u30FF : カタカナ
- * \uFF00-\uFF9F : 全角英数字
- * \u4E00-\u9FAF : CJK（中国、日本、韓国）統合漢字
+ * Removes special characters from a string, keeping only:
+ * - Hiragana (ひらがな)
+ * - Katakana (カタカナ)
+ * - CJK unified ideographs (漢字)
+ * - Alphanumeric characters (half-width and full-width)
+ * - Underscores
+ * 
+ * Unicode ranges used:
+ * - \w: Half-width alphanumeric and underscore
+ * - \u3040-\u309F: Hiragana
+ * - \u30A0-\u30FF: Katakana
+ * - \uFF00-\uFF9F: Full-width alphanumeric
+ * - \u4E00-\u9FAF: CJK unified ideographs
+ * 
+ * @param str - The string to process
+ * @returns String with special characters removed
+ * 
+ * @example
+ * ```typescript
+ * removeSpecialCharacters('Hello! こんにちは123@#$')  // "Helloこんにちは123"
+ * removeSpecialCharacters('test_file.txt')            // "test_filetxt"
+ * removeSpecialCharacters('価格：￥1,000')             // "価格￥1000"
+ * ```
  */
 export function removeSpecialCharacters(str: string): string {
   return str.replace(

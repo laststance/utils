@@ -1,7 +1,29 @@
 #!/usr/bin/env node
 
+/**
+ * CLI utility to convert kebab-case strings to title case with spaces.
+ * 
+ * Takes a kebab-case string as a command line argument and converts it to
+ * title case with spaces between words.
+ * 
+ * @example
+ * ```bash
+ * # Basic usage
+ * node snake-to-cameled-space.js "hello-world"
+ * # Output: Hello World
+ * 
+ * # Complex example
+ * node snake-to-cameled-space.js "code-piece-of-complete-guide-to-react-client-rendering-behavior"
+ * # Output: Code Piece Of Complete Guide To React Client Rendering Behavior
+ * 
+ * # Single word
+ * node snake-to-cameled-space.js "test"
+ * # Output: Test
+ * ```
+ */
+
 /*
-Log at making proccess
+Development process log:
 
 > 'code-piece-of-complete-guide-to-react-client-rendering-behavior'.split('-')
 [
@@ -17,18 +39,6 @@ Log at making proccess
   'C', 'G', 'T',
   'R', 'R', 'B'
 ]
-> 'code-piece-of-complete-guide-to-react-client-rendering-behavior'.split('-').map(s => "${s.charAt(0).toUpperCase()}" + s.slice(1))
-[
-  '${s.charAt(0).toUpperCase()}ode',
-  '${s.charAt(0).toUpperCase()}iece',
-  '${s.charAt(0).toUpperCase()}f',
-  '${s.charAt(0).toUpperCase()}omplete',
-  '${s.charAt(0).toUpperCase()}uide',
-  '${s.charAt(0).toUpperCase()}o',
-  '${s.charAt(0).toUpperCase()}eact',
-  '${s.charAt(0).toUpperCase()}endering',
-  '${s.charAt(0).toUpperCase()}ehavior'
-]
 > 'code-piece-of-complete-guide-to-react-client-rendering-behavior'.split('-').map(s => (s.charAt(0).toUpperCase() + s.slice(1)))
 [
   'Code',     'Piece',
@@ -37,17 +47,8 @@ Log at making proccess
   'React',    'Rendering',
   'Behavior'
 ]
-> 'code-piece-of-complete-guide-to-react-client-rendering-behavior'.split('-').map(s => (s.charAt(0).toUpperCase() + s.slice(1))).concat(' ')
-[
-  'Code',     'Piece',
-  'Of',       'Complete',
-  'Guide',    'To',
-  'React',    'Rendering',
-  'Behavior', ' '
-]
 > 'code-piece-of-complete-guide-to-react-client-rendering-behavior'.split('-').map(s => (s.charAt(0).toUpperCase() + s.slice(1))).join(' ')
-'Code Piece Of Complete Guide To React Rendering Behavior'
->
+'Code Piece Of Complete Guide To React Client Rendering Behavior'
 */
 
 const str = process.argv[2]

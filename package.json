@@ -11,7 +11,8 @@
     "lint:fix": "pnpm -r lint:fix",
     "typecheck": "pnpm -r typecheck",
     "prettier": "prettier --write --ignore-unknown .",
-    "clean": "rimraf node_modules pnpm-lock.yaml"
+    "clean": "rimraf node_modules pnpm-lock.yaml",
+    "check": "pnpm lint & pnpm test & pnpm build & pnpm typecheck & wait"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
