@@ -10,9 +10,9 @@
   },
   "dependencies": {
     "chalk": "5.4.1",
-    "zod": "^3.25.56"
+    "zod": "^3.25.64"
   },
   "devDependencies": {
-    "tsx": "^4.19.4"
+    "tsx": "^4.20.3"
   }
 }
