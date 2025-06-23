@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Rules for Claude Code
+
+- Feel free to web search for information.
+
 ## Development Commands
 
 ### Core Commands
