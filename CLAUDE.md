@@ -11,6 +11,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `pnpm lint:fix` - Auto-fix linting issues
 - `pnpm typecheck` - TypeScript type checking across all packages
 - `pnpm prettier` - Format code using Prettier
+- `pnpm check` - Run all checks in parallel (lint, test, build, typecheck)
 
 ### Package-Specific Commands
 - `cd packages/[package-name] && pnpm test` - Run tests for specific package
@@ -20,6 +21,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Test Commands
 - `pnpm test --watch` - Run tests in watch mode
 - `pnpm test --coverage` - Generate test coverage reports
+- `pnpm test [filename]` - Run a specific test file
 - Individual package testing: Each package has its own test setup in `__tests__/` directories
 
 ## Architecture
@@ -48,6 +50,7 @@ This is a **pnpm workspace monorepo** containing utility packages for different 
 - Browser testing with happy-dom
 - Component testing with React Testing Library
 - E2E testing with Playwright (for UI changes)
+- Test patterns: `*.test.{ts,js}` or `*.spec.{ts,js}`
 
 ## Important Rules
 
@@ -67,6 +70,7 @@ This is a **pnpm workspace monorepo** containing utility packages for different 
 - Run linting and type checking before commits
 - For UI changes: use Playwright to verify behavior and generate test code
 - Check port 3000 availability before starting Next.js dev server
+- Use `pnpm check` to run all validations before pushing code
 
 ### Package Selection Guidelines
 - Universal logic → `packages/universal`
