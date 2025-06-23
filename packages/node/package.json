@@ -13,6 +13,7 @@
     "zod": "^3.25.56"
   },
   "devDependencies": {
+    "jsonwebtoken": "^9.0.2",
     "tsx": "^4.19.4"
   }
 }

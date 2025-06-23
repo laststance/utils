@@ -35,6 +35,7 @@ function printNumber(val: any) {
 
 function printSimpleValue(val: any, quoteStrings = false) {
   if (val === null || val === true || val === false) return '' + val
+  if (val === undefined) return 'undefined'
 
   const typeOf = typeof val
   if (typeOf === 'number') return printNumber(val)
@@ -61,8 +62,34 @@ export default function printValue(value: any, quoteStrings?: boolean) {
   return JSON.stringify(
     value,
     function (key, value) {
-      const result = printSimpleValue(this[key], quoteStrings)
-      if (result !== null) return result
+      // Only use custom formatting for special types that JSON.stringify can't handle
+      const typeOf = typeof value
+      if (typeOf === 'function') {
+        return '[Function ' + (value.name || 'anonymous') + ']'
+      }
+      if (typeOf === 'symbol') {
+        return symbolToString.call(value).replace(SYMBOL_REGEXP, 'Symbol($1)')
+      }
+      if (value === undefined) {
+        return 'undefined'
+      }
+      
+      const tag = toString.call(value).slice(8, -1)
+      if (tag === 'Date') {
+        return isNaN(value.getTime()) ? '' + value : value.toISOString(value)
+      }
+      if (tag === 'Error' || value instanceof Error) {
+        return '[' + errorToString.call(value) + ']'
+      }
+      if (tag === 'RegExp') {
+        return regExpToString.call(value)
+      }
+      
+      // For strings inside objects, respect the quoteStrings parameter
+      if (typeOf === 'string' && quoteStrings) {
+        return `"${value}"`
+      }
+      
       return value
     },
     2,

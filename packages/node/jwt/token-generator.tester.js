@@ -3,9 +3,9 @@
  * Just few lines to test the behavior.
  */
 
-const jwt = require('jsonwebtoken')
+import jwt from 'jsonwebtoken'
 
-const TokenGenerator = require('./token-generator')
+import TokenGenerator from './token-generator.js'
 
 const tokenGenerator = new TokenGenerator('a', 'a', {
   algorithm: 'HS256',

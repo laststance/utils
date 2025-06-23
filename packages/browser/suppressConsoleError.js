@@ -19,14 +19,15 @@
 const originalError = console.error
 
 console.error = (...args) => {
-  // Suppress jest error msg
-  if (args[0].includes('ReactDOM.render is no longer supported in React 18.')) {
+  const message = String(args[0] || '')
+  
+  // Suppress ReactDOM.render deprecation warnings
+  if (message.includes('ReactDOM.render is no longer supported in React 18.')) {
     return
-  } else if (
-    args[0].includes(
-      'Warning: An update to %s inside a test was not wrapped in act',
-    )
-  ) {
+  }
+  
+  // Suppress React act() warnings - match pattern with actual component names
+  if (message.includes('Warning: An update to') && message.includes('inside a test was not wrapped in act')) {
     return
   }
 

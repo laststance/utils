@@ -1,4 +1,4 @@
-const exec = require('child_process')
+import { exec } from 'child_process'
 
 /**
  * Executes a git command asynchronously and returns the output.

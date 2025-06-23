@@ -55,6 +55,10 @@ const blobToBase64 = async function (blob) {
  * ```
  */
 export const getBase64Image = async function (url) {
+  if (url === null || url === undefined) {
+    throw new Error('URL cannot be null or undefined')
+  }
+  
   const blob = await getImageBlob(url)
   const base64 = await blobToBase64(blob)
   return base64

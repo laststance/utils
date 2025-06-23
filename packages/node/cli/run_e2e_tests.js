@@ -87,7 +87,22 @@ function runServer() {
 
   let severStarted = false
 
-  const localEnv = readFileSync('./.env.local', { encoding: 'utf8' })
+  let localEnv = {}
+  try {
+    const localEnvContent = readFileSync('./.env.local', { encoding: 'utf8' })
+    localEnvContent.split('\n').forEach(line => {
+      const trimmedLine = line.trim()
+      if (trimmedLine && !trimmedLine.startsWith('#')) {
+        const [key, ...valueParts] = trimmedLine.split('=')
+        if (key) {
+          localEnv[key.trim()] = valueParts.join('=').trim()
+        }
+      }
+    })
+  } catch (error) {
+    // .env.local file not found, continue without it
+    logDim('No .env.local file found, using default environment')
+  }
 
   serverProcess = spawn('yarn', ['start'], {
     cwd: ROOT_PATH,
@@ -190,4 +205,21 @@ function exitWithCode(code) {
   process.exit(code)
 }
 
-build()
+// Export functions for testing
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    build,
+    runServer,
+    runEndToEndTests,
+    exitWithCode,
+    logBright,
+    logDim,
+    logError,
+    format
+  }
+}
+
+// Only run if this file is executed directly (not imported)
+if (require.main === module) {
+  build()
+}

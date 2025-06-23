@@ -17,7 +17,7 @@
  * # Response: Hello World
  * ```
  */
-const http = require('http')
+import http from 'http'
 
 const hostname = '127.0.0.1'
 const port = 3000

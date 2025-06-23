@@ -30,6 +30,9 @@ import os from 'os'
  * ```
  */
 export function writeJson(fileName, object) {
+  // Set RegExp serialization for both arrays and objects
+  RegExp.prototype.toJSON = RegExp.prototype.toString
+
   if (Array.isArray(object)) {
     const obj = { [fileName]: object }
     fs.writeFileSync(
@@ -39,9 +42,11 @@ export function writeJson(fileName, object) {
     return
   }
 
-  RegExp.prototype.toJSON = RegExp.prototype.toString
+  // Handle undefined values by converting to string
+  const jsonString = JSON.stringify(object, null, 2)
+  const finalString = jsonString !== undefined ? jsonString : 'undefined'
   fs.writeFileSync(
     fileName + '.json',
-    JSON.stringify(object, null, 2).replace(/\n/g, os.EOL) + os.EOL,
+    finalString.replace(/\n/g, os.EOL) + os.EOL,
   )
 }

@@ -53,9 +53,14 @@ Development process log:
 
 const str = process.argv[2]
 
-console.log(
-  str
-    .split('-')
-    .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
-    .join(' '),
-)
+if (!str) {
+  console.log('')
+  process.exit(0)
+}
+
+// Replace hyphens with spaces, then capitalize first char and chars after spaces
+const result = str.replace(/-/g, ' ').replace(/^(\w)|(\s)(\w)/g, (match, first, space, afterSpace) => {
+  if (first) return first.toUpperCase()
+  return space + afterSpace.toUpperCase()
+})
+console.log(result)
