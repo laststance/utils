@@ -159,7 +159,7 @@ describe('or zodPlayground', () => {
       
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error.issues[0].code).toBe('invalid_discriminator_value')
+        expect(result.error.issues[0].code).toBe('invalid_union_discriminator')
       }
     })
   })

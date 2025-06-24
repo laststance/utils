@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { http, HttpResponse } from 'msw'
-import { server } from './../__tests__/mocks/server'
+import { server } from '../mocks/server'
 import { login, getUser, getPosts } from './api'
 
 describe('API utilities', () => {

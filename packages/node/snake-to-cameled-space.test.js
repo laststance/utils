@@ -9,7 +9,7 @@ const __dirname = dirname(__filename)
 // Helper function to run the CLI script
 const runCLI = (input) => {
   return new Promise((resolve, reject) => {
-    const scriptPath = join(__dirname, '..', 'snake-to-cameled-space.js')
+    const scriptPath = join(__dirname, 'snake-to-cameled-space.js')
     const child = spawn('node', [scriptPath, input])
     
     let stdout = ''
