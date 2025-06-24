@@ -38,26 +38,34 @@ pnpm test --coverage
 
 ```
 packages/next-react/
-├── __tests__/
-│   └── mocks/
-│       ├── handlers.ts        # MSW request handlers
-│       └── server.ts          # MSW server setup
+├── app/
+│   ├── layout.tsx
+│   ├── layout.test.tsx        # App tests co-located
+│   ├── page.tsx
+│   └── page.test.tsx
 ├── components/
 │   ├── ui/
-│   │   ├── __tests__/
-│   │   │   └── Button.test.tsx
-│   │   └── button.tsx
-│   ├── __tests__/
-│   │   ├── LoginForm.test.tsx
-│   │   └── UserProfile.test.tsx
+│   │   ├── button.tsx
+│   │   ├── Button.test.tsx    # UI component tests co-located
+│   │   ├── badge.tsx
+│   │   ├── badge.test.tsx
+│   │   ├── card.tsx
+│   │   └── card.test.tsx
 │   ├── LoginForm.tsx
-│   └── UserProfile.tsx
+│   ├── LoginForm.test.tsx     # Component tests co-located
+│   ├── UserProfile.tsx
+│   └── UserProfile.test.tsx
 ├── hooks/
-│   ├── __tests__/
-│   │   └── use-mobile.test.ts
-│   └── use-mobile.ts
+│   ├── use-mobile.ts
+│   └── use-mobile.test.ts     # Hook tests co-located
 ├── lib/
-│   └── api.ts                 # API functions
+│   ├── api.ts
+│   ├── api.test.ts            # Lib tests co-located
+│   ├── utils.ts
+│   └── utils.test.ts
+├── mocks/
+│   ├── handlers.ts            # MSW request handlers
+│   └── server.ts              # MSW server setup
 ├── vitest.config.ts           # Vitest configuration
 └── vitest-setup.ts            # Test setup file
 ```
@@ -95,7 +103,7 @@ Global test setup including MSW server configuration and DOM mocks:
 ```typescript
 import { cleanup } from '@testing-library/react'
 import { afterEach, beforeAll, afterAll, vi } from 'vitest'
-import { server } from './__tests__/mocks/server'
+import { server } from './mocks/server'
 import '@testing-library/jest-dom'
 
 // MSW Server setup
@@ -171,7 +179,7 @@ describe('useIsMobile', () => {
 #### Setting up MSW Handlers
 
 ```typescript
-// __tests__/mocks/handlers.ts
+// mocks/handlers.ts
 import { http, HttpResponse } from 'msw'
 
 export const handlers = [
@@ -197,7 +205,7 @@ export const handlers = [
 
 ```typescript
 import { http, HttpResponse } from 'msw'
-import { server } from '../../__tests__/mocks/server'
+import { server } from '../mocks/server'
 
 describe('LoginForm', () => {
   it('handles custom error scenarios', async () => {
@@ -399,7 +407,7 @@ it('shows different content based on user role', () => {
 
 Check out these example test files for reference:
 
-- [`Button.test.tsx`](./components/ui/__tests__/Button.test.tsx) - Component testing with variants and interactions
-- [`use-mobile.test.ts`](./hooks/__tests__/use-mobile.test.ts) - Custom hook testing with media queries
-- [`LoginForm.test.tsx`](./components/__tests__/LoginForm.test.tsx) - Form testing with validation and API calls
-- [`UserProfile.test.tsx`](./components/__tests__/UserProfile.test.tsx) - Data fetching and error handling
+- [`Button.test.tsx`](./components/ui/Button.test.tsx) - Component testing with variants and interactions
+- [`use-mobile.test.ts`](./hooks/use-mobile.test.ts) - Custom hook testing with media queries
+- [`LoginForm.test.tsx`](./components/LoginForm.test.tsx) - Form testing with validation and API calls
+- [`UserProfile.test.tsx`](./components/UserProfile.test.tsx) - Data fetching and error handling

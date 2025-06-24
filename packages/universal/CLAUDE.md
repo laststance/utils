@@ -22,7 +22,7 @@ Platform-agnostic utilities that work in any JavaScript environment (browser, No
 
 ## Testing Guidelines
 - Write tests that verify behavior, not implementation
-- Use the `__tests__/` directory for all test files
+- Co-locate test files with their source files using `.test.ts` suffix
 - Test edge cases and error conditions
 - Ensure 100% code coverage for utility functions
 
