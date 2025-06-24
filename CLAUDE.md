@@ -5,6 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Rules for Claude Code
 
 - Feel free to web search for information.
+- Feel free to use mcp tools for work efficiently.
 
 ## Development Commands
 

@@ -207,12 +207,12 @@ describe('Card Components', () => {
       const content = container.querySelector('[data-slot="card-content"]')
       const footer = container.querySelector('[data-slot="card-footer"]')
 
-      expect(card).toContainElement(header)
-      expect(card).toContainElement(content)
-      expect(card).toContainElement(footer)
-      expect(header).toContainElement(title)
-      expect(header).toContainElement(description)
-      expect(header).toContainElement(action)
+      expect(card).toContainElement(header as HTMLElement)
+      expect(card).toContainElement(content as HTMLElement)
+      expect(card).toContainElement(footer as HTMLElement)
+      expect(header).toContainElement(title as HTMLElement)
+      expect(header).toContainElement(description as HTMLElement)
+      expect(header).toContainElement(action as HTMLElement)
     })
 
     it('should work with minimal structure', () => {

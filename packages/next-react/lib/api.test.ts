@@ -480,9 +480,9 @@ describe('API utilities', () => {
       const endTime = performance.now()
       const duration = endTime - startTime
 
-      expect(loginResult.success).toBe(true)
-      expect(userResult.id).toBe(1)
-      expect(postsResult.posts).toHaveLength(5)
+      expect((loginResult as any).success).toBe(true)
+      expect((userResult as any).id).toBe(1)
+      expect((postsResult as any).posts).toHaveLength(5)
       
       // Should complete reasonably quickly
       expect(duration).toBeLessThan(1000)

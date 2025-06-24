@@ -159,18 +159,18 @@ describe('cn utility function', () => {
 
   describe('component usage patterns', () => {
     it('should handle button component pattern', () => {
-      const variant = 'primary'
-      const className = 'custom-button-class'
+      const getButtonClasses = (variant: 'primary' | 'secondary', className?: string) => {
+        return cn(
+          'px-4 py-2 rounded font-medium', // base styles
+          {
+            'bg-blue-500 text-white': variant === 'primary',
+            'bg-gray-200 text-gray-900': variant === 'secondary'
+          },
+          className // custom override
+        )
+      }
       
-      const result = cn(
-        'px-4 py-2 rounded font-medium', // base styles
-        {
-          'bg-blue-500 text-white': variant === 'primary',
-          'bg-gray-200 text-gray-900': variant === 'secondary'
-        },
-        className // custom override
-      )
-      
+      const result = getButtonClasses('primary', 'custom-button-class')
       expect(result).toBe('px-4 py-2 rounded font-medium bg-blue-500 text-white custom-button-class')
     })
 
@@ -193,40 +193,40 @@ describe('cn utility function', () => {
     })
 
     it('should handle card component pattern', () => {
-      const isInteractive = true
-      const size = 'large'
+      const getCardClasses = (isInteractive: boolean, size: 'small' | 'medium' | 'large') => {
+        return cn(
+          'bg-white border rounded shadow', // base
+          {
+            'hover:shadow-lg cursor-pointer': isInteractive,
+            'p-4': size === 'small',
+            'p-6': size === 'medium',
+            'p-8': size === 'large'
+          }
+        )
+      }
       
-      const result = cn(
-        'bg-white border rounded shadow', // base
-        {
-          'hover:shadow-lg cursor-pointer': isInteractive,
-          'p-4': size === 'small',
-          'p-6': size === 'medium',
-          'p-8': size === 'large'
-        }
-      )
-      
+      const result = getCardClasses(true, 'large')
       expect(result).toBe('bg-white border rounded shadow hover:shadow-lg cursor-pointer p-8')
     })
 
     it('should handle modal/dialog component pattern', () => {
-      const isOpen = true
-      const size = 'medium'
+      const getModalClasses = (isOpen: boolean, size: 'small' | 'medium' | 'large') => {
+        return cn(
+          'fixed inset-0 z-50 flex items-center justify-center',
+          {
+            'hidden': !isOpen,
+            'block': isOpen
+          },
+          'bg-black bg-opacity-50',
+          {
+            'p-4': size === 'small',
+            'p-6': size === 'medium',
+            'p-8': size === 'large'
+          }
+        )
+      }
       
-      const result = cn(
-        'fixed inset-0 z-50 flex items-center justify-center',
-        {
-          'hidden': !isOpen,
-          'block': isOpen
-        },
-        'bg-black bg-opacity-50',
-        {
-          'p-4': size === 'small',
-          'p-6': size === 'medium',
-          'p-8': size === 'large'
-        }
-      )
-      
+      const result = getModalClasses(true, 'medium')
       expect(result).toBe('fixed inset-0 z-50 items-center justify-center block bg-opacity-50 p-6')
     })
   })
@@ -287,10 +287,12 @@ describe('cn utility function', () => {
     it('should handle undefined and null in complex scenarios', () => {
       const result = cn(
         'base',
+        // @ts-expect-error Testing intentionally falsy expressions
         null && 'conditional',
         undefined,
         false && 'another-conditional',
         0 && 'zero-conditional',
+        // @ts-expect-error Testing intentionally falsy expressions
         '' && 'empty-conditional',
         'valid-class'
       )
@@ -358,44 +360,44 @@ describe('cn utility function', () => {
     })
 
     it('should handle theme-based class application', () => {
-      const theme = 'dark'
-      const variant = 'danger'
+      const getThemedClasses = (theme: 'light' | 'dark', variant: 'danger' | 'primary' | 'secondary') => {
+        return cn(
+          'button',
+          {
+            'bg-white text-black': theme === 'light',
+            'bg-black text-white': theme === 'dark'
+          },
+          {
+            'border-red-500': variant === 'danger',
+            'border-blue-500': variant === 'primary',
+            'border-gray-500': variant === 'secondary'
+          }
+        )
+      }
       
-      const result = cn(
-        'button',
-        {
-          'bg-white text-black': theme === 'light',
-          'bg-black text-white': theme === 'dark'
-        },
-        {
-          'border-red-500': variant === 'danger',
-          'border-blue-500': variant === 'primary',
-          'border-gray-500': variant === 'secondary'
-        }
-      )
-      
+      const result = getThemedClasses('dark', 'danger')
       expect(result).toBe('button bg-black text-white border-red-500')
     })
 
     it('should handle form validation state classes', () => {
-      const validationState = 'error'
-      const isFocused = true
+      const getFormClasses = (validationState: 'default' | 'success' | 'error' | 'warning', isFocused: boolean) => {
+        return cn(
+          'input border rounded px-3 py-2',
+          {
+            'border-gray-300': validationState === 'default',
+            'border-green-500 bg-green-50': validationState === 'success',
+            'border-red-500 bg-red-50': validationState === 'error',
+            'border-yellow-500 bg-yellow-50': validationState === 'warning'
+          },
+          {
+            'ring-2 ring-opacity-50': isFocused,
+            'ring-red-200': isFocused && validationState === 'error',
+            'ring-green-200': isFocused && validationState === 'success'
+          }
+        )
+      }
       
-      const result = cn(
-        'input border rounded px-3 py-2',
-        {
-          'border-gray-300': validationState === 'default',
-          'border-green-500 bg-green-50': validationState === 'success',
-          'border-red-500 bg-red-50': validationState === 'error',
-          'border-yellow-500 bg-yellow-50': validationState === 'warning'
-        },
-        {
-          'ring-2 ring-opacity-50': isFocused,
-          'ring-red-200': isFocused && validationState === 'error',
-          'ring-green-200': isFocused && validationState === 'success'
-        }
-      )
-      
+      const result = getFormClasses('error', true)
       expect(result).toBe('input border rounded px-3 py-2 border-red-500 bg-red-50 ring-2 ring-red-200')
     })
   })
