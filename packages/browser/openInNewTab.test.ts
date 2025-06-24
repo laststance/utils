@@ -285,6 +285,7 @@ describe('openInNewTab', () => {
         // No click method
       }
       
+      // @ts-ignore - mock implementation for testing
       document.createElement = vi.fn(() => anchorWithoutClick)
       
       // Should throw when trying to call click

@@ -24,7 +24,7 @@ describe('probability.js', () => {
 
   describe('rand function behavior (inferred from implementation)', () => {
     it('should import without throwing errors', async () => {
-      await expect(import('../probability.js')).resolves.toBeDefined()
+      await expect(import('./probability.js')).resolves.toBeDefined()
     })
 
     it('should use Math.random() to generate numbers', () => {
@@ -75,7 +75,7 @@ describe('probability.js', () => {
     it('should execute a loop that calls console.log', async () => {
       // The script has a for loop that executes 10,000 times
       // Since we can't directly test the execution, we verify the structure exists
-      const moduleContent = await import('../probability.js')
+      const moduleContent = await import('./probability.js')
       expect(moduleContent).toBeDefined()
     })
 
@@ -83,7 +83,7 @@ describe('probability.js', () => {
       // Test that the module can be imported with mocked console
       console.log = vi.fn()
       
-      await expect(import('../probability.js')).resolves.toBeDefined()
+      await expect(import('./probability.js')).resolves.toBeDefined()
       
       // Console.log mock should be available for capturing output
       expect(console.log).toBeInstanceOf(Function)
@@ -176,8 +176,8 @@ describe('probability.js', () => {
 
     it('should work with module import system', async () => {
       // Test that the module can be imported multiple times
-      const module1 = await import('../probability.js')
-      const module2 = await import('../probability.js')
+      const module1 = await import('./probability.js')
+      const module2 = await import('./probability.js')
       
       // Both imports should succeed and reference the same module
       expect(module1).toBeDefined()

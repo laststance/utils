@@ -31,13 +31,13 @@ describe('suppressConsoleError', () => {
 
   describe('module import and setup', () => {
     it('should import without throwing errors', async () => {
-      await expect(import('../suppressConsoleError.js')).resolves.toBeDefined()
+      await expect(import('./suppressConsoleError.js')).resolves.toBeDefined()
     })
 
     it('should modify console.error when imported', async () => {
       const beforeImport = console.error
       
-      await import('../suppressConsoleError.js')
+      await import('./suppressConsoleError.js')
       
       // console.error should be different after import
       expect(console.error).not.toBe(beforeImport)
@@ -48,7 +48,7 @@ describe('suppressConsoleError', () => {
   describe('error suppression behavior', () => {
     beforeEach(async () => {
       // Import the module to activate error suppression
-      await import('../suppressConsoleError.js')
+      await import('./suppressConsoleError.js')
     })
 
     it('should suppress ReactDOM.render deprecation warnings', () => {
@@ -100,7 +100,7 @@ describe('suppressConsoleError', () => {
 
   describe('error passthrough behavior', () => {
     beforeEach(async () => {
-      await import('../suppressConsoleError.js')
+      await import('./suppressConsoleError.js')
     })
 
     it('should pass through other error messages', () => {
@@ -159,7 +159,7 @@ describe('suppressConsoleError', () => {
 
   describe('function behavior and context', () => {
     beforeEach(async () => {
-      await import('../suppressConsoleError.js')
+      await import('./suppressConsoleError.js')
     })
 
     it('should maintain proper this context', () => {
@@ -204,7 +204,7 @@ describe('suppressConsoleError', () => {
 
   describe('edge cases and error handling', () => {
     beforeEach(async () => {
-      await import('../suppressConsoleError.js')
+      await import('./suppressConsoleError.js')
     })
 
     it('should handle very long error messages', () => {
@@ -247,7 +247,7 @@ describe('suppressConsoleError', () => {
 
   describe('performance considerations', () => {
     beforeEach(async () => {
-      await import('../suppressConsoleError.js')
+      await import('./suppressConsoleError.js')
     })
 
     it('should handle many console.error calls efficiently', () => {
@@ -293,7 +293,7 @@ describe('suppressConsoleError', () => {
 
   describe('real-world usage patterns', () => {
     beforeEach(async () => {
-      await import('../suppressConsoleError.js')
+      await import('./suppressConsoleError.js')
     })
 
     it('should suppress React 18 warnings in test environments', () => {

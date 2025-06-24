@@ -540,7 +540,7 @@ describe('getImageRect', () => {
       
       try {
         await promise
-        fail('Should have thrown an error')
+        expect.fail('Should have thrown an error')
       } catch (caught) {
         expect(caught).toBe(error)
       }

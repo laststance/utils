@@ -17,7 +17,7 @@ describe('isClient', () => {
       expect(window.document.createElement).toBeInstanceOf(Function)
       
       // Import after environment is set up
-      return import('../isClient').then(module => {
+      return import('./isClient.js').then(module => {
         expect(module.default).toBe(true)
       })
     })
@@ -32,7 +32,7 @@ describe('isClient', () => {
       expect(hasDocument).toBeTruthy()
       expect(hasCreateElement).toBeTruthy()
       
-      return import('../isClient').then(module => {
+      return import('./isClient.js').then(module => {
         expect(module.default).toBe(true)
       })
     })
@@ -52,7 +52,7 @@ describe('isClient', () => {
         vi.resetModules()
         
         // Import module in server-like environment
-        const module = await import('../isClient')
+        const module = await import('./isClient.js')
         expect(module.default).toBe(false)
       } finally {
         // Restore window
@@ -74,7 +74,7 @@ describe('isClient', () => {
         vi.resetModules()
         
         // Import module with incomplete window object
-        const module = await import('../isClient')
+        const module = await import('./isClient.js')
         expect(module.default).toBe(false)
       } finally {
         // Restore original values
@@ -94,6 +94,7 @@ describe('isClient', () => {
         // Create window with document but no createElement
         // @ts-ignore
         global.window = {
+          // @ts-ignore - intentionally incomplete for testing
           document: {}
         }
         
@@ -101,7 +102,7 @@ describe('isClient', () => {
         vi.resetModules()
         
         // Import module with incomplete document object
-        const module = await import('../isClient')
+        const module = await import('./isClient.js')
         expect(module.default).toBe(false)
       } finally {
         // Restore original values
@@ -127,7 +128,7 @@ describe('isClient', () => {
         vi.resetModules()
         
         // Import module with invalid window
-        const module = await import('../isClient')
+        const module = await import('./isClient.js')
         expect(module.default).toBe(false)
       } finally {
         // Restore window
@@ -150,7 +151,7 @@ describe('isClient', () => {
         vi.resetModules()
         
         // Import module with null document
-        const module = await import('../isClient')
+        const module = await import('./isClient.js')
         expect(module.default).toBe(false)
       } finally {
         // Restore original values
@@ -167,6 +168,7 @@ describe('isClient', () => {
         // @ts-ignore
         global.window = {
           document: {
+            // @ts-ignore - intentionally invalid for testing
             createElement: 'not a function'
           }
         }
@@ -175,7 +177,7 @@ describe('isClient', () => {
         vi.resetModules()
         
         // Import module with invalid createElement
-        const module = await import('../isClient')
+        const module = await import('./isClient.js')
         // Since createElement is truthy (a string), the check will pass
         expect(module.default).toBe(true)
       } finally {
@@ -187,16 +189,17 @@ describe('isClient', () => {
 
   describe('type checking', () => {
     it('should be a boolean value', () => {
-      return import('../isClient').then(module => {
+      return import('./isClient.js').then(module => {
         expect(typeof module.default).toBe('boolean')
       })
     })
 
     it('should be either true or false, never undefined', () => {
-      return import('../isClient').then(module => {
-        expect(module.default === true || module.default === false).toBe(true)
-        expect(module.default).not.toBeUndefined()
-        expect(module.default).not.toBeNull()
+      return import('./isClient.js').then(module => {
+        const value = module.default as unknown as boolean
+        expect(value === true || value === false).toBe(true)
+        expect(value).not.toBeUndefined()
+        expect(value).not.toBeNull()
       })
     })
   })
@@ -204,9 +207,9 @@ describe('isClient', () => {
   describe('consistency', () => {
     it('should return the same value on multiple imports', () => {
       return Promise.all([
-        import('../isClient'),
-        import('../isClient'),
-        import('../isClient')
+        import('./isClient.js'),
+        import('./isClient.js'),
+        import('./isClient.js')
       ]).then(([module1, module2, module3]) => {
         expect(module1.default).toBe(module2.default)
         expect(module2.default).toBe(module3.default)
@@ -215,7 +218,7 @@ describe('isClient', () => {
     })
 
     it('should be computed at module load time, not at runtime', () => {
-      return import('../isClient').then(module => {
+      return import('./isClient.js').then(module => {
         const value1 = module.default
         
         // Try to modify window (shouldn't affect the already computed value)
@@ -236,7 +239,7 @@ describe('isClient', () => {
 
   describe('practical usage', () => {
     it('should work for conditional code execution', () => {
-      return import('../isClient').then(module => {
+      return import('./isClient.js').then(module => {
         const isClient = module.default
         
         if (isClient) {
@@ -251,7 +254,7 @@ describe('isClient', () => {
     })
 
     it('should work for feature detection patterns', () => {
-      return import('../isClient').then(module => {
+      return import('./isClient.js').then(module => {
         const isClient = module.default
         
         // Common pattern: only run DOM-related code on client

@@ -6,7 +6,7 @@ describe('byte_size constants', () => {
 
   beforeAll(async () => {
     // Import as CommonJS module
-    const module = await import('../byte_size.js')
+    const module = await import('./byte_size.js')
     originalByteSizes = module.default || module
   })
 
