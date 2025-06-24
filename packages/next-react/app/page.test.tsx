@@ -1,10 +1,22 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { render } from '@testing-library/react'
-import Home from './app/page'
+import Home from './page'
 
 // Mock Next.js Image component
+interface MockImageProps {
+  src: string
+  alt: string
+  width: string | number
+  height: string | number
+  priority?: boolean
+  className?: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any
+}
+
 vi.mock('next/image', () => ({
-  default: ({ src, alt, width, height, priority, className, ...props }: any) => (
+  default: ({ src, alt, width, height, priority, className, ...props }: MockImageProps) => (
+    // eslint-disable-next-line @next/next/no-img-element
     <img
       src={src}
       alt={alt}

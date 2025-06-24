@@ -85,7 +85,7 @@ describe('arraysEqual', () => {
 
     it('should handle bigint values', () => {
       expect(arraysEqual([1n, 2n], [1n, 2n])).toBe(true)
-      expect(arraysEqual([1n], [1])).toBe(false) // bigint !== number
+      expect(arraysEqual([1n], [1 as any])).toBe(false) // bigint !== number
       expect(arraysEqual([BigInt(123)], [123n])).toBe(true)
     })
   })
@@ -177,12 +177,12 @@ describe('arraysEqual', () => {
       const arr2 = [1, 2, 3]
       
       // Add property to prototype (should not affect comparison)
-      Array.prototype.polluted = 'value'
+      ;(Array.prototype as any).polluted = 'value'
       
       expect(arraysEqual(arr1, arr2)).toBe(true)
       
       // Cleanup
-      delete Array.prototype.polluted
+      delete (Array.prototype as any).polluted
     })
   })
 
@@ -204,7 +204,7 @@ describe('arraysEqual', () => {
       const frozen1 = Object.freeze([1, 2, 3])
       const frozen2 = Object.freeze([1, 2, 3])
       
-      expect(arraysEqual(frozen1, frozen2)).toBe(true)
+      expect(arraysEqual(frozen1 as number[], frozen2 as number[])).toBe(true)
     })
 
     it('should handle sealed arrays', () => {
@@ -218,8 +218,8 @@ describe('arraysEqual', () => {
       const arr1 = [1, 2, 3]
       const arr2 = [1, 2, 3]
       
-      arr1.customProp = 'test'
-      arr2.customProp = 'test'
+      ;(arr1 as any).customProp = 'test'
+      ;(arr2 as any).customProp = 'test'
       
       // Should still compare based on indexed elements only
       expect(arraysEqual(arr1, arr2)).toBe(true)

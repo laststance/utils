@@ -9,7 +9,7 @@ module.exports = {
   overrides: [
     {
       files: ['*.ts'],
-      excludedFiles: ['__tests__/**'],
+      excludedFiles: ['*.test.ts', '*.spec.ts'],
       extends: ['eslint:recommended'],
       parser: '@typescript-eslint/parser',
       parserOptions: {
@@ -22,7 +22,7 @@ module.exports = {
       },
     },
     {
-      files: ['__tests__/**/*.ts'],
+      files: ['*.test.ts', '*.spec.ts'],
       extends: ['eslint:recommended'],
       parser: '@typescript-eslint/parser',
       parserOptions: {
@@ -39,6 +39,12 @@ module.exports = {
         it: 'readonly',
         test: 'readonly',
         expect: 'readonly',
+        vi: 'readonly',
+        fail: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        beforeAll: 'readonly',
+        afterAll: 'readonly',
       },
       rules: {
         '@typescript-eslint/no-unused-vars': 'off',

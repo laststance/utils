@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { emailRegex } from './regex/email'
+import { emailRegex } from './email'
 
 describe('emailRegex', () => {
   describe('valid email addresses', () => {

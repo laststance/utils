@@ -311,7 +311,7 @@ describe('colorful-terminal-message', () => {
       
       const __filename = fileURLToPath(import.meta.url)
       const __dirname = path.dirname(__filename)
-      const scriptPath = path.join(__dirname, '..', 'colorful-terminal-message.js')
+      const scriptPath = path.join(__dirname, 'colorful-terminal-message.js')
       
       const content = fs.readFileSync(scriptPath, 'utf8')
       expect(content.startsWith('#!/usr/bin/env node')).toBe(true)

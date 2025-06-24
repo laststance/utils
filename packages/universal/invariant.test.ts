@@ -168,7 +168,7 @@ describe('invariant', () => {
 
     it('should still format messages in production mode when format is provided', () => {
       try {
-        invariant(false, 'Production error: %s', 'value', undefined, undefined, undefined, undefined, undefined, undefined, false)
+        invariant(false, 'Production error: %s', 'value', undefined, undefined, undefined, undefined, undefined, undefined)
       } catch (error) {
         expect(error.message).toBe('Production error: value')
         expect(error.name).toBe('Invariant Violation')

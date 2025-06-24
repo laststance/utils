@@ -206,8 +206,8 @@ describe('typeHelpers', () => {
         email?: string
       }
 
-      const partialUser = { name: 'Alice' }
-      const userUpdate = { age: 30, email: 'alice@example.com' }
+      const partialUser: Partial<User> = { name: 'Alice' }
+      const userUpdate: Partial<User> = { age: 30, email: 'alice@example.com' }
       
       // Use safeAssign to merge
       safeAssign(partialUser, userUpdate)
@@ -232,7 +232,7 @@ describe('typeHelpers', () => {
         message: string
       }
 
-      const baseResponse = { status: 200, message: 'OK' }
+      const baseResponse: Partial<ApiResponse> = { status: 200, message: 'OK' }
       const responseData = { users: ['Alice', 'Bob'] }
       
       safeAssign(baseResponse, { data: responseData })
