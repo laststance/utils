@@ -473,7 +473,7 @@ describe('API utilities', () => {
         login({ email: 'test@example.com', password: 'password123' }),
         getUser(1),
         getPosts(1, 5)
-      ]
+      ] as const
 
       const [loginResult, userResult, postsResult] = await Promise.all(promises)
 

@@ -113,7 +113,7 @@ export const ArticleCard: Story = {
         </CardAction>
       </CardHeader>
       <CardContent>
-        <p>Learn the fundamentals of React development with this comprehensive guide. We'll cover components, state management, and best practices.</p>
+        <p>Learn the fundamentals of React development with this comprehensive guide. We&apos;ll cover components, state management, and best practices.</p>
       </CardContent>
       <CardFooter>
         <Button variant="outline">
