@@ -39,7 +39,6 @@ This is a **pnpm workspace monorepo** containing utility packages for different 
 - **packages/node/** - Node.js utilities (CLI tools, file system, JWT handling)
 - **packages/next-react/** - React components with Next.js App Router and Storybook
 - **packages/types/** - TypeScript type definitions and utility types
-- **packages/docs/** - Documentation and guides
 
 ### Technology Stack
 - **TypeScript**: Strict configuration, Node 22.16.0 (Volta)
