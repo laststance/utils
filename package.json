@@ -12,7 +12,8 @@
     "typecheck": "pnpm -r typecheck",
     "prettier": "prettier --write --ignore-unknown .",
     "clean": "rimraf node_modules pnpm-lock.yaml",
-    "check": "pnpm lint & pnpm test & pnpm build & pnpm typecheck & wait"
+    "check": "pnpm lint & pnpm test & pnpm build & pnpm typecheck & wait",
+    "storybook": "cd packages/next-react && pnpm storybook"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
