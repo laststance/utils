@@ -16,7 +16,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `pnpm lint:fix` - Auto-fix linting issues
 - `pnpm typecheck` - TypeScript type checking across all packages
 - `pnpm prettier` - Format code using Prettier
-- `pnpm check` - Run all checks in parallel (lint, test, build, typecheck)
+- `pnpm validate` - Run all checks in parallel using Turborepo (typecheck, test, lint, build)
 
 ### Package-Specific Commands
 - `cd packages/[package-name] && pnpm test` - Run tests for specific package
@@ -74,7 +74,7 @@ This is a **pnpm workspace monorepo** containing utility packages for different 
 - Run linting and type checking before commits
 - For UI changes: use Playwright to verify behavior and generate test code
 - Check port 3000 availability before starting Next.js dev server
-- Use `pnpm check` to run all validations before pushing code
+- Use `pnpm validate` to run all validations before pushing code
 
 ### Package Selection Guidelines
 - Universal logic → `packages/universal`
