@@ -74,21 +74,20 @@ describe('LoginForm', () => {
       const passwordInput = screen.getByLabelText(/password/i)
       const submitButton = screen.getByRole('button', { name: /sign in/i })
 
-      // Trigger validation error
-      await user.type(emailInput, 'invalid-email')
+      // Trigger validation error by leaving email empty
       await user.type(passwordInput, 'password123')
       await user.click(submitButton)
-      // TODO: fix this assertion
-    //  expect(await screen.findByText(/Please enter a valid email/i)).toBeVisible()
+      
+      // Should show email validation error
+      expect(await screen.findByText(/email is required/i)).toBeInTheDocument()
    
       // Clear and enter valid email
-      await user.clear(emailInput)
       await user.type(emailInput, 'test@example.com')
       await user.click(submitButton)
 
-      // Should show success
+      // Should show success and clear the validation error
       expect(await screen.findByText(/welcome back/i)).toBeInTheDocument()
-      expect(screen.queryByText(/please enter a valid email/i)).not.toBeInTheDocument()
+      expect(screen.queryByText(/email is required/i)).not.toBeInTheDocument()
     })
   })
 

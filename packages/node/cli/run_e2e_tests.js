@@ -2,9 +2,14 @@
 // https://github.com/bvaughn/planner/blob/a7d0d15b79b95a7c5a10853bcda0b5f142505a2c/run_e2e_tests.js
 'use strict'
 
-const { spawn } = require('child_process')
-const { readFileSync } = require('fs')
-const { join } = require('path')
+import { spawn } from 'child_process'
+import { readFileSync } from 'fs'
+import { join } from 'path'
+import { dirname } from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const ROOT_PATH = join(__dirname)
 
@@ -206,20 +211,18 @@ function exitWithCode(code) {
 }
 
 // Export functions for testing
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = {
-    build,
-    runServer,
-    runEndToEndTests,
-    exitWithCode,
-    logBright,
-    logDim,
-    logError,
-    format
-  }
+export {
+  build,
+  runServer,
+  runEndToEndTests,
+  exitWithCode,
+  logBright,
+  logDim,
+  logError,
+  format
 }
 
 // Only run if this file is executed directly (not imported)
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   build()
 }

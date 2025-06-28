@@ -48,8 +48,7 @@ describe('UserProfile', () => {
       expect(screen.queryByText(/loading user profile/i)).not.toBeInTheDocument()
     })
 
-    // TODO fix this test
-    it.skip('formats the creation date correctly', async () => {
+    it('formats the creation date correctly', async () => {
       render(<UserProfile userId={1} />)
 
       await waitFor(() => {
@@ -57,7 +56,7 @@ describe('UserProfile', () => {
       })
 
       // Should format the date nicely
-      expect(screen.getByText(/january 1, 2023/i)).toBeInTheDocument()
+      expect(screen.getByText(/January 1, 2023/)).toBeInTheDocument()
     })
   })
 

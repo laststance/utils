@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { EventEmitter } from 'events'
 
-describe.skip('run_e2e_tests - Skipped due to CommonJS module mocking complexity', () => {
+describe('run_e2e_tests', () => {
   let mockProcess
   let originalConsoleLog
   let originalConsoleError
@@ -71,7 +71,12 @@ describe.skip('run_e2e_tests - Skipped due to CommonJS module mocking complexity
     }))
     
     vi.doMock('path', () => ({
-      join: vi.fn((...args) => args.join('/'))
+      join: vi.fn((...args) => args.join('/')),
+      dirname: vi.fn((path) => path.split('/').slice(0, -1).join('/'))
+    }))
+    
+    vi.doMock('url', () => ({
+      fileURLToPath: vi.fn((url) => url.replace('file://', ''))
     }))
 
     // Import the module after mocks are set up
@@ -134,6 +139,10 @@ describe.skip('run_e2e_tests - Skipped due to CommonJS module mocking complexity
 
   describe('server startup process', () => {
     it('should start server after build completion', async () => {
+      // Setup server process mock
+      const serverProcess = createMockProcess()
+      mockSpawn.mockReturnValueOnce(mockProcess).mockReturnValueOnce(serverProcess)
+      
       runE2ETests.build()
 
       // Complete the build
@@ -147,6 +156,10 @@ describe.skip('run_e2e_tests - Skipped due to CommonJS module mocking complexity
     })
 
     it('should read .env.local for server environment', async () => {
+      // Setup server process mock
+      const serverProcess = createMockProcess()
+      mockSpawn.mockReturnValueOnce(mockProcess).mockReturnValueOnce(serverProcess)
+      
       runE2ETests.build()
 
       // Complete the build
@@ -156,6 +169,10 @@ describe.skip('run_e2e_tests - Skipped due to CommonJS module mocking complexity
     })
 
     it('should set server timeout', async () => {
+      // Setup server process mock
+      const serverProcess = createMockProcess()
+      mockSpawn.mockReturnValueOnce(mockProcess).mockReturnValueOnce(serverProcess)
+      
       runE2ETests.build()
 
       // Complete the build (this triggers server start)
@@ -167,12 +184,13 @@ describe.skip('run_e2e_tests - Skipped due to CommonJS module mocking complexity
     })
 
     it('should detect server startup from stdout', async () => {
-      runE2ETests.build()
-
-      // Complete the build
+      // Setup server process mock
       const serverProcess = createMockProcess()
       mockSpawn.mockReturnValueOnce(mockProcess).mockReturnValueOnce(serverProcess)
       
+      runE2ETests.build()
+
+      // Complete the build
       mockProcess.emit('close', 0)
 
       // Simulate server startup message
@@ -182,12 +200,13 @@ describe.skip('run_e2e_tests - Skipped due to CommonJS module mocking complexity
     })
 
     it('should handle EADDRINUSE error', async () => {
-      runE2ETests.build()
-
-      // Complete the build to trigger server
+      // Setup server process mock
       const serverProcess = createMockProcess()
       mockSpawn.mockReturnValueOnce(mockProcess).mockReturnValueOnce(serverProcess)
       
+      runE2ETests.build()
+
+      // Complete the build to trigger server
       mockProcess.emit('close', 0)
 
       // Simulate port in use error
@@ -199,12 +218,13 @@ describe.skip('run_e2e_tests - Skipped due to CommonJS module mocking complexity
     })
 
     it('should handle server errors', async () => {
-      runE2ETests.build()
-
-      // Complete the build to trigger server
+      // Setup server process mock
       const serverProcess = createMockProcess()
       mockSpawn.mockReturnValueOnce(mockProcess).mockReturnValueOnce(serverProcess)
       
+      runE2ETests.build()
+
+      // Complete the build to trigger server
       mockProcess.emit('close', 0)
 
       // Simulate server error
@@ -217,15 +237,16 @@ describe.skip('run_e2e_tests - Skipped due to CommonJS module mocking complexity
 
   describe('e2e test execution', () => {
     it('should start e2e tests after server is ready', async () => {
-      runE2ETests.build()
-
-      // Complete build
+      // Setup all processes mock
       const serverProcess = createMockProcess()
       const testProcess = createMockProcess()
       mockSpawn.mockReturnValueOnce(mockProcess)
         .mockReturnValueOnce(serverProcess)
         .mockReturnValueOnce(testProcess)
       
+      runE2ETests.build()
+
+      // Complete build
       mockProcess.emit('close', 0)
       
       // Server ready
@@ -238,15 +259,16 @@ describe.skip('run_e2e_tests - Skipped due to CommonJS module mocking complexity
     })
 
     it('should log e2e test start', async () => {
-      runE2ETests.build()
-
-      // Complete build
+      // Setup all processes mock
       const serverProcess = createMockProcess()
       const testProcess = createMockProcess()
       mockSpawn.mockReturnValueOnce(mockProcess)
         .mockReturnValueOnce(serverProcess)
         .mockReturnValueOnce(testProcess)
         
+      runE2ETests.build()
+
+      // Complete build
       mockProcess.emit('close', 0)
       serverProcess.stdout.emit('data', 'started server')
 
@@ -254,15 +276,16 @@ describe.skip('run_e2e_tests - Skipped due to CommonJS module mocking complexity
     })
 
     it('should handle e2e test completion', async () => {
-      runE2ETests.build()
-
-      // Complete build
+      // Setup all processes mock
       const serverProcess = createMockProcess()
       const testProcess = createMockProcess()
       mockSpawn.mockReturnValueOnce(mockProcess)
         .mockReturnValueOnce(serverProcess)
         .mockReturnValueOnce(testProcess)
         
+      runE2ETests.build()
+
+      // Complete build
       mockProcess.emit('close', 0)
       serverProcess.stdout.emit('data', 'started server')
 
@@ -274,16 +297,19 @@ describe.skip('run_e2e_tests - Skipped due to CommonJS module mocking complexity
     })
 
     it('should handle e2e test failures', async () => {
-      runE2ETests.build()
-
-      // Complete build
+      // Setup all mocks before calling build
       const serverProcess = createMockProcess()
       const testProcess = createMockProcess()
       mockSpawn.mockReturnValueOnce(mockProcess)
         .mockReturnValueOnce(serverProcess)
         .mockReturnValueOnce(testProcess)
-        
+
+      runE2ETests.build()
+
+      // Complete build
       mockProcess.emit('close', 0)
+      
+      // Server ready
       serverProcess.stdout.emit('data', 'started server')
 
       // Test failure
@@ -294,16 +320,19 @@ describe.skip('run_e2e_tests - Skipped due to CommonJS module mocking complexity
     })
 
     it('should handle e2e test stderr as failure', async () => {
-      runE2ETests.build()
-
-      // Complete build
+      // Setup all mocks before calling build
       const serverProcess = createMockProcess()
       const testProcess = createMockProcess()
       mockSpawn.mockReturnValueOnce(mockProcess)
         .mockReturnValueOnce(serverProcess)
         .mockReturnValueOnce(testProcess)
-        
+
+      runE2ETests.build()
+
+      // Complete build
       mockProcess.emit('close', 0)
+      
+      // Server ready
       serverProcess.stdout.emit('data', 'started server')
 
       // Test stderr output
@@ -366,9 +395,9 @@ describe.skip('run_e2e_tests - Skipped due to CommonJS module mocking complexity
     it('should use bright logging for important messages', async () => {
       runE2ETests.build()
 
-      // Check for ANSI color codes in logs
+      // Check for ANSI color codes in logs (using actual ANSI escape sequences)
       const brightLogs = consoleLogSpy.mock.calls.filter(call => 
-        call[0] && call[0].includes('\\x1b[1m') && call[0].includes('\\x1b[0m')
+        call[0] && call[0].includes('\x1b[1m') && call[0].includes('\x1b[0m')
       )
       expect(brightLogs.length).toBeGreaterThan(0)
     })
@@ -378,9 +407,9 @@ describe.skip('run_e2e_tests - Skipped due to CommonJS module mocking complexity
 
       mockProcess.stdout.emit('data', 'Build output message')
 
-      // Should log with dim formatting
+      // Should log with dim formatting (using actual ANSI escape sequences)
       const dimLogs = consoleLogSpy.mock.calls.filter(call => 
-        call[0] && call[0].includes('\\x1b[2m') && call[0].includes('\\x1b[0m')
+        call[0] && call[0].includes('\x1b[2m') && call[0].includes('\x1b[0m')
       )
       expect(dimLogs.length).toBeGreaterThan(0)
     })
@@ -391,9 +420,9 @@ describe.skip('run_e2e_tests - Skipped due to CommonJS module mocking complexity
       const timeoutCallback = setTimeoutSpy.mock.calls[0][0]
       timeoutCallback()
 
-      // Should log errors with red color codes
+      // Should log errors with red color codes (using actual ANSI escape sequences)
       const errorLogs = consoleErrorSpy.mock.calls.filter(call => 
-        call[0] && call[0].includes('\\x1b[31m') && call[0].includes('\\x1b[0m')
+        call[0] && call[0].includes('\x1b[31m') && call[0].includes('\x1b[0m')
       )
       expect(errorLogs.length).toBeGreaterThan(0)
     })
@@ -451,6 +480,10 @@ describe.skip('run_e2e_tests - Skipped due to CommonJS module mocking complexity
     })
 
     it('should merge environment variables for server', async () => {
+      // Setup server process mock
+      const serverProcess = createMockProcess()
+      mockSpawn.mockReturnValueOnce(mockProcess).mockReturnValueOnce(serverProcess)
+      
       runE2ETests.build()
 
       // Complete build to trigger server start
