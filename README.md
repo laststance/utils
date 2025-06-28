@@ -15,5 +15,3 @@ Place for Storing useful code fragments from especially OSS library.
 │   ├── [types](./packages/types) # Custom Utility Types
 │   ├── [next-react](./packages/next-react) # Next.js React application
 ```
-
-| README | [TBD](TBD.md) | [TBD](TBD.md) | [TBD](TBD.md) | [TBD](TBD.md) |
