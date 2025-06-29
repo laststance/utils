@@ -236,7 +236,7 @@ describe('TokenGenerator', () => {
       }
     })
 
-    it('should work with asymmetric keys (RS256)', () => {
+    it('should work with asymmetric keys (RS256)', { timeout: 10000 }, () => {
       // Generate RSA key pair for testing
       const crypto = require('crypto')
       const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {

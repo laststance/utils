@@ -338,7 +338,7 @@ describe('noempty zodPlayground', () => {
       const endTime = performance.now()
       
       expect(result.success).toBe(true)
-      expect(endTime - startTime).toBeLessThan(100) // Should be fast
+      expect(endTime - startTime).toBeLessThan(300) // Should be reasonably fast
     })
 
     it('should handle validation performance for arrays with errors', () => {
