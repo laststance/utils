@@ -6,3 +6,11 @@ dist-ssr
 tsc-dist
 .env
 .turbo
+
+# Test coverage
+coverage/
+**/coverage/
+.nyc_output/
+*.lcov
+coverage.json
+coverage-final.json
