@@ -1,11 +1,14 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    // Node.js-specific configuration
+    "types": ["node", "vitest/globals"]
+  },
   "include": [
     "./**/*.ts",
     "./**/*.js",
     "./**/*.mjs",
-    "./**/*.cjs",
-    "eslint.config.js"
+    "./**/*.cjs"
   ],
-  "exclude": ["serve.js", "node_modules", "__tests__"]
+  "exclude": ["serve.js", "node_modules", "__tests__", "eslint.config.js"]
 }

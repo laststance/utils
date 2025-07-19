@@ -1,6 +1,13 @@
 {
   "name": "types",
   "version": "1.0.0",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts"
+    },
+    "./*": "./*.d.ts"
+  },
   "scripts": {
     "test": "vitest --run",
     "test:types": "tsd",

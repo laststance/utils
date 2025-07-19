@@ -1,12 +1,16 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    // Browser-specific lib configuration
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["vitest/globals"]
+  },
   "include": [
     "./**/*.ts",
     "./**/*.d.ts",
     "./**/*.js",
     "./**/*.mjs",
-    "./**/*.cjs",
-    "eslint.config.js"
+    "./**/*.cjs"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "eslint.config.js"]
 }

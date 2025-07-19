@@ -2,6 +2,12 @@
   "name": "node",
   "version": "1.0.0",
   "description": "",
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./*": "./*.js",
+    "./cli/*": "./cli/*.js"
+  },
   "scripts": {
     "test": "vitest --run",
     "typecheck": "tsc --noEmit",
