@@ -1,4 +1,4 @@
-import { filterFalsy } from './filterFalsy'
+import { filterFalsy } from './filterFalsy.js'
 
 describe('filterFalsy', () => {
   it('should filter falsy values', () => {

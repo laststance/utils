@@ -1,5 +1,4 @@
-import { defineConfig } from 'vitest/config'
-import { coverageConfigDefaults } from 'vitest/config'
+import { defineConfig, coverageConfigDefaults } from 'vitest/config'
 
 export default defineConfig({
   test: {
@@ -10,7 +9,7 @@ export default defineConfig({
     setupFiles: ['../../setupTests.ts'],
     typecheck: {
       enabled: true,
-      only: false
+      only: false,
     },
     coverage: {
       provider: 'v8',
@@ -23,7 +22,7 @@ export default defineConfig({
         '**/*.d.ts',
         '**/coverage/**',
         'index.ts',
-        '**/zodPlayground/**'
+        '**/zodPlayground/**',
       ],
       thresholds: {
         lines: 80,
@@ -35,25 +34,25 @@ export default defineConfig({
           lines: 90,
           functions: 90,
           branches: 85,
-          statements: 90
+          statements: 90,
         },
         '**/zodPlayground/**': {
           lines: 0,
           functions: 0,
           branches: 0,
-          statements: 0
-        }
+          statements: 0,
+        },
       },
       watermarks: {
         statements: [80, 90],
         functions: [80, 90],
         branches: [75, 85],
-        lines: [80, 90]
+        lines: [80, 90],
       },
       reportOnFailure: true,
       skipFull: false,
       clean: true,
-      cleanOnRerun: true
+      cleanOnRerun: true,
     },
   },
 })

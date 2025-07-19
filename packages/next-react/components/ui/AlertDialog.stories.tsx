@@ -1,4 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,31 +10,32 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+} from '@/components/ui/alert-dialog'
 
 const meta = {
-  title: "UI/AlertDialog",
+  title: 'UI/AlertDialog',
   component: AlertDialog,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "An alert dialog component built on top of Radix UI AlertDialog.",
+        component:
+          'An alert dialog component built on top of Radix UI AlertDialog.',
       },
     },
   },
 
   argTypes: {
     open: {
-      control: { type: "boolean" },
-      description: "Controls whether the alert dialog is open",
+      control: { type: 'boolean' },
+      description: 'Controls whether the alert dialog is open',
     },
   },
-} satisfies Meta<typeof AlertDialog>;
+} satisfies Meta<typeof AlertDialog>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: (args) => (
@@ -58,7 +60,7 @@ export const Default: Story = {
       </AlertDialogContent>
     </AlertDialog>
   ),
-};
+}
 
 export const Simple: Story = {
   render: (args) => (
@@ -82,4 +84,4 @@ export const Simple: Story = {
       </AlertDialogContent>
     </AlertDialog>
   ),
-};
+}

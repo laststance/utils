@@ -1,93 +1,102 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Button } from "@/components/ui/button";
-import { Mail, Plus, Loader2 } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+import { Mail, Plus, Loader2 } from 'lucide-react'
+
+import { Button } from '@/components/ui/button'
 
 const meta = {
-  title: "UI/Button",
+  title: 'UI/Button',
   component: Button,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "Displays a button or a component that looks like a button.",
+        component: 'Displays a button or a component that looks like a button.',
       },
     },
   },
 
   argTypes: {
     variant: {
-      control: { type: "radio" },
-      options: ["default", "destructive", "outline", "secondary", "ghost", "link"],
-      description: "The visual style variant of the button",
+      control: { type: 'radio' },
+      options: [
+        'default',
+        'destructive',
+        'outline',
+        'secondary',
+        'ghost',
+        'link',
+      ],
+      description: 'The visual style variant of the button',
     },
     size: {
-      control: { type: "radio" },
-      options: ["default", "sm", "lg", "icon"],
-      description: "The size of the button",
+      control: { type: 'radio' },
+      options: ['default', 'sm', 'lg', 'icon'],
+      description: 'The size of the button',
     },
     disabled: {
-      control: { type: "boolean" },
-      description: "Whether the button is disabled",
+      control: { type: 'boolean' },
+      description: 'Whether the button is disabled',
     },
     asChild: {
-      control: { type: "boolean" },
-      description: "Change the default rendered element for the one passed as a child",
+      control: { type: 'boolean' },
+      description:
+        'Change the default rendered element for the one passed as a child',
     },
   },
-} satisfies Meta<typeof Button>;
+} satisfies Meta<typeof Button>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    children: "Button",
+    children: 'Button',
   },
-};
+}
 
 export const Destructive: Story = {
   args: {
-    variant: "destructive",
-    children: "Delete",
+    variant: 'destructive',
+    children: 'Delete',
   },
-};
+}
 
 export const Outline: Story = {
   args: {
-    variant: "outline",
-    children: "Outline",
+    variant: 'outline',
+    children: 'Outline',
   },
-};
+}
 
 export const Secondary: Story = {
   args: {
-    variant: "secondary",
-    children: "Secondary",
+    variant: 'secondary',
+    children: 'Secondary',
   },
-};
+}
 
 export const Ghost: Story = {
   args: {
-    variant: "ghost",
-    children: "Ghost",
+    variant: 'ghost',
+    children: 'Ghost',
   },
-};
+}
 
 export const Link: Story = {
   args: {
-    variant: "link",
-    children: "Link",
+    variant: 'link',
+    children: 'Link',
   },
-};
+}
 
 export const Icon: Story = {
   args: {
-    variant: "outline",
-    size: "icon",
+    variant: 'outline',
+    size: 'icon',
     children: <Plus className="h-4 w-4" />,
   },
-};
+}
 
 export const WithIcon: Story = {
   args: {
@@ -98,7 +107,7 @@ export const WithIcon: Story = {
       </>
     ),
   },
-};
+}
 
 export const Loading: Story = {
   args: {
@@ -110,28 +119,28 @@ export const Loading: Story = {
       </>
     ),
   },
-};
+}
 
 export const Small: Story = {
   args: {
-    size: "sm",
-    children: "Small",
+    size: 'sm',
+    children: 'Small',
   },
-};
+}
 
 export const Large: Story = {
   args: {
-    size: "lg",
-    children: "Large",
+    size: 'lg',
+    children: 'Large',
   },
-};
+}
 
 export const Disabled: Story = {
   args: {
     disabled: true,
-    children: "Disabled",
+    children: 'Disabled',
   },
-};
+}
 
 export const AllVariants: Story = {
   render: () => (
@@ -144,7 +153,7 @@ export const AllVariants: Story = {
       <Button variant="link">Link</Button>
     </div>
   ),
-};
+}
 
 export const AllSizes: Story = {
   render: () => (
@@ -157,4 +166,4 @@ export const AllSizes: Story = {
       </Button>
     </div>
   ),
-}; 
+}

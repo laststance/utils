@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import snakeToCameledSpace from './snakeToCameledSpace'
+
+import snakeToCameledSpace from './snakeToCameledSpace.js'
 
 describe('snakeToCameledSpace', () => {
   it('should convert simple kebab-case to title case', () => {
@@ -16,13 +17,19 @@ describe('snakeToCameledSpace', () => {
 
   it('should handle multiple hyphens', () => {
     expect(snakeToCameledSpace('one-two-three')).toBe('One Two Three')
-    expect(snakeToCameledSpace('my-long-component-name')).toBe('My Long Component Name')
-    expect(snakeToCameledSpace('very-long-string-with-many-words')).toBe('Very Long String With Many Words')
+    expect(snakeToCameledSpace('my-long-component-name')).toBe(
+      'My Long Component Name',
+    )
+    expect(snakeToCameledSpace('very-long-string-with-many-words')).toBe(
+      'Very Long String With Many Words',
+    )
   })
 
   it('should handle the example from the documentation', () => {
-    const input = 'code-piece-of-complete-guide-to-react-client-rendering-behavior'
-    const expected = 'Code Piece Of Complete Guide To React Client Rendering Behavior'
+    const input =
+      'code-piece-of-complete-guide-to-react-client-rendering-behavior'
+    const expected =
+      'Code Piece Of Complete Guide To React Client Rendering Behavior'
     expect(snakeToCameledSpace(input)).toBe(expected)
   })
 
@@ -67,7 +74,9 @@ describe('snakeToCameledSpace', () => {
 
   it('should handle mixed case input', () => {
     expect(snakeToCameledSpace('MiXeD-CaSe')).toBe('MiXeD CaSe')
-    expect(snakeToCameledSpace('camelCase-kebab-case')).toBe('CamelCase Kebab Case')
+    expect(snakeToCameledSpace('camelCase-kebab-case')).toBe(
+      'CamelCase Kebab Case',
+    )
   })
 
   it('should handle real-world component names', () => {

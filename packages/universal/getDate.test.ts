@@ -1,4 +1,4 @@
-import { getDate } from './getDate'
+import { getDate } from './getDate.js'
 
 describe('getDate function', () => {
   it('should return a string', () => {

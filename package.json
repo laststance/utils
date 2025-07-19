@@ -16,16 +16,18 @@
     "validate": "turbo validate",
     "storybook": "turbo storybook",
     "build-storybook": "turbo build-storybook",
-    "dev": "turbo dev"
+    "dev": "turbo dev",
+    "sherif": "pnpm dlx sherif -r unsync-similar-dependencies",
+    "sherif:fix": "pnpm run sherif --fix -r unsync-similar-dependencies"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
     "@typescript-eslint/eslint-plugin": "^8.34.1",
     "@typescript-eslint/parser": "^8.34.1",
-    "@vitest/coverage-v8": "^3.2.2",
+    "@vitest/coverage-v8": "^3.2.4",
     "@vitest/ui": "^3.2.4",
-    "eslint": "8.57.0",
-    "eslint-config-ts-prefixer": "1.14.2",
+    "eslint": "^9.31.0",
+    "eslint-config-ts-prefixer": "^3.0.2",
     "eslint-import-resolver-typescript": "^4.4.3",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.5.0",
@@ -34,5 +36,6 @@
     "turbo": "^2.5.4",
     "typescript": "^5.8.3",
     "vitest": "^3.2.4"
-  }
+  },
+  "private": true
 }

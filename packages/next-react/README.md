@@ -115,7 +115,9 @@ afterEach(() => {
 afterAll(() => server.close())
 
 // DOM API mocks
-Object.defineProperty(window, 'matchMedia', { /* ... */ })
+Object.defineProperty(window, 'matchMedia', {
+  /* ... */
+})
 global.IntersectionObserver = vi.fn(/* ... */)
 global.ResizeObserver = vi.fn(/* ... */)
 ```
@@ -141,10 +143,10 @@ describe('Button', () => {
   it('handles click events', async () => {
     const user = userEvent.setup()
     const handleClick = vi.fn()
-    
+
     render(<Button onClick={handleClick}>Click me</Button>)
     await user.click(screen.getByRole('button'))
-    
+
     expect(handleClick).toHaveBeenCalledTimes(1)
   })
 })
@@ -185,17 +187,17 @@ import { http, HttpResponse } from 'msw'
 export const handlers = [
   http.post('/api/login', async ({ request }) => {
     const credentials = await request.json()
-    
+
     if (credentials.email === 'test@example.com') {
       return HttpResponse.json({
         success: true,
-        user: { id: 1, email: credentials.email }
+        user: { id: 1, email: credentials.email },
       })
     }
-    
+
     return HttpResponse.json(
       { message: 'Invalid credentials' },
-      { status: 401 }
+      { status: 401 },
     )
   }),
 ]
@@ -212,11 +214,8 @@ describe('LoginForm', () => {
     // Override handler for this specific test
     server.use(
       http.post('/api/login', () => {
-        return HttpResponse.json(
-          { message: 'Account locked' },
-          { status: 423 }
-        )
-      })
+        return HttpResponse.json({ message: 'Account locked' }, { status: 423 })
+      }),
     )
 
     // Test continues...
@@ -238,13 +237,13 @@ it('shows loading state during API call', async () => {
   )
 
   render(<LoginForm />)
-  
+
   // Interact with form
   await user.click(submitButton)
-  
+
   // Assert loading state
   expect(screen.getByText(/signing in/i)).toBeInTheDocument()
-  
+
   // Wait for completion
   await waitFor(() => {
     expect(screen.queryByText(/signing in/i)).not.toBeInTheDocument()
@@ -259,7 +258,7 @@ Testing accessibility features:
 ```typescript
 it('provides proper ARIA labels', () => {
   render(<Button aria-label="Custom label">Button</Button>)
-  
+
   const button = screen.getByRole('button')
   expect(button).toHaveAttribute('aria-label', 'Custom label')
 })
@@ -267,11 +266,11 @@ it('provides proper ARIA labels', () => {
 it('associates error messages with form fields', async () => {
   // Trigger validation error
   await user.click(submitButton)
-  
+
   const errorMessage = await screen.findByText(/email is required/i)
   const errorId = errorMessage.getAttribute('id')
   const emailInput = screen.getByLabelText(/email/i)
-  
+
   expect(emailInput).toHaveAttribute('aria-describedby', errorId)
   expect(emailInput).toHaveAttribute('aria-invalid', 'true')
 })
@@ -304,13 +303,13 @@ Write tests that reflect how users interact with your app:
 // ✅ Good - Tests user behavior
 it('allows user to login with valid credentials', async () => {
   const user = userEvent.setup()
-  
+
   render(<LoginForm />)
-  
+
   await user.type(screen.getByLabelText(/email/i), 'test@example.com')
   await user.type(screen.getByLabelText(/password/i), 'password123')
   await user.click(screen.getByRole('button', { name: /sign in/i }))
-  
+
   expect(await screen.findByText(/welcome back/i)).toBeInTheDocument()
 })
 ```
@@ -337,16 +336,14 @@ await waitForElementToBeRemoved(screen.queryByText(/loading/i))
 afterEach(() => server.resetHandlers())
 
 // ✅ Override handlers for specific tests
-server.use(
-  http.get('/api/user/:id', () => HttpResponse.error())
-)
+server.use(http.get('/api/user/:id', () => HttpResponse.error()))
 
 // ✅ Simulate realistic delays
 server.use(
   http.post('/api/login', async () => {
-    await new Promise(resolve => setTimeout(resolve, 100))
+    await new Promise((resolve) => setTimeout(resolve, 100))
     return HttpResponse.json({ success: true })
-  })
+  }),
 )
 ```
 
@@ -359,13 +356,13 @@ it('handles errors gracefully', () => {
   const ThrowError = () => {
     throw new Error('Something went wrong')
   }
-  
+
   render(
     <ErrorBoundary>
       <ThrowError />
     </ErrorBoundary>
   )
-  
+
   expect(screen.getByText(/something went wrong/i)).toBeInTheDocument()
 })
 ```
@@ -375,10 +372,10 @@ it('handles errors gracefully', () => {
 ```typescript
 it('validates required fields', async () => {
   const user = userEvent.setup()
-  
+
   render(<ContactForm />)
   await user.click(screen.getByRole('button', { name: /submit/i }))
-  
+
   expect(await screen.findByText(/name is required/i)).toBeInTheDocument()
 })
 ```
@@ -389,7 +386,7 @@ it('validates required fields', async () => {
 it('shows different content based on user role', () => {
   render(<Dashboard user={{ role: 'admin' }} />)
   expect(screen.getByText(/admin panel/i)).toBeInTheDocument()
-  
+
   render(<Dashboard user={{ role: 'user' }} />)
   expect(screen.queryByText(/admin panel/i)).not.toBeInTheDocument()
 })

@@ -1,28 +1,29 @@
-import { describe, it, expect } from 'vitest'
 import { spawn } from 'child_process'
-import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
+import { fileURLToPath } from 'url'
+
+import { describe, it, expect } from 'vitest'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
 // Helper function to run the CLI script
-const runCLI = (input) => {
+const runCLI = async (input) => {
   return new Promise((resolve, reject) => {
     const scriptPath = join(__dirname, 'snake-to-cameled-space.js')
     const child = spawn('node', [scriptPath, input])
-    
+
     let stdout = ''
     let stderr = ''
-    
+
     child.stdout.on('data', (data) => {
       stdout += data.toString()
     })
-    
+
     child.stderr.on('data', (data) => {
       stderr += data.toString()
     })
-    
+
     child.on('close', (code) => {
       if (code === 0) {
         // Remove only the trailing newline, not other spaces
@@ -33,7 +34,7 @@ const runCLI = (input) => {
         reject(new Error(`Process exited with code ${code}. stderr: ${stderr}`))
       }
     })
-    
+
     child.on('error', (error) => {
       reject(error)
     })
@@ -58,9 +59,11 @@ describe('snake-to-cameled-space CLI', () => {
     })
 
     it('should handle the documented example', async () => {
-      const input = 'code-piece-of-complete-guide-to-react-client-rendering-behavior'
-      const expected = 'Code Piece Of Complete Guide To React Client Rendering Behavior'
-      
+      const input =
+        'code-piece-of-complete-guide-to-react-client-rendering-behavior'
+      const expected =
+        'Code Piece Of Complete Guide To React Client Rendering Behavior'
+
       const result = await runCLI(input)
       expect(result.stdout).toBe(expected)
     })
@@ -161,7 +164,7 @@ describe('snake-to-cameled-space CLI', () => {
         ['form-input-field', 'Form Input Field'],
         ['modal-dialog-box', 'Modal Dialog Box'],
         ['user-profile-card', 'User Profile Card'],
-        ['shopping-cart-item', 'Shopping Cart Item']
+        ['shopping-cart-item', 'Shopping Cart Item'],
       ]
 
       for (const [input, expected] of examples) {
@@ -174,7 +177,7 @@ describe('snake-to-cameled-space CLI', () => {
       const examples = [
         ['btn-primary-lg', 'Btn Primary Lg'],
         ['text-center-bold', 'Text Center Bold'],
-        ['container-fluid-sm', 'Container Fluid Sm']
+        ['container-fluid-sm', 'Container Fluid Sm'],
       ]
 
       for (const [input, expected] of examples) {
@@ -187,7 +190,7 @@ describe('snake-to-cameled-space CLI', () => {
       const examples = [
         ['react-router-dom', 'React Router Dom'],
         ['styled-components', 'Styled Components'],
-        ['babel-preset-env', 'Babel Preset Env']
+        ['babel-preset-env', 'Babel Preset Env'],
       ]
 
       for (const [input, expected] of examples) {
@@ -228,7 +231,7 @@ describe('snake-to-cameled-space CLI', () => {
     it('should handle very long strings', async () => {
       const longInput = Array(100).fill('word').join('-')
       const expectedOutput = Array(100).fill('Word').join(' ')
-      
+
       const result = await runCLI(longInput)
       expect(result.stdout).toBe(expectedOutput)
     })
@@ -237,7 +240,7 @@ describe('snake-to-cameled-space CLI', () => {
       const manyHyphens = 'a-'.repeat(50) + 'b'
       // This produces "a-a-a-...-a-b", so each 'a' and 'b' should be capitalized
       const expectedOutput = Array(50).fill('A').join(' ') + ' B'
-      
+
       const result = await runCLI(manyHyphens)
       expect(result.stdout).toBe(expectedOutput)
     })
@@ -246,16 +249,16 @@ describe('snake-to-cameled-space CLI', () => {
   describe('consistency', () => {
     it('should produce consistent results', async () => {
       const input = 'consistent-test-case'
-      
+
       // Run multiple times and verify same output
       const results = await Promise.all([
         runCLI(input),
         runCLI(input),
-        runCLI(input)
+        runCLI(input),
       ])
-      
+
       const expectedOutput = 'Consistent Test Case'
-      results.forEach(result => {
+      results.forEach((result) => {
         expect(result.stdout).toBe(expectedOutput)
       })
     })

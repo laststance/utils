@@ -1,5 +1,13 @@
-import { Meta, Title, Primary, Controls, Stories, Story, Canvas } from '@storybook/blocks';
-import * as DrawerStories from './Drawer.stories';
+import {
+  Meta,
+  Title,
+  Primary,
+  Controls,
+  Stories,
+  Story,
+  Canvas,
+} from '@storybook/blocks'
+import * as DrawerStories from './Drawer.stories'
 
 <Meta of={DrawerStories} />
 
@@ -20,7 +28,7 @@ Drawer component for building user interfaces.
 ## Features
 
 - **Feature 1**: Description of key feature
-- **Feature 2**: Description of another feature  
+- **Feature 2**: Description of another feature
 - **Feature 3**: Description of additional feature
 - **Accessible**: Built with accessibility in mind
 - **Customizable**: Easy to style and extend
@@ -30,7 +38,7 @@ Drawer component for building user interfaces.
 Import the Drawer component:
 
 ```tsx
-import { Drawer } from "@/components/ui/-drawer"
+import { Drawer } from '@/components/ui/-drawer'
 ```
 
 ## Examples
@@ -63,17 +71,13 @@ The Drawer component accepts the following props:
 ### Basic Drawer
 
 ```tsx
-<Drawer>
-  Content here
-</Drawer>
+<Drawer>Content here</Drawer>
 ```
 
 ### Drawer with Props
 
 ```tsx
-<Drawer className="custom-class">
-  Custom content
-</Drawer>
+<Drawer className="custom-class">Custom content</Drawer>
 ```
 
 ## Accessibility
@@ -87,11 +91,13 @@ The Drawer component accepts the following props:
 ## Design Guidelines
 
 ### Do
+
 - Use clear and descriptive content
 - Follow consistent spacing patterns
 - Provide proper context
 
 ### Don't
+
 - Overuse the component
 - Ignore accessibility requirements
 - Break established patterns

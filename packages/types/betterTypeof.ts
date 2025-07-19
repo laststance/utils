@@ -4,10 +4,10 @@
  * Enhanced typeof function that provides more specific type information.
  * Goes beyond JavaScript's built-in typeof operator to distinguish between
  * different object types, numbers, and other edge cases.
- * 
+ *
  * @param data - The value to check the type of
  * @returns More specific type string than built-in typeof
- * 
+ *
  * @example
  * ```typescript
  * betterTypeof(42)               // 'integer'

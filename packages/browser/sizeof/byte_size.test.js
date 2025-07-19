@@ -28,7 +28,7 @@ describe('byte_size constants', () => {
     })
 
     it('should have all properties as numbers', () => {
-      Object.values(byteSizes).forEach(value => {
+      Object.values(byteSizes).forEach((value) => {
         expect(typeof value).toBe('number')
         expect(Number.isFinite(value)).toBe(true)
         expect(value).toBeGreaterThan(0)
@@ -53,7 +53,7 @@ describe('byte_size constants', () => {
     it('should be immutable', () => {
       const originalValue = byteSizes.BOOLEAN
       byteSizes.BOOLEAN = 999
-      
+
       // In a properly frozen object, this wouldn't change
       // But since it's not frozen, we just verify the expected value exists
       expect(originalValue).toBe(4)
@@ -104,8 +104,8 @@ describe('byte_size constants', () => {
     it('should follow ECMAScript Language Specification values', () => {
       // These values are based on the ECMAScript spec referenced in the file
       expect(byteSizes.BOOLEAN).toBe(4) // Boolean values
-      expect(byteSizes.NUMBER).toBe(8)  // IEEE 754 double precision
-      expect(byteSizes.STRING).toBe(2)  // UTF-16 code units
+      expect(byteSizes.NUMBER).toBe(8) // IEEE 754 double precision
+      expect(byteSizes.STRING).toBe(2) // UTF-16 code units
     })
 
     it('should have values that make sense for JavaScript types', () => {
@@ -142,16 +142,16 @@ describe('byte_size constants', () => {
   describe('type safety and consistency', () => {
     it('should have consistent property names', () => {
       const keys = Object.keys(byteSizes)
-      
+
       // All keys should be uppercase
-      keys.forEach(key => {
+      keys.forEach((key) => {
         expect(key).toBe(key.toUpperCase())
         expect(key).toMatch(/^[A-Z_]+$/)
       })
     })
 
     it('should not have undefined or null values', () => {
-      Object.values(byteSizes).forEach(value => {
+      Object.values(byteSizes).forEach((value) => {
         expect(value).not.toBeUndefined()
         expect(value).not.toBeNull()
         expect(value).not.toBeNaN()
@@ -159,13 +159,13 @@ describe('byte_size constants', () => {
     })
 
     it('should not have negative or zero values', () => {
-      Object.values(byteSizes).forEach(value => {
+      Object.values(byteSizes).forEach((value) => {
         expect(value).toBeGreaterThan(0)
       })
     })
 
     it('should not have floating point values', () => {
-      Object.values(byteSizes).forEach(value => {
+      Object.values(byteSizes).forEach((value) => {
         expect(Number.isInteger(value)).toBe(true)
       })
     })
@@ -177,7 +177,7 @@ describe('byte_size constants', () => {
       const booleanArraySize = 10 * byteSizes.BOOLEAN
       const numberArraySize = 5 * byteSizes.NUMBER
       const stringSize = 'hello'.length * byteSizes.STRING
-      
+
       expect(booleanArraySize).toBe(40)
       expect(numberArraySize).toBe(40)
       expect(stringSize).toBe(10)
@@ -192,7 +192,7 @@ describe('byte_size constants', () => {
 
     it('should work with destructuring', () => {
       const { BOOLEAN, NUMBER, STRING } = byteSizes
-      
+
       expect(BOOLEAN).toBe(4)
       expect(NUMBER).toBe(8)
       expect(STRING).toBe(2)
@@ -202,15 +202,15 @@ describe('byte_size constants', () => {
       const keys = Object.keys(byteSizes)
       const values = Object.values(byteSizes)
       const entries = Object.entries(byteSizes)
-      
+
       expect(keys).toContain('BOOLEAN')
       expect(keys).toContain('NUMBER')
       expect(keys).toContain('STRING')
-      
+
       expect(values).toContain(4)
       expect(values).toContain(8)
       expect(values).toContain(2)
-      
+
       expect(entries).toContainEqual(['BOOLEAN', 4])
       expect(entries).toContainEqual(['NUMBER', 8])
       expect(entries).toContainEqual(['STRING', 2])
@@ -220,13 +220,13 @@ describe('byte_size constants', () => {
   describe('real-world application', () => {
     it('should provide accurate byte counts for JavaScript types', () => {
       // These constants should reflect actual memory usage patterns
-      
+
       // Boolean: typically stored as 32-bit value (4 bytes)
       expect(byteSizes.BOOLEAN).toBe(4)
-      
+
       // Number: IEEE 754 double precision (8 bytes)
       expect(byteSizes.NUMBER).toBe(8)
-      
+
       // String: UTF-16 encoding (2 bytes per character)
       expect(byteSizes.STRING).toBe(2)
     })
@@ -238,7 +238,7 @@ describe('byte_size constants', () => {
         for (const [key, value] of Object.entries(obj)) {
           // Key size (string)
           size += key.length * byteSizes.STRING
-          
+
           // Value size
           if (typeof value === 'boolean') {
             size += byteSizes.BOOLEAN
@@ -250,13 +250,13 @@ describe('byte_size constants', () => {
         }
         return size
       }
-      
+
       const testObj = {
-        name: 'test',      // key: 4*2=8, value: 4*2=8 = 16 bytes
-        count: 42,         // key: 5*2=10, value: 8 = 18 bytes  
-        active: true       // key: 6*2=12, value: 4 = 16 bytes
+        name: 'test', // key: 4*2=8, value: 4*2=8 = 16 bytes
+        count: 42, // key: 5*2=10, value: 8 = 18 bytes
+        active: true, // key: 6*2=12, value: 4 = 16 bytes
       }
-      
+
       const estimatedSize = estimateObjectSize(testObj)
       expect(estimatedSize).toBe(50) // 16 + 18 + 16 = 50
     })
@@ -264,12 +264,12 @@ describe('byte_size constants', () => {
     it('should be consistent with ECMAScript documentation references', () => {
       // The file references ECMAScript specification
       // Verify the values align with standard JavaScript type sizes
-      
+
       // From ECMAScript specification:
       // - Numbers are IEEE 754 binary64 (8 bytes)
       // - Strings use UTF-16 (2 bytes per code unit)
       // - Booleans are implementation-dependent but commonly 4 bytes
-      
+
       expect(byteSizes.NUMBER).toBe(8)
       expect(byteSizes.STRING).toBe(2)
       expect(byteSizes.BOOLEAN).toBe(4)
@@ -300,10 +300,10 @@ describe('byte_size constants', () => {
 
     it('should handle JSON serialization', () => {
       expect(() => JSON.stringify(byteSizes)).not.toThrow()
-      
+
       const serialized = JSON.stringify(byteSizes)
       const parsed = JSON.parse(serialized)
-      
+
       expect(parsed).toEqual(byteSizes)
     })
   })

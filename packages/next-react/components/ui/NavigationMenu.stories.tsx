@@ -1,29 +1,30 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { NavigationMenu } from "@/components/ui/navigation-menu";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+
+import { NavigationMenu } from '@/components/ui/navigation-menu'
 
 const meta = {
-  title: "UI/NavigationMenu",
+  title: 'UI/NavigationMenu',
   component: NavigationMenu,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "Navigation Menu component for building user interfaces.",
+        component: 'Navigation Menu component for building user interfaces.',
       },
     },
   },
 
   argTypes: {
     className: {
-      control: { type: "text" },
-      description: "Additional CSS classes",
+      control: { type: 'text' },
+      description: 'Additional CSS classes',
     },
   },
-} satisfies Meta<typeof NavigationMenu>;
+} satisfies Meta<typeof NavigationMenu>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: () => (
@@ -32,7 +33,7 @@ export const Default: Story = {
       Default NavigationMenu
     </NavigationMenu>
   ),
-};
+}
 
 export const Example: Story = {
   render: () => (
@@ -41,4 +42,4 @@ export const Example: Story = {
       Example NavigationMenu
     </NavigationMenu>
   ),
-};
+}

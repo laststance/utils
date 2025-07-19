@@ -43,11 +43,11 @@ describe('serve.js CLI application', () => {
       const fs = await import('fs')
       const path = await import('path')
       const { fileURLToPath } = await import('url')
-      
+
       const __filename = fileURLToPath(import.meta.url)
       const __dirname = path.dirname(__filename)
       const scriptPath = path.join(__dirname, 'serve.js')
-      
+
       const content = fs.readFileSync(scriptPath, 'utf8')
       expect(content.startsWith('#!/usr/bin/env node')).toBe(true)
     })
@@ -56,11 +56,11 @@ describe('serve.js CLI application', () => {
       const fs = await import('fs')
       const path = await import('path')
       const { fileURLToPath } = await import('url')
-      
+
       const __filename = fileURLToPath(import.meta.url)
       const __dirname = path.dirname(__filename)
       const scriptPath = path.join(__dirname, 'serve.js')
-      
+
       const content = fs.readFileSync(scriptPath, 'utf8')
       expect(content).toContain("'use strict'")
     })
@@ -81,7 +81,7 @@ describe('serve.js CLI application', () => {
       // Test TCP URL parsing logic
       const { parse } = require('url')
       const url = parse('tcp://localhost:8080')
-      
+
       expect(url.protocol).toBe('tcp:')
       expect(url.hostname).toBe('localhost')
       expect(url.port).toBe('8080')
@@ -90,7 +90,7 @@ describe('serve.js CLI application', () => {
     it('should handle UNIX domain sockets', () => {
       const { parse } = require('url')
       const url = parse('unix:/var/run/socket.sock')
-      
+
       expect(url.protocol).toBe('unix:')
       expect(url.pathname).toBe('/var/run/socket.sock')
     })
@@ -98,7 +98,7 @@ describe('serve.js CLI application', () => {
     it('should handle Windows named pipes', () => {
       const pipeStr = 'pipe:\\\\.\\pipe\\MyPipe'
       const cutStr = pipeStr.replace(/^pipe:/, '')
-      
+
       expect(cutStr.slice(0, 4)).toBe('\\\\.\\')
     })
   })
@@ -107,25 +107,25 @@ describe('serve.js CLI application', () => {
     it('should detect IPv4 non-internal addresses', () => {
       // Mock network interfaces similar to os.networkInterfaces()
       const mockInterfaces = {
-        'en0': [
+        en0: [
           {
             address: '127.0.0.1',
             family: 'IPv4',
-            internal: true
+            internal: true,
           },
           {
             address: '192.168.1.100',
             family: 'IPv4',
-            internal: false
-          }
+            internal: false,
+          },
         ],
-        'lo0': [
+        lo0: [
           {
             address: '::1',
             family: 'IPv6',
-            internal: true
-          }
-        ]
+            internal: true,
+          },
+        ],
       }
 
       // Simulate getNetworkAddress logic
@@ -146,13 +146,13 @@ describe('serve.js CLI application', () => {
 
     it('should return undefined when no external IPv4 found', () => {
       const mockInterfaces = {
-        'lo0': [
+        lo0: [
           {
             address: '127.0.0.1',
             family: 'IPv4',
-            internal: true
-          }
-        ]
+            internal: true,
+          },
+        ],
       }
 
       let networkAddress = null
@@ -177,12 +177,8 @@ describe('serve.js CLI application', () => {
       const mockConfig = {
         public: './public',
         cleanUrls: true,
-        rewrites: [
-          { source: '/api/**', destination: '/api.js' }
-        ],
-        redirects: [
-          { source: '/old-path', destination: '/new-path' }
-        ]
+        rewrites: [{ source: '/api/**', destination: '/api.js' }],
+        redirects: [{ source: '/old-path', destination: '/new-path' }],
       }
 
       // Validate configuration structure
@@ -198,9 +194,9 @@ describe('serve.js CLI application', () => {
         now: {
           static: {
             public: 'dist',
-            cleanUrls: false
-          }
-        }
+            cleanUrls: false,
+          },
+        },
       }
 
       // Extract static configuration
@@ -216,15 +212,17 @@ describe('serve.js CLI application', () => {
       // Test HTTPS mode detection
       const httpsArgs = {
         '--ssl-cert': '/path/to/cert.pem',
-        '--ssl-key': '/path/to/key.pem'
+        '--ssl-key': '/path/to/key.pem',
       }
 
-      const httpMode = httpsArgs['--ssl-cert'] && httpsArgs['--ssl-key'] ? 'https' : 'http'
+      const httpMode =
+        httpsArgs['--ssl-cert'] && httpsArgs['--ssl-key'] ? 'https' : 'http'
       expect(httpMode).toBe('https')
 
       // Test HTTP mode
       const httpArgs = {}
-      const httpMode2 = httpArgs['--ssl-cert'] && httpArgs['--ssl-key'] ? 'https' : 'http'
+      const httpMode2 =
+        httpArgs['--ssl-cert'] && httpArgs['--ssl-key'] ? 'https' : 'http'
       expect(httpMode2).toBe('http')
     })
 
@@ -232,16 +230,16 @@ describe('serve.js CLI application', () => {
       // Both cert and key are required for HTTPS
       const validSSL = {
         cert: '/path/to/cert.pem',
-        key: '/path/to/key.pem'
+        key: '/path/to/key.pem',
       }
 
       const invalidSSL1 = {
-        cert: '/path/to/cert.pem'
+        cert: '/path/to/cert.pem',
         // missing key
       }
 
       const invalidSSL2 = {
-        key: '/path/to/key.pem'
+        key: '/path/to/key.pem',
         // missing cert
       }
 
@@ -332,11 +330,7 @@ describe('serve.js CLI application', () => {
 
     it('should handle listen endpoints', () => {
       const listenArgs = {
-        '--listen': [
-          ['3000'],
-          ['tcp://localhost:8080'],
-          ['unix:/tmp/socket']
-        ]
+        '--listen': [['3000'], ['tcp://localhost:8080'], ['unix:/tmp/socket']],
       }
 
       expect(Array.isArray(listenArgs['--listen'])).toBe(true)
@@ -360,10 +354,10 @@ describe('serve.js CLI application', () => {
       const endpoint = ['3000']
       const noPortSwitching = false
 
-      const shouldRetry = 
-        error.code === 'EADDRINUSE' && 
-        endpoint.length === 1 && 
-        !isNaN(endpoint[0]) && 
+      const shouldRetry =
+        error.code === 'EADDRINUSE' &&
+        endpoint.length === 1 &&
+        !isNaN(endpoint[0]) &&
         !noPortSwitching
 
       expect(shouldRetry).toBe(true)
@@ -372,14 +366,14 @@ describe('serve.js CLI application', () => {
     it('should handle invalid configuration files', () => {
       // Test invalid JSON handling
       const invalidJSON = '{ invalid json }'
-      
+
       expect(() => JSON.parse(invalidJSON)).toThrow()
     })
 
     it('should handle missing SSL certificate files', () => {
       // Simulate file reading errors
       const error = { code: 'ENOENT', message: 'File not found' }
-      
+
       expect(error.code).toBe('ENOENT')
       expect(error.message).toContain('File not found')
     })
@@ -397,7 +391,7 @@ describe('serve.js CLI application', () => {
         '--listen',
         '--cors',
         '--ssl-cert',
-        '--ssl-key'
+        '--ssl-key',
       ]
 
       // Simulate help text check (normally from getHelp function)
@@ -419,7 +413,7 @@ describe('serve.js CLI application', () => {
         For TCP ports on hostname "localhost"
       `
 
-      helpSections.forEach(section => {
+      helpSections.forEach((section) => {
         expect(mockHelpText).toContain(section)
       })
     })
@@ -447,7 +441,7 @@ describe('serve.js CLI application', () => {
     it('should handle update check environment variable', () => {
       // NO_UPDATE_CHECK environment variable disables update checking
       const updateCheckDisabled = process.env.NO_UPDATE_CHECK === '1'
-      
+
       expect(typeof updateCheckDisabled).toBe('boolean')
     })
   })
@@ -456,8 +450,8 @@ describe('serve.js CLI application', () => {
     it('should handle termination signals', () => {
       // Test signal handling setup
       const signals = ['SIGINT', 'SIGTERM', 'exit']
-      
-      signals.forEach(signal => {
+
+      signals.forEach((signal) => {
         expect(typeof signal).toBe('string')
         expect(signal.length).toBeGreaterThan(0)
       })
@@ -466,7 +460,7 @@ describe('serve.js CLI application', () => {
     it('should prevent multiple shutdown executions', () => {
       // Simulate shutdown handler logic
       let run = false
-      
+
       const wrapper = () => {
         if (!run) {
           run = true
@@ -476,7 +470,7 @@ describe('serve.js CLI application', () => {
 
       wrapper() // First call
       expect(run).toBe(true)
-      
+
       const previousRun = run
       wrapper() // Second call should not change anything
       expect(run).toBe(previousRun)
@@ -488,10 +482,10 @@ describe('serve.js CLI application', () => {
       const testUrls = [
         'tcp://localhost:3000',
         'unix:/tmp/socket',
-        'pipe:\\\\.\\pipe\\test'
+        'pipe:\\\\.\\pipe\\test',
       ]
 
-      testUrls.forEach(url => {
+      testUrls.forEach((url) => {
         const { parse } = require('url')
         const parsed = parse(url)
         expect(parsed.protocol).toBeDefined()
@@ -500,11 +494,11 @@ describe('serve.js CLI application', () => {
 
     it('should resolve relative paths correctly', () => {
       const path = require('path')
-      
+
       const cwd = process.cwd()
       const relativePath = './public'
       const absolutePath = path.resolve(relativePath)
-      
+
       expect(path.isAbsolute(absolutePath)).toBe(true)
       expect(absolutePath).toContain(cwd)
     })

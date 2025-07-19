@@ -1,5 +1,4 @@
-import { defineConfig } from 'vitest/config'
-import { coverageConfigDefaults } from 'vitest/config'
+import { defineConfig, coverageConfigDefaults } from 'vitest/config'
 
 export default defineConfig({
   test: {
@@ -22,25 +21,25 @@ export default defineConfig({
         '**/coverage/**',
         '**/bin/**',
         'serve.js',
-        'snake-to-cameled-space.js'
+        'snake-to-cameled-space.js',
       ],
       thresholds: {
         lines: 85,
         functions: 85,
         branches: 80,
         statements: 85,
-        perFile: false
+        perFile: false,
       },
       watermarks: {
         statements: [65, 80],
         functions: [65, 80],
         branches: [60, 75],
-        lines: [65, 80]
+        lines: [65, 80],
       },
       reportOnFailure: true,
       skipFull: false,
       clean: true,
-      cleanOnRerun: true
+      cleanOnRerun: true,
     },
   },
 })

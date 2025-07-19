@@ -1,29 +1,30 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Badge } from "@/components/ui/badge";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+
+import { Badge } from '@/components/ui/badge'
 
 const meta = {
-  title: "UI/Badge",
+  title: 'UI/Badge',
   component: Badge,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "Badge component for building user interfaces.",
+        component: 'Badge component for building user interfaces.',
       },
     },
   },
 
   argTypes: {
     className: {
-      control: { type: "text" },
-      description: "Additional CSS classes",
+      control: { type: 'text' },
+      description: 'Additional CSS classes',
     },
   },
-} satisfies Meta<typeof Badge>;
+} satisfies Meta<typeof Badge>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: () => (
@@ -32,7 +33,7 @@ export const Default: Story = {
       Default Badge
     </Badge>
   ),
-};
+}
 
 export const Example: Story = {
   render: () => (
@@ -41,4 +42,4 @@ export const Example: Story = {
       Example Badge
     </Badge>
   ),
-};
+}

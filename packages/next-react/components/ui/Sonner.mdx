@@ -1,5 +1,13 @@
-import { Meta, Title, Primary, Controls, Stories, Story, Canvas } from '@storybook/blocks';
-import * as SonnerStories from './Sonner.stories';
+import {
+  Meta,
+  Title,
+  Primary,
+  Controls,
+  Stories,
+  Story,
+  Canvas,
+} from '@storybook/blocks'
+import * as SonnerStories from './Sonner.stories'
 
 <Meta of={SonnerStories} />
 
@@ -20,7 +28,7 @@ Sonner component for building user interfaces.
 ## Features
 
 - **Feature 1**: Description of key feature
-- **Feature 2**: Description of another feature  
+- **Feature 2**: Description of another feature
 - **Feature 3**: Description of additional feature
 - **Accessible**: Built with accessibility in mind
 - **Customizable**: Easy to style and extend
@@ -30,7 +38,7 @@ Sonner component for building user interfaces.
 Import the Sonner component:
 
 ```tsx
-import { Sonner } from "@/components/ui/-sonner"
+import { Sonner } from '@/components/ui/-sonner'
 ```
 
 ## Examples
@@ -63,17 +71,13 @@ The Sonner component accepts the following props:
 ### Basic Sonner
 
 ```tsx
-<Sonner>
-  Content here
-</Sonner>
+<Sonner>Content here</Sonner>
 ```
 
 ### Sonner with Props
 
 ```tsx
-<Sonner className="custom-class">
-  Custom content
-</Sonner>
+<Sonner className="custom-class">Custom content</Sonner>
 ```
 
 ## Accessibility
@@ -87,11 +91,13 @@ The Sonner component accepts the following props:
 ## Design Guidelines
 
 ### Do
+
 - Use clear and descriptive content
 - Follow consistent spacing patterns
 - Provide proper context
 
 ### Don't
+
 - Overuse the component
 - Ignore accessibility requirements
 - Break established patterns

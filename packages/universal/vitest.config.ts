@@ -1,5 +1,4 @@
-import { defineConfig } from 'vitest/config'
-import { coverageConfigDefaults } from 'vitest/config'
+import { defineConfig, coverageConfigDefaults } from 'vitest/config'
 
 export default defineConfig({
   test: {
@@ -19,25 +18,25 @@ export default defineConfig({
         '**/*.d.ts',
         '**/types/**',
         '**/*.config.*',
-        '**/coverage/**'
+        '**/coverage/**',
       ],
       thresholds: {
         lines: 90,
         functions: 90,
         branches: 85,
         statements: 90,
-        perFile: false
+        perFile: false,
       },
       watermarks: {
         statements: [70, 85],
         functions: [70, 85],
         branches: [65, 80],
-        lines: [70, 85]
+        lines: [70, 85],
       },
       reportOnFailure: true,
       skipFull: false,
       clean: true,
-      cleanOnRerun: true
+      cleanOnRerun: true,
     },
   },
 })

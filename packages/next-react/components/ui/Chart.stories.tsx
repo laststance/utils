@@ -1,5 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import React from "react";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+import React from 'react'
+import { Bar, BarChart, Line, LineChart, XAxis, YAxis } from 'recharts'
+
 import {
   ChartContainer,
   ChartTooltip,
@@ -7,54 +9,54 @@ import {
   ChartLegend,
   ChartLegendContent,
   type ChartConfig,
-} from "@/components/ui/chart";
-import { Bar, BarChart, Line, LineChart, XAxis, YAxis } from "recharts";
+} from '@/components/ui/chart'
 
 const meta = {
-  title: "UI/Chart",
+  title: 'UI/Chart',
   component: ChartContainer,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "Chart components built on top of Recharts for data visualization.",
+        component:
+          'Chart components built on top of Recharts for data visualization.',
       },
     },
   },
 
   argTypes: {
     config: {
-      control: { type: "object" },
-      description: "Chart configuration object",
+      control: { type: 'object' },
+      description: 'Chart configuration object',
     },
   },
-} satisfies Meta<typeof ChartContainer>;
+} satisfies Meta<typeof ChartContainer>
 
-export default meta;
+export default meta
 type ChartStory = Omit<StoryObj<typeof meta>, 'args'> & {
-  render: () => React.ReactElement;
-};
+  render: () => React.ReactElement
+}
 
 const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-];
+  { month: 'January', desktop: 186, mobile: 80 },
+  { month: 'February', desktop: 305, mobile: 200 },
+  { month: 'March', desktop: 237, mobile: 120 },
+  { month: 'April', desktop: 73, mobile: 190 },
+  { month: 'May', desktop: 209, mobile: 130 },
+  { month: 'June', desktop: 214, mobile: 140 },
+]
 
 const chartConfig = {
   desktop: {
-    label: "Desktop",
-    color: "#2563eb",
+    label: 'Desktop',
+    color: '#2563eb',
   },
   mobile: {
-    label: "Mobile",
-    color: "#60a5fa",
+    label: 'Mobile',
+    color: '#60a5fa',
   },
-} satisfies ChartConfig;
+} satisfies ChartConfig
 
 export const BarChartExample: ChartStory = {
   render: () => (
@@ -63,13 +65,20 @@ export const BarChartExample: ChartStory = {
         <XAxis dataKey="month" />
         <YAxis />
         <ChartTooltip content={<ChartTooltipContent />} />
-        <ChartLegend content={(props) => <ChartLegendContent payload={props.payload} verticalAlign={props.verticalAlign} />} />
+        <ChartLegend
+          content={(props) => (
+            <ChartLegendContent
+              payload={props.payload}
+              verticalAlign={props.verticalAlign}
+            />
+          )}
+        />
         <Bar dataKey="desktop" fill="var(--color-desktop)" />
         <Bar dataKey="mobile" fill="var(--color-mobile)" />
       </BarChart>
     </ChartContainer>
   ),
-};
+}
 
 export const LineChartExample: ChartStory = {
   render: () => (
@@ -78,7 +87,14 @@ export const LineChartExample: ChartStory = {
         <XAxis dataKey="month" />
         <YAxis />
         <ChartTooltip content={<ChartTooltipContent />} />
-        <ChartLegend content={(props) => <ChartLegendContent payload={props.payload} verticalAlign={props.verticalAlign} />} />
+        <ChartLegend
+          content={(props) => (
+            <ChartLegendContent
+              payload={props.payload}
+              verticalAlign={props.verticalAlign}
+            />
+          )}
+        />
         <Line
           type="monotone"
           dataKey="desktop"
@@ -94,4 +110,4 @@ export const LineChartExample: ChartStory = {
       </LineChart>
     </ChartContainer>
   ),
-};
+}

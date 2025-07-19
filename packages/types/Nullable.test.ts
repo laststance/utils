@@ -7,16 +7,16 @@ describe('Nullable type', () => {
   it('should accept original type values', () => {
     // Original string value
     expectTypeOf<string>().toMatchTypeOf<Nullable<string>>()
-    
+
     // Original number value
     expectTypeOf<number>().toMatchTypeOf<Nullable<number>>()
-    
+
     // Original boolean value
     expectTypeOf<boolean>().toMatchTypeOf<Nullable<boolean>>()
-    
+
     // Original object value
     expectTypeOf<{ id: number }>().toMatchTypeOf<Nullable<{ id: number }>>()
-    
+
     // Original array value
     expectTypeOf<string[]>().toMatchTypeOf<Nullable<string[]>>()
   })
@@ -35,12 +35,12 @@ describe('Nullable type', () => {
     type NullableString = Nullable<string>
     expectTypeOf<string>().toMatchTypeOf<NullableString>()
     expectTypeOf<null>().toMatchTypeOf<NullableString>()
-    
+
     // Number
     type NullableNumber = Nullable<number>
     expectTypeOf<number>().toMatchTypeOf<NullableNumber>()
     expectTypeOf<null>().toMatchTypeOf<NullableNumber>()
-    
+
     // Boolean
     type NullableBoolean = Nullable<boolean>
     expectTypeOf<boolean>().toMatchTypeOf<NullableBoolean>()
@@ -63,7 +63,7 @@ describe('Nullable type', () => {
     type NullableUser = Nullable<User>
     expectTypeOf<User>().toMatchTypeOf<NullableUser>()
     expectTypeOf<null>().toMatchTypeOf<NullableUser>()
-    
+
     // Nullable API response
     type NullableResponse = Nullable<ApiResponse<User>>
     expectTypeOf<ApiResponse<User>>().toMatchTypeOf<NullableResponse>()
@@ -73,16 +73,18 @@ describe('Nullable type', () => {
   it('should work with union types', () => {
     type StringOrNumber = string | number
     type NullableStringOrNumber = Nullable<StringOrNumber>
-    
+
     // Original union members
     expectTypeOf<string>().toMatchTypeOf<NullableStringOrNumber>()
     expectTypeOf<number>().toMatchTypeOf<NullableStringOrNumber>()
-    
+
     // Null
     expectTypeOf<null>().toMatchTypeOf<NullableStringOrNumber>()
-    
+
     // The full union
-    expectTypeOf<string | number | null>().toEqualTypeOf<NullableStringOrNumber>()
+    expectTypeOf<
+      string | number | null
+    >().toEqualTypeOf<NullableStringOrNumber>()
   })
 
   it('should work with array types', () => {
@@ -90,7 +92,7 @@ describe('Nullable type', () => {
     type NullableStringArray = Nullable<string[]>
     expectTypeOf<string[]>().toMatchTypeOf<NullableStringArray>()
     expectTypeOf<null>().toMatchTypeOf<NullableStringArray>()
-    
+
     // Array of nullable strings (different!)
     type ArrayOfNullableStrings = Nullable<string>[]
     expectTypeOf<(string | null)[]>().toEqualTypeOf<ArrayOfNullableStrings>()
@@ -99,12 +101,12 @@ describe('Nullable type', () => {
   it('should distinguish from undefined types', () => {
     type NullableString = Nullable<string>
     type OptionalString = string | undefined
-    
+
     // Nullable accepts null but not undefined
     expectTypeOf<null>().toMatchTypeOf<NullableString>()
     // undefined should not match Nullable<string> - this will fail as expected
     // expectTypeOf<undefined>().toMatchTypeOf<NullableString>()
-    
+
     // Optional accepts undefined but not null
     expectTypeOf<undefined>().toMatchTypeOf<OptionalString>()
     // null should not match string | undefined - this will fail as expected
@@ -119,10 +121,10 @@ describe('Nullable type', () => {
 
     // Parameter should accept Nullable<string> (both string and null)
     expectTypeOf(processValue).parameter(0).toEqualTypeOf<Nullable<string>>()
-    
+
     // Verify function works with both string and null inputs at runtime
     // These calls demonstrate that the function accepts both types correctly
-    
+
     // Return type should be non-nullable string
     expectTypeOf(processValue).returns.toEqualTypeOf<string>()
   })
@@ -131,8 +133,8 @@ describe('Nullable type', () => {
     interface UserProfile {
       id: number
       name: string
-      avatar: Nullable<string>  // Can be null
-      bio?: string              // Can be undefined
+      avatar: Nullable<string> // Can be null
+      bio?: string // Can be undefined
     }
 
     // Avatar can be string or null
@@ -140,7 +142,7 @@ describe('Nullable type', () => {
     expectTypeOf<null>().toMatchTypeOf<UserProfile['avatar']>()
     // undefined should not match Nullable<string> - this will fail as expected
     // expectTypeOf<undefined>().toMatchTypeOf<UserProfile['avatar']>()
-    
+
     // Bio can be string or undefined
     expectTypeOf<string>().toMatchTypeOf<NonNullable<UserProfile['bio']>>()
     expectTypeOf<undefined>().toMatchTypeOf<UserProfile['bio']>()
@@ -159,7 +161,7 @@ describe('Nullable type', () => {
       // Avatar can be null (no profile picture)
       expectTypeOf<string>().toMatchTypeOf<User['avatar']>()
       expectTypeOf<null>().toMatchTypeOf<User['avatar']>()
-      
+
       // DeletedAt can be null (not deleted)
       expectTypeOf<Date>().toMatchTypeOf<User['deletedAt']>()
       expectTypeOf<null>().toMatchTypeOf<User['deletedAt']>()
@@ -180,20 +182,24 @@ describe('Nullable type', () => {
         name: string
         email: string
       }
-      
+
       type UserResponse = ApiResponse<ResponseUser[]>
 
       // Data can be null on error
       expectTypeOf<ResponseUser[]>().toMatchTypeOf<UserResponse['data']>()
       expectTypeOf<null>().toMatchTypeOf<UserResponse['data']>()
-      
+
       // Error can be null on success
       expectTypeOf<string>().toMatchTypeOf<UserResponse['error']>()
       expectTypeOf<null>().toMatchTypeOf<UserResponse['error']>()
-      
+
       // Next cursor can be null (last page)
-      expectTypeOf<string>().toMatchTypeOf<UserResponse['metadata']['nextCursor']>()
-      expectTypeOf<null>().toMatchTypeOf<UserResponse['metadata']['nextCursor']>()
+      expectTypeOf<string>().toMatchTypeOf<
+        UserResponse['metadata']['nextCursor']
+      >()
+      expectTypeOf<null>().toMatchTypeOf<
+        UserResponse['metadata']['nextCursor']
+      >()
     })
 
     it('should work with form validation patterns', () => {
@@ -225,13 +231,13 @@ describe('Nullable type', () => {
         name: string
         email: string
       }
-      
+
       type UserCacheEntry = CacheEntry<CacheUser>
 
       // Value can be null (cache miss)
       expectTypeOf<CacheUser>().toMatchTypeOf<UserCacheEntry['value']>()
       expectTypeOf<null>().toMatchTypeOf<UserCacheEntry['value']>()
-      
+
       // ExpiresAt can be null (never expires)
       expectTypeOf<number>().toMatchTypeOf<UserCacheEntry['expiresAt']>()
       expectTypeOf<null>().toMatchTypeOf<UserCacheEntry['expiresAt']>()
@@ -249,11 +255,13 @@ describe('Nullable type', () => {
       // Optional filters can be null
       expectTypeOf<string>().toMatchTypeOf<SearchParams['category']>()
       expectTypeOf<null>().toMatchTypeOf<SearchParams['category']>()
-      
+
       expectTypeOf<number>().toMatchTypeOf<SearchParams['priceMin']>()
       expectTypeOf<null>().toMatchTypeOf<SearchParams['priceMin']>()
-      
-      expectTypeOf<'price' | 'date' | 'relevance'>().toMatchTypeOf<NonNullable<SearchParams['sortBy']>>()
+
+      expectTypeOf<'price' | 'date' | 'relevance'>().toMatchTypeOf<
+        NonNullable<SearchParams['sortBy']>
+      >()
       expectTypeOf<null>().toMatchTypeOf<SearchParams['sortBy']>()
     })
 
@@ -270,9 +278,11 @@ describe('Nullable type', () => {
       // Root node has null parent
       expectTypeOf<StringTreeNode>().toMatchTypeOf<StringTreeNode['parent']>()
       expectTypeOf<null>().toMatchTypeOf<StringTreeNode['parent']>()
-      
+
       // Children is always an array (never null)
-      expectTypeOf<StringTreeNode[]>().toEqualTypeOf<StringTreeNode['children']>()
+      expectTypeOf<StringTreeNode[]>().toEqualTypeOf<
+        StringTreeNode['children']
+      >()
     })
   })
 
@@ -280,7 +290,7 @@ describe('Nullable type', () => {
     it('should work with NonNullable utility', () => {
       type NullableString = Nullable<string>
       type NonNullableString = NonNullable<NullableString>
-      
+
       // NonNullable should remove null
       expectTypeOf<NonNullableString>().toEqualTypeOf<string>()
       expectTypeOf<string>().toMatchTypeOf<NonNullableString>()
@@ -304,7 +314,7 @@ describe('Nullable type', () => {
       // Each field should be nullable
       expectTypeOf<number>().toMatchTypeOf<NullableUser['id']>()
       expectTypeOf<null>().toMatchTypeOf<NullableUser['id']>()
-      
+
       expectTypeOf<string>().toMatchTypeOf<NullableUser['name']>()
       expectTypeOf<null>().toMatchTypeOf<NullableUser['name']>()
     })
@@ -314,7 +324,7 @@ describe('Nullable type', () => {
 
       // String becomes nullable
       expectTypeOf<string | null>().toEqualTypeOf<NullableIfString<string>>()
-      
+
       // Number stays the same
       expectTypeOf<number>().toEqualTypeOf<NullableIfString<number>>()
     })
@@ -331,7 +341,7 @@ describe('Nullable type', () => {
       type NullableFields = Pick<User, 'email' | 'avatar'>
       expectTypeOf<Nullable<string>>().toEqualTypeOf<NullableFields['email']>()
       expectTypeOf<Nullable<string>>().toEqualTypeOf<NullableFields['avatar']>()
-      
+
       // Omit nullable fields
       type RequiredFields = Omit<User, 'email' | 'avatar'>
       expectTypeOf<number>().toEqualTypeOf<RequiredFields['id']>()

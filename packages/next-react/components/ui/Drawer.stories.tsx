@@ -1,4 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+
 import {
   Drawer,
   DrawerClose,
@@ -8,36 +9,36 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer";
+} from '@/components/ui/drawer'
 
 const meta = {
-  title: "UI/Drawer",
+  title: 'UI/Drawer',
   component: Drawer,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "A drawer component built on top of Vaul.",
+        component: 'A drawer component built on top of Vaul.',
       },
     },
   },
 
   argTypes: {
     open: {
-      control: { type: "boolean" },
-      description: "Controls whether the drawer is open",
+      control: { type: 'boolean' },
+      description: 'Controls whether the drawer is open',
     },
     direction: {
-      control: { type: "select" },
-      options: ["top", "bottom", "left", "right"],
-      description: "Direction from which the drawer slides",
+      control: { type: 'select' },
+      options: ['top', 'bottom', 'left', 'right'],
+      description: 'Direction from which the drawer slides',
     },
   },
-} satisfies Meta<typeof Drawer>;
+} satisfies Meta<typeof Drawer>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: (args) => (
@@ -68,7 +69,7 @@ export const Default: Story = {
       </DrawerContent>
     </Drawer>
   ),
-};
+}
 
 export const Simple: Story = {
   render: (args) => (
@@ -105,4 +106,4 @@ export const Simple: Story = {
       </DrawerContent>
     </Drawer>
   ),
-};
+}

@@ -34,7 +34,9 @@ describe('arrGen', () => {
     const doubled = Array.from({ length: 5 }, (_, i) => i * 2)
     expect(doubled).toEqual([0, 2, 4, 6, 8])
 
-    const letters = Array.from({ length: 3 }, (_, i) => String.fromCharCode(65 + i))
+    const letters = Array.from({ length: 3 }, (_, i) =>
+      String.fromCharCode(65 + i),
+    )
     expect(letters).toEqual(['A', 'B', 'C'])
   })
 })

@@ -1,29 +1,30 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Textarea } from "@/components/ui/textarea";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+
+import { Textarea } from '@/components/ui/textarea'
 
 const meta = {
-  title: "UI/Textarea",
+  title: 'UI/Textarea',
   component: Textarea,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "Textarea component for building user interfaces.",
+        component: 'Textarea component for building user interfaces.',
       },
     },
   },
 
   argTypes: {
     className: {
-      control: { type: "text" },
-      description: "Additional CSS classes",
+      control: { type: 'text' },
+      description: 'Additional CSS classes',
     },
   },
-} satisfies Meta<typeof Textarea>;
+} satisfies Meta<typeof Textarea>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: () => (
@@ -32,7 +33,7 @@ export const Default: Story = {
       Default Textarea
     </Textarea>
   ),
-};
+}
 
 export const Example: Story = {
   render: () => (
@@ -41,4 +42,4 @@ export const Example: Story = {
       Example Textarea
     </Textarea>
   ),
-};
+}

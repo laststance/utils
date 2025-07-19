@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { cssRegex, cssModuleRegex, sassRegex, sassModuleRegex } from './css'
+
+import { cssRegex, cssModuleRegex, sassRegex, sassModuleRegex } from './css.js'
 
 describe('CSS Regex Patterns', () => {
   describe('cssRegex', () => {

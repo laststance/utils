@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+
 import { cn } from './utils'
 
 describe('cn utility function', () => {
@@ -38,7 +39,7 @@ describe('cn utility function', () => {
       const result = cn('btn', {
         'btn-primary': true,
         'btn-disabled': false,
-        'btn-large': true
+        'btn-large': true,
       })
       expect(result).toBe('btn btn-primary btn-large')
     })
@@ -46,7 +47,7 @@ describe('cn utility function', () => {
     it('should handle all false conditions', () => {
       const result = cn('btn', {
         'btn-primary': false,
-        'btn-disabled': false
+        'btn-disabled': false,
       })
       expect(result).toBe('btn')
     })
@@ -55,13 +56,17 @@ describe('cn utility function', () => {
       const result = cn('btn', {
         'btn-primary': true,
         'btn-disabled': true,
-        'btn-large': true
+        'btn-large': true,
       })
       expect(result).toBe('btn btn-primary btn-disabled btn-large')
     })
 
     it('should handle mixed string and object inputs', () => {
-      const result = cn('base-class', { active: true, disabled: false }, 'additional-class')
+      const result = cn(
+        'base-class',
+        { active: true, disabled: false },
+        'additional-class',
+      )
       expect(result).toBe('base-class active additional-class')
     })
   })
@@ -78,12 +83,18 @@ describe('cn utility function', () => {
     })
 
     it('should handle arrays with conditional objects', () => {
-      const result = cn(['px-4', { 'py-2': true, 'py-4': false }], 'bg-blue-500')
+      const result = cn(
+        ['px-4', { 'py-2': true, 'py-4': false }],
+        'bg-blue-500',
+      )
       expect(result).toBe('px-4 py-2 bg-blue-500')
     })
 
     it('should filter falsy values in arrays', () => {
-      const result = cn(['px-4', false, null, 'py-2'], ['', undefined, 'bg-blue-500'])
+      const result = cn(
+        ['px-4', false, null, 'py-2'],
+        ['', undefined, 'bg-blue-500'],
+      )
       expect(result).toBe('px-4 py-2 bg-blue-500')
     })
   })
@@ -159,94 +170,127 @@ describe('cn utility function', () => {
 
   describe('component usage patterns', () => {
     it('should handle button component pattern', () => {
-      const getButtonClasses = (variant: 'primary' | 'secondary', className?: string) => {
+      const getButtonClasses = (
+        variant: 'primary' | 'secondary',
+        className?: string,
+      ) => {
         return cn(
           'px-4 py-2 rounded font-medium', // base styles
           {
             'bg-blue-500 text-white': variant === 'primary',
-            'bg-gray-200 text-gray-900': variant === 'secondary'
+            'bg-gray-200 text-gray-900': variant === 'secondary',
           },
-          className // custom override
+          className, // custom override
         )
       }
-      
+
       const result = getButtonClasses('primary', 'custom-button-class')
-      expect(result).toBe('px-4 py-2 rounded font-medium bg-blue-500 text-white custom-button-class')
+      expect(result).toBe(
+        'px-4 py-2 rounded font-medium bg-blue-500 text-white custom-button-class',
+      )
     })
 
     it('should handle input component pattern', () => {
       const hasError = true
       const isDisabled = false
       const customClass = 'my-input'
-      
+
       const result = cn(
         'w-full px-3 py-2 border rounded', // base
         {
           'border-red-500 focus:border-red-600': hasError,
           'border-gray-300 focus:border-blue-500': !hasError,
-          'opacity-50 cursor-not-allowed': isDisabled
+          'opacity-50 cursor-not-allowed': isDisabled,
         },
-        customClass
+        customClass,
       )
-      
-      expect(result).toBe('w-full px-3 py-2 border rounded border-red-500 focus:border-red-600 my-input')
+
+      expect(result).toBe(
+        'w-full px-3 py-2 border rounded border-red-500 focus:border-red-600 my-input',
+      )
     })
 
     it('should handle card component pattern', () => {
-      const getCardClasses = (isInteractive: boolean, size: 'small' | 'medium' | 'large') => {
+      const getCardClasses = (
+        isInteractive: boolean,
+        size: 'small' | 'medium' | 'large',
+      ) => {
         return cn(
           'bg-white border rounded shadow', // base
           {
             'hover:shadow-lg cursor-pointer': isInteractive,
             'p-4': size === 'small',
             'p-6': size === 'medium',
-            'p-8': size === 'large'
-          }
+            'p-8': size === 'large',
+          },
         )
       }
-      
+
       const result = getCardClasses(true, 'large')
-      expect(result).toBe('bg-white border rounded shadow hover:shadow-lg cursor-pointer p-8')
+      expect(result).toBe(
+        'bg-white border rounded shadow hover:shadow-lg cursor-pointer p-8',
+      )
     })
 
     it('should handle modal/dialog component pattern', () => {
-      const getModalClasses = (isOpen: boolean, size: 'small' | 'medium' | 'large') => {
+      const getModalClasses = (
+        isOpen: boolean,
+        size: 'small' | 'medium' | 'large',
+      ) => {
         return cn(
           'fixed inset-0 z-50 flex items-center justify-center',
           {
-            'hidden': !isOpen,
-            'block': isOpen
+            hidden: !isOpen,
+            block: isOpen,
           },
           'bg-black bg-opacity-50',
           {
             'p-4': size === 'small',
             'p-6': size === 'medium',
-            'p-8': size === 'large'
-          }
+            'p-8': size === 'large',
+          },
         )
       }
-      
+
       const result = getModalClasses(true, 'medium')
-      expect(result).toBe('fixed inset-0 z-50 items-center justify-center block bg-opacity-50 p-6')
+      expect(result).toBe(
+        'fixed inset-0 z-50 items-center justify-center block bg-opacity-50 p-6',
+      )
     })
   })
 
   describe('edge cases and complex scenarios', () => {
     it('should handle very long class strings', () => {
-      const longClasses = Array.from({ length: 100 }, (_, i) => `class-${i}`).join(' ')
+      const longClasses = Array.from(
+        { length: 100 },
+        (_, i) => `class-${i}`,
+      ).join(' ')
       const result = cn(longClasses, 'additional-class')
       expect(result).toContain('additional-class')
       expect(result.split(' ').length).toBe(101)
     })
 
     it('should handle classes with special characters', () => {
-      const result = cn('before:content-[""]', 'after:content-["→"]', 'data-[state=open]:animate-in')
-      expect(result).toBe('before:content-[""] after:content-["→"] data-[state=open]:animate-in')
+      const result = cn(
+        'before:content-[""]',
+        'after:content-["→"]',
+        'data-[state=open]:animate-in',
+      )
+      expect(result).toBe(
+        'before:content-[""] after:content-["→"] data-[state=open]:animate-in',
+      )
     })
 
     it('should handle numeric class names', () => {
-      const result = cn('grid-cols-1', 'sm:grid-cols-2', 'lg:grid-cols-3', 'xl:grid-cols-4')
-      expect(result).toBe('grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4')
+      const result = cn(
+        'grid-cols-1',
+        'sm:grid-cols-2',
+        'lg:grid-cols-3',
+        'xl:grid-cols-4',
+      )
+      expect(result).toBe(
+        'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
+      )
     })
 
     it('should handle arbitrary value classes', () => {
@@ -266,16 +310,16 @@ describe('cn utility function', () => {
           group1: true,
           group2: {
             nested1: true,
-            nested2: false
-          }
+            nested2: false,
+          },
         },
         [
           'array1',
           {
             array2: true,
-            array3: false
-          }
-        ]
+            array3: false,
+          },
+        ],
       )
       // Note: clsx doesn't handle nested objects in conditions, so this should flatten
       expect(result).toContain('base')
@@ -294,7 +338,7 @@ describe('cn utility function', () => {
         0 && 'zero-conditional',
         // @ts-expect-error Testing intentionally falsy expressions
         '' && 'empty-conditional',
-        'valid-class'
+        'valid-class',
       )
       expect(result).toBe('base valid-class')
     })
@@ -303,31 +347,31 @@ describe('cn utility function', () => {
   describe('performance considerations', () => {
     it('should handle many class combinations efficiently', () => {
       const startTime = performance.now()
-      
+
       for (let i = 0; i < 1000; i++) {
         cn(
           'base-class',
           { active: i % 2 === 0 },
           { disabled: i % 3 === 0 },
           `dynamic-${i % 5}`,
-          i % 4 === 0 ? 'special' : null
+          i % 4 === 0 ? 'special' : null,
         )
       }
-      
+
       const endTime = performance.now()
       const duration = endTime - startTime
-      
+
       // Should complete 1000 operations quickly
       expect(duration).toBeLessThan(100)
     })
 
     it('should handle large arrays efficiently', () => {
       const largeArray = Array.from({ length: 1000 }, (_, i) => `class-${i}`)
-      
+
       const startTime = performance.now()
       const result = cn(...largeArray)
       const endTime = performance.now()
-      
+
       expect(result).toContain('class-0')
       expect(result).toContain('class-999')
       expect(endTime - startTime).toBeLessThan(50)
@@ -338,9 +382,9 @@ describe('cn utility function', () => {
     it('should work with component prop spreading', () => {
       const buttonProps = {
         className: cn('btn', 'btn-primary'),
-        disabled: false
+        disabled: false,
       }
-      
+
       expect(buttonProps.className).toBe('btn btn-primary')
     })
 
@@ -348,57 +392,67 @@ describe('cn utility function', () => {
       const showBorder = true
       const isLarge = false
       const customClasses = 'my-custom-class'
-      
+
       const result = cn(
         'base-component',
         showBorder && 'border border-gray-300',
         isLarge ? 'text-lg p-4' : 'text-sm p-2',
-        customClasses
+        customClasses,
       )
-      
-      expect(result).toBe('base-component border border-gray-300 text-sm p-2 my-custom-class')
+
+      expect(result).toBe(
+        'base-component border border-gray-300 text-sm p-2 my-custom-class',
+      )
     })
 
     it('should handle theme-based class application', () => {
-      const getThemedClasses = (theme: 'light' | 'dark', variant: 'danger' | 'primary' | 'secondary') => {
+      const getThemedClasses = (
+        theme: 'light' | 'dark',
+        variant: 'danger' | 'primary' | 'secondary',
+      ) => {
         return cn(
           'button',
           {
             'bg-white text-black': theme === 'light',
-            'bg-black text-white': theme === 'dark'
+            'bg-black text-white': theme === 'dark',
           },
           {
             'border-red-500': variant === 'danger',
             'border-blue-500': variant === 'primary',
-            'border-gray-500': variant === 'secondary'
-          }
+            'border-gray-500': variant === 'secondary',
+          },
         )
       }
-      
+
       const result = getThemedClasses('dark', 'danger')
       expect(result).toBe('button bg-black text-white border-red-500')
     })
 
     it('should handle form validation state classes', () => {
-      const getFormClasses = (validationState: 'default' | 'success' | 'error' | 'warning', isFocused: boolean) => {
+      const getFormClasses = (
+        validationState: 'default' | 'success' | 'error' | 'warning',
+        isFocused: boolean,
+      ) => {
         return cn(
           'input border rounded px-3 py-2',
           {
             'border-gray-300': validationState === 'default',
             'border-green-500 bg-green-50': validationState === 'success',
             'border-red-500 bg-red-50': validationState === 'error',
-            'border-yellow-500 bg-yellow-50': validationState === 'warning'
+            'border-yellow-500 bg-yellow-50': validationState === 'warning',
           },
           {
             'ring-2 ring-opacity-50': isFocused,
             'ring-red-200': isFocused && validationState === 'error',
-            'ring-green-200': isFocused && validationState === 'success'
-          }
+            'ring-green-200': isFocused && validationState === 'success',
+          },
         )
       }
-      
+
       const result = getFormClasses('error', true)
-      expect(result).toBe('input border rounded px-3 py-2 border-red-500 bg-red-50 ring-2 ring-red-200')
+      expect(result).toBe(
+        'input border rounded px-3 py-2 border-red-500 bg-red-50 ring-2 ring-red-200',
+      )
     })
   })
 
@@ -409,7 +463,7 @@ describe('cn utility function', () => {
     })
 
     it('should accept conditional object inputs', () => {
-      const result = cn({ 'class1': true, 'class2': false })
+      const result = cn({ class1: true, class2: false })
       expect(typeof result).toBe('string')
     })
 

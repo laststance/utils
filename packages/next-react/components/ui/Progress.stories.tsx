@@ -1,29 +1,30 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Progress } from "@/components/ui/progress";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+
+import { Progress } from '@/components/ui/progress'
 
 const meta = {
-  title: "UI/Progress",
+  title: 'UI/Progress',
   component: Progress,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "Progress component for building user interfaces.",
+        component: 'Progress component for building user interfaces.',
       },
     },
   },
 
   argTypes: {
     className: {
-      control: { type: "text" },
-      description: "Additional CSS classes",
+      control: { type: 'text' },
+      description: 'Additional CSS classes',
     },
   },
-} satisfies Meta<typeof Progress>;
+} satisfies Meta<typeof Progress>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: () => (
@@ -32,7 +33,7 @@ export const Default: Story = {
       Default Progress
     </Progress>
   ),
-};
+}
 
 export const Example: Story = {
   render: () => (
@@ -41,4 +42,4 @@ export const Example: Story = {
       Example Progress
     </Progress>
   ),
-};
+}

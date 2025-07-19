@@ -1,10 +1,12 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { git } from './git.js'
 import { exec } from 'child_process'
+
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+
+import { git } from './git.js'
 
 // Mock child_process module
 vi.mock('child_process', () => ({
-  exec: vi.fn()
+  exec: vi.fn(),
 }))
 
 // Get the mocked exec function
@@ -28,9 +30,12 @@ describe('git', () => {
       })
 
       const result = await git('branch --show-current')
-      
+
       expect(result).toBe('main')
-      expect(mockExec).toHaveBeenCalledWith('git branch --show-current', expect.any(Function))
+      expect(mockExec).toHaveBeenCalledWith(
+        'git branch --show-current',
+        expect.any(Function),
+      )
     })
 
     it('should handle git status command', async () => {
@@ -41,7 +46,7 @@ describe('git', () => {
       })
 
       const result = await git('status --porcelain')
-      
+
       expect(result).toBe('M file1.js\n A file2.js\n?? file3.js')
     })
 
@@ -53,7 +58,7 @@ describe('git', () => {
       })
 
       const result = await git('log --oneline -5')
-      
+
       expect(result).toBe('abc123 Initial commit\ndef456 Add feature')
     })
 
@@ -65,7 +70,7 @@ describe('git', () => {
       })
 
       const result = await git('rev-parse HEAD')
-      
+
       expect(result).toBe('abc123def456789')
     })
 
@@ -77,7 +82,7 @@ describe('git', () => {
       })
 
       const result = await git('config user.email')
-      
+
       expect(result).toBe('user@example.com')
     })
   })
@@ -91,7 +96,7 @@ describe('git', () => {
       })
 
       const result = await git('branch --show-current --no-color')
-      
+
       expect(result).toBe('feature/new-feature')
     })
 
@@ -103,7 +108,7 @@ describe('git', () => {
       })
 
       const result = await git('log -1 src/file.js')
-      
+
       expect(result).toBe('commit abc123\nAuthor: John Doe')
     })
 
@@ -115,7 +120,7 @@ describe('git', () => {
       })
 
       const result = await git('commit -m "Fix: resolve issue #123"')
-      
+
       expect(result).toBe('Changes committed')
     })
 
@@ -127,7 +132,7 @@ describe('git', () => {
       })
 
       const result = await git('-c user.name="Test User" checkout main')
-      
+
       expect(result).toBe('Switched to branch main')
     })
   })
@@ -139,7 +144,7 @@ describe('git', () => {
       })
 
       const result = await git('status --porcelain')
-      
+
       expect(result).toBe('')
     })
 
@@ -149,7 +154,7 @@ describe('git', () => {
       })
 
       const result = await git('status --porcelain')
-      
+
       expect(result).toBe('')
     })
 
@@ -160,7 +165,7 @@ describe('git', () => {
       })
 
       const result = await git('branch --show-current')
-      
+
       expect(result).toBe('main')
     })
 
@@ -171,7 +176,7 @@ describe('git', () => {
       })
 
       const result = await git('log -1 --format=full')
-      
+
       expect(result).toBe('commit abc123\n  Author: John  Doe')
     })
   })
@@ -212,17 +217,23 @@ describe('git', () => {
         callback(mockError)
       })
 
-      await expect(git('clone https://github.com/user/repo.git')).rejects.toThrow('Could not resolve hostname github.com')
+      await expect(
+        git('clone https://github.com/user/repo.git'),
+      ).rejects.toThrow('Could not resolve hostname github.com')
     })
 
     it('should handle git errors with non-zero exit codes', async () => {
-      const mockError = new Error('Command failed: git diff --name-only HEAD~1..HEAD')
+      const mockError = new Error(
+        'Command failed: git diff --name-only HEAD~1..HEAD',
+      )
       mockError.code = 128
       mockExec.mockImplementation((command, callback) => {
         callback(mockError)
       })
 
-      await expect(git('diff --name-only HEAD~1..HEAD')).rejects.toThrow('Command failed: git diff --name-only HEAD~1..HEAD')
+      await expect(git('diff --name-only HEAD~1..HEAD')).rejects.toThrow(
+        'Command failed: git diff --name-only HEAD~1..HEAD',
+      )
     })
   })
 
@@ -232,29 +243,29 @@ describe('git', () => {
         'status --porcelain',
         'branch --show-current',
         'rev-parse HEAD',
-        'log --oneline -5'
+        'log --oneline -5',
       ]
-      
+
       const outputs = [
         ' M file1.js\n',
         'main\n',
         'abc123def\n',
-        'abc123 Commit message\n'
+        'abc123 Commit message\n',
       ]
 
       mockExec.mockImplementation((command, callback) => {
-        const cmdIndex = commands.findIndex(cmd => command === `git ${cmd}`)
+        const cmdIndex = commands.findIndex((cmd) => command === `git ${cmd}`)
         setTimeout(() => callback(null, outputs[cmdIndex]), Math.random() * 10)
       })
 
-      const promises = commands.map(cmd => git(cmd))
+      const promises = commands.map(async (cmd) => git(cmd))
       const results = await Promise.all(promises)
 
       expect(results).toEqual([
         'M file1.js',
         'main',
         'abc123def',
-        'abc123 Commit message'
+        'abc123 Commit message',
       ])
     })
 
@@ -270,7 +281,7 @@ describe('git', () => {
       const promises = [
         git('success-command'),
         git('failure-command'),
-        git('another-success-command')
+        git('another-success-command'),
       ]
 
       const results = await Promise.allSettled(promises)
@@ -291,7 +302,7 @@ describe('git', () => {
       })
 
       const result = await git('diff HEAD~1..HEAD')
-      
+
       expect(result).toBe('diff --git a/file.js b/file.js\n+++ added line')
     })
 
@@ -302,7 +313,7 @@ describe('git', () => {
       })
 
       const result = await git('remote -v')
-      
+
       expect(result).toBe('origin\tupstream')
     })
 
@@ -313,7 +324,7 @@ describe('git', () => {
       })
 
       const result = await git('tag -l')
-      
+
       expect(result).toBe('v1.0.0\nv1.1.0\nv2.0.0')
     })
 
@@ -324,19 +335,22 @@ describe('git', () => {
       })
 
       const result = await git('stash list')
-      
+
       expect(result).toBe('stash@{0}: WIP on main: abc123 Work in progress')
     })
 
     it('should handle git worktree commands', async () => {
-      const mockOutput = '/path/to/main      abc123 [main]\n/path/to/feature  def456 [feature]\n'
+      const mockOutput =
+        '/path/to/main      abc123 [main]\n/path/to/feature  def456 [feature]\n'
       mockExec.mockImplementation((command, callback) => {
         callback(null, mockOutput)
       })
 
       const result = await git('worktree list')
-      
-      expect(result).toBe('/path/to/main      abc123 [main]\n/path/to/feature  def456 [feature]')
+
+      expect(result).toBe(
+        '/path/to/main      abc123 [main]\n/path/to/feature  def456 [feature]',
+      )
     })
   })
 
@@ -357,7 +371,7 @@ describe('git', () => {
       })
 
       const result = await git('log --oneline')
-      
+
       expect(result).toBe(longOutput.trim())
       expect(result.endsWith('end')).toBe(true)
     })
@@ -369,19 +383,22 @@ describe('git', () => {
       })
 
       const result = await git('log --oneline --format="%s"')
-      
+
       expect(result).toBe('🚀 feat: add new feature\n✨ improvement')
     })
 
     it('should handle binary data in git output gracefully', async () => {
       // Simulate binary data that might come from git commands
-      const binaryOutput = Buffer.from([0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x00, 0x57, 0x6f, 0x72, 0x6c, 0x64]).toString() + '\n'
+      const binaryOutput =
+        Buffer.from([
+          0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x00, 0x57, 0x6f, 0x72, 0x6c, 0x64,
+        ]).toString() + '\n'
       mockExec.mockImplementation((command, callback) => {
         callback(null, binaryOutput)
       })
 
       const result = await git('show --format=raw')
-      
+
       expect(result).toBe('Hello\x00World')
     })
   })
@@ -397,7 +414,7 @@ describe('git', () => {
       const startTime = Date.now()
       const result = await git('clone https://large-repo.com/repo.git')
       const endTime = Date.now()
-      
+
       expect(result).toBe('Slow command result')
       expect(endTime - startTime).toBeGreaterThanOrEqual(100)
     })
@@ -409,7 +426,9 @@ describe('git', () => {
         setTimeout(() => callback(null, `result-${count}\n`), 1)
       })
 
-      const commands = Array.from({ length: 10 }, (_, i) => git(`command-${i}`))
+      const commands = Array.from({ length: 10 }, async (_, i) =>
+        git(`command-${i}`),
+      )
       const results = await Promise.all(commands)
 
       expect(results).toHaveLength(10)
@@ -424,8 +443,14 @@ describe('git', () => {
       const gitWorkflow = [
         { cmd: 'status --porcelain', output: ' M file.js\n' },
         { cmd: 'add .', output: '' },
-        { cmd: 'commit -m "Update file"', output: '[main abc123] Update file\n' },
-        { cmd: 'push origin main', output: 'To origin\n   abc123..def456  main -> main\n' }
+        {
+          cmd: 'commit -m "Update file"',
+          output: '[main abc123] Update file\n',
+        },
+        {
+          cmd: 'push origin main',
+          output: 'To origin\n   abc123..def456  main -> main\n',
+        },
       ]
 
       for (const { cmd, output } of gitWorkflow) {
@@ -443,8 +468,14 @@ describe('git', () => {
       const ciCommands = [
         { cmd: 'rev-parse --verify HEAD', output: 'abc123def456\n' },
         { cmd: 'describe --always --tags', output: 'v1.2.3-4-gabc123d\n' },
-        { cmd: 'diff --name-only HEAD~1 HEAD', output: 'src/file1.js\nsrc/file2.js\n' },
-        { cmd: 'log --format="%H %s" -1', output: 'abc123def456 feat: add new feature\n' }
+        {
+          cmd: 'diff --name-only HEAD~1 HEAD',
+          output: 'src/file1.js\nsrc/file2.js\n',
+        },
+        {
+          cmd: 'log --format="%H %s" -1',
+          output: 'abc123def456 feat: add new feature\n',
+        },
       ]
 
       for (const { cmd, output } of ciCommands) {

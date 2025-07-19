@@ -1,29 +1,30 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Switch } from "@/components/ui/switch";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+
+import { Switch } from '@/components/ui/switch'
 
 const meta = {
-  title: "UI/Switch",
+  title: 'UI/Switch',
   component: Switch,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "Switch component for building user interfaces.",
+        component: 'Switch component for building user interfaces.',
       },
     },
   },
 
   argTypes: {
     className: {
-      control: { type: "text" },
-      description: "Additional CSS classes",
+      control: { type: 'text' },
+      description: 'Additional CSS classes',
     },
   },
-} satisfies Meta<typeof Switch>;
+} satisfies Meta<typeof Switch>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: () => (
@@ -32,7 +33,7 @@ export const Default: Story = {
       Default Switch
     </Switch>
   ),
-};
+}
 
 export const Example: Story = {
   render: () => (
@@ -41,4 +42,4 @@ export const Example: Story = {
       Example Switch
     </Switch>
   ),
-};
+}

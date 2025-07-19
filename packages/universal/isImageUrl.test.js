@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+
 import { isImgUrl } from './isImageUrl.js'
 
 describe('isImgUrl', () => {

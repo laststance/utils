@@ -1,5 +1,6 @@
 import { cleanup } from '@testing-library/react'
 import { afterEach, beforeAll, afterAll, vi } from 'vitest'
+
 import { server } from './mocks/server'
 
 // Extends Vitest's expect with jest-dom matchers
@@ -24,7 +25,7 @@ afterAll(() => {
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: vi.fn().mockImplementation(query => ({
+  value: vi.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,
@@ -51,4 +52,4 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
 }))
 
 // Mock fetch for happy-dom
-global.fetch = globalThis.fetch 
+global.fetch = globalThis.fetch

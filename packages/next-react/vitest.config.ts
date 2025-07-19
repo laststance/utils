@@ -20,7 +20,7 @@ export default defineConfig({
         'components/**/*.{ts,tsx}',
         'hooks/**/*.{ts,tsx}',
         'lib/**/*.{ts,tsx}',
-        'app/**/*.{ts,tsx}'
+        'app/**/*.{ts,tsx}',
       ],
       exclude: [
         ...coverageConfigDefaults.exclude,
@@ -83,7 +83,7 @@ export default defineConfig({
         'components/ui/textarea.tsx',
         'components/ui/toggle-group.tsx',
         'components/ui/toggle.tsx',
-        'components/ui/tooltip.tsx'
+        'components/ui/tooltip.tsx',
       ],
       thresholds: {
         lines: 85,
@@ -95,25 +95,25 @@ export default defineConfig({
           lines: 90,
           functions: 90,
           branches: 85,
-          statements: 90
+          statements: 90,
         },
         'hooks/**/*.{ts,tsx}': {
           lines: 95,
           functions: 95,
           branches: 90,
-          statements: 95
-        }
+          statements: 95,
+        },
       },
       watermarks: {
         statements: [65, 80],
         functions: [65, 80],
         branches: [60, 75],
-        lines: [65, 80]
+        lines: [65, 80],
       },
       reportOnFailure: true,
       skipFull: false,
       clean: true,
-      cleanOnRerun: true
+      cleanOnRerun: true,
     },
   },
   resolve: {

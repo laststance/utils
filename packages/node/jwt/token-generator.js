@@ -1,17 +1,17 @@
 // from https://gist.github.com/ziluvatar/a3feb505c4c0ec37059054537b38fc48
 /**
  * JWT Token Generator with refresh capability
- * 
+ *
  * Example implementation for refreshing JWT tokens using the jsonwebtoken library.
  * This was requested as a feature for the main library but was kept separate
  * to avoid additional maintenance overhead.
- * 
+ *
  * Features:
  * - Sign new JWT tokens
  * - Refresh existing tokens while preserving payload
  * - Configurable signing options
  * - Support for both symmetric and asymmetric keys
- * 
+ *
  * @example
  * ```javascript
  * const generator = new TokenGenerator(
@@ -19,10 +19,10 @@
  *   'secret-key',      // public key for verification (same for symmetric)
  *   { expiresIn: '1h', algorithm: 'HS256' }
  * )
- * 
+ *
  * // Sign a new token
  * const token = generator.sign({ userId: 123, role: 'user' })
- * 
+ *
  * // Refresh the token
  * const refreshed = generator.refresh(token, {
  *   verify: { algorithms: ['HS256'] },
@@ -35,7 +35,7 @@ import jwt from 'jsonwebtoken'
 
 /**
  * TokenGenerator constructor
- * 
+ *
  * @param {string|Buffer} secretOrPrivateKey - Secret or private key for signing tokens
  * @param {string|Buffer} secretOrPublicKey - Secret or public key for verifying tokens
  * @param {object} options - Default signing options (algorithm, keyid, expiresIn, etc.)
@@ -48,7 +48,7 @@ function TokenGenerator(secretOrPrivateKey, secretOrPublicKey, options) {
 
 /**
  * Signs a new JWT token with the provided payload.
- * 
+ *
  * @param {object} payload - Data to include in the token
  * @param {object} signOptions - Additional signing options (overrides defaults)
  * @returns {string} Signed JWT token
@@ -61,7 +61,7 @@ TokenGenerator.prototype.sign = function (payload, signOptions) {
 /**
  * Refreshes an existing JWT token, creating a new token with the same payload.
  * Removes standard JWT claims (iat, exp, nbf, jti) and creates a fresh token.
- * 
+ *
  * @param {string} token - Existing JWT token to refresh
  * @param {object} refreshOptions - Refresh configuration
  * @param {object} refreshOptions.verify - Options for token verification

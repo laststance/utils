@@ -1,4 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+
 import {
   Dialog,
   DialogContent,
@@ -7,35 +8,35 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog'
 
 const meta = {
-  title: "UI/Dialog",
+  title: 'UI/Dialog',
   component: Dialog,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "A dialog component built on top of Radix UI Dialog.",
+        component: 'A dialog component built on top of Radix UI Dialog.',
       },
     },
   },
 
   argTypes: {
     open: {
-      control: { type: "boolean" },
-      description: "Controls whether the dialog is open",
+      control: { type: 'boolean' },
+      description: 'Controls whether the dialog is open',
     },
     modal: {
-      control: { type: "boolean" },
-      description: "Whether the dialog should be modal",
+      control: { type: 'boolean' },
+      description: 'Whether the dialog should be modal',
     },
   },
-} satisfies Meta<typeof Dialog>;
+} satisfies Meta<typeof Dialog>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: (args) => (
@@ -82,7 +83,7 @@ export const Default: Story = {
       </DialogContent>
     </Dialog>
   ),
-};
+}
 
 export const Confirmation: Story = {
   render: (args) => (
@@ -111,4 +112,4 @@ export const Confirmation: Story = {
       </DialogContent>
     </Dialog>
   ),
-};
+}

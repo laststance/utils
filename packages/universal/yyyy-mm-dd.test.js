@@ -1,4 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest'
+
 import { yyyy_mm_dd } from './yyyy-mm-dd.js'
 
 describe('yyyy_mm_dd', () => {
@@ -11,7 +12,7 @@ describe('yyyy_mm_dd', () => {
     const mockDate = new Date('2023-12-25T10:30:45.123Z')
     vi.useFakeTimers()
     vi.setSystemTime(mockDate)
-    
+
     const result = yyyy_mm_dd()
     expect(result).toBe('2023-12-25')
   })
@@ -22,12 +23,12 @@ describe('yyyy_mm_dd', () => {
     vi.useFakeTimers()
     vi.setSystemTime(jan1)
     expect(yyyy_mm_dd()).toBe('2024-01-01')
-    
+
     // Test December 31st
     const dec31 = new Date('2023-12-31T23:59:59.999Z')
     vi.setSystemTime(dec31)
     expect(yyyy_mm_dd()).toBe('2023-12-31')
-    
+
     // Test leap year date
     const leapDay = new Date('2024-02-29T12:00:00.000Z')
     vi.setSystemTime(leapDay)
@@ -40,7 +41,7 @@ describe('yyyy_mm_dd', () => {
     vi.useFakeTimers()
     vi.setSystemTime(earlyDate)
     expect(yyyy_mm_dd()).toBe('2023-01-05')
-    
+
     // Test single digit month and day
     const singleDigits = new Date('2023-03-07T08:45:00.000Z')
     vi.setSystemTime(singleDigits)
@@ -53,7 +54,7 @@ describe('yyyy_mm_dd', () => {
     vi.useFakeTimers()
     vi.setSystemTime(utcDate)
     expect(yyyy_mm_dd()).toBe('2023-07-15')
-    
+
     // Even if the local time would be next day, ISO string is UTC
     const lateUTC = new Date('2023-07-15T23:59:59.999Z')
     vi.setSystemTime(lateUTC)
@@ -64,9 +65,9 @@ describe('yyyy_mm_dd', () => {
     const mockDate = new Date('2023-06-15T12:00:00.000Z')
     vi.useFakeTimers()
     vi.setSystemTime(mockDate)
-    
+
     const result = yyyy_mm_dd()
-    
+
     // Check format structure
     expect(result).toMatch(/^\d{4}-\d{2}-\d{2}$/)
     expect(result.split('-')).toHaveLength(3)
@@ -81,12 +82,12 @@ describe('yyyy_mm_dd', () => {
     vi.useFakeTimers()
     vi.setSystemTime(y2k)
     expect(yyyy_mm_dd()).toBe('2000-06-15')
-    
+
     // Test year with high digits
     const future = new Date('2099-11-30T10:15:30.000Z')
     vi.setSystemTime(future)
     expect(yyyy_mm_dd()).toBe('2099-11-30')
-    
+
     // Test early 21st century
     const early2000s = new Date('2001-02-28T16:45:00.000Z')
     vi.setSystemTime(early2000s)
@@ -98,10 +99,10 @@ describe('yyyy_mm_dd', () => {
     const testDate = new Date('2023-08-20T14:25:10.500Z')
     vi.useFakeTimers()
     vi.setSystemTime(testDate)
-    
+
     const isoString = testDate.toISOString()
     const datePart = isoString.split('T')[0]
-    
+
     expect(datePart).toBe('2023-08-20')
     expect(yyyy_mm_dd()).toBe(datePart)
   })
@@ -120,11 +121,11 @@ describe('yyyy_mm_dd', () => {
       ['2023-09-15', '2023-09-15'],
       ['2023-10-15', '2023-10-15'],
       ['2023-11-15', '2023-11-15'],
-      ['2023-12-15', '2023-12-15']
+      ['2023-12-15', '2023-12-15'],
     ]
-    
+
     vi.useFakeTimers()
-    
+
     testDates.forEach(([input, expected]) => {
       const date = new Date(input + 'T12:00:00.000Z')
       vi.setSystemTime(date)

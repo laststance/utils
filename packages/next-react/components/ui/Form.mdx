@@ -1,5 +1,13 @@
-import { Meta, Title, Primary, Controls, Stories, Story, Canvas } from '@storybook/blocks';
-import * as FormStories from './Form.stories';
+import {
+  Meta,
+  Title,
+  Primary,
+  Controls,
+  Stories,
+  Story,
+  Canvas,
+} from '@storybook/blocks'
+import * as FormStories from './Form.stories'
 
 <Meta of={FormStories} />
 
@@ -20,7 +28,7 @@ Form component for building user interfaces.
 ## Features
 
 - **Feature 1**: Description of key feature
-- **Feature 2**: Description of another feature  
+- **Feature 2**: Description of another feature
 - **Feature 3**: Description of additional feature
 - **Accessible**: Built with accessibility in mind
 - **Customizable**: Easy to style and extend
@@ -30,7 +38,7 @@ Form component for building user interfaces.
 Import the Form component:
 
 ```tsx
-import { Form } from "@/components/ui/-form"
+import { Form } from '@/components/ui/-form'
 ```
 
 ## Examples
@@ -63,17 +71,13 @@ The Form component accepts the following props:
 ### Basic Form
 
 ```tsx
-<Form>
-  Content here
-</Form>
+<Form>Content here</Form>
 ```
 
 ### Form with Props
 
 ```tsx
-<Form className="custom-class">
-  Custom content
-</Form>
+<Form className="custom-class">Custom content</Form>
 ```
 
 ## Accessibility
@@ -87,11 +91,13 @@ The Form component accepts the following props:
 ## Design Guidelines
 
 ### Do
+
 - Use clear and descriptive content
 - Follow consistent spacing patterns
 - Provide proper context
 
 ### Don't
+
 - Overuse the component
 - Ignore accessibility requirements
 - Break established patterns

@@ -1,5 +1,13 @@
-import { Meta, Title, Primary, Controls, Stories, Story, Canvas } from '@storybook/blocks';
-import * as ToggleGroupStories from './ToggleGroup.stories';
+import {
+  Meta,
+  Title,
+  Primary,
+  Controls,
+  Stories,
+  Story,
+  Canvas,
+} from '@storybook/blocks'
+import * as ToggleGroupStories from './ToggleGroup.stories'
 
 <Meta of={ToggleGroupStories} />
 
@@ -20,7 +28,7 @@ Toggle Group component for building user interfaces.
 ## Features
 
 - **Feature 1**: Description of key feature
-- **Feature 2**: Description of another feature  
+- **Feature 2**: Description of another feature
 - **Feature 3**: Description of additional feature
 - **Accessible**: Built with accessibility in mind
 - **Customizable**: Easy to style and extend
@@ -30,7 +38,7 @@ Toggle Group component for building user interfaces.
 Import the ToggleGroup component:
 
 ```tsx
-import { ToggleGroup } from "@/components/ui/-toggle-group"
+import { ToggleGroup } from '@/components/ui/-toggle-group'
 ```
 
 ## Examples
@@ -63,17 +71,13 @@ The ToggleGroup component accepts the following props:
 ### Basic ToggleGroup
 
 ```tsx
-<ToggleGroup>
-  Content here
-</ToggleGroup>
+<ToggleGroup>Content here</ToggleGroup>
 ```
 
 ### ToggleGroup with Props
 
 ```tsx
-<ToggleGroup className="custom-class">
-  Custom content
-</ToggleGroup>
+<ToggleGroup className="custom-class">Custom content</ToggleGroup>
 ```
 
 ## Accessibility
@@ -87,11 +91,13 @@ The ToggleGroup component accepts the following props:
 ## Design Guidelines
 
 ### Do
+
 - Use clear and descriptive content
 - Follow consistent spacing patterns
 - Provide proper context
 
 ### Don't
+
 - Overuse the component
 - Ignore accessibility requirements
 - Break established patterns

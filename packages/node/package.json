@@ -15,5 +15,6 @@
   "devDependencies": {
     "jsonwebtoken": "^9.0.2",
     "tsx": "^4.20.3"
-  }
+  },
+  "type": "module"
 }

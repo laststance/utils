@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { invariant } from './invariant'
+
+import { invariant } from './invariant.js'
 
 describe('invariant', () => {
   describe('condition validation', () => {
@@ -74,13 +75,28 @@ describe('invariant', () => {
       }).toThrow('User john has role admin')
 
       expect(() => {
-        invariant(false, 'Expected %s but got %s for property %s', 'string', 'number', 'name')
+        invariant(
+          false,
+          'Expected %s but got %s for property %s',
+          'string',
+          'number',
+          'name',
+        )
       }).toThrow('Expected string but got number for property name')
     })
 
     it('should handle multiple %s placeholders with all argument types', () => {
       expect(() => {
-        invariant(false, 'Args: %s %s %s %s %s %s', 'str', 123, true, null, undefined, { key: 'value' })
+        invariant(
+          false,
+          'Args: %s %s %s %s %s %s',
+          'str',
+          123,
+          true,
+          null,
+          undefined,
+          { key: 'value' },
+        )
       }).toThrow('Args: str 123 true null undefined [object Object]')
     })
 
@@ -105,7 +121,7 @@ describe('invariant', () => {
     it('should handle complex object serialization', () => {
       const obj = { name: 'test', nested: { value: 42 } }
       const arr = [1, 2, 3]
-      
+
       expect(() => {
         invariant(false, 'Object: %s, Array: %s', obj, arr)
       }).toThrow('Object: [object Object], Array: 1,2,3')
@@ -140,10 +156,22 @@ describe('invariant', () => {
 
     it('should create generic error when format is undefined in development', () => {
       try {
-        invariant(false, undefined as any, undefined, undefined, undefined, undefined, undefined, undefined, true)
+        invariant(
+          false,
+          undefined as any,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          true,
+        )
       } catch (error) {
         expect(error).toBeInstanceOf(Error)
-        expect(error.message).toBe('invariant requires an error message argument')
+        expect(error.message).toBe(
+          'invariant requires an error message argument',
+        )
       }
     })
   })
@@ -151,24 +179,54 @@ describe('invariant', () => {
   describe('development vs production mode', () => {
     it('should validate format argument in development mode', () => {
       expect(() => {
-        invariant(false, undefined as any, undefined, undefined, undefined, undefined, undefined, undefined, true)
+        invariant(
+          false,
+          undefined as any,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          true,
+        )
       }).toThrow('invariant requires an error message argument')
     })
 
     it('should create minified error in production mode when format is undefined', () => {
       try {
-        invariant(false, undefined as any, undefined, undefined, undefined, undefined, undefined, undefined, false)
+        invariant(
+          false,
+          undefined as any,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          false,
+        )
       } catch (error) {
         expect(error.message).toBe(
           'Minified exception occurred; use the non-minified dev environment ' +
-          'for the full error message and additional helpful warnings.'
+            'for the full error message and additional helpful warnings.',
         )
       }
     })
 
     it('should still format messages in production mode when format is provided', () => {
       try {
-        invariant(false, 'Production error: %s', 'value', undefined, undefined, undefined, undefined, undefined, undefined)
+        invariant(
+          false,
+          'Production error: %s',
+          'value',
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+        )
       } catch (error) {
         expect(error.message).toBe('Production error: value')
         expect(error.name).toBe('Invariant Violation')
@@ -208,7 +266,10 @@ describe('invariant', () => {
     })
 
     it('should handle very long format strings', () => {
-      const longFormat = 'This is a very long error message that might be used in real applications '.repeat(10) + '%s'
+      const longFormat =
+        'This is a very long error message that might be used in real applications '.repeat(
+          10,
+        ) + '%s'
       expect(() => {
         invariant(false, longFormat, 'end')
       }).toThrow()
@@ -231,7 +292,7 @@ describe('invariant', () => {
     it('should handle circular references gracefully', () => {
       const circular: any = { name: 'test' }
       circular.self = circular
-      
+
       expect(() => {
         invariant(false, 'Circular: %s', circular)
       }).toThrow('Circular: [object Object]')
@@ -247,7 +308,7 @@ describe('invariant', () => {
       }
 
       invariant(true, 'This will not execute: %s', expensiveOperation())
-      
+
       // The expensive operation should still be executed because it's passed as argument
       expect(sideEffectExecuted).toBe(true)
     })
@@ -285,7 +346,11 @@ describe('invariant', () => {
     it('should work with type guards', () => {
       const value: unknown = 'not a number'
       expect(() => {
-        invariant(typeof value === 'number', 'Expected number but got %s', typeof value)
+        invariant(
+          typeof value === 'number',
+          'Expected number but got %s',
+          typeof value,
+        )
       }).toThrow('Expected number but got string')
     })
 

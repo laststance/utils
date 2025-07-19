@@ -1,4 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+
 import {
   Sheet,
   SheetTrigger,
@@ -7,35 +8,36 @@ import {
   SheetFooter,
   SheetTitle,
   SheetDescription,
-} from "@/components/ui/sheet";
+} from '@/components/ui/sheet'
 
 const meta = {
-  title: "UI/Sheet",
+  title: 'UI/Sheet',
   component: Sheet,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "A slide-out panel component built on top of Radix UI Dialog.",
+        component:
+          'A slide-out panel component built on top of Radix UI Dialog.',
       },
     },
   },
 
   argTypes: {
     open: {
-      control: { type: "boolean" },
-      description: "Controls whether the sheet is open",
+      control: { type: 'boolean' },
+      description: 'Controls whether the sheet is open',
     },
     modal: {
-      control: { type: "boolean" },
-      description: "Whether the sheet should be modal",
+      control: { type: 'boolean' },
+      description: 'Whether the sheet should be modal',
     },
   },
-} satisfies Meta<typeof Sheet>;
+} satisfies Meta<typeof Sheet>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: (args) => (
@@ -63,7 +65,7 @@ export const Default: Story = {
       </SheetContent>
     </Sheet>
   ),
-};
+}
 
 export const FromLeft: Story = {
   render: (args) => (
@@ -86,4 +88,4 @@ export const FromLeft: Story = {
       </SheetContent>
     </Sheet>
   ),
-};
+}

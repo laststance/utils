@@ -1,10 +1,12 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { spawn } from 'node:child_process'
+
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+
 import { exec } from './exec.js'
 
 // Mock spawn
 vi.mock('node:child_process', () => ({
-  spawn: vi.fn()
+  spawn: vi.fn(),
 }))
 
 describe('exec', () => {
@@ -14,9 +16,9 @@ describe('exec', () => {
   beforeEach(() => {
     // Create a mock child process object
     mockChild = {
-      on: vi.fn()
+      on: vi.fn(),
     }
-    
+
     spawnMock = vi.mocked(spawn)
     spawnMock.mockReturnValue(mockChild)
   })
@@ -36,10 +38,10 @@ describe('exec', () => {
       })
 
       const promise = exec('echo "hello world"')
-      
+
       expect(spawnMock).toHaveBeenCalledWith('echo "hello world"', {
         shell: true,
-        stdio: 'inherit'
+        stdio: 'inherit',
       })
 
       await expect(promise).resolves.toBeUndefined()
@@ -49,7 +51,7 @@ describe('exec', () => {
       const customOptions = {
         cwd: '/tmp',
         env: { NODE_ENV: 'test' },
-        encoding: 'utf8'
+        encoding: 'utf8',
       }
 
       mockChild.on.mockImplementation((event, callback) => {
@@ -63,14 +65,14 @@ describe('exec', () => {
       expect(spawnMock).toHaveBeenCalledWith('ls -la', {
         shell: true,
         stdio: 'inherit',
-        ...customOptions
+        ...customOptions,
       })
     })
 
     it('should override default options with provided options', async () => {
       const customOptions = {
         shell: false,
-        stdio: 'pipe'
+        stdio: 'pipe',
       }
 
       mockChild.on.mockImplementation((event, callback) => {
@@ -82,7 +84,7 @@ describe('exec', () => {
       await exec('node --version', customOptions)
 
       expect(spawnMock).toHaveBeenCalledWith('node --version', {
-        shell: false,  // Should override default
+        shell: false, // Should override default
         stdio: 'pipe', // Should override default
       })
     })
@@ -98,13 +100,13 @@ describe('exec', () => {
       })
 
       const promise = exec('exit 1')
-      
+
       await expect(promise).rejects.toBeUndefined()
     })
 
     it('should reject with different exit codes', async () => {
       const testCases = [1, 2, 127, 255]
-      
+
       for (const exitCode of testCases) {
         mockChild.on.mockImplementation((event, callback) => {
           if (event === 'exit') {
@@ -130,7 +132,7 @@ describe('exec', () => {
 
       expect(spawnMock).toHaveBeenCalledWith('git status --porcelain', {
         shell: true,
-        stdio: 'inherit'
+        stdio: 'inherit',
       })
     })
 
@@ -143,10 +145,13 @@ describe('exec', () => {
 
       await exec('ls -la | grep test > output.txt')
 
-      expect(spawnMock).toHaveBeenCalledWith('ls -la | grep test > output.txt', {
-        shell: true,
-        stdio: 'inherit'
-      })
+      expect(spawnMock).toHaveBeenCalledWith(
+        'ls -la | grep test > output.txt',
+        {
+          shell: true,
+          stdio: 'inherit',
+        },
+      )
     })
 
     it('should handle commands with environment variables', async () => {
@@ -160,7 +165,7 @@ describe('exec', () => {
 
       expect(spawnMock).toHaveBeenCalledWith('NODE_ENV=production npm start', {
         shell: true,
-        stdio: 'inherit'
+        stdio: 'inherit',
       })
     })
 
@@ -171,12 +176,13 @@ describe('exec', () => {
         }
       })
 
-      const complexCommand = 'for file in *.js; do echo "Processing $file"; done'
+      const complexCommand =
+        'for file in *.js; do echo "Processing $file"; done'
       await exec(complexCommand)
 
       expect(spawnMock).toHaveBeenCalledWith(complexCommand, {
         shell: true,
-        stdio: 'inherit'
+        stdio: 'inherit',
       })
     })
   })
@@ -193,7 +199,7 @@ describe('exec', () => {
 
       expect(spawnMock).toHaveBeenCalledWith('', {
         shell: true,
-        stdio: 'inherit'
+        stdio: 'inherit',
       })
     })
 
@@ -209,7 +215,7 @@ describe('exec', () => {
 
       expect(spawnMock).toHaveBeenCalledWith(specialCommand, {
         shell: true,
-        stdio: 'inherit'
+        stdio: 'inherit',
       })
     })
 
@@ -224,7 +230,7 @@ describe('exec', () => {
 
       expect(spawnMock).toHaveBeenCalledWith('echo test', {
         shell: true,
-        stdio: 'inherit'
+        stdio: 'inherit',
       })
     })
 
@@ -239,7 +245,7 @@ describe('exec', () => {
 
       expect(spawnMock).toHaveBeenCalledWith('echo test', {
         shell: true,
-        stdio: 'inherit'
+        stdio: 'inherit',
       })
     })
   })
@@ -252,7 +258,7 @@ describe('exec', () => {
             if (event === 'exit') {
               setTimeout(() => callback(0), Math.random() * 10) // Random delay
             }
-          })
+          }),
         }
         return child
       })
@@ -260,7 +266,7 @@ describe('exec', () => {
       const promises = [
         exec('echo "command1"'),
         exec('echo "command2"'),
-        exec('echo "command3"')
+        exec('echo "command3"'),
       ]
 
       await Promise.all(promises)
@@ -277,7 +283,7 @@ describe('exec', () => {
             if (event === 'exit') {
               setTimeout(() => callback(exitCode), 0)
             }
-          })
+          }),
         }
         return child
       })
@@ -285,7 +291,7 @@ describe('exec', () => {
       const promises = [
         exec('echo "success"'),
         exec('echo "failure"'),
-        exec('echo "success"')
+        exec('echo "success"'),
       ]
 
       const results = await Promise.allSettled(promises)
@@ -307,7 +313,7 @@ describe('exec', () => {
 
     it('should handle child process events correctly', async () => {
       const exitCallback = vi.fn()
-      
+
       mockChild.on.mockImplementation((event, callback) => {
         if (event === 'exit') {
           exitCallback.mockImplementation(callback)
@@ -315,10 +321,10 @@ describe('exec', () => {
       })
 
       const promise = exec('test-command')
-      
+
       // Simulate exit event
       exitCallback(0)
-      
+
       await expect(promise).resolves.toBeUndefined()
       expect(mockChild.on).toHaveBeenCalledWith('exit', expect.any(Function))
     })
@@ -334,7 +340,7 @@ describe('exec', () => {
         'curl -s https://api.example.com/data',
         'find . -name "*.js" -type f',
         'tar -czf archive.tar.gz src/',
-        'chmod +x script.sh && ./script.sh'
+        'chmod +x script.sh && ./script.sh',
       ]
 
       for (const command of testCommands) {
@@ -345,10 +351,10 @@ describe('exec', () => {
         })
 
         await exec(command)
-        
+
         expect(spawnMock).toHaveBeenCalledWith(command, {
           shell: true,
-          stdio: 'inherit'
+          stdio: 'inherit',
         })
       }
     })
@@ -359,9 +365,9 @@ describe('exec', () => {
         env: {
           NODE_ENV: 'production',
           CI: 'true',
-          PATH: process.env.PATH
+          PATH: process.env.PATH,
         },
-        stdio: ['inherit', 'pipe', 'pipe']
+        stdio: ['inherit', 'pipe', 'pipe'],
       }
 
       mockChild.on.mockImplementation((event, callback) => {
@@ -374,7 +380,7 @@ describe('exec', () => {
 
       expect(spawnMock).toHaveBeenCalledWith('npm run build', {
         shell: true,
-        ...buildOptions
+        ...buildOptions,
       })
     })
   })

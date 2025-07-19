@@ -1,5 +1,13 @@
-import { Meta, Title, Primary, Controls, Stories, Story, Canvas } from '@storybook/blocks';
-import * as RadioGroupStories from './RadioGroup.stories';
+import {
+  Meta,
+  Title,
+  Primary,
+  Controls,
+  Stories,
+  Story,
+  Canvas,
+} from '@storybook/blocks'
+import * as RadioGroupStories from './RadioGroup.stories'
 
 <Meta of={RadioGroupStories} />
 
@@ -20,7 +28,7 @@ Radio Group component for building user interfaces.
 ## Features
 
 - **Feature 1**: Description of key feature
-- **Feature 2**: Description of another feature  
+- **Feature 2**: Description of another feature
 - **Feature 3**: Description of additional feature
 - **Accessible**: Built with accessibility in mind
 - **Customizable**: Easy to style and extend
@@ -30,7 +38,7 @@ Radio Group component for building user interfaces.
 Import the RadioGroup component:
 
 ```tsx
-import { RadioGroup } from "@/components/ui/-radio-group"
+import { RadioGroup } from '@/components/ui/-radio-group'
 ```
 
 ## Examples
@@ -63,17 +71,13 @@ The RadioGroup component accepts the following props:
 ### Basic RadioGroup
 
 ```tsx
-<RadioGroup>
-  Content here
-</RadioGroup>
+<RadioGroup>Content here</RadioGroup>
 ```
 
 ### RadioGroup with Props
 
 ```tsx
-<RadioGroup className="custom-class">
-  Custom content
-</RadioGroup>
+<RadioGroup className="custom-class">Custom content</RadioGroup>
 ```
 
 ## Accessibility
@@ -87,11 +91,13 @@ The RadioGroup component accepts the following props:
 ## Design Guidelines
 
 ### Do
+
 - Use clear and descriptive content
 - Follow consistent spacing patterns
 - Provide proper context
 
 ### Don't
+
 - Overuse the component
 - Ignore accessibility requirements
 - Break established patterns

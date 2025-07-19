@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import isError from './isError'
+
+import isError from './isError.js'
 
 describe('isError', () => {
   describe('true cases - valid Error objects', () => {
@@ -27,24 +28,26 @@ describe('isError', () => {
           this.code = code
         }
       }
-      
+
       class AnotherError extends TypeError {
         constructor(message: string) {
           super(message)
           this.name = 'AnotherError'
         }
       }
-      
-      expect(isError(new CustomError('custom message', 'CUSTOM_CODE'))).toBe(true)
+
+      expect(isError(new CustomError('custom message', 'CUSTOM_CODE'))).toBe(
+        true,
+      )
       expect(isError(new AnotherError('another message'))).toBe(true)
     })
 
     it('should return true for Error-like objects with name and message', () => {
       const errorLike = {
         name: 'CustomError',
-        message: 'This is an error-like object'
+        message: 'This is an error-like object',
       }
-      
+
       expect(isError(errorLike)).toBe(true)
     })
 
@@ -54,16 +57,16 @@ describe('isError', () => {
         message: 'Validation failed',
         code: 400,
         field: 'email',
-        timestamp: Date.now()
+        timestamp: Date.now(),
       }
-      
+
       expect(isError(complexError)).toBe(true)
     })
 
     it('should return true for objects with inherited Error properties', () => {
       const proto = { name: 'BaseError', message: 'Base message' }
       const derived = Object.create(proto)
-      
+
       expect(isError(derived)).toBe(true)
     })
   })
@@ -85,26 +88,26 @@ describe('isError', () => {
 
     it('should return false for objects missing name property', () => {
       const noName = {
-        message: 'Has message but no name'
+        message: 'Has message but no name',
       }
-      
+
       expect(isError(noName)).toBe(false)
     })
 
     it('should return false for objects missing message property', () => {
       const noMessage = {
-        name: 'HasName'
+        name: 'HasName',
       }
-      
+
       expect(isError(noMessage)).toBe(false)
     })
 
     it('should return false for objects missing both name and message', () => {
       const neither = {
         code: 500,
-        description: 'Server error'
+        description: 'Server error',
       }
-      
+
       expect(isError(neither)).toBe(false)
     })
 
@@ -138,9 +141,9 @@ describe('isError', () => {
     it('should handle objects with name/message as non-string values', () => {
       const numericProperties = {
         name: 123,
-        message: 456
+        message: 456,
       }
-      
+
       expect(isError(numericProperties)).toBe(true) // Still has name and message properties
     })
 
@@ -159,10 +162,14 @@ describe('isError', () => {
 
     it('should handle objects with getters for name/message', () => {
       const objectWithGetters = {
-        get name() { return 'GetterError' },
-        get message() { return 'Message from getter' }
+        get name() {
+          return 'GetterError'
+        },
+        get message() {
+          return 'Message from getter'
+        },
       }
-      
+
       expect(isError(objectWithGetters)).toBe(true)
     })
 
@@ -171,46 +178,46 @@ describe('isError', () => {
       Object.defineProperty(obj, 'name', {
         value: 'HiddenError',
         enumerable: false,
-        configurable: true
+        configurable: true,
       })
       Object.defineProperty(obj, 'message', {
         value: 'Hidden message',
         enumerable: false,
-        configurable: true
+        configurable: true,
       })
-      
+
       expect(isError(obj)).toBe(true)
     })
 
     it('should handle frozen objects', () => {
       const frozenError = Object.freeze({
         name: 'FrozenError',
-        message: 'This object is frozen'
+        message: 'This object is frozen',
       })
-      
+
       expect(isError(frozenError)).toBe(true)
     })
 
     it('should handle sealed objects', () => {
       const sealedError = Object.seal({
         name: 'SealedError',
-        message: 'This object is sealed'
+        message: 'This object is sealed',
       })
-      
+
       expect(isError(sealedError)).toBe(true)
     })
 
     it('should handle objects with symbol properties', () => {
       const symName = Symbol('name')
       const symMessage = Symbol('message')
-      
+
       const objectWithSymbols = {
         [symName]: 'SymbolError',
         [symMessage]: 'Symbol message',
         name: 'RegularError',
-        message: 'Regular message'
+        message: 'Regular message',
       }
-      
+
       expect(isError(objectWithSymbols)).toBe(true)
     })
   })
@@ -225,16 +232,16 @@ describe('isError', () => {
       const errorLike = Object.create(Error.prototype)
       errorLike.name = 'CreatedError'
       errorLike.message = 'Created with Object.create'
-      
+
       expect(isError(errorLike)).toBe(true)
     })
 
-    it('should work with objects that don\'t inherit from Error', () => {
+    it("should work with objects that don't inherit from Error", () => {
       const plainObject = {
         name: 'PlainError',
-        message: 'Not inheriting from Error'
+        message: 'Not inheriting from Error',
       }
-      
+
       expect(isError(plainObject)).toBe(true)
     })
 
@@ -242,7 +249,7 @@ describe('isError', () => {
       const nullProtoObject = Object.create(null)
       nullProtoObject.name = 'NullProtoError'
       nullProtoObject.message = 'Has null prototype'
-      
+
       expect(isError(nullProtoObject)).toBe(true)
     })
   })
@@ -254,9 +261,10 @@ describe('isError', () => {
       } catch (error) {
         expect(isError(error)).toBe(true)
       }
-      
+
       try {
-        (null as any).property
+        const value = (null as any).property
+        expect(value).toBeDefined()
       } catch (error) {
         expect(isError(error)).toBe(true)
       }
@@ -268,8 +276,9 @@ describe('isError', () => {
       } catch (error) {
         expect(isError(error)).toBe(true)
       }
-      
+
       try {
+        // eslint-disable-next-line prefer-promise-reject-errors
         await Promise.reject('String rejection')
       } catch (error) {
         expect(isError(error)).toBe(false)
@@ -282,9 +291,9 @@ describe('isError', () => {
         message: 'Request failed',
         status: 404,
         url: '/api/users/123',
-        timestamp: '2023-01-01T00:00:00Z'
+        timestamp: '2023-01-01T00:00:00Z',
       }
-      
+
       expect(isError(apiError)).toBe(true)
     })
 
@@ -294,10 +303,10 @@ describe('isError', () => {
         message: 'Field validation failed',
         errors: [
           { field: 'email', message: 'Invalid email format' },
-          { field: 'age', message: 'Must be a positive number' }
-        ]
+          { field: 'age', message: 'Must be a positive number' },
+        ],
       }
-      
+
       expect(isError(validationError)).toBe(true)
     })
 
@@ -305,15 +314,15 @@ describe('isError', () => {
       const userData = {
         id: 1,
         username: 'john_doe',
-        email: 'john@example.com'
+        email: 'john@example.com',
       }
-      
+
       const settingsData = {
         theme: 'dark',
         notifications: true,
-        language: 'en'
+        language: 'en',
       }
-      
+
       expect(isError(userData)).toBe(false)
       expect(isError(settingsData)).toBe(false)
     })
@@ -324,27 +333,31 @@ describe('isError', () => {
       function handleUnknown(value: unknown) {
         if (isError(value)) {
           // TypeScript should recognize value as Error here
-          return value.message // Should not cause TypeScript error
+          return (value as Error).message // Type assertion needed for safety
         }
         return 'Not an error'
       }
-      
+
       expect(handleUnknown(new Error('test'))).toBe('test')
       expect(handleUnknown('not error')).toBe('Not an error')
       expect(handleUnknown({ name: 'Error', message: 'test' })).toBe('test')
     })
 
     it('should work with union types', () => {
-      function processValue(value: string | Error | { name: string; message: string }) {
+      function processValue(
+        value: string | Error | { name: string; message: string },
+      ) {
         if (isError(value)) {
-          return `Error: ${value.message}`
+          return `Error: ${(value as Error).message}`
         }
         return `Value: ${value}`
       }
-      
+
       expect(processValue(new Error('test'))).toBe('Error: test')
       expect(processValue('hello')).toBe('Value: hello')
-      expect(processValue({ name: 'CustomError', message: 'custom' })).toBe('Error: custom')
+      expect(processValue({ name: 'CustomError', message: 'custom' })).toBe(
+        'Error: custom',
+      )
     })
   })
 
@@ -355,10 +368,10 @@ describe('isError', () => {
         new TypeError('test2'),
         { name: 'CustomError', message: 'test3' },
         new RangeError('test4'),
-        { name: 'APIError', message: 'test5', status: 500 }
+        { name: 'APIError', message: 'test5', status: 500 },
       ]
-      
-      errors.forEach(error => {
+
+      errors.forEach((error) => {
         expect(isError(error)).toBe(true)
       })
     })
@@ -374,10 +387,10 @@ describe('isError', () => {
         {},
         () => {},
         new Date(),
-        /regex/
+        /regex/,
       ]
-      
-      nonErrors.forEach(value => {
+
+      nonErrors.forEach((value) => {
         expect(isError(value)).toBe(false)
       })
     })
@@ -386,9 +399,11 @@ describe('isError', () => {
       const largeObject = {
         name: 'LargeError',
         message: 'Large error object',
-        ...Object.fromEntries(Array.from({ length: 1000 }, (_, i) => [`prop${i}`, i]))
+        ...Object.fromEntries(
+          Array.from({ length: 1000 }, (_, i) => [`prop${i}`, i]),
+        ),
       }
-      
+
       expect(isError(largeObject)).toBe(true)
     })
   })

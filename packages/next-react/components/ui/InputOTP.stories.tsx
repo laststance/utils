@@ -1,31 +1,32 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import React from "react";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+import React from 'react'
+
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
   InputOTPSeparator,
-} from "@/components/ui/input-otp";
+} from '@/components/ui/input-otp'
 
 const meta = {
-  title: "UI/InputOTP",
+  title: 'UI/InputOTP',
   component: InputOTP,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "One-time password input component built on input-otp library.",
+        component:
+          'One-time password input component built on input-otp library.',
       },
     },
   },
+} satisfies Meta<typeof InputOTP>
 
-} satisfies Meta<typeof InputOTP>;
-
-export default meta;
+export default meta
 type OTPStory = Omit<StoryObj<typeof meta>, 'args'> & {
-  render: () => React.ReactElement;
-};
+  render: () => React.ReactElement
+}
 
 export const Default: OTPStory = {
   render: () => (
@@ -40,7 +41,7 @@ export const Default: OTPStory = {
       </InputOTPGroup>
     </InputOTP>
   ),
-};
+}
 
 export const WithSeparator: OTPStory = {
   render: () => (
@@ -58,7 +59,7 @@ export const WithSeparator: OTPStory = {
       </InputOTPGroup>
     </InputOTP>
   ),
-};
+}
 
 export const FourDigits: OTPStory = {
   render: () => (
@@ -71,4 +72,4 @@ export const FourDigits: OTPStory = {
       </InputOTPGroup>
     </InputOTP>
   ),
-};
+}

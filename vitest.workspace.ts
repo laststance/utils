@@ -3,38 +3,38 @@ import { coverageConfigDefaults } from 'vitest/config'
 
 export default defineWorkspace([
   {
-    extends: "./packages/node/vitest.config.ts",
+    extends: './packages/node/vitest.config.ts',
     test: {
       name: 'node',
-      environment: 'node'
-    }
+      environment: 'node',
+    },
   },
   {
-    extends: "./packages/browser/vitest.config.ts",
+    extends: './packages/browser/vitest.config.ts',
     test: {
       name: 'browser',
-      environment: 'happy-dom'
-    }
+      environment: 'happy-dom',
+    },
   },
   {
-    extends: "./packages/universal/vitest.config.ts",
+    extends: './packages/universal/vitest.config.ts',
     test: {
       name: 'universal',
-      environment: 'happy-dom'
-    }
+      environment: 'happy-dom',
+    },
   },
   {
-    extends: "./packages/types/vitest.config.ts",
+    extends: './packages/types/vitest.config.ts',
     test: {
       name: 'types',
-      environment: 'node'
-    }
+      environment: 'node',
+    },
   },
   {
-    extends: "./packages/next-react/vitest.config.ts",
+    extends: './packages/next-react/vitest.config.ts',
     test: {
       name: 'next-react',
-      environment: 'happy-dom'
-    }
-  }
+      environment: 'happy-dom',
+    },
+  },
 ])

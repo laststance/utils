@@ -1,29 +1,30 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Pagination } from "@/components/ui/pagination";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+
+import { Pagination } from '@/components/ui/pagination'
 
 const meta = {
-  title: "UI/Pagination",
+  title: 'UI/Pagination',
   component: Pagination,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "Pagination component for building user interfaces.",
+        component: 'Pagination component for building user interfaces.',
       },
     },
   },
 
   argTypes: {
     className: {
-      control: { type: "text" },
-      description: "Additional CSS classes",
+      control: { type: 'text' },
+      description: 'Additional CSS classes',
     },
   },
-} satisfies Meta<typeof Pagination>;
+} satisfies Meta<typeof Pagination>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: () => (
@@ -32,7 +33,7 @@ export const Default: Story = {
       Default Pagination
     </Pagination>
   ),
-};
+}
 
 export const Example: Story = {
   render: () => (
@@ -41,4 +42,4 @@ export const Example: Story = {
       Example Pagination
     </Pagination>
   ),
-};
+}

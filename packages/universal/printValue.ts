@@ -3,11 +3,11 @@
 /**
  * Converts any value to a human-readable string representation.
  * Handles special cases like functions, symbols, dates, errors, and circular references.
- * 
+ *
  * @param value - The value to convert to string
  * @param quoteStrings - Whether to wrap string values in quotes (default: false)
  * @returns Human-readable string representation of the value
- * 
+ *
  * @example
  * ```typescript
  * printValue(123)                    // "123"
@@ -73,7 +73,7 @@ export default function printValue(value: any, quoteStrings?: boolean) {
       if (value === undefined) {
         return 'undefined'
       }
-      
+
       const tag = toString.call(value).slice(8, -1)
       if (tag === 'Date') {
         return isNaN(value.getTime()) ? '' + value : value.toISOString(value)
@@ -84,12 +84,12 @@ export default function printValue(value: any, quoteStrings?: boolean) {
       if (tag === 'RegExp') {
         return regExpToString.call(value)
       }
-      
+
       // For strings inside objects, respect the quoteStrings parameter
       if (typeOf === 'string' && quoteStrings) {
         return `"${value}"`
       }
-      
+
       return value
     },
     2,

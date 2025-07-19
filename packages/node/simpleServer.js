@@ -1,17 +1,17 @@
 /**
  * Simple HTTP server that responds with "Hello World" to all requests.
  * Basic demonstration of Node.js HTTP server functionality.
- * 
+ *
  * Server configuration:
  * - Host: 127.0.0.1 (localhost)
  * - Port: 3000
  * - Response: Plain text "Hello World"
- * 
+ *
  * @example
  * ```bash
  * # Run the server
  * node simpleServer.js
- * 
+ *
  * # Test in browser or with curl
  * curl http://localhost:3000
  * # Response: Hello World

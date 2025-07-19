@@ -1,29 +1,30 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Avatar } from "@/components/ui/avatar";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+
+import { Avatar } from '@/components/ui/avatar'
 
 const meta = {
-  title: "UI/Avatar",
+  title: 'UI/Avatar',
   component: Avatar,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "Avatar component for building user interfaces.",
+        component: 'Avatar component for building user interfaces.',
       },
     },
   },
 
   argTypes: {
     className: {
-      control: { type: "text" },
-      description: "Additional CSS classes",
+      control: { type: 'text' },
+      description: 'Additional CSS classes',
     },
   },
-} satisfies Meta<typeof Avatar>;
+} satisfies Meta<typeof Avatar>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: () => (
@@ -32,7 +33,7 @@ export const Default: Story = {
       Default Avatar
     </Avatar>
   ),
-};
+}
 
 export const Example: Story = {
   render: () => (
@@ -41,4 +42,4 @@ export const Example: Story = {
       Example Avatar
     </Avatar>
   ),
-};
+}

@@ -1,10 +1,10 @@
 'use strict'
 
-var should = require('should')
+import { Buffer } from 'buffer'
 
-var sizeof = require('./index')
+import should from 'should'
 
-const Buffer = require('buffer/').Buffer
+import sizeof from './index.js'
 
 describe('sizeof', function () {
   it('should handle null in object keys', function () {
@@ -21,7 +21,7 @@ describe('sizeof', function () {
   })
 
   it('undefined is 0', function () {
-    sizeof().should.be.equal(0)
+    sizeof(undefined).should.be.equal(0)
   })
 
   it('of 3 chars string is 2*3=6', function () {

@@ -1,45 +1,46 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Calendar } from "@/components/ui/calendar";
-import { useState } from "react";
-import type { DateRange } from "react-day-picker";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+import { useState } from 'react'
+import type { DateRange } from 'react-day-picker'
+
+import { Calendar } from '@/components/ui/calendar'
 
 const meta = {
-  title: "UI/Calendar",
+  title: 'UI/Calendar',
   component: Calendar,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "A calendar component built on top of react-day-picker.",
+        component: 'A calendar component built on top of react-day-picker.',
       },
     },
   },
 
   argTypes: {
     mode: {
-      control: { type: "select" },
-      options: ["single", "multiple", "range"],
-      description: "Selection mode",
+      control: { type: 'select' },
+      options: ['single', 'multiple', 'range'],
+      description: 'Selection mode',
     },
     className: {
-      control: { type: "text" },
-      description: "Additional CSS classes",
+      control: { type: 'text' },
+      description: 'Additional CSS classes',
     },
   },
-} satisfies Meta<typeof Calendar>;
+} satisfies Meta<typeof Calendar>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: () => <Calendar className="rounded-md border" />,
-};
+}
 
 export const SingleSelection: Story = {
   render: () => {
-    const [date, setDate] = useState<Date | undefined>(new Date());
-    
+    const [date, setDate] = useState<Date | undefined>(new Date())
+
     return (
       <Calendar
         mode="single"
@@ -47,17 +48,17 @@ export const SingleSelection: Story = {
         onSelect={setDate}
         className="rounded-md border"
       />
-    );
+    )
   },
-};
+}
 
 export const RangeSelection: Story = {
   render: () => {
     const [dateRange, setDateRange] = useState<DateRange | undefined>({
       from: new Date(),
       to: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
-    });
-    
+    })
+
     return (
       <Calendar
         mode="range"
@@ -65,14 +66,14 @@ export const RangeSelection: Story = {
         onSelect={setDateRange}
         className="rounded-md border"
       />
-    );
+    )
   },
-};
+}
 
 export const MultipleSelection: Story = {
   render: () => {
-    const [dates, setDates] = useState<Date[] | undefined>([new Date()]);
-    
+    const [dates, setDates] = useState<Date[] | undefined>([new Date()])
+
     return (
       <Calendar
         mode="multiple"
@@ -80,6 +81,6 @@ export const MultipleSelection: Story = {
         onSelect={setDates}
         className="rounded-md border"
       />
-    );
+    )
   },
-};
+}

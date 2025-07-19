@@ -1,5 +1,13 @@
-import { Meta, Title, Primary, Controls, Stories, Story, Canvas } from '@storybook/blocks';
-import * as ButtonStories from './Button.stories';
+import {
+  Meta,
+  Title,
+  Primary,
+  Controls,
+  Stories,
+  Story,
+  Canvas,
+} from '@storybook/blocks'
+import * as ButtonStories from './Button.stories'
 
 <Meta of={ButtonStories} />
 
@@ -31,7 +39,7 @@ Displays a button or a component that looks like a button.
 Import the button component:
 
 ```tsx
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button'
 ```
 
 ## Examples
@@ -75,6 +83,7 @@ import { Button } from "@/components/ui/button"
 ## Variants
 
 ### Default
+
 The primary button style for main actions.
 
 <Canvas>
@@ -82,6 +91,7 @@ The primary button style for main actions.
 </Canvas>
 
 ### Destructive
+
 For dangerous actions like deletion.
 
 <Canvas>
@@ -89,6 +99,7 @@ For dangerous actions like deletion.
 </Canvas>
 
 ### Outline
+
 A subtle button with a border.
 
 <Canvas>
@@ -96,6 +107,7 @@ A subtle button with a border.
 </Canvas>
 
 ### Secondary
+
 For secondary actions.
 
 <Canvas>
@@ -103,6 +115,7 @@ For secondary actions.
 </Canvas>
 
 ### Ghost
+
 Minimal styling for subtle actions.
 
 <Canvas>
@@ -110,6 +123,7 @@ Minimal styling for subtle actions.
 </Canvas>
 
 ### Link
+
 Styled to look like a link.
 
 <Canvas>
@@ -183,12 +197,14 @@ Extends all standard button HTML attributes plus:
 ## Design Guidelines
 
 ### Do
+
 - Use clear, action-oriented labels
 - Choose appropriate variants for context
 - Provide loading states for async actions
 - Use icons to enhance understanding
 
 ### Don't
+
 - Use too many primary buttons on one page
 - Make buttons too small to tap on mobile
 - Use destructive variant for non-destructive actions
@@ -200,4 +216,4 @@ Extends all standard button HTML attributes plus:
 - [Toggle](/?path=/docs/ui-toggle--docs) - For on/off states
 - [Badge](/?path=/docs/ui-badge--docs) - For status indicators
 
-<Stories /> 
+<Stories />

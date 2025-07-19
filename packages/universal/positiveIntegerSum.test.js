@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+
 import { positiveIntegerSum } from './positiveIntegerSum.js'
 
 describe('positiveIntegerSum', () => {
@@ -27,8 +28,8 @@ describe('positiveIntegerSum', () => {
   it('should match mathematical formula n*(n+1)/2', () => {
     // The mathematical formula for sum of first n positive integers is n*(n+1)/2
     const testValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 25, 50]
-    
-    testValues.forEach(n => {
+
+    testValues.forEach((n) => {
       const expected = (n * (n + 1)) / 2
       expect(positiveIntegerSum(n)).toBe(expected)
     })

@@ -1,29 +1,30 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Command } from "@/components/ui/command";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+
+import { Command } from '@/components/ui/command'
 
 const meta = {
-  title: "UI/Command",
+  title: 'UI/Command',
   component: Command,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "Command component for building user interfaces.",
+        component: 'Command component for building user interfaces.',
       },
     },
   },
 
   argTypes: {
     className: {
-      control: { type: "text" },
-      description: "Additional CSS classes",
+      control: { type: 'text' },
+      description: 'Additional CSS classes',
     },
   },
-} satisfies Meta<typeof Command>;
+} satisfies Meta<typeof Command>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: () => (
@@ -32,7 +33,7 @@ export const Default: Story = {
       Default Command
     </Command>
   ),
-};
+}
 
 export const Example: Story = {
   render: () => (
@@ -41,4 +42,4 @@ export const Example: Story = {
       Example Command
     </Command>
   ),
-};
+}

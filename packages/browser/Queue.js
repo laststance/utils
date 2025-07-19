@@ -3,7 +3,7 @@
 /**
  * A concurrent task queue that processes tasks with configurable concurrency.
  * Allows you to add tasks and process them with a limited number of concurrent executions.
- * 
+ *
  * @example
  * ```javascript
  * // Create a queue with 3 concurrent workers
@@ -11,14 +11,14 @@
  *   console.log('Processing:', task)
  *   await fetch(`/api/process/${task.id}`)
  * }, { concurrency: 3 })
- * 
+ *
  * // Add tasks to the queue
  * queue.push([
  *   { id: 1, data: 'task1' },
  *   { id: 2, data: 'task2' },
  *   { id: 3, data: 'task3' }
  * ])
- * 
+ *
  * // Wait for all tasks to complete
  * await queue.wait({ empty: true })
  * ```
@@ -26,7 +26,7 @@
 class Queue {
   /**
    * Creates a new Queue instance.
-   * 
+   *
    * @param {Function} worker - Function that processes each task
    * @param {Object} options - Configuration options
    * @param {number} [options.concurrency=1] - Maximum number of concurrent tasks
@@ -41,7 +41,7 @@ class Queue {
 
   /**
    * Adds tasks to the queue for processing.
-   * 
+   *
    * @param {Array} entries - Array of tasks to add to the queue
    */
   push(entries) {
@@ -76,7 +76,7 @@ class Queue {
 
   /**
    * Waits for queue conditions to be met.
-   * 
+   *
    * @param {Object} [options={}] - Wait options
    * @param {boolean} [options.empty=false] - If true, waits for queue to be completely empty
    * @returns {Promise<void>} Promise that resolves when condition is met

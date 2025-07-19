@@ -1,6 +1,9 @@
-import { Meta } from '@storybook/blocks';
+import { Meta } from '@storybook/blocks'
 
-<Meta title="UI/Overview" parameters={{ previewTabs: { 'storybook/docs/panel': { index: -1 } } }} />
+<Meta
+  title="UI/Overview"
+  parameters={{ previewTabs: { 'storybook/docs/panel': { index: -1 } } }}
+/>
 
 # UI Component Library
 
@@ -90,10 +93,13 @@ This component library provides a consistent design system for building modern w
 ## 🎨 Design Principles
 
 ### Consistency
+
 All components follow consistent design patterns for spacing, typography, colors, and interactions.
 
 ### Accessibility First
+
 Every component is built with accessibility in mind, including:
+
 - Proper ARIA attributes
 - Keyboard navigation
 - Screen reader support
@@ -101,14 +107,18 @@ Every component is built with accessibility in mind, including:
 - Color contrast compliance
 
 ### Performance
+
 Components are optimized for performance with:
+
 - Tree-shakable exports
 - Minimal bundle impact
 - Efficient re-renders
 - Lazy loading where appropriate
 
 ### Developer Experience
+
 Built for developers with:
+
 - TypeScript support
 - Comprehensive documentation
 - Code examples
@@ -122,14 +132,14 @@ Built for developers with:
 Components are imported from the design system:
 
 ```tsx
-import { Button, Card, Input } from "@/components/ui"
+import { Button, Card, Input } from '@/components/ui'
 ```
 
 ### Basic Usage
 
 ```tsx
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 function MyComponent() {
   return (
@@ -150,14 +160,13 @@ function MyComponent() {
 All components can be customized using Tailwind CSS classes:
 
 ```tsx
-<Button className="bg-blue-500 hover:bg-blue-600">
-  Custom Button
-</Button>
+<Button className="bg-blue-500 hover:bg-blue-600">Custom Button</Button>
 ```
 
 ## 📖 Documentation
 
 Each component includes:
+
 - **Examples** - Live interactive examples
 - **API Reference** - Complete prop documentation
 - **Usage Guidelines** - When and how to use
@@ -167,6 +176,7 @@ Each component includes:
 ## 🛠 Development
 
 The component library is built with:
+
 - **React 18** - Latest React features
 - **TypeScript** - Type safety and better DX
 - **Tailwind CSS** - Utility-first styling
@@ -177,6 +187,7 @@ The component library is built with:
 ## 📱 Responsive Design
 
 All components are designed to work seamlessly across:
+
 - Desktop computers
 - Tablets
 - Mobile devices
@@ -189,6 +200,7 @@ The component library includes built-in dark mode support with automatic theme s
 ## 📝 Contributing
 
 When adding new components:
+
 1. Follow established patterns and conventions
 2. Include comprehensive documentation
 3. Add Storybook stories with examples
@@ -198,4 +210,4 @@ When adding new components:
 
 ---
 
-*This component library is designed to help you build beautiful, accessible, and performant user interfaces quickly and consistently.* 
+_This component library is designed to help you build beautiful, accessible, and performant user interfaces quickly and consistently._

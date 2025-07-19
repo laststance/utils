@@ -10,13 +10,13 @@ describe('Arrayable type', () => {
   it('should accept single values', () => {
     // Single string
     expectTypeOf<string>().toMatchTypeOf<Arrayable<string>>()
-    
+
     // Single number
     expectTypeOf<number>().toMatchTypeOf<Arrayable<number>>()
-    
+
     // Single boolean
     expectTypeOf<boolean>().toMatchTypeOf<Arrayable<boolean>>()
-    
+
     // Single object
     expectTypeOf<{ id: number }>().toMatchTypeOf<Arrayable<{ id: number }>>()
   })
@@ -24,13 +24,13 @@ describe('Arrayable type', () => {
   it('should accept arrays of values', () => {
     // Array of strings
     expectTypeOf<string[]>().toMatchTypeOf<Arrayable<string>>()
-    
+
     // Array of numbers
     expectTypeOf<number[]>().toMatchTypeOf<Arrayable<number>>()
-    
+
     // Array of booleans
     expectTypeOf<boolean[]>().toMatchTypeOf<Arrayable<boolean>>()
-    
+
     // Array of objects
     expectTypeOf<{ id: number }[]>().toMatchTypeOf<Arrayable<{ id: number }>>()
   })
@@ -44,27 +44,29 @@ describe('Arrayable type', () => {
 
     // Single user
     expectTypeOf<User>().toMatchTypeOf<Arrayable<User>>()
-    
+
     // Array of users
     expectTypeOf<User[]>().toMatchTypeOf<Arrayable<User>>()
   })
 
   it('should work with union types', () => {
     type StringOrNumber = string | number
-    
+
     // Single value from union
     expectTypeOf<string>().toMatchTypeOf<Arrayable<StringOrNumber>>()
     expectTypeOf<number>().toMatchTypeOf<Arrayable<StringOrNumber>>()
-    
+
     // Array of union values
-    expectTypeOf<(string | number)[]>().toMatchTypeOf<Arrayable<StringOrNumber>>()
+    expectTypeOf<(string | number)[]>().toMatchTypeOf<
+      Arrayable<StringOrNumber>
+    >()
   })
 
   it('should work with generic constraints', () => {
     // Arrayable of any type
     expectTypeOf<unknown>().toMatchTypeOf<Arrayable<unknown>>()
     expectTypeOf<unknown[]>().toMatchTypeOf<Arrayable<unknown>>()
-    
+
     // Arrayable of never (edge case) - these types work at compile time
     // Note: never types are handled correctly by the type system
     // The type system correctly prevents invalid assignments to never types
@@ -74,20 +76,24 @@ describe('Arrayable type', () => {
     // Nullable string
     expectTypeOf<string | null>().toMatchTypeOf<Arrayable<string | null>>()
     expectTypeOf<(string | null)[]>().toMatchTypeOf<Arrayable<string | null>>()
-    
+
     // Optional string
-    expectTypeOf<string | undefined>().toMatchTypeOf<Arrayable<string | undefined>>()
-    expectTypeOf<(string | undefined)[]>().toMatchTypeOf<Arrayable<string | undefined>>()
+    expectTypeOf<string | undefined>().toMatchTypeOf<
+      Arrayable<string | undefined>
+    >()
+    expectTypeOf<(string | undefined)[]>().toMatchTypeOf<
+      Arrayable<string | undefined>
+    >()
   })
 
   it('should preserve type information', () => {
     // The type should be distributive over unions
     type NumberOrStringArrayable = Arrayable<number | string>
-    
+
     // Should allow individual types
     expectTypeOf<number>().toMatchTypeOf<NumberOrStringArrayable>()
     expectTypeOf<string>().toMatchTypeOf<NumberOrStringArrayable>()
-    
+
     // Should allow arrays
     expectTypeOf<number[]>().toMatchTypeOf<NumberOrStringArrayable>()
     expectTypeOf<string[]>().toMatchTypeOf<NumberOrStringArrayable>()
@@ -102,10 +108,10 @@ describe('Arrayable type', () => {
 
     // Should accept single string
     expectTypeOf(processItems).parameter(0).toEqualTypeOf<Arrayable<string>>()
-    
+
     // Should accept string array
     expectTypeOf(processItems).parameter(0).toEqualTypeOf<Arrayable<string>>()
-    
+
     // Return type should be string array
     expectTypeOf(processItems).returns.toEqualTypeOf<string[]>()
   })
@@ -114,20 +120,20 @@ describe('Arrayable type', () => {
     it('should work with React children pattern', () => {
       // Define ReactNode type locally for testing
       type ReactNode = string | number | boolean | null | undefined
-      
+
       interface ComponentProps {
         children: Arrayable<ReactNode>
       }
 
       // Single element (using ReactNode which includes ReactElement)
       expectTypeOf<ReactNode>().toMatchTypeOf<ComponentProps['children']>()
-      
-      // Array of elements  
+
+      // Array of elements
       expectTypeOf<ReactNode[]>().toMatchTypeOf<ComponentProps['children']>()
-      
+
       // String content
       expectTypeOf<string>().toMatchTypeOf<ComponentProps['children']>()
-      
+
       // Array of mixed content
       expectTypeOf<ReactNode[]>().toMatchTypeOf<ComponentProps['children']>()
     })
@@ -145,7 +151,7 @@ describe('Arrayable type', () => {
 
       // Single user response
       expectTypeOf<User>().toMatchTypeOf<ApiResponse<User>['data']>()
-      
+
       // Multiple users response
       expectTypeOf<User[]>().toMatchTypeOf<ApiResponse<User>['data']>()
     })
@@ -158,13 +164,13 @@ describe('Arrayable type', () => {
 
       // Single plugin
       expectTypeOf<string>().toMatchTypeOf<PluginConfig['plugins']>()
-      
+
       // Multiple plugins
       expectTypeOf<string[]>().toMatchTypeOf<PluginConfig['plugins']>()
-      
+
       // Single middleware
       expectTypeOf<() => void>().toMatchTypeOf<PluginConfig['middleware']>()
-      
+
       // Multiple middleware
       expectTypeOf<(() => void)[]>().toMatchTypeOf<PluginConfig['middleware']>()
     })

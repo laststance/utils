@@ -1,8 +1,10 @@
-import { describe, it, expect, vi } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
+import { describe, it, expect, vi } from 'vitest'
+
 import { server } from '../mocks/server'
+
 import { LoginForm } from './LoginForm'
 
 describe('LoginForm', () => {
@@ -12,7 +14,9 @@ describe('LoginForm', () => {
 
       expect(screen.getByLabelText(/email/i)).toBeInTheDocument()
       expect(screen.getByLabelText(/password/i)).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /sign in/i }),
+      ).toBeInTheDocument()
     })
 
     it('renders with proper form attributes', () => {
@@ -48,7 +52,9 @@ describe('LoginForm', () => {
       await user.click(submitButton)
 
       expect(await screen.findByText(/email is required/i)).toBeInTheDocument()
-      expect(await screen.findByText(/password is required/i)).toBeInTheDocument()
+      expect(
+        await screen.findByText(/password is required/i),
+      ).toBeInTheDocument()
     })
 
     it('shows validation error for short password', async () => {
@@ -62,7 +68,7 @@ describe('LoginForm', () => {
       await user.click(submitButton)
 
       expect(
-        await screen.findByText(/password must be at least 6 characters/i)
+        await screen.findByText(/password must be at least 6 characters/i),
       ).toBeInTheDocument()
     })
 
@@ -77,10 +83,10 @@ describe('LoginForm', () => {
       // Trigger validation error by leaving email empty
       await user.type(passwordInput, 'password123')
       await user.click(submitButton)
-      
+
       // Should show email validation error
       expect(await screen.findByText(/email is required/i)).toBeInTheDocument()
-   
+
       // Clear and enter valid email
       await user.type(emailInput, 'test@example.com')
       await user.click(submitButton)
@@ -111,16 +117,16 @@ describe('LoginForm', () => {
 
     it('disables submit button during loading', async () => {
       const user = userEvent.setup()
-      
+
       // Mock a delayed response
       server.use(
         http.post('/api/login', async () => {
-          await new Promise(resolve => setTimeout(resolve, 200))
+          await new Promise((resolve) => setTimeout(resolve, 200))
           return HttpResponse.json({
             success: true,
             user: { id: 1, email: 'test@example.com' },
           })
-        })
+        }),
       )
 
       render(<LoginForm />)
@@ -143,16 +149,16 @@ describe('LoginForm', () => {
 
     it('shows loading spinner during submission', async () => {
       const user = userEvent.setup()
-      
+
       // Mock a delayed response
       server.use(
         http.post('/api/login', async () => {
-          await new Promise(resolve => setTimeout(resolve, 200))
+          await new Promise((resolve) => setTimeout(resolve, 200))
           return HttpResponse.json({
             success: true,
             user: { id: 1, email: 'test@example.com' },
           })
-        })
+        }),
       )
 
       render(<LoginForm />)
@@ -166,10 +172,14 @@ describe('LoginForm', () => {
       await user.click(submitButton)
 
       // Should show loading spinner
-      expect(screen.getByRole('status', { name: /loading/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('status', { name: /loading/i }),
+      ).toBeInTheDocument()
 
       await waitFor(() => {
-        expect(screen.queryByRole('status', { name: /loading/i })).not.toBeInTheDocument()
+        expect(
+          screen.queryByRole('status', { name: /loading/i }),
+        ).not.toBeInTheDocument()
       })
     })
   })
@@ -188,7 +198,9 @@ describe('LoginForm', () => {
       await user.type(passwordInput, 'wrongpassword')
       await user.click(submitButton)
 
-      expect(await screen.findByText(/invalid credentials/i)).toBeInTheDocument()
+      expect(
+        await screen.findByText(/invalid credentials/i),
+      ).toBeInTheDocument()
       expect(screen.getByRole('alert')).toBeInTheDocument()
     })
 
@@ -222,7 +234,9 @@ describe('LoginForm', () => {
       await user.type(passwordInput, 'wrongpassword')
       await user.click(submitButton)
 
-      expect(await screen.findByText(/invalid credentials/i)).toBeInTheDocument()
+      expect(
+        await screen.findByText(/invalid credentials/i),
+      ).toBeInTheDocument()
 
       // Second submission should clear error
       await user.clear(passwordInput)
@@ -230,21 +244,23 @@ describe('LoginForm', () => {
       await user.click(submitButton)
 
       await waitFor(() => {
-        expect(screen.queryByText(/invalid credentials/i)).not.toBeInTheDocument()
+        expect(
+          screen.queryByText(/invalid credentials/i),
+        ).not.toBeInTheDocument()
       })
     })
 
     it('handles custom error scenarios with MSW', async () => {
       const user = userEvent.setup()
-      
+
       // Override handler for this specific test
       server.use(
         http.post('/api/login', () => {
           return HttpResponse.json(
             { message: 'Account locked' },
-            { status: 423 }
+            { status: 423 },
           )
-        })
+        }),
       )
 
       render(<LoginForm />)
@@ -293,7 +309,10 @@ describe('LoginForm', () => {
       await user.click(submitButton)
 
       await waitFor(() => {
-        expect(onSuccess).toHaveBeenCalledWith({ id: 1, email: 'test@example.com' })
+        expect(onSuccess).toHaveBeenCalledWith({
+          id: 1,
+          email: 'test@example.com',
+        })
       })
     })
   })
@@ -310,7 +329,7 @@ describe('LoginForm', () => {
 
       const errorMessage = await screen.findByText(/email is required/i)
       const errorId = errorMessage.getAttribute('id')
-      
+
       expect(emailInput).toHaveAttribute('aria-describedby', errorId)
       expect(emailInput).toHaveAttribute('aria-invalid', 'true')
     })
@@ -363,4 +382,4 @@ describe('LoginForm', () => {
       expect(await screen.findByText(/welcome back/i)).toBeInTheDocument()
     })
   })
-})  
+})

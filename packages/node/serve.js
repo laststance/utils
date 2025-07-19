@@ -3,7 +3,7 @@
 
 /**
  * Static file server CLI tool
- * 
+ *
  * A feature-rich static file server with:
  * - Custom port and host configuration
  * - SSL/HTTPS support
@@ -12,20 +12,20 @@
  * - SPA (Single Page Application) support
  * - Directory browsing
  * - Configuration file support (serve.json)
- * 
+ *
  * This is a complete implementation based on the popular 'serve' package.
- * 
+ *
  * @example
  * ```bash
  * # Serve current directory on default port (5000)
  * node serve.js
- * 
+ *
  * # Serve specific directory on custom port
  * node serve.js -p 8080 ./public
- * 
+ *
  * # Enable CORS and compression
  * node serve.js --cors --compression
- * 
+ *
  * # HTTPS with SSL certificates
  * node serve.js --ssl-cert cert.pem --ssl-key key.pem
  * ```

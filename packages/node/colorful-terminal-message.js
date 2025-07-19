@@ -3,17 +3,17 @@
 
 /**
  * Colorful terminal message display utility
- * 
+ *
  * Displays eye-catching terminal messages with various emoji patterns.
  * Originally created for Greenlock package promotional messages.
  * Demonstrates terminal output formatting and ANSI color codes.
- * 
+ *
  * Features:
  * - Random emoji pattern selection
  * - ANSI color code formatting
  * - Timed message display
  * - Multiple visual styles (fire, cherry, arrows, eyes)
- * 
+ *
  * @example
  * ```bash
  * # Run the script to see colorful terminal output

@@ -1,5 +1,13 @@
-import { Meta, Title, Primary, Controls, Stories, Story, Canvas } from '@storybook/blocks';
-import * as CardStories from './Card.stories';
+import {
+  Meta,
+  Title,
+  Primary,
+  Controls,
+  Stories,
+  Story,
+  Canvas,
+} from '@storybook/blocks'
+import * as CardStories from './Card.stories'
 
 <Meta of={CardStories} />
 
@@ -39,7 +47,7 @@ import {
   CardHeader,
   CardTitle,
   CardAction,
-} from "@/components/ui/card"
+} from '@/components/ui/card'
 ```
 
 ## Examples
@@ -107,24 +115,31 @@ Clean content display without header or footer:
 The Card component is composed of several sub-components:
 
 ### Card
+
 The root container component that provides the card's visual foundation.
 
 ### CardHeader
+
 Contains the title, description, and optional action elements.
 
 ### CardTitle
+
 The main heading of the card.
 
 ### CardDescription
+
 Descriptive text providing context about the card content.
 
 ### CardAction
+
 Action elements (buttons, icons) positioned in the header area.
 
 ### CardContent
+
 The main content area of the card.
 
 ### CardFooter
+
 Footer area for actions, metadata, or additional information.
 
 ## Usage Examples
@@ -179,6 +194,7 @@ Footer area for actions, metadata, or additional information.
 ## Styling
 
 Cards use a consistent design system with:
+
 - Rounded corners for a modern look
 - Subtle shadows for depth
 - Consistent spacing and typography
@@ -195,12 +211,14 @@ Cards use a consistent design system with:
 ## Design Guidelines
 
 ### Do
+
 - Keep card content focused and related
 - Use consistent card sizes in lists
 - Provide clear actions and next steps
 - Use appropriate heading levels
 
 ### Don't
+
 - Overcrowd cards with too much information
 - Use cards for every piece of content
 - Make cards too wide on large screens
@@ -212,4 +230,4 @@ Cards use a consistent design system with:
 - [Badge](/?path=/docs/ui-badge--docs) - For status indicators
 - [Avatar](/?path=/docs/ui-avatar--docs) - For user information in cards
 
-<Stories /> 
+<Stories />

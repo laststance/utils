@@ -1,6 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { useForm } from "react-hook-form";
-import React from "react";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+import React from 'react'
+import { useForm } from 'react-hook-form'
+
 import {
   Form,
   FormControl,
@@ -9,40 +10,42 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
 
 const meta = {
-  title: "UI/Form",
+  title: 'UI/Form',
   component: Form,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "Form components built on top of react-hook-form.",
+        component: 'Form components built on top of react-hook-form.',
       },
     },
   },
+} satisfies Meta<typeof Form>
 
-} satisfies Meta<typeof Form>;
-
-export default meta;
+export default meta
 type FormStory = Omit<StoryObj<typeof meta>, 'args'> & {
-  render: () => React.ReactElement;
-};
+  render: () => React.ReactElement
+}
 
 export const Default: FormStory = {
   render: () => {
     const form = useForm({
       defaultValues: {
-        username: "",
+        username: '',
       },
-    });
+    })
 
     return (
       <Form {...form}>
-        <form onSubmit={form.handleSubmit((data) => console.log(data))} className="space-y-6">
+        <form
+          onSubmit={form.handleSubmit((data) => console.log(data))}
+          className="space-y-6"
+        >
           <FormField
             control={form.control}
             name="username"
@@ -59,7 +62,7 @@ export const Default: FormStory = {
               </FormItem>
             )}
           />
-          <button 
+          <button
             type="submit"
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
@@ -67,37 +70,44 @@ export const Default: FormStory = {
           </button>
         </form>
       </Form>
-    );
+    )
   },
-};
+}
 
 export const WithValidation: FormStory = {
   render: () => {
     const form = useForm({
       defaultValues: {
-        email: "",
-        password: "",
+        email: '',
+        password: '',
       },
-    });
+    })
 
     return (
       <Form {...form}>
-        <form onSubmit={form.handleSubmit((data) => console.log(data))} className="space-y-4">
+        <form
+          onSubmit={form.handleSubmit((data) => console.log(data))}
+          className="space-y-4"
+        >
           <FormField
             control={form.control}
             name="email"
-            rules={{ 
-              required: "Email is required",
+            rules={{
+              required: 'Email is required',
               pattern: {
                 value: /\S+@\S+\.\S+/,
-                message: "Please enter a valid email"
-              }
+                message: 'Please enter a valid email',
+              },
             }}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input type="email" placeholder="email@example.com" {...field} />
+                  <Input
+                    type="email"
+                    placeholder="email@example.com"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -106,12 +116,12 @@ export const WithValidation: FormStory = {
           <FormField
             control={form.control}
             name="password"
-            rules={{ 
-              required: "Password is required",
+            rules={{
+              required: 'Password is required',
               minLength: {
                 value: 6,
-                message: "Password must be at least 6 characters"
-              }
+                message: 'Password must be at least 6 characters',
+              },
             }}
             render={({ field }) => (
               <FormItem>
@@ -123,7 +133,7 @@ export const WithValidation: FormStory = {
               </FormItem>
             )}
           />
-          <button 
+          <button
             type="submit"
             className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
           >
@@ -131,6 +141,6 @@ export const WithValidation: FormStory = {
           </button>
         </form>
       </Form>
-    );
+    )
   },
-};
+}

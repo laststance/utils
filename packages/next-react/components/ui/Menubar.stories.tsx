@@ -1,29 +1,30 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Menubar } from "@/components/ui/menubar";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+
+import { Menubar } from '@/components/ui/menubar'
 
 const meta = {
-  title: "UI/Menubar",
+  title: 'UI/Menubar',
   component: Menubar,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "Menubar component for building user interfaces.",
+        component: 'Menubar component for building user interfaces.',
       },
     },
   },
 
   argTypes: {
     className: {
-      control: { type: "text" },
-      description: "Additional CSS classes",
+      control: { type: 'text' },
+      description: 'Additional CSS classes',
     },
   },
-} satisfies Meta<typeof Menubar>;
+} satisfies Meta<typeof Menubar>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: () => (
@@ -32,7 +33,7 @@ export const Default: Story = {
       Default Menubar
     </Menubar>
   ),
-};
+}
 
 export const Example: Story = {
   render: () => (
@@ -41,4 +42,4 @@ export const Example: Story = {
       Example Menubar
     </Menubar>
   ),
-};
+}

@@ -1,7 +1,7 @@
 /**
  * Regular expression to match CSS files.
  * Matches files ending with .css extension.
- * 
+ *
  * @example
  * ```typescript
  * cssRegex.test('styles.css')           // true
@@ -14,7 +14,7 @@ export const cssRegex = /\.css$/
 /**
  * Regular expression to match CSS Module files.
  * Matches files with .module.css extension.
- * 
+ *
  * @example
  * ```typescript
  * cssModuleRegex.test('component.module.css')  // true
@@ -27,7 +27,7 @@ export const cssModuleRegex = /\.module\.css$/
 /**
  * Regular expression to match Sass/SCSS files.
  * Matches files ending with .scss or .sass extension.
- * 
+ *
  * @example
  * ```typescript
  * sassRegex.test('styles.scss')         // true
@@ -40,7 +40,7 @@ export const sassRegex = /\.(scss|sass)$/
 /**
  * Regular expression to match Sass/SCSS Module files.
  * Matches files with .module.scss or .module.sass extension.
- * 
+ *
  * @example
  * ```typescript
  * sassModuleRegex.test('component.module.scss')  // true

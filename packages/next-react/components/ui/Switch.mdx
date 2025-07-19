@@ -1,5 +1,13 @@
-import { Meta, Title, Primary, Controls, Stories, Story, Canvas } from '@storybook/blocks';
-import * as SwitchStories from './Switch.stories';
+import {
+  Meta,
+  Title,
+  Primary,
+  Controls,
+  Stories,
+  Story,
+  Canvas,
+} from '@storybook/blocks'
+import * as SwitchStories from './Switch.stories'
 
 <Meta of={SwitchStories} />
 
@@ -20,7 +28,7 @@ Switch component for building user interfaces.
 ## Features
 
 - **Feature 1**: Description of key feature
-- **Feature 2**: Description of another feature  
+- **Feature 2**: Description of another feature
 - **Feature 3**: Description of additional feature
 - **Accessible**: Built with accessibility in mind
 - **Customizable**: Easy to style and extend
@@ -30,7 +38,7 @@ Switch component for building user interfaces.
 Import the Switch component:
 
 ```tsx
-import { Switch } from "@/components/ui/-switch"
+import { Switch } from '@/components/ui/-switch'
 ```
 
 ## Examples
@@ -63,17 +71,13 @@ The Switch component accepts the following props:
 ### Basic Switch
 
 ```tsx
-<Switch>
-  Content here
-</Switch>
+<Switch>Content here</Switch>
 ```
 
 ### Switch with Props
 
 ```tsx
-<Switch className="custom-class">
-  Custom content
-</Switch>
+<Switch className="custom-class">Custom content</Switch>
 ```
 
 ## Accessibility
@@ -87,11 +91,13 @@ The Switch component accepts the following props:
 ## Design Guidelines
 
 ### Do
+
 - Use clear and descriptive content
 - Follow consistent spacing patterns
 - Provide proper context
 
 ### Don't
+
 - Overuse the component
 - Ignore accessibility requirements
 - Break established patterns

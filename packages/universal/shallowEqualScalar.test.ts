@@ -1,4 +1,4 @@
-import shallowEqualScalar from './shallowEqualScalar'
+import shallowEqualScalar from './shallowEqualScalar.js'
 
 describe('shallowEqualScalar', () => {
   it('should return true if both arguments are the same object', () => {

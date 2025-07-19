@@ -1,4 +1,4 @@
-import { betterTypeof } from './betterTypeof'
+import { betterTypeof } from './betterTypeof.js'
 
 // Custom classes for testing
 class CustomClass {

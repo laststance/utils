@@ -3,20 +3,20 @@
 /**
  * Performs a shallow equality check between two objects.
  * Only compares the first level of properties - nested objects are compared by reference.
- * 
+ *
  * @param objA - First object to compare
  * @param objB - Second object to compare
  * @returns True if objects are shallowly equal, false otherwise
- * 
+ *
  * @example
  * ```typescript
  * const obj1 = { a: 1, b: 'hello' }
  * const obj2 = { a: 1, b: 'hello' }
  * const obj3 = { a: 1, b: 'world' }
- * 
+ *
  * shallowEqual(obj1, obj2) // true
  * shallowEqual(obj1, obj3) // false
- * 
+ *
  * // Nested objects are compared by reference
  * const nested1 = { a: { x: 1 } }
  * const nested2 = { a: { x: 1 } }

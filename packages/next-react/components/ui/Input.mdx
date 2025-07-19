@@ -1,5 +1,13 @@
-import { Meta, Title, Primary, Controls, Stories, Story, Canvas } from '@storybook/blocks';
-import * as InputStories from './Input.stories';
+import {
+  Meta,
+  Title,
+  Primary,
+  Controls,
+  Stories,
+  Story,
+  Canvas,
+} from '@storybook/blocks'
+import * as InputStories from './Input.stories'
 
 <Meta of={InputStories} />
 
@@ -32,7 +40,7 @@ A form input component for collecting user input.
 Import the Input component:
 
 ```tsx
-import { Input } from "@/components/ui/input"
+import { Input } from '@/components/ui/input'
 ```
 
 ## Examples
@@ -160,11 +168,11 @@ The Input component accepts all standard HTML input attributes plus:
 ### Password Input with Toggle
 
 ```tsx
-const [showPassword, setShowPassword] = useState(false);
+const [showPassword, setShowPassword] = useState(false)
 
-<div className="relative">
+;<div className="relative">
   <Input
-    type={showPassword ? "text" : "password"}
+    type={showPassword ? 'text' : 'password'}
     placeholder="Enter password"
     className="pr-10"
   />
@@ -175,7 +183,11 @@ const [showPassword, setShowPassword] = useState(false);
     className="absolute right-0 top-0 h-full px-3 py-2"
     onClick={() => setShowPassword(!showPassword)}
   >
-    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+    {showPassword ? (
+      <EyeOff className="h-4 w-4" />
+    ) : (
+      <Eye className="h-4 w-4" />
+    )}
   </Button>
 </div>
 ```
@@ -192,28 +204,36 @@ const [showPassword, setShowPassword] = useState(false);
     className="border-destructive"
     aria-invalid="true"
   />
-  <p className="text-sm text-destructive">Please enter a valid email address.</p>
+  <p className="text-sm text-destructive">
+    Please enter a valid email address.
+  </p>
 </div>
 ```
 
 ## Input Types
 
 ### Text Input
+
 Default text input for general text entry.
 
 ### Email Input
+
 Includes built-in email validation in modern browsers.
 
 ### Password Input
+
 Masks input for sensitive data. Consider adding show/hide functionality.
 
 ### Number Input
+
 For numeric values with optional min/max constraints.
 
 ### Search Input
+
 Optimized for search functionality with appropriate styling.
 
 ### File Input
+
 For file uploads with proper styling integration.
 
 ## Accessibility
@@ -228,6 +248,7 @@ For file uploads with proper styling integration.
 ## Form Integration
 
 The Input component works seamlessly with:
+
 - React Hook Form
 - Formik
 - Native HTML forms
@@ -235,10 +256,10 @@ The Input component works seamlessly with:
 
 ```tsx
 // React Hook Form example
-const { register, handleSubmit } = useForm();
+const { register, handleSubmit } = useForm()
 
-<Input
-  {...register("email", { required: true })}
+;<Input
+  {...register('email', { required: true })}
   type="email"
   placeholder="Enter email"
 />
@@ -247,6 +268,7 @@ const { register, handleSubmit } = useForm();
 ## Design Guidelines
 
 ### Do
+
 - Always provide labels for accessibility
 - Use appropriate input types for data being collected
 - Provide clear error messages
@@ -254,6 +276,7 @@ const { register, handleSubmit } = useForm();
 - Group related inputs logically
 
 ### Don't
+
 - Use placeholder text as the only label
 - Make inputs too narrow for expected content
 - Forget to handle error and loading states

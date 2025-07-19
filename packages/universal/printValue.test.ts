@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import printValue from './printValue'
+
+import printValue from './printValue.js'
 
 describe('printValue', () => {
   describe('primitive values', () => {
@@ -46,9 +47,9 @@ describe('printValue', () => {
     })
 
     it('should handle anonymous functions', () => {
-      const anonymousFunction = function() {}
+      const anonymousFunction = function () {}
       expect(printValue(anonymousFunction)).toBe('[Function anonymousFunction]')
-      
+
       const arrowFunction = () => {}
       expect(printValue(arrowFunction)).toBe('[Function arrowFunction]')
     })
@@ -58,10 +59,10 @@ describe('printValue', () => {
     it('should handle symbols', () => {
       const sym1 = Symbol()
       expect(printValue(sym1)).toBe('Symbol()')
-      
+
       const sym2 = Symbol('test')
       expect(printValue(sym2)).toBe('Symbol(test)')
-      
+
       const sym3 = Symbol('description with spaces')
       expect(printValue(sym3)).toBe('Symbol(description with spaces)')
     })
@@ -88,7 +89,7 @@ describe('printValue', () => {
     it('should handle different error types', () => {
       const typeError = new TypeError('type error')
       expect(printValue(typeError)).toBe('[TypeError: type error]')
-      
+
       const rangeError = new RangeError('range error')
       expect(printValue(rangeError)).toBe('[RangeError: range error]')
     })
@@ -103,10 +104,10 @@ describe('printValue', () => {
     it('should handle RegExp objects', () => {
       const regex1 = /test/g
       expect(printValue(regex1)).toBe('/test/g')
-      
+
       const regex2 = new RegExp('pattern', 'i')
       expect(printValue(regex2)).toBe('/pattern/i')
-      
+
       const regex3 = /[a-z]+/
       expect(printValue(regex3)).toBe('/[a-z]+/')
     })
@@ -128,7 +129,9 @@ describe('printValue', () => {
     it('should handle nested objects', () => {
       const nested = { user: { name: 'Alice', age: 30 } }
       const result = printValue(nested)
-      expect(result).toBe('{\n  "user": {\n    "name": "Alice",\n    "age": 30\n  }\n}')
+      expect(result).toBe(
+        '{\n  "user": {\n    "name": "Alice",\n    "age": 30\n  }\n}',
+      )
     })
 
     it('should handle objects with special values', () => {
@@ -137,7 +140,7 @@ describe('printValue', () => {
         date: new Date('2023-12-25T10:30:00.000Z'),
         error: new Error('test'),
         regex: /test/g,
-        sym: Symbol('test')
+        sym: Symbol('test'),
       }
       const result = printValue(obj)
       expect(result).toContain('"func": "[Function test]"')
@@ -163,7 +166,9 @@ describe('printValue', () => {
     it('should not affect non-string values when quoteStrings is true', () => {
       const obj = { number: 42, bool: true, nil: null }
       const result = printValue(obj, true)
-      expect(result).toBe('{\n  "number": 42,\n  "bool": true,\n  "nil": null\n}')
+      expect(result).toBe(
+        '{\n  "number": 42,\n  "bool": true,\n  "nil": null\n}',
+      )
     })
   })
 

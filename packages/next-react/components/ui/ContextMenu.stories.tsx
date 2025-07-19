@@ -1,35 +1,37 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+
 import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuSeparator,
   ContextMenuTrigger,
-} from "@/components/ui/context-menu";
+} from '@/components/ui/context-menu'
 
 const meta = {
-  title: "UI/ContextMenu",
+  title: 'UI/ContextMenu',
   component: ContextMenu,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "A context menu component built on top of Radix UI ContextMenu.",
+        component:
+          'A context menu component built on top of Radix UI ContextMenu.',
       },
     },
   },
 
   argTypes: {
     modal: {
-      control: { type: "boolean" },
-      description: "Whether the context menu should be modal",
+      control: { type: 'boolean' },
+      description: 'Whether the context menu should be modal',
     },
   },
-} satisfies Meta<typeof ContextMenu>;
+} satisfies Meta<typeof ContextMenu>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: (args) => (
@@ -49,7 +51,7 @@ export const Default: Story = {
       </ContextMenuContent>
     </ContextMenu>
   ),
-};
+}
 
 export const Simple: Story = {
   render: (args) => (
@@ -66,4 +68,4 @@ export const Simple: Story = {
       </ContextMenuContent>
     </ContextMenu>
   ),
-};
+}

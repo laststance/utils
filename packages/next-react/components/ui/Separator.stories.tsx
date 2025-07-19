@@ -1,29 +1,30 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Separator } from "@/components/ui/separator";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+
+import { Separator } from '@/components/ui/separator'
 
 const meta = {
-  title: "UI/Separator",
+  title: 'UI/Separator',
   component: Separator,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "Separator component for building user interfaces.",
+        component: 'Separator component for building user interfaces.',
       },
     },
   },
 
   argTypes: {
     className: {
-      control: { type: "text" },
-      description: "Additional CSS classes",
+      control: { type: 'text' },
+      description: 'Additional CSS classes',
     },
   },
-} satisfies Meta<typeof Separator>;
+} satisfies Meta<typeof Separator>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: () => (
@@ -32,7 +33,7 @@ export const Default: Story = {
       Default Separator
     </Separator>
   ),
-};
+}
 
 export const Example: Story = {
   render: () => (
@@ -41,4 +42,4 @@ export const Example: Story = {
       Example Separator
     </Separator>
   ),
-};
+}

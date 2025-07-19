@@ -57,11 +57,11 @@ interface PostsResponse {
 
 /**
  * Authenticates a user with email and password.
- * 
+ *
  * @param credentials - User email and password
  * @returns Promise resolving to login response with user data
  * @throws Error if login fails or credentials are invalid
- * 
+ *
  * @example
  * ```typescript
  * try {
@@ -77,7 +77,9 @@ interface PostsResponse {
  * }
  * ```
  */
-export async function login(credentials: LoginCredentials): Promise<LoginResponse> {
+export async function login(
+  credentials: LoginCredentials,
+): Promise<LoginResponse> {
   const response = await fetch('/api/login', {
     method: 'POST',
     headers: {
@@ -96,11 +98,11 @@ export async function login(credentials: LoginCredentials): Promise<LoginRespons
 
 /**
  * Fetches user profile data by user ID.
- * 
+ *
  * @param id - The user ID to fetch
  * @returns Promise resolving to user profile data
  * @throws Error if user not found or fetch fails
- * 
+ *
  * @example
  * ```typescript
  * try {
@@ -123,12 +125,12 @@ export async function getUser(id: number): Promise<User> {
 
 /**
  * Fetches paginated posts from the API.
- * 
+ *
  * @param page - Page number (1-based, default: 1)
  * @param limit - Number of posts per page (default: 10)
  * @returns Promise resolving to posts with pagination metadata
  * @throws Error if fetch fails
- * 
+ *
  * @example
  * ```typescript
  * try {
@@ -148,4 +150,4 @@ export async function getPosts(page = 1, limit = 10): Promise<PostsResponse> {
   }
 
   return response.json()
-} 
+}

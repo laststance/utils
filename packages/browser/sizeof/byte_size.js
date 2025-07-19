@@ -4,7 +4,7 @@
  * http://bclary.com/2004/11/07/#a-4.3.16
  */
 
-module.exports = {
+export default {
   BOOLEAN: 4,
   NUMBER: 8,
   STRING: 2,

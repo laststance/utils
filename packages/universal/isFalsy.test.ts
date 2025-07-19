@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 
-import { isFalsy } from './isFalsy'
+import { isFalsy } from './isFalsy.js'
 
 describe('isFalsy', () => {
   it('should return true for false', () => {

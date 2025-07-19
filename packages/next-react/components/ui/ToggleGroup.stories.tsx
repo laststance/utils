@@ -1,38 +1,39 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 
 const meta = {
-  title: "UI/ToggleGroup",
+  title: 'UI/ToggleGroup',
   component: ToggleGroup,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "Toggle Group component for building user interfaces.",
+        component: 'Toggle Group component for building user interfaces.',
       },
     },
   },
 
   argTypes: {
     type: {
-      control: { type: "radio" },
-      options: ["single", "multiple"],
-      description: "Selection mode - single or multiple",
+      control: { type: 'radio' },
+      options: ['single', 'multiple'],
+      description: 'Selection mode - single or multiple',
     },
     className: {
-      control: { type: "text" },
-      description: "Additional CSS classes",
+      control: { type: 'text' },
+      description: 'Additional CSS classes',
     },
   },
-} satisfies Meta<typeof ToggleGroup>;
+} satisfies Meta<typeof ToggleGroup>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    type: "single",
+    type: 'single',
   },
   render: (args) => (
     <ToggleGroup {...args}>
@@ -41,11 +42,11 @@ export const Default: Story = {
       <ToggleGroupItem value="right">Right</ToggleGroupItem>
     </ToggleGroup>
   ),
-};
+}
 
 export const Multiple: Story = {
   args: {
-    type: "multiple",
+    type: 'multiple',
   },
   render: (args) => (
     <ToggleGroup {...args}>
@@ -54,4 +55,4 @@ export const Multiple: Story = {
       <ToggleGroupItem value="underline">Underline</ToggleGroupItem>
     </ToggleGroup>
   ),
-};
+}

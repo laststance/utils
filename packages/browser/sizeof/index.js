@@ -3,9 +3,9 @@
 
 'use strict'
 
-var ECMA_SIZES = require('./byte_size')
+import { Buffer } from 'buffer'
 
-var Buffer = require('buffer/').Buffer
+import ECMA_SIZES from './byte_size.js'
 
 function allProperties(obj) {
   const stringProperties = []
@@ -95,4 +95,4 @@ function sizeof(object) {
   return getCalculator(new WeakSet())(object)
 }
 
-module.exports = sizeof
+export default sizeof

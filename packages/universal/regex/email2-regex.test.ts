@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { emailRegex } from './email2'
+
+import { emailRegex } from './email2.js'
 
 describe('emailRegex (email2)', () => {
   describe('valid email addresses', () => {
@@ -39,7 +40,9 @@ describe('emailRegex (email2)', () => {
     it('should match emails with subdomains', () => {
       expect(emailRegex.test('user@mail.example.com')).toBe(true)
       expect(emailRegex.test('test@sub.domain.org')).toBe(true)
-      expect(emailRegex.test('admin@very.long.subdomain.example.com')).toBe(true)
+      expect(emailRegex.test('admin@very.long.subdomain.example.com')).toBe(
+        true,
+      )
     })
 
     it('should match emails with hyphens in domain', () => {
@@ -159,10 +162,10 @@ describe('emailRegex (email2)', () => {
         'noreply@automated-system.net',
         'user123@subdomain.example.co.uk',
         'marketing.team@big-corp.com',
-        'dev-team@opensource.org'
+        'dev-team@opensource.org',
       ]
 
-      realEmails.forEach(email => {
+      realEmails.forEach((email) => {
         expect(emailRegex.test(email)).toBe(true)
       })
     })
@@ -174,20 +177,20 @@ describe('emailRegex (email2)', () => {
         '@missing-local.com',
         'double@@at.com',
         'spaces @not-allowed.com',
-        'ending-dot.@domain.com'
+        'ending-dot.@domain.com',
       ]
 
-      invalidEmails.forEach(email => {
+      invalidEmails.forEach((email) => {
         expect(emailRegex.test(email)).toBe(false)
       })
 
       // Note: The react-hook-form regex allows these patterns
       const allowedByRegex = [
         'trailing-dot@domain.com.',
-        '.starting-dot@domain.com'
+        '.starting-dot@domain.com',
       ]
 
-      allowedByRegex.forEach(email => {
+      allowedByRegex.forEach((email) => {
         expect(emailRegex.test(email)).toBe(true)
       })
     })

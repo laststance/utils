@@ -1,29 +1,30 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 const meta = {
-  title: "UI/ScrollArea",
+  title: 'UI/ScrollArea',
   component: ScrollArea,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "Scroll Area component for building user interfaces.",
+        component: 'Scroll Area component for building user interfaces.',
       },
     },
   },
 
   argTypes: {
     className: {
-      control: { type: "text" },
-      description: "Additional CSS classes",
+      control: { type: 'text' },
+      description: 'Additional CSS classes',
     },
   },
-} satisfies Meta<typeof ScrollArea>;
+} satisfies Meta<typeof ScrollArea>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: () => (
@@ -32,7 +33,7 @@ export const Default: Story = {
       Default ScrollArea
     </ScrollArea>
   ),
-};
+}
 
 export const Example: Story = {
   render: () => (
@@ -41,4 +42,4 @@ export const Example: Story = {
       Example ScrollArea
     </ScrollArea>
   ),
-};
+}

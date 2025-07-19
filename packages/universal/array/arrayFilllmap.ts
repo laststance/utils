@@ -7,7 +7,7 @@
  */
 export function arrayFillmap(
   arrayLength: number,
-  // eslint-disable-next-line no-unused-vars
+
   callback: (_value: any, _index: number, _array: any[]) => unknown,
 ): unknown[] {
   return new Array(arrayLength).fill(0).map(callback)

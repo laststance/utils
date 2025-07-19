@@ -1,9 +1,9 @@
 /**
  * Gets the current date in YYYY-MM-DD format.
  * Uses the local date (not UTC) converted to ISO string format.
- * 
+ *
  * @returns Current date as a string in YYYY-MM-DD format
- * 
+ *
  * @example
  * ```typescript
  * const today = getDate()

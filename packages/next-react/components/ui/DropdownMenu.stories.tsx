@@ -1,4 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,35 +7,36 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu'
 
 const meta = {
-  title: "UI/DropdownMenu",
+  title: 'UI/DropdownMenu',
   component: DropdownMenu,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "A dropdown menu component built on top of Radix UI DropdownMenu.",
+        component:
+          'A dropdown menu component built on top of Radix UI DropdownMenu.',
       },
     },
   },
 
   argTypes: {
     open: {
-      control: { type: "boolean" },
-      description: "Controls whether the dropdown is open",
+      control: { type: 'boolean' },
+      description: 'Controls whether the dropdown is open',
     },
     modal: {
-      control: { type: "boolean" },
-      description: "Whether the dropdown should be modal",
+      control: { type: 'boolean' },
+      description: 'Whether the dropdown should be modal',
     },
   },
-} satisfies Meta<typeof DropdownMenu>;
+} satisfies Meta<typeof DropdownMenu>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: (args) => (
@@ -54,7 +56,7 @@ export const Default: Story = {
       </DropdownMenuContent>
     </DropdownMenu>
   ),
-};
+}
 
 export const WithActions: Story = {
   render: (args) => (
@@ -73,4 +75,4 @@ export const WithActions: Story = {
       </DropdownMenuContent>
     </DropdownMenu>
   ),
-};
+}

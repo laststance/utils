@@ -1,4 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+
 import {
   Select,
   SelectContent,
@@ -8,39 +9,40 @@ import {
   SelectGroup,
   SelectLabel,
   SelectSeparator,
-} from "@/components/ui/select";
+} from '@/components/ui/select'
 
 const meta = {
-  title: "UI/Select",
+  title: 'UI/Select',
   component: Select,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "A select dropdown component built on top of Radix UI Select.",
+        component:
+          'A select dropdown component built on top of Radix UI Select.',
       },
     },
   },
 
   argTypes: {
     value: {
-      control: { type: "text" },
-      description: "The controlled value of the select",
+      control: { type: 'text' },
+      description: 'The controlled value of the select',
     },
     defaultValue: {
-      control: { type: "text" },
-      description: "The default value when uncontrolled",
+      control: { type: 'text' },
+      description: 'The default value when uncontrolled',
     },
     disabled: {
-      control: { type: "boolean" },
-      description: "Whether the select is disabled",
+      control: { type: 'boolean' },
+      description: 'Whether the select is disabled',
     },
   },
-} satisfies Meta<typeof Select>;
+} satisfies Meta<typeof Select>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: (args) => (
@@ -56,7 +58,7 @@ export const Default: Story = {
       </SelectContent>
     </Select>
   ),
-};
+}
 
 export const WithGroups: Story = {
   render: (args) => (
@@ -81,4 +83,4 @@ export const WithGroups: Story = {
       </SelectContent>
     </Select>
   ),
-};
+}

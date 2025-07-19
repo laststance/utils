@@ -1,6 +1,8 @@
-import { describe, it, expect, beforeEach } from 'vitest'
 import { http, HttpResponse } from 'msw'
+import { describe, it, expect, beforeEach } from 'vitest'
+
 import { server } from '../mocks/server'
+
 import { login, getUser, getPosts } from './api'
 
 describe('API utilities', () => {
@@ -14,7 +16,7 @@ describe('API utilities', () => {
       it('should return user data for valid credentials', async () => {
         const credentials = {
           email: 'test@example.com',
-          password: 'password123'
+          password: 'password123',
         }
 
         const result = await login(credentials)
@@ -22,7 +24,7 @@ describe('API utilities', () => {
         expect(result.success).toBe(true)
         expect(result.user).toEqual({
           id: 1,
-          email: 'test@example.com'
+          email: 'test@example.com',
         })
       })
 
@@ -30,21 +32,24 @@ describe('API utilities', () => {
         // Override the handler for this specific test
         server.use(
           http.post('/api/login', async ({ request }) => {
-            const credentials = await request.json() as { email: string; password: string }
-            
+            const credentials = (await request.json()) as {
+              email: string
+              password: string
+            }
+
             return HttpResponse.json({
               success: true,
               user: {
                 id: 999,
-                email: credentials.email
-              }
+                email: credentials.email,
+              },
             })
-          })
+          }),
         )
 
         const credentials = {
           email: 'custom@example.com',
-          password: 'anypassword'
+          password: 'anypassword',
         }
 
         const result = await login(credentials)
@@ -59,7 +64,7 @@ describe('API utilities', () => {
       it('should throw error for invalid credentials', async () => {
         const credentials = {
           email: 'test@example.com',
-          password: 'wrongpassword'
+          password: 'wrongpassword',
         }
 
         await expect(login(credentials)).rejects.toThrow('Invalid credentials')
@@ -68,7 +73,7 @@ describe('API utilities', () => {
       it('should throw error for network failures', async () => {
         const credentials = {
           email: 'network@error.com',
-          password: 'password123'
+          password: 'password123',
         }
 
         await expect(login(credentials)).rejects.toThrow('Network error')
@@ -79,14 +84,14 @@ describe('API utilities', () => {
           http.post('/api/login', () => {
             return HttpResponse.json(
               { message: 'Server unavailable' },
-              { status: 503 }
+              { status: 503 },
             )
-          })
+          }),
         )
 
         const credentials = {
           email: 'test@example.com',
-          password: 'password123'
+          password: 'password123',
         }
 
         await expect(login(credentials)).rejects.toThrow('Server unavailable')
@@ -96,12 +101,12 @@ describe('API utilities', () => {
         server.use(
           http.post('/api/login', () => {
             return HttpResponse.json({}, { status: 400 })
-          })
+          }),
         )
 
         const credentials = {
           email: 'test@example.com',
-          password: 'password123'
+          password: 'password123',
         }
 
         await expect(login(credentials)).rejects.toThrow('Login failed')
@@ -112,7 +117,7 @@ describe('API utilities', () => {
       it('should handle empty credentials', async () => {
         const credentials = {
           email: '',
-          password: ''
+          password: '',
         }
 
         await expect(login(credentials)).rejects.toThrow('Invalid credentials')
@@ -121,21 +126,24 @@ describe('API utilities', () => {
       it('should handle special characters in credentials', async () => {
         server.use(
           http.post('/api/login', async ({ request }) => {
-            const credentials = await request.json() as { email: string; password: string }
-            
+            const credentials = (await request.json()) as {
+              email: string
+              password: string
+            }
+
             return HttpResponse.json({
               success: true,
               user: {
                 id: 1,
-                email: credentials.email
-              }
+                email: credentials.email,
+              },
             })
-          })
+          }),
         )
 
         const credentials = {
           email: 'user+tag@example.com',
-          password: 'p@ssw0rd!#$%^&*()'
+          password: 'p@ssw0rd!#$%^&*()',
         }
 
         const result = await login(credentials)
@@ -153,7 +161,7 @@ describe('API utilities', () => {
           id: 1,
           email: 'test@example.com',
           name: 'Test User',
-          createdAt: '2023-01-01T00:00:00.000Z'
+          createdAt: '2023-01-01T00:00:00.000Z',
         })
       })
 
@@ -165,13 +173,13 @@ describe('API utilities', () => {
               id: Number(id),
               email: `user${id}@example.com`,
               name: `User ${id}`,
-              createdAt: '2023-01-01T00:00:00.000Z'
+              createdAt: '2023-01-01T00:00:00.000Z',
             })
-          })
+          }),
         )
 
         const testIds = [1, 42, 999]
-        
+
         for (const id of testIds) {
           const result = await getUser(id)
           expect(result.id).toBe(id)
@@ -187,9 +195,9 @@ describe('API utilities', () => {
           http.get('/api/user/:id', () => {
             return HttpResponse.json(
               { message: 'User not found' },
-              { status: 404 }
+              { status: 404 },
             )
-          })
+          }),
         )
 
         await expect(getUser(999)).rejects.toThrow('Failed to fetch user')
@@ -200,9 +208,9 @@ describe('API utilities', () => {
           http.get('/api/user/:id', () => {
             return HttpResponse.json(
               { message: 'Internal server error' },
-              { status: 500 }
+              { status: 500 },
             )
-          })
+          }),
         )
 
         await expect(getUser(1)).rejects.toThrow('Failed to fetch user')
@@ -212,7 +220,7 @@ describe('API utilities', () => {
         server.use(
           http.get('/api/user/:id', () => {
             return HttpResponse.error()
-          })
+          }),
         )
 
         await expect(getUser(1)).rejects.toThrow('Failed to fetch')
@@ -227,9 +235,9 @@ describe('API utilities', () => {
               id: 0,
               email: 'admin@example.com',
               name: 'System Admin',
-              createdAt: '2023-01-01T00:00:00.000Z'
+              createdAt: '2023-01-01T00:00:00.000Z',
             })
-          })
+          }),
         )
 
         const result = await getUser(0)
@@ -239,16 +247,16 @@ describe('API utilities', () => {
 
       it('should handle large user IDs', async () => {
         const largeId = 999999999
-        
+
         server.use(
           http.get(`/api/user/${largeId}`, () => {
             return HttpResponse.json({
               id: largeId,
               email: 'user@example.com',
               name: 'Large ID User',
-              createdAt: '2023-01-01T00:00:00.000Z'
+              createdAt: '2023-01-01T00:00:00.000Z',
             })
-          })
+          }),
         )
 
         const result = await getUser(largeId)
@@ -267,9 +275,9 @@ describe('API utilities', () => {
           page: 1,
           limit: 10,
           total: 50,
-          totalPages: 5
+          totalPages: 5,
         })
-        
+
         // Check first post structure
         expect(result.posts[0]).toHaveProperty('id')
         expect(result.posts[0]).toHaveProperty('title')
@@ -285,9 +293,9 @@ describe('API utilities', () => {
           page: 2,
           limit: 5,
           total: 50,
-          totalPages: 10
+          totalPages: 10,
         })
-        
+
         // Check that post IDs are correct for page 2
         expect(result.posts[0].id).toBe(6) // (page 2 - 1) * limit 5 + 1
       })
@@ -301,10 +309,10 @@ describe('API utilities', () => {
                 page: 1,
                 limit: 10,
                 total: 0,
-                totalPages: 0
-              }
+                totalPages: 0,
+              },
             })
-          })
+          }),
         )
 
         const result = await getPosts()
@@ -327,9 +335,9 @@ describe('API utilities', () => {
           http.get('/api/posts', () => {
             return HttpResponse.json(
               { message: 'Posts not available' },
-              { status: 500 }
+              { status: 500 },
             )
-          })
+          }),
         )
 
         await expect(getPosts()).rejects.toThrow('Failed to fetch posts')
@@ -341,11 +349,8 @@ describe('API utilities', () => {
         for (const status of errorStatuses) {
           server.use(
             http.get('/api/posts', () => {
-              return HttpResponse.json(
-                { message: 'Error' },
-                { status }
-              )
-            })
+              return HttpResponse.json({ message: 'Error' }, { status })
+            }),
           )
 
           await expect(getPosts()).rejects.toThrow('Failed to fetch posts')
@@ -356,7 +361,7 @@ describe('API utilities', () => {
         server.use(
           http.get('/api/posts', () => {
             return HttpResponse.error()
-          })
+          }),
         )
 
         await expect(getPosts()).rejects.toThrow('Failed to fetch')
@@ -376,17 +381,17 @@ describe('API utilities', () => {
           http.get('/api/posts', ({ request }) => {
             const url = new URL(request.url)
             const limit = url.searchParams.get('limit') || '0'
-            
+
             return HttpResponse.json({
               posts: [],
               pagination: {
                 page: 1,
                 limit: Number(limit),
                 total: 0,
-                totalPages: 0
-              }
+                totalPages: 0,
+              },
             })
-          })
+          }),
         )
 
         const result = await getPosts(1, 0)
@@ -408,12 +413,12 @@ describe('API utilities', () => {
       it('should return posts with all required fields', async () => {
         const result = await getPosts()
 
-        result.posts.forEach(post => {
+        result.posts.forEach((post) => {
           expect(post).toHaveProperty('id')
           expect(post).toHaveProperty('title')
           expect(post).toHaveProperty('body')
           expect(post).toHaveProperty('userId')
-          
+
           expect(typeof post.id).toBe('number')
           expect(typeof post.title).toBe('string')
           expect(typeof post.body).toBe('string')
@@ -444,17 +449,17 @@ describe('API utilities', () => {
                   id: 1,
                   title: 'Post with émojis 🚀 and spéciał characters!',
                   body: 'Content with "quotes", <html>, & symbols',
-                  userId: 1
-                }
+                  userId: 1,
+                },
               ],
               pagination: {
                 page: 1,
                 limit: 1,
                 total: 1,
-                totalPages: 1
-              }
+                totalPages: 1,
+              },
             })
-          })
+          }),
         )
 
         const result = await getPosts()
@@ -472,7 +477,7 @@ describe('API utilities', () => {
       const promises = [
         login({ email: 'test@example.com', password: 'password123' }),
         getUser(1),
-        getPosts(1, 5)
+        getPosts(1, 5),
       ] as const
 
       const [loginResult, userResult, postsResult] = await Promise.all(promises)
@@ -483,7 +488,7 @@ describe('API utilities', () => {
       expect(loginResult.success).toBe(true)
       expect(userResult.id).toBe(1)
       expect(postsResult.posts).toHaveLength(5)
-      
+
       // Should complete reasonably quickly
       expect(duration).toBeLessThan(1000)
     })
@@ -508,7 +513,7 @@ describe('API utilities', () => {
     it('should return correctly typed login response', async () => {
       const result = await login({
         email: 'test@example.com',
-        password: 'password123'
+        password: 'password123',
       })
 
       // TypeScript should enforce these properties exist

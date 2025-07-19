@@ -1,8 +1,10 @@
-import { describe, it, expect } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
+import { describe, it, expect } from 'vitest'
+
 import { server } from '../mocks/server'
+
 import { UserProfile } from './UserProfile'
 
 describe('UserProfile', () => {
@@ -11,14 +13,14 @@ describe('UserProfile', () => {
       // Mock a delayed response
       server.use(
         http.get('/api/user/:id', async () => {
-          await new Promise(resolve => setTimeout(resolve, 100))
+          await new Promise((resolve) => setTimeout(resolve, 100))
           return HttpResponse.json({
             id: 1,
             email: 'test@example.com',
             name: 'Test User',
             createdAt: '2023-01-01T00:00:00.000Z',
           })
-        })
+        }),
       )
 
       render(<UserProfile userId={1} />)
@@ -27,7 +29,9 @@ describe('UserProfile', () => {
       expect(screen.getByRole('status')).toBeInTheDocument()
 
       await waitFor(() => {
-        expect(screen.queryByText(/loading user profile/i)).not.toBeInTheDocument()
+        expect(
+          screen.queryByText(/loading user profile/i),
+        ).not.toBeInTheDocument()
       })
     })
   })
@@ -45,7 +49,9 @@ describe('UserProfile', () => {
       expect(screen.getByText(/member since/i)).toBeInTheDocument()
 
       // Loading state should be gone
-      expect(screen.queryByText(/loading user profile/i)).not.toBeInTheDocument()
+      expect(
+        screen.queryByText(/loading user profile/i),
+      ).not.toBeInTheDocument()
     })
 
     it('formats the creation date correctly', async () => {
@@ -67,14 +73,16 @@ describe('UserProfile', () => {
         http.get('/api/user/:id', () => {
           return HttpResponse.json(
             { message: 'User not found' },
-            { status: 404 }
+            { status: 404 },
           )
-        })
+        }),
       )
 
       render(<UserProfile userId={999} />)
 
-      expect(await screen.findByText(/failed to load user/i)).toBeInTheDocument()
+      expect(
+        await screen.findByText(/failed to load user/i),
+      ).toBeInTheDocument()
       expect(screen.getByRole('alert')).toBeInTheDocument()
     })
 
@@ -83,17 +91,19 @@ describe('UserProfile', () => {
       server.use(
         http.get('/api/user/:id', () => {
           return HttpResponse.error()
-        })
+        }),
       )
 
       render(<UserProfile userId={1} />)
 
-      expect(await screen.findByText(/failed to load user/i)).toBeInTheDocument()
+      expect(
+        await screen.findByText(/failed to load user/i),
+      ).toBeInTheDocument()
     })
 
     it('provides retry functionality on error', async () => {
       let attemptCount = 0
-      
+
       // Mock failure then success
       server.use(
         http.get('/api/user/:id', () => {
@@ -101,7 +111,7 @@ describe('UserProfile', () => {
           if (attemptCount === 1) {
             return HttpResponse.json(
               { message: 'Server error' },
-              { status: 500 }
+              { status: 500 },
             )
           }
           return HttpResponse.json({
@@ -110,18 +120,20 @@ describe('UserProfile', () => {
             name: 'Test User',
             createdAt: '2023-01-01T00:00:00.000Z',
           })
-        })
+        }),
       )
 
       render(<UserProfile userId={1} />)
 
       // Should show error first
-      expect(await screen.findByText(/failed to load user/i)).toBeInTheDocument()
-      
+      expect(
+        await screen.findByText(/failed to load user/i),
+      ).toBeInTheDocument()
+
       // Click retry button
       const retryButton = screen.getByRole('button', { name: /retry/i })
       expect(retryButton).toBeInTheDocument()
-      
+
       await userEvent.setup().click(retryButton)
 
       // Should show success after retry
@@ -141,7 +153,7 @@ describe('UserProfile', () => {
             name: '',
             createdAt: '2023-06-15T10:30:00.000Z',
           })
-        })
+        }),
       )
 
       render(<UserProfile userId={2} />)
@@ -166,7 +178,7 @@ describe('UserProfile', () => {
             name: 'Recent User',
             createdAt: recentDate.toISOString(),
           })
-        })
+        }),
       )
 
       render(<UserProfile userId={3} />)
@@ -196,7 +208,7 @@ describe('UserProfile', () => {
             name: 'Second User',
             createdAt: '2023-02-01T00:00:00.000Z',
           })
-        })
+        }),
       )
 
       // Change the userId prop
@@ -227,9 +239,9 @@ describe('UserProfile', () => {
         http.get('/api/user/:id', () => {
           return HttpResponse.json(
             { message: 'User not found' },
-            { status: 404 }
+            { status: 404 },
           )
-        })
+        }),
       )
 
       render(<UserProfile userId={999} />)
@@ -247,14 +259,16 @@ describe('UserProfile', () => {
       })
 
       // Should have proper heading structure
-      expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Test User')
-      
+      expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
+        'Test User',
+      )
+
       // Should have proper list structure for user details
       const userDetails = screen.getByRole('list')
       expect(userDetails).toBeInTheDocument()
-      
+
       const listItems = screen.getAllByRole('listitem')
       expect(listItems).toHaveLength(2) // Email and creation date
     })
   })
-}) 
+})

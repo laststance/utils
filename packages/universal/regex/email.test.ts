@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { emailRegex } from './email'
+
+import { emailRegex } from './email.js'
 
 describe('emailRegex', () => {
   describe('valid email addresses', () => {
@@ -9,10 +10,10 @@ describe('emailRegex', () => {
         'user@domain.org',
         'admin@site.net',
         'contact@company.co.uk',
-        'info@website.io'
+        'info@website.io',
       ]
-      
-      validEmails.forEach(email => {
+
+      validEmails.forEach((email) => {
         expect(emailRegex.test(email)).toBe(true)
       })
     })
@@ -23,10 +24,10 @@ describe('emailRegex', () => {
         'test2@domain.org',
         '123test@site.net',
         'user@example123.com',
-        'test@site2.org'
+        'test@site2.org',
       ]
-      
-      emailsWithNumbers.forEach(email => {
+
+      emailsWithNumbers.forEach((email) => {
         expect(emailRegex.test(email)).toBe(true)
       })
     })
@@ -37,10 +38,10 @@ describe('emailRegex', () => {
         'first_last@domain.org',
         'user+tag@site.net',
         'test-email@example.com',
-        'user%discount@company.co.uk'
+        'user%discount@company.co.uk',
       ]
-      
-      emailsWithSpecialChars.forEach(email => {
+
+      emailsWithSpecialChars.forEach((email) => {
         expect(emailRegex.test(email)).toBe(true)
       })
     })
@@ -51,10 +52,10 @@ describe('emailRegex', () => {
         'Test@Domain.Org',
         'ADMIN@SITE.NET',
         'Contact@Company.CO.UK',
-        'INFO@WEBSITE.IO'
+        'INFO@WEBSITE.IO',
       ]
-      
-      uppercaseEmails.forEach(email => {
+
+      uppercaseEmails.forEach((email) => {
         expect(emailRegex.test(email)).toBe(true)
       })
     })
@@ -65,10 +66,10 @@ describe('emailRegex', () => {
         'Test.Name@Domain.ORG',
         'Admin123@Site.net',
         'Contact_Info@Company.Co.Uk',
-        'Info+Support@Website.IO'
+        'Info+Support@Website.IO',
       ]
-      
-      mixedCaseEmails.forEach(email => {
+
+      mixedCaseEmails.forEach((email) => {
         expect(emailRegex.test(email)).toBe(true)
       })
     })
@@ -79,24 +80,24 @@ describe('emailRegex', () => {
         'test@support.company.org',
         'admin@api.service.net',
         'contact@www.site.co.uk',
-        'info@docs.website.io'
+        'info@docs.website.io',
       ]
-      
-      subdomainEmails.forEach(email => {
+
+      subdomainEmails.forEach((email) => {
         expect(emailRegex.test(email)).toBe(true)
       })
     })
 
     it('should match emails with various TLD lengths', () => {
       const variousTLDs = [
-        'user@example.co',     // 2 letters
-        'test@domain.com',     // 3 letters  
-        'admin@site.info',     // 4 letters
-        'contact@company.travel',  // 6 letters
-        'info@website.international'  // 13 letters
+        'user@example.co', // 2 letters
+        'test@domain.com', // 3 letters
+        'admin@site.info', // 4 letters
+        'contact@company.travel', // 6 letters
+        'info@website.international', // 13 letters
       ]
-      
-      variousTLDs.forEach(email => {
+
+      variousTLDs.forEach((email) => {
         expect(emailRegex.test(email)).toBe(true)
       })
     })
@@ -107,10 +108,10 @@ describe('emailRegex', () => {
         'test@my-domain.org',
         'admin@web-service.net',
         'contact@e-commerce.co.uk',
-        'info@tech-company.io'
+        'info@tech-company.io',
       ]
-      
-      hyphenatedDomains.forEach(email => {
+
+      hyphenatedDomains.forEach((email) => {
         expect(emailRegex.test(email)).toBe(true)
       })
     })
@@ -123,10 +124,10 @@ describe('emailRegex', () => {
         'testdomain.org',
         'adminsite.net',
         'contactcompany.co.uk',
-        'infowebsite.io'
+        'infowebsite.io',
       ]
-      
-      noAtSymbol.forEach(email => {
+
+      noAtSymbol.forEach((email) => {
         expect(emailRegex.test(email)).toBe(false)
       })
     })
@@ -137,10 +138,10 @@ describe('emailRegex', () => {
         'test@.',
         'admin@.com',
         'contact@',
-        '@example.com'
+        '@example.com',
       ]
-      
-      noDomain.forEach(email => {
+
+      noDomain.forEach((email) => {
         expect(emailRegex.test(email)).toBe(false)
       })
     })
@@ -151,10 +152,10 @@ describe('emailRegex', () => {
         'test@domain',
         'admin@site',
         'contact@company',
-        'info@website'
+        'info@website',
       ]
-      
-      noTLD.forEach(email => {
+
+      noTLD.forEach((email) => {
         expect(emailRegex.test(email)).toBe(false)
       })
     })
@@ -165,10 +166,10 @@ describe('emailRegex', () => {
         'test@domain.o',
         'admin@site.n',
         'contact@company.u',
-        'info@website.i'
+        'info@website.i',
       ]
-      
-      singleCharTLD.forEach(email => {
+
+      singleCharTLD.forEach((email) => {
         expect(emailRegex.test(email)).toBe(false)
       })
     })
@@ -181,10 +182,10 @@ describe('emailRegex', () => {
         'contact@company. co.uk',
         ' user@example.com',
         'user@example.com ',
-        'user @example .com'
+        'user @example .com',
       ]
-      
-      emailsWithSpaces.forEach(email => {
+
+      emailsWithSpaces.forEach((email) => {
         expect(emailRegex.test(email)).toBe(false)
       })
     })
@@ -195,10 +196,10 @@ describe('emailRegex', () => {
         'test@domain@org',
         'admin@site@net',
         'contact@company@co.uk',
-        'user@test@example.com'
+        'user@test@example.com',
       ]
-      
-      multipleAtSymbols.forEach(email => {
+
+      multipleAtSymbols.forEach((email) => {
         expect(emailRegex.test(email)).toBe(false)
       })
     })
@@ -210,10 +211,10 @@ describe('emailRegex', () => {
         '_test@domain.org',
         '+admin@site.net',
         '%contact@company.co.uk',
-        '-info@website.io'
+        '-info@website.io',
       ]
-      
-      startingWithSpecial.forEach(email => {
+
+      startingWithSpecial.forEach((email) => {
         expect(emailRegex.test(email)).toBe(true)
       })
     })
@@ -225,23 +226,18 @@ describe('emailRegex', () => {
         'test_@domain.org',
         'admin+@site.net',
         'contact%@company.co.uk',
-        'info-@website.io'
+        'info-@website.io',
       ]
-      
-      endingWithSpecial.forEach(email => {
+
+      endingWithSpecial.forEach((email) => {
         expect(emailRegex.test(email)).toBe(true)
       })
     })
 
     it('should not match empty strings and non-strings', () => {
-      const invalidInputs = [
-        '',
-        ' ',
-        '\n',
-        '\t'
-      ]
-      
-      invalidInputs.forEach(input => {
+      const invalidInputs = ['', ' ', '\n', '\t']
+
+      invalidInputs.forEach((input) => {
         expect(emailRegex.test(input)).toBe(false)
       })
     })
@@ -253,10 +249,10 @@ describe('emailRegex', () => {
         'test@example-.com',
         'admin@-site-.net',
         'contact@.example.com',
-        'info@example..com'
+        'info@example..com',
       ]
-      
-      withHyphens.forEach(email => {
+
+      withHyphens.forEach((email) => {
         expect(emailRegex.test(email)).toBe(true)
       })
     })
@@ -268,10 +264,10 @@ describe('emailRegex', () => {
       const consecutiveDots = [
         'user@example..com',
         'test@domain...org',
-        'admin@site..net'
+        'admin@site..net',
       ]
-      
-      consecutiveDots.forEach(email => {
+
+      consecutiveDots.forEach((email) => {
         expect(emailRegex.test(email)).toBe(true)
       })
     })
@@ -279,13 +275,13 @@ describe('emailRegex', () => {
     it('should handle very long email addresses', () => {
       const longLocal = 'a'.repeat(64) + '@example.com'
       const longDomain = 'user@' + 'a'.repeat(50) + '.com'
-      
+
       expect(emailRegex.test(longLocal)).toBe(true)
       expect(emailRegex.test(longDomain)).toBe(true)
     })
 
     it('should handle minimum valid email length', () => {
-      const shortEmail = 'a@b.co'  // Minimum realistic email
+      const shortEmail = 'a@b.co' // Minimum realistic email
       expect(emailRegex.test(shortEmail)).toBe(true)
     })
 
@@ -294,10 +290,10 @@ describe('emailRegex', () => {
       const numbersInTLD = [
         'user@example.c0m',
         'test@domain.0rg',
-        'admin@site.n3t'
+        'admin@site.n3t',
       ]
-      
-      numbersInTLD.forEach(email => {
+
+      numbersInTLD.forEach((email) => {
         expect(emailRegex.test(email)).toBe(false)
       })
     })
@@ -307,10 +303,10 @@ describe('emailRegex', () => {
         'user@exam_ple.com',
         'test@dom+ain.org',
         'admin@si%te.net',
-        'contact@comp&any.co.uk'
+        'contact@comp&any.co.uk',
       ]
-      
-      specialInDomain.forEach(email => {
+
+      specialInDomain.forEach((email) => {
         expect(emailRegex.test(email)).toBe(false)
       })
     })
@@ -323,10 +319,10 @@ describe('emailRegex', () => {
         'test@domain.com.au',
         'admin@site.gov.us',
         'contact@company.edu.sg',
-        'info@website.org.in'
+        'info@website.org.in',
       ]
-      
-      internationalDomains.forEach(email => {
+
+      internationalDomains.forEach((email) => {
         expect(emailRegex.test(email)).toBe(true)
       })
     })
@@ -337,10 +333,10 @@ describe('emailRegex', () => {
         'üser@example.com',
         'test@dömain.org',
         'admin@site.cöm',
-        'user@例え.com'
+        'user@例え.com',
       ]
-      
-      unicodeEmails.forEach(email => {
+
+      unicodeEmails.forEach((email) => {
         expect(emailRegex.test(email)).toBe(false)
       })
     })
@@ -363,10 +359,10 @@ describe('emailRegex', () => {
       const partialMatches = [
         'prefix test@example.com suffix',
         'email: user@domain.org here',
-        'contact us at admin@site.net today'
+        'contact us at admin@site.net today',
       ]
-      
-      partialMatches.forEach(text => {
+
+      partialMatches.forEach((text) => {
         expect(emailRegex.test(text)).toBe(false) // Won't match because of anchors
       })
     })
@@ -374,27 +370,27 @@ describe('emailRegex', () => {
     it('should NOT extract email from text because regex is anchored', () => {
       const textWithEmail = 'Please contact us at support@company.com for help'
       const match = textWithEmail.match(emailRegex)
-      
+
       expect(match).toBeNull() // Won't match because regex is anchored
     })
 
     it('should NOT work with String.replace() for partial text', () => {
       const text = 'Email me at john@example.com'
       const censored = text.replace(emailRegex, '[EMAIL]')
-      
+
       expect(censored).toBe('Email me at john@example.com') // No replacement
     })
 
     it('should return -1 for String.search() on partial text', () => {
       const text = 'Contact: admin@site.org'
       const position = text.search(emailRegex)
-      
+
       expect(position).toBe(-1) // Not found because regex is anchored
     })
 
     it('should work with String methods on pure email strings', () => {
       const email = 'john@example.com'
-      
+
       expect(email.match(emailRegex)).not.toBeNull()
       expect(email.replace(emailRegex, '[EMAIL]')).toBe('[EMAIL]')
       expect(email.search(emailRegex)).toBe(0)
@@ -403,9 +399,12 @@ describe('emailRegex', () => {
 
   describe('performance and boundary testing', () => {
     it('should handle many email validations efficiently', () => {
-      const emails = Array.from({ length: 1000 }, (_, i) => `user${i}@example${i}.com`)
-      
-      emails.forEach(email => {
+      const emails = Array.from(
+        { length: 1000 },
+        (_, i) => `user${i}@example${i}.com`,
+      )
+
+      emails.forEach((email) => {
         expect(emailRegex.test(email)).toBe(true)
       })
     })
@@ -419,10 +418,10 @@ describe('emailRegex', () => {
         '..@..',
         '...@...',
         '@@@.@@@',
-        'a'.repeat(1000) + '@' + 'b'.repeat(1000) + '.com'
+        'a'.repeat(1000) + '@' + 'b'.repeat(1000) + '.com',
       ]
-      
-      malformedEmails.forEach(email => {
+
+      malformedEmails.forEach((email) => {
         expect(() => emailRegex.test(email)).not.toThrow()
       })
     })
@@ -437,10 +436,10 @@ describe('emailRegex', () => {
         'contact@hotmail.com',
         'info@aol.com',
         'support@icloud.com',
-        'hello@protonmail.com'
+        'hello@protonmail.com',
       ]
-      
-      commonProviders.forEach(email => {
+
+      commonProviders.forEach((email) => {
         expect(emailRegex.test(email)).toBe(true)
       })
     })
@@ -451,10 +450,10 @@ describe('emailRegex', () => {
         'jane_smith@corporation.org',
         'support+tickets@service.net',
         'no-reply@notifications.co.uk',
-        'admin123@tech-startup.io'
+        'admin123@tech-startup.io',
       ]
-      
-      businessEmails.forEach(email => {
+
+      businessEmails.forEach((email) => {
         expect(emailRegex.test(email)).toBe(true)
       })
     })
@@ -468,12 +467,12 @@ describe('emailRegex', () => {
         'user at domain.com',
         'user@domain',
         'user@domain.',
-        'user@@domain.com'
+        'user@@domain.com',
         // Note: .user@domain.com and user.@domain.com actually pass this regex
         // because the regex allows . at any position in the local part
       ]
-      
-      commonMistakes.forEach(email => {
+
+      commonMistakes.forEach((email) => {
         expect(emailRegex.test(email)).toBe(false)
       })
     })

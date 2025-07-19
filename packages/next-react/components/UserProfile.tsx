@@ -2,7 +2,7 @@
 
 /**
  * UserProfile component displays user information with loading and error states.
- * 
+ *
  * Features:
  * - Fetches user data on mount and when userId changes
  * - Loading spinner with accessibility
@@ -10,12 +10,12 @@
  * - Relative date formatting for user creation date
  * - Responsive design with Tailwind CSS
  * - ARIA compliance for screen readers
- * 
+ *
  * @example
  * ```tsx
  * function ProfilePage() {
  *   const [selectedUserId, setSelectedUserId] = useState(123)
- * 
+ *
  *   return (
  *     <div className="container mx-auto p-4">
  *       <h1>User Profile</h1>
@@ -27,6 +27,7 @@
  */
 
 import * as React from 'react'
+
 import { Button } from '@/components/ui/button'
 import { getUser } from '@/lib/api'
 
@@ -53,7 +54,7 @@ export function UserProfile({ userId }: UserProfileProps) {
   const fetchUser = React.useCallback(async () => {
     setLoading(true)
     setError(null)
-    
+
     try {
       const userData = await getUser(userId)
       setUser(userData)
@@ -71,11 +72,14 @@ export function UserProfile({ userId }: UserProfileProps) {
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString)
     const now = new Date()
-    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60))
+    const diffInMinutes = Math.floor(
+      (now.getTime() - date.getTime()) / (1000 * 60),
+    )
 
     if (diffInMinutes < 60) {
       return 'a few minutes ago'
-    } else if (diffInMinutes < 1440) { // 24 hours
+    } else if (diffInMinutes < 1440) {
+      // 24 hours
       const hours = Math.floor(diffInMinutes / 60)
       return `${hours} hour${hours === 1 ? '' : 's'} ago`
     } else {
@@ -102,7 +106,10 @@ export function UserProfile({ userId }: UserProfileProps) {
 
   if (error) {
     return (
-      <div role="alert" className="p-4 bg-red-50 border border-red-200 rounded-md">
+      <div
+        role="alert"
+        className="p-4 bg-red-50 border border-red-200 rounded-md"
+      >
         <h3 className="text-red-800 font-medium">Failed to load user</h3>
         <p className="text-red-600 mt-1">{error}</p>
         <Button
@@ -130,7 +137,7 @@ export function UserProfile({ userId }: UserProfileProps) {
       <h2 className="text-xl font-semibold text-gray-900 mb-3">
         {user.name || 'No name provided'}
       </h2>
-      
+
       <ul className="space-y-2">
         <li className="flex items-center text-gray-600">
           <strong className="mr-2">Email:</strong>
@@ -143,4 +150,4 @@ export function UserProfile({ userId }: UserProfileProps) {
       </ul>
     </div>
   )
-} 
+}

@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { nonNullable } from './non-nullable'
+
+import { nonNullable } from './non-nullable.js'
 
 describe('nonNullable', () => {
   it('should return true for truthy values', () => {
@@ -30,7 +31,7 @@ describe('nonNullable', () => {
   it('should work as array filter', () => {
     const mixed = [1, null, 'hello', undefined, true, 0, '', false]
     const filtered = mixed.filter(nonNullable)
-    
+
     expect(filtered).toEqual([1, 'hello', true, 0, '', false])
     expect(filtered).not.toContain(null)
     expect(filtered).not.toContain(undefined)
@@ -42,20 +43,22 @@ describe('nonNullable', () => {
       null,
       { name: 'Bob', age: 25 },
       undefined,
-      { name: 'Charlie', age: 35 }
+      { name: 'Charlie', age: 35 },
     ]
-    
+
     const validUsers = users.filter(nonNullable)
-    
+
     expect(validUsers).toHaveLength(3)
-    expect(validUsers.every(user => user.name && typeof user.age === 'number')).toBe(true)
+    expect(
+      validUsers.every((user) => user.name && typeof user.age === 'number'),
+    ).toBe(true)
   })
 
   it('should handle edge cases with objects', () => {
     const objWithNull = { value: null }
     const objWithUndefined = { value: undefined }
     const objWithValue = { value: 'test' }
-    
+
     expect(nonNullable(objWithNull)).toBe(true) // object itself is not null
     expect(nonNullable(objWithUndefined)).toBe(true) // object itself is not undefined
     expect(nonNullable(objWithValue)).toBe(true)
@@ -65,11 +68,11 @@ describe('nonNullable', () => {
     const maybeGetValue = (flag: boolean): string | null => {
       return flag ? 'value' : null
     }
-    
+
     const maybeGetValue2 = (flag: boolean): string | undefined => {
       return flag ? 'value' : undefined
     }
-    
+
     expect(nonNullable(maybeGetValue(true))).toBe(true)
     expect(nonNullable(maybeGetValue(false))).toBe(false)
     expect(nonNullable(maybeGetValue2(true))).toBe(true)
@@ -78,7 +81,7 @@ describe('nonNullable', () => {
 
   it('should preserve type information when used as type guard', () => {
     const value: string | null = 'test'
-    
+
     if (nonNullable(value)) {
       // TypeScript should know value is string here, not string | null
       expect(typeof value).toBe('string')
@@ -88,11 +91,20 @@ describe('nonNullable', () => {
 
   it('should work with union types in arrays', () => {
     const mixedValues: (number | string | null | undefined | boolean)[] = [
-      1, null, 'hello', undefined, true, 0, '', false, 42, 'world'
+      1,
+      null,
+      'hello',
+      undefined,
+      true,
+      0,
+      '',
+      false,
+      42,
+      'world',
     ]
-    
+
     const definedValues = mixedValues.filter(nonNullable)
-    
+
     expect(definedValues).toEqual([1, 'hello', true, 0, '', false, 42, 'world'])
     expect(definedValues).toHaveLength(8)
   })

@@ -1,37 +1,38 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-} from "@/components/ui/popover";
+} from '@/components/ui/popover'
 
 const meta = {
-  title: "UI/Popover",
+  title: 'UI/Popover',
   component: Popover,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "A popover component built on top of Radix UI Popover.",
+        component: 'A popover component built on top of Radix UI Popover.',
       },
     },
   },
 
   argTypes: {
     open: {
-      control: { type: "boolean" },
-      description: "Controls whether the popover is open",
+      control: { type: 'boolean' },
+      description: 'Controls whether the popover is open',
     },
     modal: {
-      control: { type: "boolean" },
-      description: "Whether the popover should be modal",
+      control: { type: 'boolean' },
+      description: 'Whether the popover should be modal',
     },
   },
-} satisfies Meta<typeof Popover>;
+} satisfies Meta<typeof Popover>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: (args) => (
@@ -69,7 +70,7 @@ export const Default: Story = {
       </PopoverContent>
     </Popover>
   ),
-};
+}
 
 export const Simple: Story = {
   render: (args) => (
@@ -89,4 +90,4 @@ export const Simple: Story = {
       </PopoverContent>
     </Popover>
   ),
-};
+}

@@ -1,29 +1,30 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { RadioGroup } from "@/components/ui/radio-group";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+
+import { RadioGroup } from '@/components/ui/radio-group'
 
 const meta = {
-  title: "UI/RadioGroup",
+  title: 'UI/RadioGroup',
   component: RadioGroup,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "Radio Group component for building user interfaces.",
+        component: 'Radio Group component for building user interfaces.',
       },
     },
   },
 
   argTypes: {
     className: {
-      control: { type: "text" },
-      description: "Additional CSS classes",
+      control: { type: 'text' },
+      description: 'Additional CSS classes',
     },
   },
-} satisfies Meta<typeof RadioGroup>;
+} satisfies Meta<typeof RadioGroup>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: () => (
@@ -32,7 +33,7 @@ export const Default: Story = {
       Default RadioGroup
     </RadioGroup>
   ),
-};
+}
 
 export const Example: Story = {
   render: () => (
@@ -41,4 +42,4 @@ export const Example: Story = {
       Example RadioGroup
     </RadioGroup>
   ),
-};
+}

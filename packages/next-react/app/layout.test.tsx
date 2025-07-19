@@ -1,5 +1,6 @@
-import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/react'
+import { describe, it, expect } from 'vitest'
+
 import RootLayout, { metadata } from './layout'
 
 // Mock Next.js fonts
@@ -17,7 +18,7 @@ describe('RootLayout', () => {
     const { getByText } = render(
       <RootLayout>
         <div>Test Content</div>
-      </RootLayout>
+      </RootLayout>,
     )
 
     expect(getByText('Test Content')).toBeInTheDocument()
@@ -27,7 +28,7 @@ describe('RootLayout', () => {
     const { container } = render(
       <RootLayout>
         <div>Content</div>
-      </RootLayout>
+      </RootLayout>,
     )
 
     // In unit tests, we can't test the actual HTML/body structure
@@ -43,7 +44,7 @@ describe('RootLayout', () => {
       render(
         <RootLayout>
           <div>Content with fonts</div>
-        </RootLayout>
+        </RootLayout>,
       )
     }).not.toThrow()
   })
@@ -60,7 +61,7 @@ describe('RootLayout', () => {
       <RootLayout>
         <div>First Child</div>
         <div>Second Child</div>
-      </RootLayout>
+      </RootLayout>,
     )
 
     expect(getByText('First Child')).toBeInTheDocument()
@@ -71,7 +72,7 @@ describe('RootLayout', () => {
     const { getByRole } = render(
       <RootLayout>
         <main>Main Content</main>
-      </RootLayout>
+      </RootLayout>,
     )
 
     // We can test that child components are rendered correctly
@@ -83,13 +84,10 @@ describe('RootLayout', () => {
   it('should accept readonly children prop', () => {
     // This test ensures TypeScript types are working correctly
     const children: Readonly<{ children: React.ReactNode }> = {
-      children: <div>Readonly Children</div>
+      children: <div>Readonly Children</div>,
     }
 
-    const { getByText } = render(
-      <RootLayout {...children}>
-      </RootLayout>
-    )
+    const { getByText } = render(<RootLayout {...children}></RootLayout>)
 
     expect(getByText('Readonly Children')).toBeInTheDocument()
   })
@@ -101,7 +99,7 @@ describe('RootLayout', () => {
           <div>Fragment Child 1</div>
           <div>Fragment Child 2</div>
         </>
-      </RootLayout>
+      </RootLayout>,
     )
 
     expect(getByText('Fragment Child 1')).toBeInTheDocument()
@@ -110,21 +108,13 @@ describe('RootLayout', () => {
 
   it('should handle null children gracefully', () => {
     expect(() => {
-      render(
-        <RootLayout>
-          {null}
-        </RootLayout>
-      )
+      render(<RootLayout>{null}</RootLayout>)
     }).not.toThrow()
   })
 
   it('should handle undefined children gracefully', () => {
     expect(() => {
-      render(
-        <RootLayout>
-          {undefined}
-        </RootLayout>
-      )
+      render(<RootLayout>{undefined}</RootLayout>)
     }).not.toThrow()
   })
 
@@ -142,7 +132,7 @@ describe('RootLayout', () => {
         <footer>
           <p>Footer content</p>
         </footer>
-      </RootLayout>
+      </RootLayout>,
     )
 
     expect(getByRole('banner')).toBeInTheDocument() // header

@@ -1,5 +1,6 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+
 import { useIsMobile } from './use-mobile'
 
 // Mock window.matchMedia
@@ -9,13 +10,13 @@ describe('useIsMobile', () => {
   beforeEach(() => {
     // Reset the mock before each test
     mockMatchMedia.mockClear()
-    
+
     // Mock window.matchMedia
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
       value: mockMatchMedia,
     })
-    
+
     // Mock window.innerWidth
     Object.defineProperty(window, 'innerWidth', {
       writable: true,
@@ -37,7 +38,7 @@ describe('useIsMobile', () => {
         removeEventListener: vi.fn(),
       }
       mockMatchMedia.mockReturnValue(mockMQL)
-      
+
       // Set window width to desktop size
       Object.defineProperty(window, 'innerWidth', {
         value: 1024,
@@ -57,7 +58,7 @@ describe('useIsMobile', () => {
         removeEventListener: vi.fn(),
       }
       mockMatchMedia.mockReturnValue(mockMQL)
-      
+
       // Set window width to mobile size
       Object.defineProperty(window, 'innerWidth', {
         value: 375,
@@ -96,7 +97,7 @@ describe('useIsMobile', () => {
 
       expect(mockMQL.addEventListener).toHaveBeenCalledWith(
         'change',
-        expect.any(Function)
+        expect.any(Function),
       )
     })
   })
@@ -104,7 +105,7 @@ describe('useIsMobile', () => {
   describe('media query changes', () => {
     it('should update when media query changes from desktop to mobile', () => {
       let changeHandler: (() => void) | undefined
-      
+
       const mockMQL = {
         matches: false,
         addEventListener: vi.fn((event, handler) => {
@@ -141,7 +142,7 @@ describe('useIsMobile', () => {
 
     it('should update when media query changes from mobile to desktop', () => {
       let changeHandler: (() => void) | undefined
-      
+
       const mockMQL = {
         matches: true,
         addEventListener: vi.fn((event, handler) => {
@@ -185,7 +186,7 @@ describe('useIsMobile', () => {
         removeEventListener: vi.fn(),
       }
       mockMatchMedia.mockReturnValue(mockMQL)
-      
+
       Object.defineProperty(window, 'innerWidth', {
         value: 767,
         configurable: true,
@@ -203,7 +204,7 @@ describe('useIsMobile', () => {
         removeEventListener: vi.fn(),
       }
       mockMatchMedia.mockReturnValue(mockMQL)
-      
+
       Object.defineProperty(window, 'innerWidth', {
         value: 768,
         configurable: true,
@@ -227,12 +228,12 @@ describe('useIsMobile', () => {
       const { unmount } = renderHook(() => useIsMobile())
 
       expect(mockMQL.addEventListener).toHaveBeenCalled()
-      
+
       unmount()
 
       expect(mockMQL.removeEventListener).toHaveBeenCalledWith(
         'change',
-        expect.any(Function)
+        expect.any(Function),
       )
     })
   })
@@ -247,7 +248,7 @@ describe('useIsMobile', () => {
       mockMatchMedia.mockReturnValue(mockMQL)
 
       const { result } = renderHook(() => useIsMobile())
-      
+
       // The hook should return a boolean, not undefined
       expect(typeof result.current).toBe('boolean')
     })
@@ -261,7 +262,7 @@ describe('useIsMobile', () => {
         removeEventListener: vi.fn(),
       }
       mockMatchMedia.mockReturnValue(mockMQL)
-      
+
       Object.defineProperty(window, 'innerWidth', {
         value: 1024,
         configurable: true,
@@ -275,4 +276,4 @@ describe('useIsMobile', () => {
       expect(result1.current).toBe(result2.current)
     })
   })
-}) 
+})

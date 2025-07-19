@@ -1,52 +1,53 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Search, Eye, EyeOff, Lock, User } from "lucide-react";
-import { useState } from "react";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+import { Search, Eye, EyeOff, Lock, User } from 'lucide-react'
+import { useState } from 'react'
+
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 const meta = {
-  title: "UI/Input",
+  title: 'UI/Input',
   component: Input,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "A form input component for collecting user input.",
+        component: 'A form input component for collecting user input.',
       },
     },
   },
 
   argTypes: {
     type: {
-      control: { type: "select" },
-      options: ["text", "password", "email", "number", "search", "tel", "url"],
-      description: "The type of input",
+      control: { type: 'select' },
+      options: ['text', 'password', 'email', 'number', 'search', 'tel', 'url'],
+      description: 'The type of input',
     },
     placeholder: {
-      control: { type: "text" },
-      description: "Placeholder text",
+      control: { type: 'text' },
+      description: 'Placeholder text',
     },
     disabled: {
-      control: { type: "boolean" },
-      description: "Whether the input is disabled",
+      control: { type: 'boolean' },
+      description: 'Whether the input is disabled',
     },
     readOnly: {
-      control: { type: "boolean" },
-      description: "Whether the input is read-only",
+      control: { type: 'boolean' },
+      description: 'Whether the input is read-only',
     },
   },
-} satisfies Meta<typeof Input>;
+} satisfies Meta<typeof Input>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    placeholder: "Enter text...",
+    placeholder: 'Enter text...',
   },
-};
+}
 
 export const WithLabel: Story = {
   render: () => (
@@ -55,18 +56,18 @@ export const WithLabel: Story = {
       <Input type="email" id="email" placeholder="Enter your email" />
     </div>
   ),
-};
+}
 
 export const Password: Story = {
   render: () => {
-    const [showPassword, setShowPassword] = useState(false);
-    
+    const [showPassword, setShowPassword] = useState(false)
+
     return (
       <div className="grid w-full max-w-sm items-center gap-1.5">
         <Label htmlFor="password">Password</Label>
         <div className="relative">
           <Input
-            type={showPassword ? "text" : "password"}
+            type={showPassword ? 'text' : 'password'}
             id="password"
             placeholder="Enter your password"
             className="pr-10"
@@ -86,9 +87,9 @@ export const Password: Story = {
           </Button>
         </div>
       </div>
-    );
+    )
   },
-};
+}
 
 export const WithIcon: Story = {
   render: () => (
@@ -105,21 +106,21 @@ export const WithIcon: Story = {
       </div>
     </div>
   ),
-};
+}
 
 export const Disabled: Story = {
   args: {
-    placeholder: "Disabled input",
+    placeholder: 'Disabled input',
     disabled: true,
   },
-};
+}
 
 export const ReadOnly: Story = {
   args: {
-    value: "Read-only value",
+    value: 'Read-only value',
     readOnly: true,
   },
-};
+}
 
 export const WithError: Story = {
   render: () => (
@@ -132,10 +133,12 @@ export const WithError: Story = {
         className="border-destructive"
         aria-invalid="true"
       />
-      <p className="text-sm text-destructive">Please enter a valid email address.</p>
+      <p className="text-sm text-destructive">
+        Please enter a valid email address.
+      </p>
     </div>
   ),
-};
+}
 
 export const LoginForm: Story = {
   render: () => (
@@ -167,7 +170,7 @@ export const LoginForm: Story = {
       <Button className="w-full">Sign In</Button>
     </div>
   ),
-};
+}
 
 export const NumberInput: Story = {
   render: () => (
@@ -182,7 +185,7 @@ export const NumberInput: Story = {
       />
     </div>
   ),
-};
+}
 
 export const FileInput: Story = {
   render: () => (
@@ -191,7 +194,7 @@ export const FileInput: Story = {
       <Input id="picture" type="file" />
     </div>
   ),
-};
+}
 
 export const SizeVariants: Story = {
   render: () => (
@@ -202,18 +205,12 @@ export const SizeVariants: Story = {
       </div>
       <div>
         <Label>Small Size (using custom classes)</Label>
-        <Input 
-          placeholder="Small input" 
-          className="h-8 text-sm" 
-        />
+        <Input placeholder="Small input" className="h-8 text-sm" />
       </div>
       <div>
         <Label>Large Size (using custom classes)</Label>
-        <Input 
-          placeholder="Large input" 
-          className="h-12 text-lg" 
-        />
+        <Input placeholder="Large input" className="h-12 text-lg" />
       </div>
     </div>
   ),
-};
+}

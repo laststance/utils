@@ -1,37 +1,39 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+
 import {
   HoverCard,
   HoverCardTrigger,
   HoverCardContent,
-} from "@/components/ui/hover-card";
+} from '@/components/ui/hover-card'
 
 const meta = {
-  title: "UI/HoverCard",
+  title: 'UI/HoverCard',
   component: HoverCard,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       codePanel: true,
       description: {
-        component: "A hover card component built on top of Radix UI Hover Card.",
+        component:
+          'A hover card component built on top of Radix UI Hover Card.',
       },
     },
   },
 
   argTypes: {
     open: {
-      control: { type: "boolean" },
-      description: "Controls whether the hover card is open",
+      control: { type: 'boolean' },
+      description: 'Controls whether the hover card is open',
     },
     openDelay: {
-      control: { type: "number" },
-      description: "Delay before opening (in ms)",
+      control: { type: 'number' },
+      description: 'Delay before opening (in ms)',
     },
   },
-} satisfies Meta<typeof HoverCard>;
+} satisfies Meta<typeof HoverCard>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: (args) => (
@@ -51,7 +53,7 @@ export const Default: Story = {
       </HoverCardContent>
     </HoverCard>
   ),
-};
+}
 
 export const Simple: Story = {
   render: (args) => (
@@ -66,4 +68,4 @@ export const Simple: Story = {
       </HoverCardContent>
     </HoverCard>
   ),
-};
+}

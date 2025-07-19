@@ -2,7 +2,7 @@
 
 /**
  * LoginForm component provides a complete authentication form with validation.
- * 
+ *
  * Features:
  * - Email and password validation
  * - Loading states with spinner
@@ -10,7 +10,7 @@
  * - Success callback for post-login actions
  * - Accessibility compliance (ARIA labels, roles)
  * - Auto-complete support
- * 
+ *
  * @example
  * ```tsx
  * function AuthPage() {
@@ -18,7 +18,7 @@
  *     console.log('User logged in:', user.email)
  *     // Redirect or update app state
  *   }
- * 
+ *
  *   return (
  *     <div className="max-w-md mx-auto">
  *       <h1>Sign In</h1>
@@ -30,6 +30,7 @@
  */
 
 import * as React from 'react'
+
 import { Button } from '@/components/ui/button'
 import { login } from '@/lib/api'
 
@@ -81,7 +82,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     const validationErrors = validateForm()
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors)
@@ -106,15 +107,14 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
     }
   }
 
-  const handleInputChange = (field: keyof FormData) => (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setFormData(prev => ({ ...prev, [field]: e.target.value }))
-    // Clear field-specific error when user starts typing
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: undefined }))
+  const handleInputChange =
+    (field: keyof FormData) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      setFormData((prev) => ({ ...prev, [field]: e.target.value }))
+      // Clear field-specific error when user starts typing
+      if (errors[field]) {
+        setErrors((prev) => ({ ...prev, [field]: undefined }))
+      }
     }
-  }
 
   if (isSuccess) {
     return (
@@ -141,7 +141,11 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
           className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
         />
         {errors.email && (
-          <div id="email-error" role="alert" className="mt-1 text-sm text-red-600">
+          <div
+            id="email-error"
+            role="alert"
+            className="mt-1 text-sm text-red-600"
+          >
             {errors.email}
           </div>
         )}
@@ -162,7 +166,11 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
           className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
         />
         {errors.password && (
-          <div id="password-error" role="alert" className="mt-1 text-sm text-red-600">
+          <div
+            id="password-error"
+            role="alert"
+            className="mt-1 text-sm text-red-600"
+          >
             {errors.password}
           </div>
         )}
@@ -190,4 +198,4 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
       </Button>
     </form>
   )
-} 
+}

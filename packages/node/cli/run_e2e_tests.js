@@ -4,8 +4,7 @@
 
 import { spawn } from 'child_process'
 import { readFileSync } from 'fs'
-import { join } from 'path'
-import { dirname } from 'path'
+import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -92,10 +91,10 @@ function runServer() {
 
   let severStarted = false
 
-  let localEnv = {}
+  const localEnv = {}
   try {
     const localEnvContent = readFileSync('./.env.local', { encoding: 'utf8' })
-    localEnvContent.split('\n').forEach(line => {
+    localEnvContent.split('\n').forEach((line) => {
       const trimmedLine = line.trim()
       if (trimmedLine && !trimmedLine.startsWith('#')) {
         const [key, ...valueParts] = trimmedLine.split('=')
@@ -219,7 +218,7 @@ export {
   logBright,
   logDim,
   logError,
-  format
+  format,
 }
 
 // Only run if this file is executed directly (not imported)

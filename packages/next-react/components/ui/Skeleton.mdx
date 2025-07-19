@@ -1,5 +1,13 @@
-import { Meta, Title, Primary, Controls, Stories, Story, Canvas } from '@storybook/blocks';
-import * as SkeletonStories from './Skeleton.stories';
+import {
+  Meta,
+  Title,
+  Primary,
+  Controls,
+  Stories,
+  Story,
+  Canvas,
+} from '@storybook/blocks'
+import * as SkeletonStories from './Skeleton.stories'
 
 <Meta of={SkeletonStories} />
 
@@ -20,7 +28,7 @@ Skeleton component for building user interfaces.
 ## Features
 
 - **Feature 1**: Description of key feature
-- **Feature 2**: Description of another feature  
+- **Feature 2**: Description of another feature
 - **Feature 3**: Description of additional feature
 - **Accessible**: Built with accessibility in mind
 - **Customizable**: Easy to style and extend
@@ -30,7 +38,7 @@ Skeleton component for building user interfaces.
 Import the Skeleton component:
 
 ```tsx
-import { Skeleton } from "@/components/ui/-skeleton"
+import { Skeleton } from '@/components/ui/-skeleton'
 ```
 
 ## Examples
@@ -63,17 +71,13 @@ The Skeleton component accepts the following props:
 ### Basic Skeleton
 
 ```tsx
-<Skeleton>
-  Content here
-</Skeleton>
+<Skeleton>Content here</Skeleton>
 ```
 
 ### Skeleton with Props
 
 ```tsx
-<Skeleton className="custom-class">
-  Custom content
-</Skeleton>
+<Skeleton className="custom-class">Custom content</Skeleton>
 ```
 
 ## Accessibility
@@ -87,11 +91,13 @@ The Skeleton component accepts the following props:
 ## Design Guidelines
 
 ### Do
+
 - Use clear and descriptive content
 - Follow consistent spacing patterns
 - Provide proper context
 
 ### Don't
+
 - Overuse the component
 - Ignore accessibility requirements
 - Break established patterns

@@ -1,4 +1,4 @@
-import { removeSpecialCharacters } from './removeSpecialCharacters'
+import { removeSpecialCharacters } from './removeSpecialCharacters.js'
 
 describe('removeSpecialCharacters', () => {
   test('全て許可された文字で構成された文字列を与えた場合は変化なし', () => {
