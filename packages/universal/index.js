@@ -6,6 +6,13 @@ export { arrayEqual } from './array/arrayEqual.ts'
 export { arrayFillmap } from './array/arrayFilllmap.ts'
 export { range } from './array/range.ts'
 
+// Enhanced array utilities
+export { groupBy } from './array/groupBy.ts'
+export { uniqueBy } from './array/uniqueBy.ts'
+export { chunk } from './array/chunk.ts'
+export { partition } from './array/partition.ts'
+export { difference, intersection, union } from './array/setOperations.ts'
+
 // String utilities
 export { snakeToCameledSpace } from './string/snakeToCameledSpace.ts'
 export { removeSpecialCharacters } from './removeSpecialCharacters.ts'
