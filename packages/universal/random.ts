@@ -49,3 +49,18 @@ export function randomNumberRange(min: number, max: number) {
 export function randomInArray(array: any) {
   return array[Math.floor(Math.random() * array.length)]
 }
+
+/**
+ * Random number generator utility for testing probability distributions.
+ * Generates random numbers between 0 and 100.
+ *
+ * @returns Random number between 0 and 100
+ * 
+ * @example
+ * ```typescript
+ * rand()  // Returns 0-99.999... (never quite 100)
+ * ```
+ */
+export function rand(): number {
+  return Math.random() * 100
+}

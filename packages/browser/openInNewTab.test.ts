@@ -26,10 +26,10 @@ describe('openInNewTab', () => {
     originalCreateElement = document.createElement
     document.createElement = vi.fn((tagName: string) => {
       if (tagName === 'a') {
-        return mockAnchor
+        return mockAnchor as any
       }
       return originalCreateElement.call(document, tagName)
-    })
+    }) as any
   })
 
   afterEach(() => {
