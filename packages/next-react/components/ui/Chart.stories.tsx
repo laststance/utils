@@ -68,8 +68,8 @@ export const BarChartExample: ChartStory = {
         <ChartLegend
           content={(props) => (
             <ChartLegendContent
-              payload={props.payload}
-              verticalAlign={props.verticalAlign}
+              payload={props.payload || []}
+              verticalAlign={props.verticalAlign || 'top'}
             />
           )}
         />
@@ -90,8 +90,8 @@ export const LineChartExample: ChartStory = {
         <ChartLegend
           content={(props) => (
             <ChartLegendContent
-              payload={props.payload}
-              verticalAlign={props.verticalAlign}
+              payload={props.payload || []}
+              verticalAlign={props.verticalAlign || 'top'}
             />
           )}
         />

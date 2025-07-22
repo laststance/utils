@@ -128,7 +128,7 @@ describe('sleep', () => {
 
   describe('async patterns', () => {
     it('should work with then() callbacks', async () => {
-      const result = []
+      const result: string[] = []
 
       const promise = sleep(100).then(() => {
         result.push('completed')

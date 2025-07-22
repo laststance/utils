@@ -16,7 +16,7 @@ export { isBoolean } from './isBoolean.ts'
 export { isError } from './isError.ts'
 export { isFalsy } from './isFalsy.ts'
 export { isFunction } from './isFunction.ts'
-export { isImageUrl } from './isImageUrl.js'
+export { isImgUrl } from './isImageUrl.js'
 export { nonNullable } from './non-nullable.ts'
 
 // Type helpers
@@ -27,11 +27,11 @@ export { invariant } from './invariant.ts'
 
 // Object comparison
 export { shallowEqual } from './shallowEqual.ts'
-export { shallowEqualScalar } from './shallowEqualScalar.js'
+export { default as shallowEqualScalar } from './shallowEqualScalar.js'
 
 // Date utilities
 export { getDate } from './getDate.ts'
-export { formatDate } from './yyyy-mm-dd.js'
+export { yyyy_mm_dd } from './yyyy-mm-dd.js'
 
 // Regex patterns
 export { cssRegex } from './regex/css.ts'
@@ -41,7 +41,7 @@ export { email2Regex } from './regex/email2.ts'
 // Functional utilities
 export { filterFalsy } from './filterFalsy.ts'
 export { printValue } from './printValue.ts'
-export { retry } from './retry.js'
+export { default as retry } from './retry.js'
 
 // Math utilities
 export { positiveIntegerSum } from './positiveIntegerSum.js'

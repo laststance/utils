@@ -477,7 +477,7 @@ describe('getImageRect', () => {
 
       // Trigger appropriate events
       mockImages.forEach((img, index) => {
-        if (requests[index].shouldSucceed) {
+        if (requests[index]?.shouldSucceed) {
           img.load()
         } else {
           img.error(new Error('Failed to load'))
@@ -486,14 +486,14 @@ describe('getImageRect', () => {
 
       const results = await Promise.allSettled(promises)
 
-      expect(results[0].status).toBe('fulfilled')
-      expect(results[1].status).toBe('rejected')
-      expect(results[2].status).toBe('fulfilled')
+      expect(results[0]?.status).toBe('fulfilled')
+      expect(results[1]?.status).toBe('rejected')
+      expect(results[2]?.status).toBe('fulfilled')
 
-      if (results[0].status === 'fulfilled') {
+      if (results[0]?.status === 'fulfilled') {
         expect(results[0].value).toEqual({ width: 800, height: 600 })
       }
-      if (results[2].status === 'fulfilled') {
+      if (results[2]?.status === 'fulfilled') {
         expect(results[2].value).toEqual({ width: 400, height: 300 })
       }
     })
