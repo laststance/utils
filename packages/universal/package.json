@@ -2,9 +2,14 @@
   "name": "universal",
   "version": "1.0.0",
   "main": "./index.js",
+  "module": "./index.js",
   "exports": {
-    ".": "./index.js",
-    "./*": "./*.js"
+    ".": {
+      "import": "./index.js"
+    },
+    "./*": {
+      "import": "./*.js"
+    }
   },
   "scripts": {
     "test": "vitest --run",
