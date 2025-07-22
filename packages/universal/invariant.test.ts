@@ -150,7 +150,7 @@ describe('invariant', () => {
       try {
         invariant(false, 'Test error')
       } catch (error) {
-        expect(error.framesToPop).toBe(1)
+        expect((error as any).framesToPop).toBe(1)
       }
     })
 
