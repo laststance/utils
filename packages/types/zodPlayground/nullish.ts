@@ -9,4 +9,6 @@ const schema = z
 
 const res = schema.safeParse({ age: 9 })
 
-console.log(res.error.flatten().fieldErrors)
+if (!res.success) {
+  console.log(res.error.flatten().fieldErrors)
+}

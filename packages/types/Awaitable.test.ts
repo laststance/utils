@@ -177,7 +177,7 @@ describe('Awaitable type', () => {
       // Memory cache (sync)
       const memoryCache: Cache<string> = {
         get: (key) => `value-${key}`,
-        set: (key, value) => {
+        set: (_key, _value) => {
           /* store in memory */
         },
       }
@@ -185,7 +185,7 @@ describe('Awaitable type', () => {
       // Redis cache (async)
       const redisCache: Cache<string> = {
         get: async (key) => `value-${key}`,
-        set: async (key, value) => {
+        set: async (_key, _value) => {
           /* store in redis */
         },
       }
@@ -256,13 +256,13 @@ describe('Awaitable type', () => {
 
       // File-based loader (async)
       const fileLoader: ConfigLoader<AppConfig> = {
-        load: async (path) => ({ port: 3000, host: 'localhost' }),
+        load: async (_path) => ({ port: 3000, host: 'localhost' }),
         validate: async (config) => config.port > 0,
       }
 
       // Environment loader (sync)
       const envLoader: ConfigLoader<AppConfig> = {
-        load: (path) => ({ port: 3000, host: 'localhost' }),
+        load: (_path) => ({ port: 3000, host: 'localhost' }),
         validate: (config) => config.port > 0,
       }
 
