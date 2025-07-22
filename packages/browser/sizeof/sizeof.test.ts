@@ -47,7 +47,7 @@ describe('sizeof', function () {
   })
 
   it('object with 100 three-chars keys and values as numbers => 100 * 2 * 3 + 100 * 8', function () {
-    var obj = {}
+    var obj: Record<number, number> = {}
     var ELEMENTS = 100
     // start from 1M to have the same keys length
     for (var i = 100; i < 100 + ELEMENTS; i++) {
@@ -120,7 +120,7 @@ describe('sizeof', function () {
     const b = Symbol('b')
     const c = Symbol('c')
     const d = Symbol('d')
-    const obj = { [a]: { [b]: { [c]: d } } }
+    const obj: any = { [a]: { [b]: { [c]: d } } }
     obj[Symbol()] = obj[a]
     sizeof(obj).should.equal(8)
   })

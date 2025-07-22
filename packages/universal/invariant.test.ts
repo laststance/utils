@@ -141,8 +141,8 @@ describe('invariant', () => {
         invariant(false, 'Test error with %s', 'formatting')
       } catch (error) {
         expect(error).toBeInstanceOf(Error)
-        expect(error.name).toBe('Invariant Violation')
-        expect(error.message).toBe('Test error with formatting')
+        expect((error as Error).name).toBe('Invariant Violation')
+        expect((error as Error).message).toBe('Test error with formatting')
       }
     })
 
@@ -150,7 +150,7 @@ describe('invariant', () => {
       try {
         invariant(false, 'Test error')
       } catch (error) {
-        expect(error.framesToPop).toBe(1)
+        expect((error as any).framesToPop).toBe(1)
       }
     })
 
@@ -169,7 +169,7 @@ describe('invariant', () => {
         )
       } catch (error) {
         expect(error).toBeInstanceOf(Error)
-        expect(error.message).toBe(
+        expect((error as Error).message).toBe(
           'invariant requires an error message argument',
         )
       }
@@ -207,7 +207,7 @@ describe('invariant', () => {
           false,
         )
       } catch (error) {
-        expect(error.message).toBe(
+        expect((error as Error).message).toBe(
           'Minified exception occurred; use the non-minified dev environment ' +
             'for the full error message and additional helpful warnings.',
         )
@@ -228,8 +228,8 @@ describe('invariant', () => {
           undefined,
         )
       } catch (error) {
-        expect(error.message).toBe('Production error: value')
-        expect(error.name).toBe('Invariant Violation')
+        expect((error as Error).message).toBe('Production error: value')
+        expect((error as Error).name).toBe('Invariant Violation')
       }
     })
 

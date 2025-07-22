@@ -6,7 +6,7 @@
  *
  * @param v - The value to cast
  */
-export function assertCast<T>(v: any): asserts v is T {}
+export function assertCast<T>(_v: any): asserts _v is T {}
 
 /**
  * Safely assigns properties to a target object with type checking.
@@ -35,7 +35,7 @@ export function safeAssign<T extends Record<string, unknown>>(
  *
  * @param x - The value to check
  */
-export function assertIsDefined<T>(x: T | undefined): asserts x is T {}
+export function assertIsDefined<T>(_x: T | undefined): asserts _x is T {}
 
 /**
  * Asserts that a value is defined (not null or undefined) with runtime checking.

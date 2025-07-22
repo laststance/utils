@@ -144,7 +144,7 @@ describe('isClient', () => {
         // Create window with falsy document
         // @ts-ignore
         global.window = {
-          document: null,
+          document: null as any,
         }
 
         // Clear module cache to force re-evaluation

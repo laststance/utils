@@ -61,7 +61,7 @@ export default function printValue(value: any, quoteStrings?: boolean) {
 
   return JSON.stringify(
     value,
-    function (key, value) {
+    function (_key, value) {
       // Only use custom formatting for special types that JSON.stringify can't handle
       const typeOf = typeof value
       if (typeOf === 'function') {

@@ -10,5 +10,5 @@
     "./**/*.mjs",
     "./**/*.cjs"
   ],
-  "exclude": ["serve.js", "node_modules", "__tests__", "eslint.config.js"]
+  "exclude": ["serve.js", "node_modules", "__tests__"]
 }
