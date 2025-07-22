@@ -3,10 +3,17 @@
   "version": "1.0.0",
   "description": "",
   "main": "./index.js",
+  "module": "./index.js",
   "exports": {
-    ".": "./index.js",
-    "./*": "./*.js",
-    "./cli/*": "./cli/*.js"
+    ".": {
+      "import": "./index.js"
+    },
+    "./*": {
+      "import": "./*.js"
+    },
+    "./cli/*": {
+      "import": "./cli/*.js"
+    }
   },
   "scripts": {
     "test": "vitest --run",

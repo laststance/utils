@@ -2,8 +2,14 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
 import { openInNewTab } from './openInNewTab.js'
 
+interface MockAnchorElement {
+  target: string
+  href: string
+  click: ReturnType<typeof vi.fn>
+}
+
 describe('openInNewTab', () => {
-  let mockAnchor: any
+  let mockAnchor: MockAnchorElement
   let originalCreateElement: typeof document.createElement
 
   beforeEach(() => {

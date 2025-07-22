@@ -2,8 +2,18 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
 import { getImageRect } from './getImageRect.js'
 
+interface MockImage {
+  naturalWidth: number
+  naturalHeight: number
+  src: string
+  addEventListener: ReturnType<typeof vi.fn>
+  removeEventListener: ReturnType<typeof vi.fn>
+  load: (() => void) | null
+  error: ((err: Error) => void) | null
+}
+
 describe('getImageRect', () => {
-  let mockImage: any
+  let mockImage: MockImage
   let originalImage: typeof Image
 
   beforeEach(() => {
@@ -19,14 +29,14 @@ describe('getImageRect', () => {
       src: '',
       addEventListener: vi.fn(),
       removeEventListener: vi.fn(),
-      load: null as any,
-      error: null as any,
+      load: null,
+      error: null,
     }
 
     // Mock the Image constructor
     global.Image = vi.fn(() => {
       // Store event handlers for manual triggering
-      mockImage.addEventListener = vi.fn((event: string, handler: any) => {
+      mockImage.addEventListener = vi.fn((event: string, handler: () => void) => {
         if (event === 'load') {
           mockImage.load = handler
         } else if (event === 'error') {
@@ -397,7 +407,7 @@ describe('getImageRect', () => {
 
       // Mock Image constructor to return different instances
       let imageIndex = 0
-      const mockImages: any[] = []
+      const mockImages: MockImage[] = []
 
       global.Image = vi.fn(() => {
         const currentIndex = imageIndex++
@@ -405,7 +415,7 @@ describe('getImageRect', () => {
           naturalWidth: images[currentIndex]?.width || 0,
           naturalHeight: images[currentIndex]?.height || 0,
           src: '',
-          addEventListener: vi.fn((event: string, handler: any) => {
+          addEventListener: vi.fn((event: string, handler: () => void) => {
             if (event === 'load') {
               img.load = handler
             } else if (event === 'error') {
@@ -451,7 +461,7 @@ describe('getImageRect', () => {
       ]
 
       let imageIndex = 0
-      const mockImages: any[] = []
+      const mockImages: MockImage[] = []
 
       global.Image = vi.fn(() => {
         const currentIndex = imageIndex++
@@ -459,7 +469,7 @@ describe('getImageRect', () => {
           naturalWidth: requests[currentIndex]?.width || 0,
           naturalHeight: requests[currentIndex]?.height || 0,
           src: '',
-          addEventListener: vi.fn((event: string, handler: any) => {
+          addEventListener: vi.fn((event: string, handler: () => void) => {
             if (event === 'load') {
               img.load = handler
             } else if (event === 'error') {
