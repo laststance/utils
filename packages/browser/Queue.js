@@ -38,7 +38,7 @@ class Queue {
     this.pendingEntries = []
     this.inFlight = 0
     this.err = null
-    
+
     // Event-based waiting system
     this.waiters = []
   }
@@ -78,7 +78,7 @@ class Queue {
         this.process()
       }
     })
-    
+
     // Also notify waiters immediately in case conditions are already met
     this._notifyWaiters()
   }
