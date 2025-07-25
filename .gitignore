@@ -6,6 +6,7 @@ dist-ssr
 tsc-dist
 .env
 .turbo
+.claude
 
 # Test coverage
 coverage/
