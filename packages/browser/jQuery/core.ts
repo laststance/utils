@@ -157,6 +157,23 @@ export interface JQueryCollection extends ArrayLike<Element> {
   outerHeight(
     _value: (_index: number, _currentHeight: number) => number | string,
   ): JQuery
+
+  // DOM Traversal Methods
+  find(_selector: string): JQuery
+  parent(_selector?: string): JQuery
+  parents(_selector?: string): JQuery
+  children(_selector?: string): JQuery
+  siblings(_selector?: string): JQuery
+  next(_selector?: string): JQuery
+  prev(_selector?: string): JQuery
+  closest(_selector: string): JQuery
+  filter(_selector: string): JQuery
+  filter(_function: (_index: number, _element: Element) => boolean): JQuery
+  not(_selector: string): JQuery
+  not(_function: (_index: number, _element: Element) => boolean): JQuery
+  eq(_index: number): JQuery
+  first(): JQuery
+  last(): JQuery
 }
 
 export class JQuery implements JQueryCollection {
@@ -1649,6 +1666,344 @@ export class JQuery implements JQueryCollection {
     }
 
     return this
+  }
+
+  // DOM Traversal Methods
+
+  find(selector: string): JQuery {
+    const results: Element[] = []
+
+    for (let i = 0; i < this.length; i++) {
+      const element = this[i]
+      if (element) {
+        const descendants = element.querySelectorAll(selector)
+        results.push(...Array.from(descendants))
+      }
+    }
+
+    // Remove duplicates while preserving order
+    const uniqueResults: Element[] = []
+    const seen = new Set<Element>()
+    for (const el of results) {
+      if (!seen.has(el)) {
+        seen.add(el)
+        uniqueResults.push(el)
+      }
+    }
+
+    const result = new JQuery()
+    uniqueResults.forEach((el, index) => {
+      result[index] = el
+    })
+    result.length = uniqueResults.length
+    return result
+  }
+
+  parent(selector?: string): JQuery {
+    const results: Element[] = []
+
+    for (let i = 0; i < this.length; i++) {
+      const element = this[i]
+      if (element && element.parentElement) {
+        const parent = element.parentElement
+
+        // Filter by selector if provided
+        if (!selector || parent.matches(selector)) {
+          results.push(parent)
+        }
+      }
+    }
+
+    // Remove duplicates while preserving order
+    const uniqueResults: Element[] = []
+    const seen = new Set<Element>()
+    for (const el of results) {
+      if (!seen.has(el)) {
+        seen.add(el)
+        uniqueResults.push(el)
+      }
+    }
+
+    const result = new JQuery()
+    uniqueResults.forEach((el, index) => {
+      result[index] = el
+    })
+    result.length = uniqueResults.length
+    return result
+  }
+
+  parents(selector?: string): JQuery {
+    const results: Element[] = []
+
+    for (let i = 0; i < this.length; i++) {
+      const element = this[i]
+      if (element) {
+        let parent = element.parentElement
+
+        while (parent) {
+          // Filter by selector if provided
+          if (!selector || parent.matches(selector)) {
+            results.push(parent)
+          }
+          parent = parent.parentElement
+        }
+      }
+    }
+
+    // Remove duplicates while preserving order
+    const uniqueResults: Element[] = []
+    const seen = new Set<Element>()
+    for (const el of results) {
+      if (!seen.has(el)) {
+        seen.add(el)
+        uniqueResults.push(el)
+      }
+    }
+
+    const result = new JQuery()
+    uniqueResults.forEach((el, index) => {
+      result[index] = el
+    })
+    result.length = uniqueResults.length
+    return result
+  }
+
+  children(selector?: string): JQuery {
+    const results: Element[] = []
+
+    for (let i = 0; i < this.length; i++) {
+      const element = this[i]
+      if (element) {
+        const children = Array.from(element.children)
+
+        for (const child of children) {
+          // Filter by selector if provided
+          if (!selector || child.matches(selector)) {
+            results.push(child)
+          }
+        }
+      }
+    }
+
+    const result = new JQuery()
+    results.forEach((el, index) => {
+      result[index] = el
+    })
+    result.length = results.length
+    return result
+  }
+
+  siblings(selector?: string): JQuery {
+    const results: Element[] = []
+
+    for (let i = 0; i < this.length; i++) {
+      const element = this[i]
+      if (element && element.parentElement) {
+        const siblings = Array.from(element.parentElement.children)
+
+        for (const sibling of siblings) {
+          // Skip the element itself
+          if (sibling !== element) {
+            // Filter by selector if provided
+            if (!selector || sibling.matches(selector)) {
+              results.push(sibling)
+            }
+          }
+        }
+      }
+    }
+
+    // Remove duplicates while preserving order
+    const uniqueResults: Element[] = []
+    const seen = new Set<Element>()
+    for (const el of results) {
+      if (!seen.has(el)) {
+        seen.add(el)
+        uniqueResults.push(el)
+      }
+    }
+
+    const result = new JQuery()
+    uniqueResults.forEach((el, index) => {
+      result[index] = el
+    })
+    result.length = uniqueResults.length
+    return result
+  }
+
+  next(selector?: string): JQuery {
+    const results: Element[] = []
+
+    for (let i = 0; i < this.length; i++) {
+      const element = this[i]
+      if (element) {
+        const nextSibling = element.nextElementSibling
+
+        if (nextSibling) {
+          // Filter by selector if provided
+          if (!selector || nextSibling.matches(selector)) {
+            results.push(nextSibling)
+          }
+        }
+      }
+    }
+
+    const result = new JQuery()
+    results.forEach((el, index) => {
+      result[index] = el
+    })
+    result.length = results.length
+    return result
+  }
+
+  prev(selector?: string): JQuery {
+    const results: Element[] = []
+
+    for (let i = 0; i < this.length; i++) {
+      const element = this[i]
+      if (element) {
+        const prevSibling = element.previousElementSibling
+
+        if (prevSibling) {
+          // Filter by selector if provided
+          if (!selector || prevSibling.matches(selector)) {
+            results.push(prevSibling)
+          }
+        }
+      }
+    }
+
+    const result = new JQuery()
+    results.forEach((el, index) => {
+      result[index] = el
+    })
+    result.length = results.length
+    return result
+  }
+
+  closest(selector: string): JQuery {
+    const results: Element[] = []
+
+    for (let i = 0; i < this.length; i++) {
+      const element = this[i]
+      if (element) {
+        let current: Element | null = element
+
+        while (current) {
+          if (current.matches(selector)) {
+            results.push(current)
+            break
+          }
+          current = current.parentElement
+        }
+      }
+    }
+
+    // Remove duplicates while preserving order
+    const uniqueResults: Element[] = []
+    const seen = new Set<Element>()
+    for (const el of results) {
+      if (!seen.has(el)) {
+        seen.add(el)
+        uniqueResults.push(el)
+      }
+    }
+
+    const result = new JQuery()
+    uniqueResults.forEach((el, index) => {
+      result[index] = el
+    })
+    result.length = uniqueResults.length
+    return result
+  }
+
+  filter(_selector: string): JQuery
+  filter(_fn: (_index: number, _element: Element) => boolean): JQuery
+  filter(
+    selectorOrFn: string | ((_index: number, _element: Element) => boolean),
+  ): JQuery {
+    const results: Element[] = []
+
+    for (let i = 0; i < this.length; i++) {
+      const element = this[i]
+      if (element) {
+        let shouldInclude = false
+
+        if (typeof selectorOrFn === 'string') {
+          shouldInclude = element.matches(selectorOrFn)
+        } else {
+          shouldInclude = selectorOrFn(i, element)
+        }
+
+        if (shouldInclude) {
+          results.push(element)
+        }
+      }
+    }
+
+    const result = new JQuery()
+    results.forEach((el, index) => {
+      result[index] = el
+    })
+    result.length = results.length
+    return result
+  }
+
+  not(_selector: string): JQuery
+  not(_fn: (_index: number, _element: Element) => boolean): JQuery
+  not(
+    selectorOrFn: string | ((_index: number, _element: Element) => boolean),
+  ): JQuery {
+    const results: Element[] = []
+
+    for (let i = 0; i < this.length; i++) {
+      const element = this[i]
+      if (element) {
+        let shouldExclude = false
+
+        if (typeof selectorOrFn === 'string') {
+          shouldExclude = element.matches(selectorOrFn)
+        } else {
+          shouldExclude = selectorOrFn(i, element)
+        }
+
+        if (!shouldExclude) {
+          results.push(element)
+        }
+      }
+    }
+
+    const result = new JQuery()
+    results.forEach((el, index) => {
+      result[index] = el
+    })
+    result.length = results.length
+    return result
+  }
+
+  eq(index: number): JQuery {
+    const result = new JQuery()
+
+    // Handle negative indices
+    const actualIndex = index < 0 ? this.length + index : index
+
+    if (actualIndex >= 0 && actualIndex < this.length) {
+      const element = this[actualIndex]
+      if (element) {
+        result[0] = element
+        result.length = 1
+      }
+    }
+
+    return result
+  }
+
+  first(): JQuery {
+    return this.eq(0)
+  }
+
+  last(): JQuery {
+    return this.eq(-1)
   }
 }
 

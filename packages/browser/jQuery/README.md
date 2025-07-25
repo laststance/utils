@@ -51,6 +51,20 @@ Currently implemented:
   - `.innerHeight()` - Get/set inner height (including padding)
   - `.outerWidth()` - Get/set outer width (including padding, border, optionally margin)
   - `.outerHeight()` - Get/set outer height (including padding, border, optionally margin)
+- ✅ DOM Traversal Methods:
+  - `.find()` - Find descendant elements matching selector
+  - `.parent()` - Get immediate parent element
+  - `.parents()` - Get all ancestor elements
+  - `.children()` - Get direct child elements
+  - `.siblings()` - Get sibling elements
+  - `.next()` - Get immediately following sibling
+  - `.prev()` - Get immediately preceding sibling
+  - `.closest()` - Get closest ancestor matching selector
+  - `.filter()` - Filter elements by selector or function
+  - `.not()` - Remove elements matching selector or function
+  - `.eq()` - Get element at specific index
+  - `.first()` - Get first element
+  - `.last()` - Get last element
 
 ## Usage
 
@@ -141,6 +155,22 @@ const outerWidth = $('#element').outerWidth()              // Get outer width
 const outerWidthWithMargin = $('#element').outerWidth(true) // Include margin
 $('#element').outerWidth(300)                              // Set outer width
 const outerHeight = $('#element').outerHeight()            // Get outer height
+
+// DOM Traversal
+$('#container').find('.item')                                  // Find descendants
+$('#child').parent()                                           // Get parent
+$('#child').parents('.ancestor')                               // Get all matching ancestors
+$('#parent').children('p')                                     // Get direct children
+$('#element').siblings('.sibling')                             // Get siblings
+$('#element').next('.next-item')                               // Get next sibling
+$('#element').prev('.prev-item')                               // Get previous sibling
+$('#element').closest('.container')                            // Get closest ancestor
+$('.items').filter('.active')                                  // Filter by selector
+$('.items').filter(function(index) { return index % 2 === 0 }) // Filter by function
+$('.items').not('.disabled')                                   // Remove matching elements
+$('.items').eq(2)                                             // Get element at index 2
+$('.items').first()                                           // Get first element
+$('.items').last()                                            // Get last element
 
 // Ready function
 $(function() {
