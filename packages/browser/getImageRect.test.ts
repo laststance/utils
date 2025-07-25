@@ -10,7 +10,7 @@ describe('getImageRect', () => {
     addEventListener: ReturnType<typeof vi.fn>
     removeEventListener: ReturnType<typeof vi.fn>
     load: (() => void) | null
-    error: ((error: Error) => void) | null
+    error: ((_error: Error) => void) | null
   }
   let mockImage: MockImage
   let originalImage: typeof Image
@@ -35,13 +35,15 @@ describe('getImageRect', () => {
     // Mock the Image constructor
     global.Image = vi.fn(() => {
       // Store event handlers for manual triggering
-      mockImage.addEventListener = vi.fn((event: string, handler: (error?: Error) => void) => {
-        if (event === 'load') {
-          mockImage.load = handler as () => void
-        } else if (event === 'error') {
-          mockImage.error = handler as (error: Error) => void
-        }
-      })
+      mockImage.addEventListener = vi.fn(
+        (event: string, handler: (_error?: Error) => void) => {
+          if (event === 'load') {
+            mockImage.load = handler as () => void
+          } else if (event === 'error') {
+            mockImage.error = handler as (_error: Error) => void
+          }
+        },
+      )
 
       return mockImage
     }) as unknown as typeof Image
@@ -414,13 +416,15 @@ describe('getImageRect', () => {
           naturalWidth: images[currentIndex]?.width || 0,
           naturalHeight: images[currentIndex]?.height || 0,
           src: '',
-          addEventListener: vi.fn((event: string, handler: (error?: Error) => void) => {
-            if (event === 'load') {
-              img.load = handler as () => void
-            } else if (event === 'error') {
-              img.error = handler as (error: Error) => void
-            }
-          }),
+          addEventListener: vi.fn(
+            (event: string, handler: (_error?: Error) => void) => {
+              if (event === 'load') {
+                img.load = handler as () => void
+              } else if (event === 'error') {
+                img.error = handler as (_error: Error) => void
+              }
+            },
+          ),
           removeEventListener: vi.fn(),
           load: null,
           error: null,
@@ -469,13 +473,15 @@ describe('getImageRect', () => {
           naturalWidth: requests[currentIndex]?.width || 0,
           naturalHeight: requests[currentIndex]?.height || 0,
           src: '',
-          addEventListener: vi.fn((event: string, handler: (error?: Error) => void) => {
-            if (event === 'load') {
-              img.load = handler as () => void
-            } else if (event === 'error') {
-              img.error = handler as (error: Error) => void
-            }
-          }),
+          addEventListener: vi.fn(
+            (event: string, handler: (_error?: Error) => void) => {
+              if (event === 'load') {
+                img.load = handler as () => void
+              } else if (event === 'error') {
+                img.error = handler as (_error: Error) => void
+              }
+            },
+          ),
           removeEventListener: vi.fn(),
           load: null,
           error: null,

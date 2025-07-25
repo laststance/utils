@@ -292,7 +292,9 @@ describe('openInNewTab', () => {
         // No click method
       }
 
-      document.createElement = vi.fn(() => anchorWithoutClick as unknown as HTMLElement) as typeof document.createElement
+      document.createElement = vi.fn(
+        () => anchorWithoutClick as unknown as HTMLElement,
+      ) as typeof document.createElement
 
       // Should throw when trying to call click
       expect(() => openInNewTab('https://example.com')).toThrow()

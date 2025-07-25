@@ -124,7 +124,9 @@ describe('sizeof', function () {
     const b = Symbol('b')
     const c = Symbol('c')
     const d = Symbol('d')
-    const obj: Record<symbol, Record<symbol, Record<symbol, symbol>>> = { [a]: { [b]: { [c]: d } } }
+    const obj: Record<symbol, Record<symbol, Record<symbol, symbol>>> = {
+      [a]: { [b]: { [c]: d } },
+    }
     obj[Symbol()] = obj[a]!
     sizeof(obj).should.equal(8)
   })
