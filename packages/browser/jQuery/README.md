@@ -38,6 +38,11 @@ Currently implemented:
   - `.removeAttr()` - Remove HTML attributes
   - `.prop()` - Get/set DOM properties
   - `.removeProp()` - Remove DOM properties
+- ✅ Class Manipulation Methods:
+  - `.hasClass()` - Check if element has CSS class
+  - `.addClass()` - Add CSS classes
+  - `.removeClass()` - Remove CSS classes
+  - `.toggleClass()` - Toggle CSS classes
 
 ## Usage
 
@@ -99,6 +104,12 @@ $('#element').removeAttr('title aria-label')               // Remove multiple
 $('#checkbox').prop('checked', true)                       // Set property
 const isChecked = $('#checkbox').prop('checked')           // Get property
 $('#input').prop({ disabled: true, readOnly: true })       // Set multiple
+
+// Class Manipulation
+$('#element').addClass('active highlight')                 // Add classes
+$('#element').removeClass('old-class')                     // Remove class
+$('#element').toggleClass('visible')                       // Toggle class
+const hasClass = $('#element').hasClass('active')          // Check class
 
 // Ready function
 $(function() {

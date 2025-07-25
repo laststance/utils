@@ -92,6 +92,25 @@ export interface JQueryCollection extends ArrayLike<Element> {
   prop(_name: string, _value: (_index: number, _oldProp: any) => any): JQuery
 
   removeProp(_name: string): JQuery
+
+  // Class Manipulation
+  hasClass(_className: string): boolean
+  addClass(_classNames: string): JQuery
+  addClass(_function: (_index: number, _currentClass: string) => string): JQuery
+  removeClass(): JQuery
+  removeClass(_classNames: string): JQuery
+  removeClass(
+    _function: (_index: number, _currentClass: string) => string,
+  ): JQuery
+  toggleClass(_classNames: string, _switch?: boolean): JQuery
+  toggleClass(
+    _function: (
+      _index: number,
+      _currentClass: string,
+      _switch: boolean,
+    ) => string,
+    _switch?: boolean,
+  ): JQuery
 }
 
 export class JQuery implements JQueryCollection {
@@ -899,6 +918,148 @@ export class JQuery implements JQueryCollection {
           // Silently fail for properties that can't be deleted
         }
       }
+    }
+
+    return this
+  }
+
+  // Class Manipulation Methods
+
+  hasClass(className: string): boolean {
+    if (!className || !className.trim()) return false
+
+    const element = this[0]
+    if (!element) return false
+
+    return element.classList.contains(className.trim())
+  }
+
+  addClass(_classNames: string): JQuery
+  addClass(_fn: (_index: number, _currentClass: string) => string): JQuery
+  addClass(
+    classNamesOrFn:
+      | string
+      | ((_index: number, _currentClass: string) => string),
+  ): JQuery {
+    for (let i = 0; i < this.length; i++) {
+      const element = this[i]
+      if (!element) continue
+
+      let classesToAdd: string
+
+      if (typeof classNamesOrFn === 'function') {
+        classesToAdd = classNamesOrFn(i, element.className)
+      } else {
+        classesToAdd = classNamesOrFn
+      }
+
+      if (!classesToAdd || !classesToAdd.trim()) continue
+
+      // Split by whitespace and add each class
+      const classes = classesToAdd.trim().split(/\s+/)
+      classes.forEach((cls) => {
+        if (cls && !element.classList.contains(cls)) {
+          element.classList.add(cls)
+        }
+      })
+    }
+
+    return this
+  }
+
+  removeClass(): JQuery
+  removeClass(_classNames: string): JQuery
+  removeClass(_fn: (_index: number, _currentClass: string) => string): JQuery
+  removeClass(
+    classNamesOrFn?:
+      | string
+      | ((_index: number, _currentClass: string) => string),
+  ): JQuery {
+    for (let i = 0; i < this.length; i++) {
+      const element = this[i]
+      if (!element) continue
+
+      // Remove all classes if no parameter provided
+      if (classNamesOrFn === undefined) {
+        element.className = ''
+        continue
+      }
+
+      let classesToRemove: string
+
+      if (typeof classNamesOrFn === 'function') {
+        classesToRemove = classNamesOrFn(i, element.className)
+      } else {
+        classesToRemove = classNamesOrFn
+      }
+
+      if (!classesToRemove || !classesToRemove.trim()) continue
+
+      // Split by whitespace and remove each class
+      const classes = classesToRemove.trim().split(/\s+/)
+      classes.forEach((cls) => {
+        if (cls) {
+          element.classList.remove(cls)
+        }
+      })
+    }
+
+    return this
+  }
+
+  toggleClass(_classNames: string, _switchValue?: boolean): JQuery
+  toggleClass(
+    _fn: (
+      _index: number,
+      _currentClass: string,
+      _switchValue: boolean,
+    ) => string,
+    _switchValue?: boolean,
+  ): JQuery
+  toggleClass(
+    classNamesOrFn:
+      | string
+      | ((
+          _index: number,
+          _currentClass: string,
+          _switchValue: boolean,
+        ) => string),
+    switchValue?: boolean,
+  ): JQuery {
+    for (let i = 0; i < this.length; i++) {
+      const element = this[i]
+      if (!element) continue
+
+      let classesToToggle: string
+
+      if (typeof classNamesOrFn === 'function') {
+        classesToToggle = classNamesOrFn(
+          i,
+          element.className,
+          switchValue ?? false,
+        )
+      } else {
+        classesToToggle = classNamesOrFn
+      }
+
+      if (!classesToToggle || !classesToToggle.trim()) continue
+
+      // Split by whitespace and toggle each class
+      const classes = classesToToggle.trim().split(/\s+/)
+      classes.forEach((cls) => {
+        if (cls) {
+          if (switchValue === true) {
+            if (!element.classList.contains(cls)) {
+              element.classList.add(cls)
+            }
+          } else if (switchValue === false) {
+            element.classList.remove(cls)
+          } else {
+            // Toggle based on current state
+            element.classList.toggle(cls)
+          }
+        }
+      })
     }
 
     return this
