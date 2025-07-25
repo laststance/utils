@@ -174,6 +174,52 @@ export interface JQueryCollection extends ArrayLike<Element> {
   eq(_index: number): JQuery
   first(): JQuery
   last(): JQuery
+
+  // Event Handling Methods
+  on(_events: string, _handler: EventListener | false): JQuery
+  on(_events: string, _data: any, _handler: EventListener | false): JQuery
+  on(
+    _events: string,
+    _selector: string,
+    _handler: EventListener | false,
+  ): JQuery
+  on(
+    _events: string,
+    _selector: string,
+    _data: any,
+    _handler: EventListener | false,
+  ): JQuery
+  on(_events: Record<string, EventListener | false>): JQuery
+  on(
+    _events: Record<string, EventListener | false>,
+    _selector: string,
+  ): JQuery
+  on(
+    _events: Record<string, EventListener | false>,
+    _selector: string,
+    _data: any,
+  ): JQuery
+
+  off(): JQuery
+  off(_events: string): JQuery
+  off(_events: string, _handler: EventListener): JQuery
+  off(_events: string, _selector: string): JQuery
+  off(_events: string, _selector: string, _handler: EventListener): JQuery
+
+  trigger(_eventType: string, _extraParameters?: any | any[]): JQuery
+  trigger(_event: Event, _extraParameters?: any | any[]): JQuery
+
+  // Event Shorthand Methods
+  click(): JQuery
+  click(_handler: EventListener | false): JQuery
+  focus(): JQuery
+  focus(_handler: EventListener | false): JQuery
+  blur(): JQuery
+  blur(_handler: EventListener | false): JQuery
+  change(): JQuery
+  change(_handler: EventListener | false): JQuery
+  submit(): JQuery
+  submit(_handler: EventListener | false): JQuery
 }
 
 export class JQuery implements JQueryCollection {
@@ -2004,6 +2050,450 @@ export class JQuery implements JQueryCollection {
 
   last(): JQuery {
     return this.eq(-1)
+  }
+
+  // Event Handling Methods
+  on(
+    events: string | Record<string, EventListener | false>,
+    selectorOrDataOrHandler?:
+      | string
+      | any
+      | EventListener
+      | false
+      | Record<string, EventListener | false>,
+    dataOrHandler?: any | EventListener | false,
+    handler?: EventListener | false,
+  ): JQuery {
+    // Handle events object map
+    if (typeof events === 'object') {
+      const eventsMap = events
+      const selector = typeof selectorOrDataOrHandler === 'string' 
+        ? selectorOrDataOrHandler 
+        : undefined
+      const data = selector ? dataOrHandler : selectorOrDataOrHandler
+
+      for (const eventType in eventsMap) {
+        const eventHandler = eventsMap[eventType]
+        if (selector) {
+          if (data !== undefined) {
+            this.on(eventType, selector, data, eventHandler)
+          } else {
+            this.on(eventType, selector, eventHandler)
+          }
+        } else if (data !== undefined) {
+          this.on(eventType, data, eventHandler)
+        } else {
+          this.on(eventType, eventHandler)
+        }
+      }
+      return this
+    }
+
+    // Parse arguments for string events
+    let actualSelector: string | undefined
+    let actualData: any
+    let actualHandler: EventListener | false
+
+    if (arguments.length === 2) {
+      // .on(events, handler)
+      actualHandler = selectorOrDataOrHandler as EventListener | false
+    } else if (arguments.length === 3) {
+      if (typeof selectorOrDataOrHandler === 'string') {
+        // .on(events, selector, handler)
+        actualSelector = selectorOrDataOrHandler
+        actualHandler = dataOrHandler as EventListener | false
+      } else {
+        // .on(events, data, handler)
+        actualData = selectorOrDataOrHandler
+        actualHandler = dataOrHandler as EventListener | false
+      }
+    } else if (arguments.length === 4) {
+      // .on(events, selector, data, handler)
+      actualSelector = selectorOrDataOrHandler as string
+      actualData = dataOrHandler
+      actualHandler = handler!
+    }
+
+    // Split multiple events
+    const eventTypes = events.split(/\s+/)
+
+    for (let i = 0; i < this.length; i++) {
+      const element = this[i] as HTMLElement
+      if (!element) continue
+
+      for (const eventType of eventTypes) {
+        if (!eventType) continue
+
+        // Create wrapper function that adds jQuery event properties
+        const wrappedHandler = (nativeEvent: Event) => {
+          // Skip if this event was triggered by jQuery.trigger() to avoid double calls
+          if ((nativeEvent as any)._jQueryTriggered) {
+            return
+          }
+
+          // Enhance the event object with jQuery properties
+          const jqEvent = nativeEvent as any
+          
+          // Use defineProperty to set read-only properties
+          try {
+            Object.defineProperty(jqEvent, 'data', {
+              value: actualData,
+              writable: false,
+              configurable: true
+            })
+          } catch {
+            jqEvent.data = actualData
+          }
+
+          if (actualHandler === false) {
+            nativeEvent.preventDefault()
+            return false
+          }
+
+          if (typeof actualHandler === 'function') {
+            return actualHandler.call(element, jqEvent)
+          }
+        }
+
+        if (actualSelector) {
+          // Event delegation
+          const delegatedHandler = (nativeEvent: Event) => {
+            // Skip if this event was triggered by jQuery.trigger() to avoid double calls
+            if ((nativeEvent as any)._jQueryTriggered) {
+              return
+            }
+
+            const target = nativeEvent.target as Element
+            if (target && target.matches && target.matches(actualSelector!)) {
+              const jqEvent = nativeEvent as any
+              
+              // Use defineProperty to set read-only properties
+              try {
+                Object.defineProperty(jqEvent, 'data', {
+                  value: actualData,
+                  writable: false,
+                  configurable: true
+                })
+                Object.defineProperty(jqEvent, 'currentTarget', {
+                  value: target,
+                  writable: false,
+                  configurable: true
+                })
+              } catch {
+                jqEvent.data = actualData
+                jqEvent.currentTarget = target
+              }
+
+              if (actualHandler === false) {
+                nativeEvent.preventDefault()
+                return false
+              }
+
+              if (typeof actualHandler === 'function') {
+                return actualHandler.call(target, jqEvent)
+              }
+            }
+          }
+
+          element.addEventListener(eventType, delegatedHandler)
+          
+          // Store reference for .off() method
+          if (!element._jQueryEventHandlers) {
+            element._jQueryEventHandlers = {}
+          }
+          if (!element._jQueryEventHandlers[eventType]) {
+            element._jQueryEventHandlers[eventType] = []
+          }
+          element._jQueryEventHandlers[eventType].push({
+            originalHandler: actualHandler,
+            wrappedHandler: delegatedHandler,
+            selector: actualSelector,
+            data: actualData,
+          })
+        } else {
+          // Direct event binding
+          element.addEventListener(eventType, wrappedHandler)
+          
+          // Store reference for .off() method
+          if (!element._jQueryEventHandlers) {
+            element._jQueryEventHandlers = {}
+          }
+          if (!element._jQueryEventHandlers[eventType]) {
+            element._jQueryEventHandlers[eventType] = []
+          }
+          element._jQueryEventHandlers[eventType].push({
+            originalHandler: actualHandler,
+            wrappedHandler: wrappedHandler,
+            selector: undefined,
+            data: actualData,
+          })
+        }
+      }
+    }
+
+    return this
+  }
+
+  off(
+    events?: string,
+    selectorOrHandler?: string | EventListener,
+    handler?: EventListener,
+  ): JQuery {
+    for (let i = 0; i < this.length; i++) {
+      const element = this[i] as HTMLElement & {
+        _jQueryEventHandlers?: Record<string, Array<{
+          originalHandler: EventListener | false
+          wrappedHandler: EventListener
+          selector?: string
+          data?: any
+        }>>
+      }
+      if (!element || !element._jQueryEventHandlers) continue
+
+      if (!events) {
+        // Remove all event handlers
+        for (const eventType in element._jQueryEventHandlers) {
+          const handlers = element._jQueryEventHandlers[eventType]
+          for (const handlerInfo of handlers) {
+            element.removeEventListener(eventType, handlerInfo.wrappedHandler)
+          }
+        }
+        element._jQueryEventHandlers = {}
+      } else {
+        // Split multiple events
+        const eventTypes = events.split(/\s+/)
+
+        for (const eventType of eventTypes) {
+          if (!eventType || !element._jQueryEventHandlers[eventType]) continue
+
+          if (!selectorOrHandler) {
+            // Remove all handlers for this event type
+            const handlers = element._jQueryEventHandlers[eventType]
+            for (const handlerInfo of handlers) {
+              element.removeEventListener(eventType, handlerInfo.wrappedHandler)
+            }
+            element._jQueryEventHandlers[eventType] = []
+          } else if (typeof selectorOrHandler === 'string') {
+            // Remove delegated handlers with specific selector
+            const selector = selectorOrHandler
+            const handlers = element._jQueryEventHandlers[eventType]
+            
+            for (let j = handlers.length - 1; j >= 0; j--) {
+              const handlerInfo = handlers[j]
+              if (handlerInfo.selector === selector) {
+                if (!handler || handlerInfo.originalHandler === handler) {
+                  element.removeEventListener(eventType, handlerInfo.wrappedHandler)
+                  handlers.splice(j, 1)
+                }
+              }
+            }
+          } else {
+            // Remove specific handler function
+            const targetHandler = selectorOrHandler
+            const handlers = element._jQueryEventHandlers[eventType]
+            
+            for (let j = handlers.length - 1; j >= 0; j--) {
+              const handlerInfo = handlers[j]
+              if (handlerInfo.originalHandler === targetHandler) {
+                element.removeEventListener(eventType, handlerInfo.wrappedHandler)
+                handlers.splice(j, 1)
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return this
+  }
+
+  trigger(
+    eventTypeOrEvent: string | Event,
+    extraParameters?: any | any[],
+  ): JQuery {
+    for (let i = 0; i < this.length; i++) {
+      const element = this[i] as HTMLElement
+      if (!element) continue
+
+      let event: Event
+
+      if (typeof eventTypeOrEvent === 'string') {
+        // Create a new event
+        event = new Event(eventTypeOrEvent, { bubbles: true, cancelable: true })
+      } else {
+        // Use provided event object
+        event = eventTypeOrEvent
+      }
+
+      // Add extra parameters to the event object
+      if (extraParameters !== undefined) {
+        const params = Array.isArray(extraParameters) ? extraParameters : [extraParameters]
+        ;(event as any)._jQueryExtraParams = params
+      }
+
+      // Mark event as jQuery triggered to prevent double handling
+      const isJQueryTriggered = (event as any)._jQueryTriggered = true
+
+      // Call jQuery handlers manually with extra parameters first
+      // Also handle delegated events by bubbling up the DOM tree
+      let currentElement: Element | null = element
+      const eventType = event.type
+      
+      while (currentElement) {
+        const currentHTMLElement = currentElement as HTMLElement & { _jQueryEventHandlers?: any }
+        
+        if (currentHTMLElement._jQueryEventHandlers) {
+          const handlers = currentHTMLElement._jQueryEventHandlers[eventType]
+          
+          if (handlers && handlers.length > 0) {
+            for (const handlerInfo of handlers) {
+              // Check if this is a delegated handler
+              if (handlerInfo.selector) {
+                // For delegated handlers, check if the original target matches the selector
+                if (element.matches && element.matches(handlerInfo.selector)) {
+                  if (handlerInfo.originalHandler === false) {
+                    event.preventDefault()
+                  } else if (typeof handlerInfo.originalHandler === 'function') {
+                    const jqEvent = event as any
+                    
+                    // Use defineProperty to set read-only properties
+                    try {
+                      Object.defineProperty(jqEvent, 'data', {
+                        value: handlerInfo.data,
+                        writable: false,
+                        configurable: true
+                      })
+                      Object.defineProperty(jqEvent, 'currentTarget', {
+                        value: currentElement,
+                        writable: false,
+                        configurable: true
+                      })
+                      Object.defineProperty(jqEvent, 'target', {
+                        value: element,
+                        writable: false,
+                        configurable: true
+                      })
+                    } catch {
+                      jqEvent.data = handlerInfo.data
+                      jqEvent.currentTarget = currentElement
+                      jqEvent.target = element
+                    }
+
+                    // Add extra parameters as additional arguments
+                    const args = [jqEvent]
+                    if (extraParameters !== undefined) {
+                      if (Array.isArray(extraParameters)) {
+                        args.push(...extraParameters)
+                      } else {
+                        args.push(extraParameters)
+                      }
+                    }
+
+                    const result = handlerInfo.originalHandler.apply(element, args)
+                    
+                    // If handler returns false, prevent default
+                    if (result === false) {
+                      event.preventDefault()
+                    }
+                  }
+                }
+              } else if (currentElement === element) {
+                // Non-delegated handlers only apply to the target element itself
+                if (handlerInfo.originalHandler === false) {
+                  event.preventDefault()
+                } else if (typeof handlerInfo.originalHandler === 'function') {
+                  const jqEvent = event as any
+                  
+                  // Use defineProperty to set read-only properties
+                  try {
+                    Object.defineProperty(jqEvent, 'data', {
+                      value: handlerInfo.data,
+                      writable: false,
+                      configurable: true
+                    })
+                    Object.defineProperty(jqEvent, 'currentTarget', {
+                      value: element,
+                      writable: false,
+                      configurable: true
+                    })
+                    Object.defineProperty(jqEvent, 'target', {
+                      value: element,
+                      writable: false,
+                      configurable: true
+                    })
+                  } catch {
+                    jqEvent.data = handlerInfo.data
+                    jqEvent.currentTarget = element
+                    jqEvent.target = element
+                  }
+
+                  // Add extra parameters as additional arguments
+                  const args = [jqEvent]
+                  if (extraParameters !== undefined) {
+                    if (Array.isArray(extraParameters)) {
+                      args.push(...extraParameters)
+                    } else {
+                      args.push(extraParameters)
+                    }
+                  }
+
+                  const result = handlerInfo.originalHandler.apply(element, args)
+                  
+                  // If handler returns false, prevent default
+                  if (result === false) {
+                    event.preventDefault()
+                  }
+                }
+              }
+            }
+          }
+        }
+        
+        // Move up to parent element
+        currentElement = currentElement.parentElement
+      }
+
+      // Always dispatch the native event for bubbling and other native listeners
+      element.dispatchEvent(event)
+    }
+
+    return this
+  }
+
+  // Event Shorthand Methods
+  click(handler?: EventListener | false): JQuery {
+    if (handler === undefined) {
+      return this.trigger('click')
+    }
+    return this.on('click', handler)
+  }
+
+  focus(handler?: EventListener | false): JQuery {
+    if (handler === undefined) {
+      return this.trigger('focus')
+    }
+    return this.on('focus', handler)
+  }
+
+  blur(handler?: EventListener | false): JQuery {
+    if (handler === undefined) {
+      return this.trigger('blur')
+    }
+    return this.on('blur', handler)
+  }
+
+  change(handler?: EventListener | false): JQuery {
+    if (handler === undefined) {
+      return this.trigger('change')
+    }
+    return this.on('change', handler)
+  }
+
+  submit(handler?: EventListener | false): JQuery {
+    if (handler === undefined) {
+      return this.trigger('submit')
+    }
+    return this.on('submit', handler)
   }
 }
 

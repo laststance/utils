@@ -13,6 +13,15 @@ declare global {
     _selector?: string | Element | NodeList | Window | Document | Function,
     _context?: Element | JQuery,
   ) => JQuery
+
+  interface HTMLElement {
+    _jQueryEventHandlers?: Record<string, Array<{
+      originalHandler: EventListener | false
+      wrappedHandler: EventListener
+      selector?: string
+      data?: any
+    }>>
+  }
 }
 
 export {}

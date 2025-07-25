@@ -65,6 +65,15 @@ Currently implemented:
   - `.eq()` - Get element at specific index
   - `.first()` - Get first element
   - `.last()` - Get last element
+- ✅ Event Handling Methods:
+  - `.on()` - Attach event handlers with support for delegation
+  - `.off()` - Remove event handlers
+  - `.trigger()` - Programmatically trigger events
+  - `.click()` - Click event shorthand
+  - `.focus()` - Focus event shorthand  
+  - `.blur()` - Blur event shorthand
+  - `.change()` - Change event shorthand
+  - `.submit()` - Submit event shorthand
 
 ## Usage
 
@@ -171,6 +180,34 @@ $('.items').not('.disabled')                                   // Remove matchin
 $('.items').eq(2)                                             // Get element at index 2
 $('.items').first()                                           // Get first element
 $('.items').last()                                            // Get last element
+
+// Event Handling
+$('#button').on('click', function(event) { console.log('Clicked!') })     // Basic event
+$('#button').on('click', { foo: 'bar' }, function(event) {                // Event with data
+  console.log(event.data.foo) // 'bar'
+})
+$('#container').on('click', '.btn', function(event) {                     // Event delegation
+  console.log('Button clicked:', this)
+})
+$('#button').on({                                                         // Multiple events
+  click: function() { console.log('Clicked') },
+  mouseover: function() { console.log('Hovered') }
+})
+
+$('#button').off('click')                                                 // Remove event handlers
+$('#button').off('click', specificHandler)                               // Remove specific handler
+$('#container').off('click', '.btn')                                     // Remove delegated handlers
+
+$('#button').trigger('click')                                            // Trigger events
+$('#button').trigger('click', ['extra', 'params'])                      // With extra parameters
+
+$('#button').click()                        // Trigger click
+$('#button').click(function() { ... })     // Attach click handler
+$('#input').focus()                         // Trigger focus
+$('#form').submit(function(e) {             // Attach submit handler
+  e.preventDefault()
+  // Handle form submission
+})
 
 // Ready function
 $(function() {
