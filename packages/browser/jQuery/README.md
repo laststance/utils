@@ -30,6 +30,9 @@ Currently implemented:
   - `.remove()` - Remove elements from the DOM
   - `.empty()` - Remove all child nodes from elements
   - `.detach()` - Remove elements while preserving jQuery data
+- ✅ DOM Replacement Methods:
+  - `.replaceWith()` - Replace elements with new content
+  - `.replaceAll()` - Replace target elements with matched elements
 
 ## Usage
 
@@ -74,6 +77,10 @@ $('<span>After</span>').insertAfter('#target')         // Insert after target
 $('.unwanted').remove()          // Remove elements from DOM
 $('#container').empty()          // Remove all child nodes
 const detached = $('.item').detach()  // Remove but keep for later use
+
+// DOM Replacement
+$('#old').replaceWith('<div id="new">New content</div>')  // Replace element
+$('<p>New paragraph</p>').replaceAll('.old-paragraph')    // Replace all targets
 
 // Ready function
 $(function() {

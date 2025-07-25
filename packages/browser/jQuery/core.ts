@@ -61,6 +61,16 @@ export interface JQueryCollection extends ArrayLike<Element> {
   remove(): JQuery
   empty(): JQuery
   detach(): JQuery
+
+  // DOM Replacement
+  replaceWith(
+    _content:
+      | string
+      | Element
+      | JQuery
+      | ((_index: number, _html: string) => string | Element | JQuery),
+  ): JQuery
+  replaceAll(_target: string | Element | JQuery): JQuery
 }
 
 export class JQuery implements JQueryCollection {
@@ -458,7 +468,7 @@ export class JQuery implements JQueryCollection {
       if (typeof toInsert === 'string') {
         element.insertAdjacentHTML('beforebegin', toInsert)
       } else if (toInsert instanceof Element) {
-        element.parentNode.insertBefore(toInsert, element)
+        element.parentNode!.insertBefore(toInsert, element)
       } else if (toInsert instanceof JQuery) {
         // Insert all elements from jQuery collection
         for (let j = 0; j < toInsert.length; j++) {
@@ -526,7 +536,7 @@ export class JQuery implements JQueryCollection {
             i < $target.length - 1
               ? (element.cloneNode(true) as Element)
               : element
-          targetElement.parentNode.insertBefore(toInsert, targetElement)
+          targetElement.parentNode!.insertBefore(toInsert, targetElement)
         }
       }
     }
@@ -603,6 +613,110 @@ export class JQuery implements JQueryCollection {
 
     // Return the detached elements
     return this
+  }
+
+  // DOM Replacement Methods
+
+  replaceWith(
+    content:
+      | string
+      | Element
+      | JQuery
+      | ((_index: number, _html: string) => string | Element | JQuery),
+  ): JQuery {
+    // Store references to elements before removing them
+    const removedElements: Element[] = []
+
+    for (let i = 0; i < this.length; i++) {
+      const element = this[i]
+      if (!element || !element.parentNode) continue
+
+      removedElements.push(element)
+
+      let replacement: string | Element | JQuery
+
+      if (typeof content === 'function') {
+        replacement = content(i, element.innerHTML)
+      } else {
+        replacement = content
+      }
+
+      if (typeof replacement === 'string') {
+        // Parse HTML string and insert all resulting nodes
+        const tempDiv = document.createElement('div')
+        tempDiv.innerHTML = replacement
+        const nodes = Array.from(tempDiv.childNodes)
+
+        nodes.forEach((node) => {
+          element.parentNode!.insertBefore(node, element)
+        })
+      } else if (replacement instanceof Element) {
+        // Clone for all except the last element
+        const toInsert =
+          i < this.length - 1
+            ? (replacement.cloneNode(true) as Element)
+            : replacement
+        element.parentNode!.insertBefore(toInsert, element)
+      } else if (replacement instanceof JQuery) {
+        // Insert all elements from jQuery collection
+        for (let j = 0; j < replacement.length; j++) {
+          const replaceEl = replacement[j]
+          if (replaceEl) {
+            // Clone for all except the last target
+            const toInsert =
+              i < this.length - 1
+                ? (replaceEl.cloneNode(true) as Element)
+                : replaceEl
+            element.parentNode!.insertBefore(toInsert, element)
+          }
+        }
+      }
+
+      // Remove the original element
+      element.parentNode!.removeChild(element)
+    }
+
+    // Return jQuery collection of removed elements
+    const result = new JQuery()
+    removedElements.forEach((el, i) => {
+      result[i] = el
+    })
+    result.length = removedElements.length
+    return result
+  }
+
+  replaceAll(target: string | Element | JQuery): JQuery {
+    const $target = target instanceof JQuery ? target : $(target)
+    const insertedElements: Element[] = []
+
+    for (let i = 0; i < $target.length; i++) {
+      const targetElement = $target[i]
+      if (!targetElement || !targetElement.parentNode) continue
+
+      // Clone elements for all targets except the last
+      for (let j = 0; j < this.length; j++) {
+        const element = this[j]
+        if (element) {
+          const toInsert =
+            i < $target.length - 1
+              ? (element.cloneNode(true) as Element)
+              : element
+          targetElement.parentNode!.insertBefore(toInsert, targetElement)
+          insertedElements.push(toInsert as Element)
+        }
+      }
+
+      // Remove the target element
+      targetElement.parentNode!.removeChild(targetElement)
+    }
+
+    // Return jQuery collection of inserted elements
+    const result = new JQuery()
+    insertedElements.forEach((el, i) => {
+      result[i] = el
+    })
+    result.length = insertedElements.length
+    return result
   }
 }
 
