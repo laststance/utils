@@ -33,6 +33,11 @@ Currently implemented:
 - ✅ DOM Replacement Methods:
   - `.replaceWith()` - Replace elements with new content
   - `.replaceAll()` - Replace target elements with matched elements
+- ✅ Attribute Methods:
+  - `.attr()` - Get/set HTML attributes
+  - `.removeAttr()` - Remove HTML attributes
+  - `.prop()` - Get/set DOM properties
+  - `.removeProp()` - Remove DOM properties
 
 ## Usage
 
@@ -81,6 +86,19 @@ const detached = $('.item').detach()  // Remove but keep for later use
 // DOM Replacement
 $('#old').replaceWith('<div id="new">New content</div>')  // Replace element
 $('<p>New paragraph</p>').replaceAll('.old-paragraph')    // Replace all targets
+
+// Attributes
+$('#element').attr('title', 'Tooltip text')               // Set attribute
+const title = $('#element').attr('title')                  // Get attribute
+$('#element').attr({ 'data-id': '123', 'aria-label': 'Label' })  // Set multiple
+
+$('#element').removeAttr('title')                          // Remove attribute
+$('#element').removeAttr('title aria-label')               // Remove multiple
+
+// Properties (for form elements, boolean attributes, etc.)
+$('#checkbox').prop('checked', true)                       // Set property
+const isChecked = $('#checkbox').prop('checked')           // Get property
+$('#input').prop({ disabled: true, readOnly: true })       // Set multiple
 
 // Ready function
 $(function() {

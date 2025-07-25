@@ -71,6 +71,27 @@ export interface JQueryCollection extends ArrayLike<Element> {
       | ((_index: number, _html: string) => string | Element | JQuery),
   ): JQuery
   replaceAll(_target: string | Element | JQuery): JQuery
+
+  // Attributes
+  attr(_name: string): string | undefined
+  attr(_name: string, _value: string | number | null): JQuery
+  attr(_attributes: Record<string, string | number | null>): JQuery
+  attr(
+    _name: string,
+    _value: (
+      _index: number,
+      _attr: string | undefined,
+    ) => string | number | null | undefined,
+  ): JQuery
+
+  removeAttr(_name: string): JQuery
+
+  prop(_name: string): any
+  prop(_name: string, _value: any): JQuery
+  prop(_properties: Record<string, any>): JQuery
+  prop(_name: string, _value: (_index: number, _oldProp: any) => any): JQuery
+
+  removeProp(_name: string): JQuery
 }
 
 export class JQuery implements JQueryCollection {
@@ -717,6 +738,170 @@ export class JQuery implements JQueryCollection {
     })
     result.length = insertedElements.length
     return result
+  }
+
+  // Attribute Methods
+
+  attr(_name: string): string | undefined
+  attr(_name: string, _value: string | number | null): JQuery
+  attr(_attributes: Record<string, string | number | null>): JQuery
+  attr(
+    _name: string,
+    _value: (
+      _index: number,
+      _attr: string | undefined,
+    ) => string | number | null | undefined,
+  ): JQuery
+  attr(
+    nameOrAttributes:
+      | string
+      | Record<string, string | number | null>
+      | ((
+          _index: number,
+          _attr: string | undefined,
+        ) => string | number | null | undefined),
+    value?:
+      | string
+      | number
+      | null
+      | ((
+          _index: number,
+          _attr: string | undefined,
+        ) => string | number | null | undefined),
+  ): string | undefined | JQuery {
+    // Getting attribute
+    if (typeof nameOrAttributes === 'string' && value === undefined) {
+      const element = this[0]
+      if (!element) return undefined
+      return element.getAttribute(nameOrAttributes) ?? undefined
+    }
+
+    // Setting attributes with object
+    if (typeof nameOrAttributes === 'object' && nameOrAttributes !== null) {
+      for (let i = 0; i < this.length; i++) {
+        const element = this[i]
+        if (element) {
+          Object.entries(nameOrAttributes).forEach(([attrName, attrValue]) => {
+            if (attrValue === null) {
+              element.removeAttribute(attrName)
+            } else {
+              element.setAttribute(attrName, String(attrValue))
+            }
+          })
+        }
+      }
+      return this
+    }
+
+    // Setting attribute with value or function
+    if (typeof nameOrAttributes === 'string') {
+      for (let i = 0; i < this.length; i++) {
+        const element = this[i]
+        if (element) {
+          let newValue: string | number | null | undefined
+
+          if (typeof value === 'function') {
+            const currentValue =
+              element.getAttribute(nameOrAttributes) ?? undefined
+            newValue = value(i, currentValue)
+          } else {
+            newValue = value
+          }
+
+          if (newValue === null || newValue === undefined) {
+            element.removeAttribute(nameOrAttributes)
+          } else {
+            element.setAttribute(nameOrAttributes, String(newValue))
+          }
+        }
+      }
+    }
+
+    return this
+  }
+
+  removeAttr(name: string): JQuery {
+    const attributeNames = name.split(' ')
+
+    for (let i = 0; i < this.length; i++) {
+      const element = this[i]
+      if (element) {
+        attributeNames.forEach((attrName) => {
+          element.removeAttribute(attrName.trim())
+        })
+      }
+    }
+
+    return this
+  }
+
+  prop(_name: string): any
+  prop(_name: string, _value: any): JQuery
+  prop(_properties: Record<string, any>): JQuery
+  prop(_name: string, _value: (_index: number, _oldProp: any) => any): JQuery
+  prop(
+    nameOrProperties:
+      | string
+      | Record<string, any>
+      | ((_index: number, _oldProp: any) => any),
+    value?: any | ((_index: number, _oldProp: any) => any),
+  ): any | JQuery {
+    // Getting property
+    if (typeof nameOrProperties === 'string' && value === undefined) {
+      const element = this[0]
+      if (!element) return undefined
+      return (element as any)[nameOrProperties]
+    }
+
+    // Setting properties with object
+    if (typeof nameOrProperties === 'object' && nameOrProperties !== null) {
+      for (let i = 0; i < this.length; i++) {
+        const element = this[i]
+        if (element) {
+          Object.entries(nameOrProperties).forEach(([propName, propValue]) => {
+            ;(element as any)[propName] = propValue
+          })
+        }
+      }
+      return this
+    }
+
+    // Setting property with value or function
+    if (typeof nameOrProperties === 'string') {
+      for (let i = 0; i < this.length; i++) {
+        const element = this[i]
+        if (element) {
+          let newValue: any
+
+          if (typeof value === 'function') {
+            const currentValue = (element as any)[nameOrProperties]
+            newValue = value(i, currentValue)
+          } else {
+            newValue = value
+          }
+
+          ;(element as any)[nameOrProperties] = newValue
+        }
+      }
+    }
+
+    return this
+  }
+
+  removeProp(name: string): JQuery {
+    for (let i = 0; i < this.length; i++) {
+      const element = this[i]
+      if (element) {
+        try {
+          // Only remove custom properties, not native ones
+          delete (element as any)[name]
+        } catch {
+          // Silently fail for properties that can't be deleted
+        }
+      }
+    }
+
+    return this
   }
 }
 
