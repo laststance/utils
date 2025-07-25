@@ -43,6 +43,14 @@ Currently implemented:
   - `.addClass()` - Add CSS classes
   - `.removeClass()` - Remove CSS classes
   - `.toggleClass()` - Toggle CSS classes
+- ✅ CSS and Style Methods:
+  - `.css()` - Get/set CSS properties
+  - `.width()` - Get/set element width
+  - `.height()` - Get/set element height
+  - `.innerWidth()` - Get/set inner width (including padding)
+  - `.innerHeight()` - Get/set inner height (including padding)
+  - `.outerWidth()` - Get/set outer width (including padding, border, optionally margin)
+  - `.outerHeight()` - Get/set outer height (including padding, border, optionally margin)
 
 ## Usage
 
@@ -110,6 +118,29 @@ $('#element').addClass('active highlight')                 // Add classes
 $('#element').removeClass('old-class')                     // Remove class
 $('#element').toggleClass('visible')                       // Toggle class
 const hasClass = $('#element').hasClass('active')          // Check class
+
+// CSS Properties
+$('#element').css('color', 'red')                          // Set CSS property
+$('#element').css({'color': 'red', 'font-size': '16px'})   // Set multiple properties
+const color = $('#element').css('color')                   // Get CSS property
+
+// Dimensions
+$('#element').width(200)                                   // Set width to 200px
+const width = $('#element').width()                        // Get width
+$('#element').height('50%')                                // Set height to 50%
+const height = $('#element').height()                      // Get height
+
+// Inner dimensions (including padding)
+$('#element').innerWidth(250)                              // Set inner width
+const innerWidth = $('#element').innerWidth()              // Get inner width
+$('#element').innerHeight(150)                             // Set inner height
+const innerHeight = $('#element').innerHeight()            // Get inner height
+
+// Outer dimensions (including padding, border, optionally margin)
+const outerWidth = $('#element').outerWidth()              // Get outer width
+const outerWidthWithMargin = $('#element').outerWidth(true) // Include margin
+$('#element').outerWidth(300)                              // Set outer width
+const outerHeight = $('#element').outerHeight()            // Get outer height
 
 // Ready function
 $(function() {

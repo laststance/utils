@@ -111,6 +111,52 @@ export interface JQueryCollection extends ArrayLike<Element> {
     ) => string,
     _switch?: boolean,
   ): JQuery
+
+  // CSS and Style Methods
+  css(_property: string): string | undefined
+  css(_property: string, _value: string | number): JQuery
+  css(_properties: Record<string, string | number>): JQuery
+  css(
+    _property: string,
+    _value: (_index: number, _currentValue: string) => string | number,
+  ): JQuery
+
+  // Dimension Methods
+  width(): number | undefined
+  width(_value: number | string): JQuery
+  width(
+    _value: (_index: number, _currentWidth: number) => number | string,
+  ): JQuery
+
+  height(): number | undefined
+  height(_value: number | string): JQuery
+  height(
+    _value: (_index: number, _currentHeight: number) => number | string,
+  ): JQuery
+
+  innerWidth(): number | undefined
+  innerWidth(_value: number | string): JQuery
+  innerWidth(
+    _value: (_index: number, _currentWidth: number) => number | string,
+  ): JQuery
+
+  innerHeight(): number | undefined
+  innerHeight(_value: number | string): JQuery
+  innerHeight(
+    _value: (_index: number, _currentHeight: number) => number | string,
+  ): JQuery
+
+  outerWidth(_includeMargin?: boolean): number | undefined
+  outerWidth(_value: number | string): JQuery
+  outerWidth(
+    _value: (_index: number, _currentWidth: number) => number | string,
+  ): JQuery
+
+  outerHeight(_includeMargin?: boolean): number | undefined
+  outerHeight(_value: number | string): JQuery
+  outerHeight(
+    _value: (_index: number, _currentHeight: number) => number | string,
+  ): JQuery
 }
 
 export class JQuery implements JQueryCollection {
@@ -1060,6 +1106,546 @@ export class JQuery implements JQueryCollection {
           }
         }
       })
+    }
+
+    return this
+  }
+
+  // CSS and Style Methods
+
+  css(_property: string): string | undefined
+  css(_property: string, _value: string | number): JQuery
+  css(_properties: Record<string, string | number>): JQuery
+  css(
+    _property: string,
+    _value: (_index: number, _currentValue: string) => string | number,
+  ): JQuery
+  css(
+    propertyOrProperties:
+      | string
+      | Record<string, string | number>
+      | ((_index: number, _currentValue: string) => string | number),
+    value?:
+      | string
+      | number
+      | ((_index: number, _currentValue: string) => string | number),
+  ): string | undefined | JQuery {
+    // Properties that don't get 'px' automatically appended
+    const cssNumber = new Set([
+      'z-index',
+      'font-weight',
+      'opacity',
+      'zoom',
+      'line-height',
+      'counter-increment',
+      'counter-reset',
+      'order',
+      'flex-grow',
+      'flex-shrink',
+      'column-count',
+      'columns',
+      'font-size-adjust',
+      'fill-opacity',
+      'flood-opacity',
+      'stop-opacity',
+      'stroke-dasharray',
+      'stroke-dashoffset',
+      'stroke-miterlimit',
+      'stroke-opacity',
+      'stroke-width',
+    ])
+
+    // Helper function to convert camelCase to kebab-case
+    const camelToKebab = (str: string) => {
+      return str.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)
+    }
+
+    // Helper function to convert kebab-case to camelCase
+    const kebabToCamel = (str: string) => {
+      return str.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())
+    }
+
+    // Getting CSS property
+    if (typeof propertyOrProperties === 'string' && value === undefined) {
+      const element = this[0]
+      if (!element) return undefined
+
+      const property = propertyOrProperties
+      const computedStyle = window.getComputedStyle(element)
+
+      // Try kebab-case first, then camelCase
+      let result = computedStyle.getPropertyValue(camelToKebab(property))
+      if (!result) {
+        result = (computedStyle as any)[kebabToCamel(property)]
+      }
+
+      return result || undefined
+    }
+
+    // Setting CSS properties with object
+    if (
+      typeof propertyOrProperties === 'object' &&
+      propertyOrProperties !== null
+    ) {
+      for (let i = 0; i < this.length; i++) {
+        const element = this[i] as HTMLElement
+        if (element && element.style) {
+          Object.entries(propertyOrProperties).forEach(([prop, val]) => {
+            let cssValue = String(val)
+
+            // Add 'px' to numeric values for appropriate properties
+            if (typeof val === 'number' && !cssNumber.has(prop)) {
+              cssValue = val + 'px'
+            }
+
+            element.style.setProperty(camelToKebab(prop), cssValue)
+          })
+        }
+      }
+      return this
+    }
+
+    // Setting CSS property with value or function
+    if (typeof propertyOrProperties === 'string') {
+      for (let i = 0; i < this.length; i++) {
+        const element = this[i] as HTMLElement
+        if (element && element.style) {
+          let newValue: string | number
+
+          if (typeof value === 'function') {
+            const currentValue =
+              window
+                .getComputedStyle(element)
+                .getPropertyValue(camelToKebab(propertyOrProperties)) || ''
+            newValue = value(i, currentValue)
+          } else {
+            newValue = value!
+          }
+
+          let cssValue = String(newValue)
+
+          // Add 'px' to numeric values for appropriate properties
+          if (
+            typeof newValue === 'number' &&
+            !cssNumber.has(propertyOrProperties)
+          ) {
+            cssValue = newValue + 'px'
+          }
+
+          element.style.setProperty(
+            camelToKebab(propertyOrProperties),
+            cssValue,
+          )
+        }
+      }
+    }
+
+    return this
+  }
+
+  // Dimension Methods
+
+  width(): number | undefined
+  width(_value: number | string): JQuery
+  width(
+    _value: (_index: number, _currentWidth: number) => number | string,
+  ): JQuery
+  width(
+    value?:
+      | number
+      | string
+      | ((_index: number, _currentWidth: number) => number | string),
+  ): number | undefined | JQuery {
+    // Getting width
+    if (value === undefined) {
+      const element = this[0] as HTMLElement
+      if (!element) return undefined
+
+      // Return content width (excluding padding, border, margin)
+      const computedStyle = window.getComputedStyle(element)
+      const width = parseFloat(computedStyle.width)
+      return isNaN(width) ? undefined : width
+    }
+
+    // Setting width
+    for (let i = 0; i < this.length; i++) {
+      const element = this[i] as HTMLElement
+      if (element && element.style) {
+        let newWidth: number | string
+
+        if (typeof value === 'function') {
+          const currentWidth =
+            parseFloat(window.getComputedStyle(element).width) || 0
+          newWidth = value(i, currentWidth)
+        } else {
+          newWidth = value
+        }
+
+        if (typeof newWidth === 'number') {
+          element.style.width = newWidth + 'px'
+        } else {
+          element.style.width = newWidth
+        }
+      }
+    }
+
+    return this
+  }
+
+  height(): number | undefined
+  height(_value: number | string): JQuery
+  height(
+    _value: (_index: number, _currentHeight: number) => number | string,
+  ): JQuery
+  height(
+    value?:
+      | number
+      | string
+      | ((_index: number, _currentHeight: number) => number | string),
+  ): number | undefined | JQuery {
+    // Getting height
+    if (value === undefined) {
+      const element = this[0] as HTMLElement
+      if (!element) return undefined
+
+      // Return content height (excluding padding, border, margin)
+      const computedStyle = window.getComputedStyle(element)
+      const height = parseFloat(computedStyle.height)
+      return isNaN(height) ? undefined : height
+    }
+
+    // Setting height
+    for (let i = 0; i < this.length; i++) {
+      const element = this[i] as HTMLElement
+      if (element && element.style) {
+        let newHeight: number | string
+
+        if (typeof value === 'function') {
+          const currentHeight =
+            parseFloat(window.getComputedStyle(element).height) || 0
+          newHeight = value(i, currentHeight)
+        } else {
+          newHeight = value
+        }
+
+        if (typeof newHeight === 'number') {
+          element.style.height = newHeight + 'px'
+        } else {
+          element.style.height = newHeight
+        }
+      }
+    }
+
+    return this
+  }
+
+  innerWidth(): number | undefined
+  innerWidth(_value: number | string): JQuery
+  innerWidth(
+    _value: (_index: number, _currentWidth: number) => number | string,
+  ): JQuery
+  innerWidth(
+    value?:
+      | number
+      | string
+      | ((_index: number, _currentWidth: number) => number | string),
+  ): number | undefined | JQuery {
+    // Getting inner width
+    if (value === undefined) {
+      const element = this[0] as HTMLElement
+      if (!element) return undefined
+
+      // Return width + padding
+      const computedStyle = window.getComputedStyle(element)
+      const width = parseFloat(computedStyle.width)
+      const paddingLeft = parseFloat(computedStyle.paddingLeft)
+      const paddingRight = parseFloat(computedStyle.paddingRight)
+
+      return (
+        (isNaN(width) ? 0 : width) +
+        (isNaN(paddingLeft) ? 0 : paddingLeft) +
+        (isNaN(paddingRight) ? 0 : paddingRight)
+      )
+    }
+
+    // Setting inner width
+    for (let i = 0; i < this.length; i++) {
+      const element = this[i] as HTMLElement
+      if (element && element.style) {
+        let newInnerWidth: number | string
+
+        if (typeof value === 'function') {
+          const computedStyle = window.getComputedStyle(element)
+          const currentWidth = parseFloat(computedStyle.width) || 0
+          const paddingLeft = parseFloat(computedStyle.paddingLeft) || 0
+          const paddingRight = parseFloat(computedStyle.paddingRight) || 0
+          const currentInnerWidth = currentWidth + paddingLeft + paddingRight
+          newInnerWidth = value(i, currentInnerWidth)
+        } else {
+          newInnerWidth = value
+        }
+
+        if (typeof newInnerWidth === 'number') {
+          // Calculate content width by subtracting padding
+          const computedStyle = window.getComputedStyle(element)
+          const paddingLeft = parseFloat(computedStyle.paddingLeft) || 0
+          const paddingRight = parseFloat(computedStyle.paddingRight) || 0
+          const contentWidth = newInnerWidth - paddingLeft - paddingRight
+          element.style.width = Math.max(0, contentWidth) + 'px'
+        } else {
+          element.style.width = newInnerWidth
+        }
+      }
+    }
+
+    return this
+  }
+
+  innerHeight(): number | undefined
+  innerHeight(_value: number | string): JQuery
+  innerHeight(
+    _value: (_index: number, _currentHeight: number) => number | string,
+  ): JQuery
+  innerHeight(
+    value?:
+      | number
+      | string
+      | ((_index: number, _currentHeight: number) => number | string),
+  ): number | undefined | JQuery {
+    // Getting inner height
+    if (value === undefined) {
+      const element = this[0] as HTMLElement
+      if (!element) return undefined
+
+      // Return height + padding
+      const computedStyle = window.getComputedStyle(element)
+      const height = parseFloat(computedStyle.height)
+      const paddingTop = parseFloat(computedStyle.paddingTop)
+      const paddingBottom = parseFloat(computedStyle.paddingBottom)
+
+      return (
+        (isNaN(height) ? 0 : height) +
+        (isNaN(paddingTop) ? 0 : paddingTop) +
+        (isNaN(paddingBottom) ? 0 : paddingBottom)
+      )
+    }
+
+    // Setting inner height
+    for (let i = 0; i < this.length; i++) {
+      const element = this[i] as HTMLElement
+      if (element && element.style) {
+        let newInnerHeight: number | string
+
+        if (typeof value === 'function') {
+          const computedStyle = window.getComputedStyle(element)
+          const currentHeight = parseFloat(computedStyle.height) || 0
+          const paddingTop = parseFloat(computedStyle.paddingTop) || 0
+          const paddingBottom = parseFloat(computedStyle.paddingBottom) || 0
+          const currentInnerHeight = currentHeight + paddingTop + paddingBottom
+          newInnerHeight = value(i, currentInnerHeight)
+        } else {
+          newInnerHeight = value
+        }
+
+        if (typeof newInnerHeight === 'number') {
+          // Calculate content height by subtracting padding
+          const computedStyle = window.getComputedStyle(element)
+          const paddingTop = parseFloat(computedStyle.paddingTop) || 0
+          const paddingBottom = parseFloat(computedStyle.paddingBottom) || 0
+          const contentHeight = newInnerHeight - paddingTop - paddingBottom
+          element.style.height = Math.max(0, contentHeight) + 'px'
+        } else {
+          element.style.height = newInnerHeight
+        }
+      }
+    }
+
+    return this
+  }
+
+  outerWidth(_includeMargin?: boolean): number | undefined
+  outerWidth(_value: number | string): JQuery
+  outerWidth(
+    _value: (_index: number, _currentWidth: number) => number | string,
+  ): JQuery
+  outerWidth(
+    includeMarginOrValue?:
+      | boolean
+      | number
+      | string
+      | ((_index: number, _currentWidth: number) => number | string),
+  ): number | undefined | JQuery {
+    // Getting outer width
+    if (
+      includeMarginOrValue === undefined ||
+      typeof includeMarginOrValue === 'boolean'
+    ) {
+      const element = this[0] as HTMLElement
+      if (!element) return undefined
+
+      const includeMargin = includeMarginOrValue === true
+
+      // Return width + padding + border + (optionally margin)
+      const computedStyle = window.getComputedStyle(element)
+      const width = parseFloat(computedStyle.width)
+      const paddingLeft = parseFloat(computedStyle.paddingLeft)
+      const paddingRight = parseFloat(computedStyle.paddingRight)
+      const borderLeft = parseFloat(computedStyle.borderLeftWidth)
+      const borderRight = parseFloat(computedStyle.borderRightWidth)
+
+      let result =
+        (isNaN(width) ? 0 : width) +
+        (isNaN(paddingLeft) ? 0 : paddingLeft) +
+        (isNaN(paddingRight) ? 0 : paddingRight) +
+        (isNaN(borderLeft) ? 0 : borderLeft) +
+        (isNaN(borderRight) ? 0 : borderRight)
+
+      if (includeMargin) {
+        const marginLeft = parseFloat(computedStyle.marginLeft)
+        const marginRight = parseFloat(computedStyle.marginRight)
+        result +=
+          (isNaN(marginLeft) ? 0 : marginLeft) +
+          (isNaN(marginRight) ? 0 : marginRight)
+      }
+
+      return result
+    }
+
+    // Setting outer width
+    const value = includeMarginOrValue
+    for (let i = 0; i < this.length; i++) {
+      const element = this[i] as HTMLElement
+      if (element && element.style) {
+        let newOuterWidth: number | string
+
+        if (typeof value === 'function') {
+          const computedStyle = window.getComputedStyle(element)
+          const currentWidth = parseFloat(computedStyle.width) || 0
+          const paddingLeft = parseFloat(computedStyle.paddingLeft) || 0
+          const paddingRight = parseFloat(computedStyle.paddingRight) || 0
+          const borderLeft = parseFloat(computedStyle.borderLeftWidth) || 0
+          const borderRight = parseFloat(computedStyle.borderRightWidth) || 0
+          const currentOuterWidth =
+            currentWidth + paddingLeft + paddingRight + borderLeft + borderRight
+          newOuterWidth = value(i, currentOuterWidth)
+        } else {
+          newOuterWidth = value
+        }
+
+        if (typeof newOuterWidth === 'number') {
+          // Calculate content width by subtracting padding and border
+          const computedStyle = window.getComputedStyle(element)
+          const paddingLeft = parseFloat(computedStyle.paddingLeft) || 0
+          const paddingRight = parseFloat(computedStyle.paddingRight) || 0
+          const borderLeft = parseFloat(computedStyle.borderLeftWidth) || 0
+          const borderRight = parseFloat(computedStyle.borderRightWidth) || 0
+          const contentWidth =
+            newOuterWidth -
+            paddingLeft -
+            paddingRight -
+            borderLeft -
+            borderRight
+          element.style.width = Math.max(0, contentWidth) + 'px'
+        } else {
+          element.style.width = newOuterWidth
+        }
+      }
+    }
+
+    return this
+  }
+
+  outerHeight(_includeMargin?: boolean): number | undefined
+  outerHeight(_value: number | string): JQuery
+  outerHeight(
+    _value: (_index: number, _currentHeight: number) => number | string,
+  ): JQuery
+  outerHeight(
+    includeMarginOrValue?:
+      | boolean
+      | number
+      | string
+      | ((_index: number, _currentHeight: number) => number | string),
+  ): number | undefined | JQuery {
+    // Getting outer height
+    if (
+      includeMarginOrValue === undefined ||
+      typeof includeMarginOrValue === 'boolean'
+    ) {
+      const element = this[0] as HTMLElement
+      if (!element) return undefined
+
+      const includeMargin = includeMarginOrValue === true
+
+      // Return height + padding + border + (optionally margin)
+      const computedStyle = window.getComputedStyle(element)
+      const height = parseFloat(computedStyle.height)
+      const paddingTop = parseFloat(computedStyle.paddingTop)
+      const paddingBottom = parseFloat(computedStyle.paddingBottom)
+      const borderTop = parseFloat(computedStyle.borderTopWidth)
+      const borderBottom = parseFloat(computedStyle.borderBottomWidth)
+
+      let result =
+        (isNaN(height) ? 0 : height) +
+        (isNaN(paddingTop) ? 0 : paddingTop) +
+        (isNaN(paddingBottom) ? 0 : paddingBottom) +
+        (isNaN(borderTop) ? 0 : borderTop) +
+        (isNaN(borderBottom) ? 0 : borderBottom)
+
+      if (includeMargin) {
+        const marginTop = parseFloat(computedStyle.marginTop)
+        const marginBottom = parseFloat(computedStyle.marginBottom)
+        result +=
+          (isNaN(marginTop) ? 0 : marginTop) +
+          (isNaN(marginBottom) ? 0 : marginBottom)
+      }
+
+      return result
+    }
+
+    // Setting outer height
+    const value = includeMarginOrValue
+    for (let i = 0; i < this.length; i++) {
+      const element = this[i] as HTMLElement
+      if (element && element.style) {
+        let newOuterHeight: number | string
+
+        if (typeof value === 'function') {
+          const computedStyle = window.getComputedStyle(element)
+          const currentHeight = parseFloat(computedStyle.height) || 0
+          const paddingTop = parseFloat(computedStyle.paddingTop) || 0
+          const paddingBottom = parseFloat(computedStyle.paddingBottom) || 0
+          const borderTop = parseFloat(computedStyle.borderTopWidth) || 0
+          const borderBottom = parseFloat(computedStyle.borderBottomWidth) || 0
+          const currentOuterHeight =
+            currentHeight +
+            paddingTop +
+            paddingBottom +
+            borderTop +
+            borderBottom
+          newOuterHeight = value(i, currentOuterHeight)
+        } else {
+          newOuterHeight = value
+        }
+
+        if (typeof newOuterHeight === 'number') {
+          // Calculate content height by subtracting padding and border
+          const computedStyle = window.getComputedStyle(element)
+          const paddingTop = parseFloat(computedStyle.paddingTop) || 0
+          const paddingBottom = parseFloat(computedStyle.paddingBottom) || 0
+          const borderTop = parseFloat(computedStyle.borderTopWidth) || 0
+          const borderBottom = parseFloat(computedStyle.borderBottomWidth) || 0
+          const contentHeight =
+            newOuterHeight -
+            paddingTop -
+            paddingBottom -
+            borderTop -
+            borderBottom
+          element.style.height = Math.max(0, contentHeight) + 'px'
+        } else {
+          element.style.height = newOuterHeight
+        }
+      }
     }
 
     return this
