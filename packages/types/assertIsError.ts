@@ -1,5 +1,5 @@
 class AssertionError extends Error {
-  name = 'AssertionError'
+  override name = 'AssertionError'
 }
 
 /**

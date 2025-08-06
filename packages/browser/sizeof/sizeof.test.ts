@@ -60,8 +60,12 @@ describe('sizeof', function () {
   })
 
   it('report an error for circular dependency objects', function () {
-    var firstLevel: { a: number; second?: unknown } = { a: 1 }
-    var secondLevel = { b: 2, c: firstLevel }
+    interface CircularTestObject {
+      a: number
+      second?: CircularTestObject
+    }
+    const firstLevel: CircularTestObject = { a: 1 }
+    const secondLevel: CircularTestObject = { a: 2, second: firstLevel }
     firstLevel.second = secondLevel
     should.exist(sizeof(firstLevel))
   })
@@ -120,8 +124,10 @@ describe('sizeof', function () {
     const b = Symbol('b')
     const c = Symbol('c')
     const d = Symbol('d')
-    const obj: any = { [a]: { [b]: { [c]: d } } }
-    obj[Symbol()] = obj[a]
+    const obj: Record<symbol, Record<symbol, Record<symbol, symbol>>> = {
+      [a]: { [b]: { [c]: d } },
+    }
+    obj[Symbol()] = obj[a]!
     sizeof(obj).should.equal(8)
   })
 

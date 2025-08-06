@@ -100,9 +100,13 @@ describe('nullish zodPlayground', () => {
         const result = ageSchema.safeParse(age)
         expect(result.success).toBe(false)
         if (!result.success) {
-          expect(result.error.issues[0].message).toBe(
-            'age should be greater than 10',
-          )
+          const issue = result.error.issues[0]
+          expect(issue).toBeDefined()
+          if (issue) {
+            expect(issue.message).toBe(
+              'age should be greater than 10',
+            )
+          }
         }
       })
     })
@@ -112,10 +116,14 @@ describe('nullish zodPlayground', () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe(
-          'age should be greater than 10',
-        )
-        expect(result.error.issues[0].code).toBe('too_small')
+        const issue = result.error.issues[0]
+        expect(issue).toBeDefined()
+        if (issue) {
+          expect(issue.message).toBe(
+            'age should be greater than 10',
+          )
+          expect(issue.code).toBe('too_small')
+        }
       }
     })
 
@@ -126,7 +134,11 @@ describe('nullish zodPlayground', () => {
         const result = ageSchema.safeParse(input)
         expect(result.success).toBe(false)
         if (!result.success) {
-          expect(result.error.issues[0].code).toBe('invalid_type')
+          const issue = result.error.issues[0]
+          expect(issue).toBeDefined()
+          if (issue) {
+            expect(issue.code).toBe('invalid_type')
+          }
         }
       })
     })
@@ -189,10 +201,13 @@ describe('nullish zodPlayground', () => {
         const result = nameListSchema.safeParse(input)
         expect(result.success).toBe(false)
         if (!result.success) {
-          expect(result.error.issues[0].code).toBe('invalid_type')
           const issue = result.error.issues[0]
-          if (issue.code === 'invalid_type') {
-            expect(issue.expected).toBe('array')
+          expect(issue).toBeDefined()
+          if (issue) {
+            expect(issue.code).toBe('invalid_type')
+            if (issue.code === 'invalid_type') {
+              expect(issue.expected).toBe('array')
+            }
           }
         }
       })
