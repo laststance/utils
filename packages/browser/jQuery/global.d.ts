@@ -14,13 +14,17 @@ declare global {
     _context?: Element | JQuery,
   ) => JQuery
 
+  // eslint-disable-next-line no-unused-vars
   interface HTMLElement {
-    _jQueryEventHandlers?: Record<string, Array<{
-      originalHandler: EventListener | false
-      wrappedHandler: EventListener
-      selector?: string
-      data?: any
-    }>>
+    _jQueryEventHandlers?: Record<
+      string,
+      Array<{
+        originalHandler: EventListener | false
+        wrappedHandler: EventListener
+        selector?: string
+        data?: any
+      }>
+    >
   }
 }
 

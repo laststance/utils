@@ -40,7 +40,7 @@ describe('jQuery Event Handling Methods', () => {
 
       // Assert
       expect(handler).toHaveBeenCalledTimes(1)
-      const eventArg = handler.mock.calls[0][0]
+      const eventArg = handler.mock.calls[0]?.[0]
       expect(eventArg.data).toEqual(testData)
     })
 
@@ -85,7 +85,7 @@ describe('jQuery Event Handling Methods', () => {
 
       // Assert
       expect(handler).toHaveBeenCalledTimes(1)
-      const eventArg = handler.mock.calls[0][0]
+      const eventArg = handler.mock.calls[0]?.[0]
       expect(eventArg.data).toEqual(testData)
     })
 
@@ -144,7 +144,7 @@ describe('jQuery Event Handling Methods', () => {
           click: clickHandler,
           mouseover: mouseoverHandler,
         },
-        '.btn'
+        '.btn',
       )
 
       // Trigger events
@@ -198,10 +198,14 @@ describe('jQuery Event Handling Methods', () => {
       $('#container').on('click', '.dynamic-btn', handler)
 
       // Add element dynamically
-      $('#container').append('<button class="dynamic-btn">Dynamic Button</button>')
+      $('#container').append(
+        '<button class="dynamic-btn">Dynamic Button</button>',
+      )
 
       // Trigger event on dynamically added element
-      const dynamicButton = document.querySelector('.dynamic-btn') as HTMLElement
+      const dynamicButton = document.querySelector(
+        '.dynamic-btn',
+      ) as HTMLElement
       dynamicButton.click()
 
       // Assert
@@ -374,8 +378,8 @@ describe('jQuery Event Handling Methods', () => {
       // Assert
       expect(handler).toHaveBeenCalledTimes(1)
       const args = handler.mock.calls[0]
-      expect(args[1]).toBe('param1')
-      expect(args[2]).toBe('param2')
+      expect(args?.[1]).toBe('param1')
+      expect(args?.[2]).toBe('param2')
     })
 
     it('should trigger event handlers with single extra parameter', () => {
@@ -390,7 +394,7 @@ describe('jQuery Event Handling Methods', () => {
       // Assert
       expect(handler).toHaveBeenCalledTimes(1)
       const args = handler.mock.calls[0]
-      expect(args[1]).toBe('single-param')
+      expect(args?.[1]).toBe('single-param')
     })
 
     it('should trigger event object', () => {
@@ -501,7 +505,7 @@ describe('jQuery Event Handling Methods', () => {
           <input id="checkbox" type="checkbox" />
         </form>
       `
-      
+
       const focusHandler = vi.fn()
       const blurHandler = vi.fn()
       const changeHandler = vi.fn()
@@ -539,7 +543,7 @@ describe('jQuery Event Handling Methods', () => {
 
       // Assert
       expect(handler).toHaveBeenCalledTimes(1)
-      const event = handler.mock.calls[0][0]
+      const event = handler.mock.calls[0]?.[0]
       expect(event).toHaveProperty('type', 'click')
       expect(event).toHaveProperty('target')
       expect(event).toHaveProperty('currentTarget')
@@ -559,7 +563,7 @@ describe('jQuery Event Handling Methods', () => {
 
       // Assert
       expect(handler).toHaveBeenCalledTimes(1)
-      const event = handler.mock.calls[0][0]
+      const event = handler.mock.calls[0]?.[0]
       expect(event.data).toEqual(testData)
     })
   })
@@ -582,7 +586,7 @@ describe('jQuery Event Handling Methods', () => {
 
       // Test
       $('#link').on('click', false)
-      
+
       // Simulate clicking the link
       const link = document.getElementById('link')!
       link.addEventListener('click', (e) => {
@@ -590,7 +594,7 @@ describe('jQuery Event Handling Methods', () => {
           defaultPrevented = true
         }
       })
-      
+
       $('#link').trigger('click')
 
       // Assert

@@ -19,7 +19,7 @@ export { default as sizeof } from './sizeof/index.js'
 export { default as byte_size } from './sizeof/byte_size.js'
 
 // Re-exports from universal package for backward compatibility
-// These utilities have been moved to @utils/universal but are re-exported here
-export { debounce } from '@utils/universal'
-export { default as sleep } from '@utils/universal'
-export { rand } from '@utils/universal'
+// These utilities have been moved to the universal package but are re-exported here
+export { debounce } from '../universal/debounce.ts'
+export { default as sleep } from '../universal/sleep.ts'
+export { rand } from '../universal/random.ts'

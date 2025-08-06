@@ -190,10 +190,7 @@ export interface JQueryCollection extends ArrayLike<Element> {
     _handler: EventListener | false,
   ): JQuery
   on(_events: Record<string, EventListener | false>): JQuery
-  on(
-    _events: Record<string, EventListener | false>,
-    _selector: string,
-  ): JQuery
+  on(_events: Record<string, EventListener | false>, _selector: string): JQuery
   on(
     _events: Record<string, EventListener | false>,
     _selector: string,
@@ -2067,9 +2064,10 @@ export class JQuery implements JQueryCollection {
     // Handle events object map
     if (typeof events === 'object') {
       const eventsMap = events
-      const selector = typeof selectorOrDataOrHandler === 'string' 
-        ? selectorOrDataOrHandler 
-        : undefined
+      const selector =
+        typeof selectorOrDataOrHandler === 'string'
+          ? selectorOrDataOrHandler
+          : undefined
       const data = selector ? dataOrHandler : selectorOrDataOrHandler
 
       for (const eventType in eventsMap) {
@@ -2092,7 +2090,7 @@ export class JQuery implements JQueryCollection {
     // Parse arguments for string events
     let actualSelector: string | undefined
     let actualData: any
-    let actualHandler: EventListener | false
+    let actualHandler: EventListener | false = false
 
     if (arguments.length === 2) {
       // .on(events, handler)
@@ -2133,13 +2131,13 @@ export class JQuery implements JQueryCollection {
 
           // Enhance the event object with jQuery properties
           const jqEvent = nativeEvent as any
-          
+
           // Use defineProperty to set read-only properties
           try {
             Object.defineProperty(jqEvent, 'data', {
               value: actualData,
               writable: false,
-              configurable: true
+              configurable: true,
             })
           } catch {
             jqEvent.data = actualData
@@ -2166,18 +2164,18 @@ export class JQuery implements JQueryCollection {
             const target = nativeEvent.target as Element
             if (target && target.matches && target.matches(actualSelector!)) {
               const jqEvent = nativeEvent as any
-              
+
               // Use defineProperty to set read-only properties
               try {
                 Object.defineProperty(jqEvent, 'data', {
                   value: actualData,
                   writable: false,
-                  configurable: true
+                  configurable: true,
                 })
                 Object.defineProperty(jqEvent, 'currentTarget', {
                   value: target,
                   writable: false,
-                  configurable: true
+                  configurable: true,
                 })
               } catch {
                 jqEvent.data = actualData
@@ -2196,7 +2194,7 @@ export class JQuery implements JQueryCollection {
           }
 
           element.addEventListener(eventType, delegatedHandler)
-          
+
           // Store reference for .off() method
           if (!element._jQueryEventHandlers) {
             element._jQueryEventHandlers = {}
@@ -2213,7 +2211,7 @@ export class JQuery implements JQueryCollection {
         } else {
           // Direct event binding
           element.addEventListener(eventType, wrappedHandler)
-          
+
           // Store reference for .off() method
           if (!element._jQueryEventHandlers) {
             element._jQueryEventHandlers = {}
@@ -2221,12 +2219,19 @@ export class JQuery implements JQueryCollection {
           if (!element._jQueryEventHandlers[eventType]) {
             element._jQueryEventHandlers[eventType] = []
           }
-          element._jQueryEventHandlers[eventType].push({
+          const handlerInfo: {
+            originalHandler: EventListener | false
+            wrappedHandler: EventListener
+            selector?: string
+            data?: any
+          } = {
             originalHandler: actualHandler,
             wrappedHandler: wrappedHandler,
-            selector: undefined,
-            data: actualData,
-          })
+          }
+          if (actualData !== undefined) {
+            handlerInfo.data = actualData
+          }
+          element._jQueryEventHandlers[eventType].push(handlerInfo)
         }
       }
     }
@@ -2241,12 +2246,15 @@ export class JQuery implements JQueryCollection {
   ): JQuery {
     for (let i = 0; i < this.length; i++) {
       const element = this[i] as HTMLElement & {
-        _jQueryEventHandlers?: Record<string, Array<{
-          originalHandler: EventListener | false
-          wrappedHandler: EventListener
-          selector?: string
-          data?: any
-        }>>
+        _jQueryEventHandlers?: Record<
+          string,
+          Array<{
+            originalHandler: EventListener | false
+            wrappedHandler: EventListener
+            selector?: string
+            data?: any
+          }>
+        >
       }
       if (!element || !element._jQueryEventHandlers) continue
 
@@ -2254,8 +2262,10 @@ export class JQuery implements JQueryCollection {
         // Remove all event handlers
         for (const eventType in element._jQueryEventHandlers) {
           const handlers = element._jQueryEventHandlers[eventType]
-          for (const handlerInfo of handlers) {
-            element.removeEventListener(eventType, handlerInfo.wrappedHandler)
+          if (handlers) {
+            for (const handlerInfo of handlers) {
+              element.removeEventListener(eventType, handlerInfo.wrappedHandler)
+            }
           }
         }
         element._jQueryEventHandlers = {}
@@ -2277,12 +2287,15 @@ export class JQuery implements JQueryCollection {
             // Remove delegated handlers with specific selector
             const selector = selectorOrHandler
             const handlers = element._jQueryEventHandlers[eventType]
-            
+
             for (let j = handlers.length - 1; j >= 0; j--) {
               const handlerInfo = handlers[j]
-              if (handlerInfo.selector === selector) {
+              if (handlerInfo && handlerInfo.selector === selector) {
                 if (!handler || handlerInfo.originalHandler === handler) {
-                  element.removeEventListener(eventType, handlerInfo.wrappedHandler)
+                  element.removeEventListener(
+                    eventType,
+                    handlerInfo.wrappedHandler,
+                  )
                   handlers.splice(j, 1)
                 }
               }
@@ -2291,11 +2304,17 @@ export class JQuery implements JQueryCollection {
             // Remove specific handler function
             const targetHandler = selectorOrHandler
             const handlers = element._jQueryEventHandlers[eventType]
-            
+
             for (let j = handlers.length - 1; j >= 0; j--) {
               const handlerInfo = handlers[j]
-              if (handlerInfo.originalHandler === targetHandler) {
-                element.removeEventListener(eventType, handlerInfo.wrappedHandler)
+              if (
+                handlerInfo &&
+                handlerInfo.originalHandler === targetHandler
+              ) {
+                element.removeEventListener(
+                  eventType,
+                  handlerInfo.wrappedHandler,
+                )
                 handlers.splice(j, 1)
               }
             }
@@ -2327,24 +2346,28 @@ export class JQuery implements JQueryCollection {
 
       // Add extra parameters to the event object
       if (extraParameters !== undefined) {
-        const params = Array.isArray(extraParameters) ? extraParameters : [extraParameters]
+        const params = Array.isArray(extraParameters)
+          ? extraParameters
+          : [extraParameters]
         ;(event as any)._jQueryExtraParams = params
       }
 
       // Mark event as jQuery triggered to prevent double handling
-      const isJQueryTriggered = (event as any)._jQueryTriggered = true
+      ;(event as any)._jQueryTriggered = true
 
       // Call jQuery handlers manually with extra parameters first
       // Also handle delegated events by bubbling up the DOM tree
       let currentElement: Element | null = element
       const eventType = event.type
-      
+
       while (currentElement) {
-        const currentHTMLElement = currentElement as HTMLElement & { _jQueryEventHandlers?: any }
-        
+        const currentHTMLElement = currentElement as HTMLElement & {
+          _jQueryEventHandlers?: any
+        }
+
         if (currentHTMLElement._jQueryEventHandlers) {
           const handlers = currentHTMLElement._jQueryEventHandlers[eventType]
-          
+
           if (handlers && handlers.length > 0) {
             for (const handlerInfo of handlers) {
               // Check if this is a delegated handler
@@ -2353,25 +2376,27 @@ export class JQuery implements JQueryCollection {
                 if (element.matches && element.matches(handlerInfo.selector)) {
                   if (handlerInfo.originalHandler === false) {
                     event.preventDefault()
-                  } else if (typeof handlerInfo.originalHandler === 'function') {
+                  } else if (
+                    typeof handlerInfo.originalHandler === 'function'
+                  ) {
                     const jqEvent = event as any
-                    
+
                     // Use defineProperty to set read-only properties
                     try {
                       Object.defineProperty(jqEvent, 'data', {
                         value: handlerInfo.data,
                         writable: false,
-                        configurable: true
+                        configurable: true,
                       })
                       Object.defineProperty(jqEvent, 'currentTarget', {
                         value: currentElement,
                         writable: false,
-                        configurable: true
+                        configurable: true,
                       })
                       Object.defineProperty(jqEvent, 'target', {
                         value: element,
                         writable: false,
-                        configurable: true
+                        configurable: true,
                       })
                     } catch {
                       jqEvent.data = handlerInfo.data
@@ -2389,8 +2414,11 @@ export class JQuery implements JQueryCollection {
                       }
                     }
 
-                    const result = handlerInfo.originalHandler.apply(element, args)
-                    
+                    const result = handlerInfo.originalHandler.apply(
+                      element,
+                      args,
+                    )
+
                     // If handler returns false, prevent default
                     if (result === false) {
                       event.preventDefault()
@@ -2403,23 +2431,23 @@ export class JQuery implements JQueryCollection {
                   event.preventDefault()
                 } else if (typeof handlerInfo.originalHandler === 'function') {
                   const jqEvent = event as any
-                  
+
                   // Use defineProperty to set read-only properties
                   try {
                     Object.defineProperty(jqEvent, 'data', {
                       value: handlerInfo.data,
                       writable: false,
-                      configurable: true
+                      configurable: true,
                     })
                     Object.defineProperty(jqEvent, 'currentTarget', {
                       value: element,
                       writable: false,
-                      configurable: true
+                      configurable: true,
                     })
                     Object.defineProperty(jqEvent, 'target', {
                       value: element,
                       writable: false,
-                      configurable: true
+                      configurable: true,
                     })
                   } catch {
                     jqEvent.data = handlerInfo.data
@@ -2437,8 +2465,11 @@ export class JQuery implements JQueryCollection {
                     }
                   }
 
-                  const result = handlerInfo.originalHandler.apply(element, args)
-                  
+                  const result = handlerInfo.originalHandler.apply(
+                    element,
+                    args,
+                  )
+
                   // If handler returns false, prevent default
                   if (result === false) {
                     event.preventDefault()
@@ -2448,7 +2479,7 @@ export class JQuery implements JQueryCollection {
             }
           }
         }
-        
+
         // Move up to parent element
         currentElement = currentElement.parentElement
       }
