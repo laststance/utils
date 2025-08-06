@@ -3,7 +3,16 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { getImageRect } from './getImageRect.js'
 
 describe('getImageRect', () => {
-  let mockImage: any
+  interface MockImage extends Partial<HTMLImageElement> {
+    naturalWidth: number
+    naturalHeight: number
+    src: string
+    addEventListener: ReturnType<typeof vi.fn>
+    removeEventListener: ReturnType<typeof vi.fn>
+    load: (() => void) | null
+    error: ((_error: Error) => void) | null
+  }
+  let mockImage: MockImage
   let originalImage: typeof Image
 
   beforeEach(() => {
@@ -19,23 +28,25 @@ describe('getImageRect', () => {
       src: '',
       addEventListener: vi.fn(),
       removeEventListener: vi.fn(),
-      load: null as any,
-      error: null as any,
+      load: null,
+      error: null,
     }
 
     // Mock the Image constructor
     global.Image = vi.fn(() => {
       // Store event handlers for manual triggering
-      mockImage.addEventListener = vi.fn((event: string, handler: any) => {
-        if (event === 'load') {
-          mockImage.load = handler
-        } else if (event === 'error') {
-          mockImage.error = handler
-        }
-      })
+      mockImage.addEventListener = vi.fn(
+        (event: string, handler: (_error?: Error) => void) => {
+          if (event === 'load') {
+            mockImage.load = handler as () => void
+          } else if (event === 'error') {
+            mockImage.error = handler as (_error: Error) => void
+          }
+        },
+      )
 
       return mockImage
-    }) as any
+    }) as unknown as typeof Image
   })
 
   afterEach(() => {
@@ -90,7 +101,7 @@ describe('getImageRect', () => {
       const promise = getImageRect('https://example.com/image.jpg')
 
       // Simulate successful image load
-      mockImage.load()
+      mockImage.load?.()
 
       const result = await promise
       expect(result).toEqual({ width: 800, height: 600 })
@@ -101,7 +112,7 @@ describe('getImageRect', () => {
       mockImage.naturalHeight = 500
 
       const promise = getImageRect('https://example.com/square.jpg')
-      mockImage.load()
+      mockImage.load?.()
 
       const result = await promise
       expect(result).toEqual({ width: 500, height: 500 })
@@ -112,7 +123,7 @@ describe('getImageRect', () => {
       mockImage.naturalHeight = 800
 
       const promise = getImageRect('https://example.com/portrait.jpg')
-      mockImage.load()
+      mockImage.load?.()
 
       const result = await promise
       expect(result).toEqual({ width: 400, height: 800 })
@@ -123,7 +134,7 @@ describe('getImageRect', () => {
       mockImage.naturalHeight = 800
 
       const promise = getImageRect('https://example.com/landscape.jpg')
-      mockImage.load()
+      mockImage.load?.()
 
       const result = await promise
       expect(result).toEqual({ width: 1200, height: 800 })
@@ -134,7 +145,7 @@ describe('getImageRect', () => {
       mockImage.naturalHeight = 3000
 
       const promise = getImageRect('https://example.com/large.jpg')
-      mockImage.load()
+      mockImage.load?.()
 
       const result = await promise
       expect(result).toEqual({ width: 5000, height: 3000 })
@@ -145,7 +156,7 @@ describe('getImageRect', () => {
       mockImage.naturalHeight = 1
 
       const promise = getImageRect('https://example.com/tiny.jpg')
-      mockImage.load()
+      mockImage.load?.()
 
       const result = await promise
       expect(result).toEqual({ width: 1, height: 1 })
@@ -159,7 +170,7 @@ describe('getImageRect', () => {
       const promise = getImageRect('https://example.com/nonexistent.jpg')
 
       // Simulate image load error
-      mockImage.error(error)
+      mockImage.error?.(error)
 
       await expect(promise).rejects.toBe(error)
     })
@@ -168,7 +179,7 @@ describe('getImageRect', () => {
       const networkError = new Error('Network error')
 
       const promise = getImageRect('https://unreachable.example.com/image.jpg')
-      mockImage.error(networkError)
+      mockImage.error?.(networkError)
 
       await expect(promise).rejects.toBe(networkError)
     })
@@ -177,7 +188,7 @@ describe('getImageRect', () => {
       const notFoundError = new Error('404 Not Found')
 
       const promise = getImageRect('https://example.com/missing.jpg')
-      mockImage.error(notFoundError)
+      mockImage.error?.(notFoundError)
 
       await expect(promise).rejects.toBe(notFoundError)
     })
@@ -186,7 +197,7 @@ describe('getImageRect', () => {
       const formatError = new Error('Invalid image format')
 
       const promise = getImageRect('https://example.com/not-an-image.txt')
-      mockImage.error(formatError)
+      mockImage.error?.(formatError)
 
       await expect(promise).rejects.toBe(formatError)
     })
@@ -195,7 +206,7 @@ describe('getImageRect', () => {
       const corsError = new Error('CORS error')
 
       const promise = getImageRect('https://other-domain.com/protected.jpg')
-      mockImage.error(corsError)
+      mockImage.error?.(corsError)
 
       await expect(promise).rejects.toBe(corsError)
     })
@@ -210,7 +221,7 @@ describe('getImageRect', () => {
       const promise = getImageRect(url)
 
       expect(mockImage.src).toBe(url)
-      mockImage.load()
+      mockImage.load?.()
 
       const result = await promise
       expect(result).toEqual({ width: 800, height: 600 })
@@ -224,7 +235,7 @@ describe('getImageRect', () => {
       const promise = getImageRect(url)
 
       expect(mockImage.src).toBe(url)
-      mockImage.load()
+      mockImage.load?.()
 
       const result = await promise
       expect(result).toEqual({ width: 800, height: 600 })
@@ -238,7 +249,7 @@ describe('getImageRect', () => {
       const promise = getImageRect(url)
 
       expect(mockImage.src).toBe(url)
-      mockImage.load()
+      mockImage.load?.()
 
       const result = await promise
       expect(result).toEqual({ width: 800, height: 600 })
@@ -253,7 +264,7 @@ describe('getImageRect', () => {
       const promise = getImageRect(url)
 
       expect(mockImage.src).toBe(url)
-      mockImage.load()
+      mockImage.load?.()
 
       const result = await promise
       expect(result).toEqual({ width: 100, height: 100 })
@@ -267,7 +278,7 @@ describe('getImageRect', () => {
       const promise = getImageRect(url)
 
       expect(mockImage.src).toBe(url)
-      mockImage.load()
+      mockImage.load?.()
 
       const result = await promise
       expect(result).toEqual({ width: 800, height: 600 })
@@ -281,7 +292,7 @@ describe('getImageRect', () => {
       const promise = getImageRect(url)
 
       expect(mockImage.src).toBe(url)
-      mockImage.load()
+      mockImage.load?.()
 
       const result = await promise
       expect(result).toEqual({ width: 800, height: 600 })
@@ -295,7 +306,7 @@ describe('getImageRect', () => {
       const promise = getImageRect(url)
 
       expect(mockImage.src).toBe(url)
-      mockImage.load()
+      mockImage.load?.()
 
       const result = await promise
       expect(result).toEqual({ width: 800, height: 600 })
@@ -322,7 +333,7 @@ describe('getImageRect', () => {
         const promise = getImageRect(url)
 
         expect(mockImage.src).toBe(url)
-        mockImage.load()
+        mockImage.load?.()
 
         const result = await promise
         expect(result).toEqual({ width, height })
@@ -337,7 +348,7 @@ describe('getImageRect', () => {
       expect(mockImage.src).toBe('')
       // This would typically cause an error in real browser
       const error = new Error('Invalid URL')
-      mockImage.error(error)
+      mockImage.error?.(error)
 
       await expect(promise).rejects.toBe(error)
     })
@@ -348,7 +359,7 @@ describe('getImageRect', () => {
 
       expect(mockImage.src).toBe(malformedUrl)
       const error = new Error('Malformed URL')
-      mockImage.error(error)
+      mockImage.error?.(error)
 
       await expect(promise).rejects.toBe(error)
     })
@@ -358,7 +369,7 @@ describe('getImageRect', () => {
       mockImage.naturalHeight = 0
 
       const promise = getImageRect('https://example.com/empty.jpg')
-      mockImage.load()
+      mockImage.load?.()
 
       const result = await promise
       expect(result).toEqual({ width: 0, height: 0 })
@@ -370,7 +381,7 @@ describe('getImageRect', () => {
       mockImage.naturalHeight = 0
 
       const promise1 = getImageRect('https://example.com/width-only.jpg')
-      mockImage.load()
+      mockImage.load?.()
 
       const result1 = await promise1
       expect(result1).toEqual({ width: 100, height: 0 })
@@ -380,7 +391,7 @@ describe('getImageRect', () => {
       mockImage.naturalHeight = 200
 
       const promise2 = getImageRect('https://example.com/height-only.jpg')
-      mockImage.load()
+      mockImage.load?.()
 
       const result2 = await promise2
       expect(result2).toEqual({ width: 0, height: 200 })
@@ -397,32 +408,35 @@ describe('getImageRect', () => {
 
       // Mock Image constructor to return different instances
       let imageIndex = 0
-      const mockImages: any[] = []
+      const mockImages: MockImage[] = []
 
       global.Image = vi.fn(() => {
         const currentIndex = imageIndex++
-        const img = {
+        const img: MockImage = {
           naturalWidth: images[currentIndex]?.width || 0,
           naturalHeight: images[currentIndex]?.height || 0,
           src: '',
-          addEventListener: vi.fn((event: string, handler: any) => {
-            if (event === 'load') {
-              img.load = handler
-            } else if (event === 'error') {
-              img.error = handler
-            }
-          }),
-          load: null as any,
-          error: null as any,
+          addEventListener: vi.fn(
+            (event: string, handler: (_error?: Error) => void) => {
+              if (event === 'load') {
+                img.load = handler as () => void
+              } else if (event === 'error') {
+                img.error = handler as (_error: Error) => void
+              }
+            },
+          ),
+          removeEventListener: vi.fn(),
+          load: null,
+          error: null,
         }
         mockImages.push(img)
         return img
-      }) as any
+      }) as unknown as typeof Image
 
       const promises = images.map(async (img) => getImageRect(img.url))
 
       // Trigger load events for all images
-      mockImages.forEach((img) => img.load())
+      mockImages.forEach((img) => img.load?.())
 
       const results = await Promise.all(promises)
 
@@ -451,36 +465,39 @@ describe('getImageRect', () => {
       ]
 
       let imageIndex = 0
-      const mockImages: any[] = []
+      const mockImages: MockImage[] = []
 
       global.Image = vi.fn(() => {
         const currentIndex = imageIndex++
-        const img = {
+        const img: MockImage = {
           naturalWidth: requests[currentIndex]?.width || 0,
           naturalHeight: requests[currentIndex]?.height || 0,
           src: '',
-          addEventListener: vi.fn((event: string, handler: any) => {
-            if (event === 'load') {
-              img.load = handler
-            } else if (event === 'error') {
-              img.error = handler
-            }
-          }),
-          load: null as any,
-          error: null as any,
+          addEventListener: vi.fn(
+            (event: string, handler: (_error?: Error) => void) => {
+              if (event === 'load') {
+                img.load = handler as () => void
+              } else if (event === 'error') {
+                img.error = handler as (_error: Error) => void
+              }
+            },
+          ),
+          removeEventListener: vi.fn(),
+          load: null,
+          error: null,
         }
         mockImages.push(img)
         return img
-      }) as any
+      }) as unknown as typeof Image
 
       const promises = requests.map(async (req) => getImageRect(req.url))
 
       // Trigger appropriate events
       mockImages.forEach((img, index) => {
         if (requests[index]?.shouldSucceed) {
-          img.load()
+          img.load?.()
         } else {
-          img.error(new Error('Failed to load'))
+          img.error?.(new Error('Failed to load'))
         }
       })
 
@@ -530,7 +547,7 @@ describe('getImageRect', () => {
       mockImage.naturalHeight = 600
 
       const promise = getImageRect('https://example.com/image.jpg')
-      mockImage.load()
+      mockImage.load?.()
 
       const { width, height } = await promise
 
@@ -545,7 +562,7 @@ describe('getImageRect', () => {
       const promise = getImageRect('https://example.com/image.jpg')
 
       // Trigger the load event
-      mockImage.load()
+      mockImage.load?.()
 
       return promise.then(({ width, height }) => {
         expect(width).toBe(800)
@@ -557,7 +574,7 @@ describe('getImageRect', () => {
       const error = new Error('Load failed')
       const promise = getImageRect('https://example.com/bad.jpg')
 
-      mockImage.error(error)
+      mockImage.error?.(error)
 
       try {
         await promise

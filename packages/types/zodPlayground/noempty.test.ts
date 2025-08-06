@@ -41,8 +41,12 @@ describe('noempty zodPlayground', () => {
       expect(result.success).toBe(false)
       if (!result.success) {
         expect(result.error.issues).toHaveLength(1)
-        expect(result.error.issues[0].code).toBe('invalid_type')
-        expect(result.error.issues[0].path).toEqual(['numArr', 1])
+        const issue = result.error.issues[0]
+        expect(issue).toBeDefined()
+        if (issue) {
+          expect(issue.code).toBe('invalid_type')
+          expect(issue.path).toEqual(['numArr', 1])
+        }
       }
     })
 
@@ -51,10 +55,13 @@ describe('noempty zodPlayground', () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error.issues[0].code).toBe('invalid_type')
         const issue = result.error.issues[0]
-        if (issue.code === 'invalid_type') {
-          expect(issue.expected).toBe('array')
+        expect(issue).toBeDefined()
+        if (issue) {
+          expect(issue.code).toBe('invalid_type')
+          if (issue.code === 'invalid_type') {
+            expect(issue.expected).toBe('array')
+          }
         }
       }
     })
@@ -64,8 +71,12 @@ describe('noempty zodPlayground', () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error.issues[0].code).toBe('invalid_type')
-        expect(result.error.issues[0].path).toEqual(['numArr'])
+        const issue = result.error.issues[0]
+        expect(issue).toBeDefined()
+        if (issue) {
+          expect(issue.code).toBe('invalid_type')
+          expect(issue.path).toEqual(['numArr'])
+        }
       }
     })
   })
@@ -81,11 +92,14 @@ describe('noempty zodPlayground', () => {
       expect(result.success).toBe(false)
       if (!result.success) {
         expect(result.error.issues).toHaveLength(1)
-        expect(result.error.issues[0].code).toBe('too_small')
-        expect(result.error.issues[0].path).toEqual(['numArr'])
         const issue = result.error.issues[0]
-        if (issue.code === 'too_small') {
-          expect(issue.minimum).toBe(1)
+        expect(issue).toBeDefined()
+        if (issue) {
+          expect(issue.code).toBe('too_small')
+          expect(issue.path).toEqual(['numArr'])
+          if (issue.code === 'too_small') {
+            expect(issue.minimum).toBe(1)
+          }
         }
       }
     })
@@ -113,8 +127,12 @@ describe('noempty zodPlayground', () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error.issues[0].code).toBe('invalid_type')
-        expect(result.error.issues[0].path).toEqual(['numArr', 1])
+        const issue = result.error.issues[0]
+        expect(issue).toBeDefined()
+        if (issue) {
+          expect(issue.code).toBe('invalid_type')
+          expect(issue.path).toEqual(['numArr', 1])
+        }
       }
     })
 
@@ -123,7 +141,11 @@ describe('noempty zodPlayground', () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error.issues[0].message).toContain('least 1 element')
+        const issue = result.error.issues[0]
+        expect(issue).toBeDefined()
+        if (issue) {
+          expect(issue.message).toContain('least 1 element')
+        }
       }
     })
   })
@@ -182,10 +204,13 @@ describe('noempty zodPlayground', () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error.issues[0].code).toBe('invalid_type')
         const issue = result.error.issues[0]
-        if (issue.code === 'invalid_type') {
-          expect(issue.received).toBe('null')
+        expect(issue).toBeDefined()
+        if (issue) {
+          expect(issue.code).toBe('invalid_type')
+          if (issue.code === 'invalid_type') {
+            expect(issue.received).toBe('null')
+          }
         }
       }
     })
@@ -195,10 +220,13 @@ describe('noempty zodPlayground', () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error.issues[0].code).toBe('invalid_type')
         const issue = result.error.issues[0]
-        if (issue.code === 'invalid_type') {
-          expect(issue.received).toBe('undefined')
+        expect(issue).toBeDefined()
+        if (issue) {
+          expect(issue.code).toBe('invalid_type')
+          if (issue.code === 'invalid_type') {
+            expect(issue.received).toBe('undefined')
+          }
         }
       }
     })
@@ -272,12 +300,15 @@ describe('noempty zodPlayground', () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error.issues[0].code).toBe('invalid_type')
         const issue = result.error.issues[0]
-        if (issue.code === 'invalid_type') {
-          expect(issue.received).toBe('nan')
+        expect(issue).toBeDefined()
+        if (issue) {
+          expect(issue.code).toBe('invalid_type')
+          if (issue.code === 'invalid_type') {
+            expect(issue.received).toBe('nan')
+          }
+          expect(issue.path).toEqual(['numArr', 1])
         }
-        expect(result.error.issues[0].path).toEqual(['numArr', 1])
       }
     })
   })

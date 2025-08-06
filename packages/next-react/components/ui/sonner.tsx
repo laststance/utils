@@ -5,11 +5,15 @@ import type { ToasterProps } from 'sonner'
 import { Toaster as Sonner } from 'sonner'
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = 'system' } = useTheme()
+  const { theme } = useTheme()
+
+  // Ensure theme is never undefined for strict type checking
+  const resolvedTheme: NonNullable<ToasterProps['theme']> = 
+    theme === 'light' || theme === 'dark' || theme === 'system' ? theme : 'system'
 
   return (
     <Sonner
-      theme={(theme ?? 'system') as ToasterProps['theme']}
+      theme={resolvedTheme}
       className="toaster group"
       style={
         {

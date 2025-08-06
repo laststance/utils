@@ -2,7 +2,7 @@ import { assertIsError } from './assertIsError.js'
 
 // Custom error class for testing
 class CustomError extends Error {
-  name = 'CustomError'
+  override name = 'CustomError'
 }
 
 describe('assertIsError', () => {
