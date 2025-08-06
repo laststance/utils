@@ -159,7 +159,11 @@ describe('or zodPlayground', () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error.issues[0].code).toBe('invalid_union_discriminator')
+        const issue = result.error.issues[0]
+        expect(issue).toBeDefined()
+        if (issue) {
+          expect(issue.code).toBe('invalid_union_discriminator')
+        }
       }
     })
   })
@@ -246,7 +250,11 @@ describe('or zodPlayground', () => {
       expect(result.success).toBe(false)
       if (!result.success) {
         expect(result.error.issues.length).toBeGreaterThan(0)
-        expect(result.error.issues[0].code).toBe('invalid_union')
+        const issue = result.error.issues[0]
+        expect(issue).toBeDefined()
+        if (issue) {
+          expect(issue.code).toBe('invalid_union')
+        }
       }
     })
 
@@ -352,7 +360,7 @@ describe('or zodPlayground', () => {
       const options = Array.from({ length: 100 }, (_, i) =>
         z.literal(`option${i}`),
       )
-      const largeUnion = z.union([options[0], options[1], ...options.slice(2)])
+      const largeUnion = z.union([options[0]!, options[1]!, ...options.slice(2)] as [z.ZodLiteral<any>, z.ZodLiteral<any>, ...z.ZodLiteral<any>[]])
 
       const startTime = performance.now()
       const result = largeUnion.safeParse('option50')

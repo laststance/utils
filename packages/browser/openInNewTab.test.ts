@@ -2,14 +2,13 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
 import { openInNewTab } from './openInNewTab.js'
 
-interface MockAnchorElement {
-  target: string
-  href: string
-  click: ReturnType<typeof vi.fn>
-}
-
 describe('openInNewTab', () => {
-  let mockAnchor: MockAnchorElement
+  interface MockAnchor {
+    target: string
+    href: string
+    click: ReturnType<typeof vi.fn>
+  }
+  let mockAnchor: MockAnchor
   let originalCreateElement: typeof document.createElement
 
   beforeEach(() => {
@@ -26,10 +25,10 @@ describe('openInNewTab', () => {
     originalCreateElement = document.createElement
     document.createElement = vi.fn((tagName: string) => {
       if (tagName === 'a') {
-        return mockAnchor as any
+        return mockAnchor as unknown as HTMLElement
       }
       return originalCreateElement.call(document, tagName)
-    }) as any
+    }) as typeof document.createElement
   })
 
   afterEach(() => {
@@ -293,8 +292,9 @@ describe('openInNewTab', () => {
         // No click method
       }
 
-      // @ts-ignore - mock implementation for testing
-      document.createElement = vi.fn(() => anchorWithoutClick)
+      document.createElement = vi.fn(
+        () => anchorWithoutClick as unknown as HTMLElement,
+      ) as typeof document.createElement
 
       // Should throw when trying to call click
       expect(() => openInNewTab('https://example.com')).toThrow()
