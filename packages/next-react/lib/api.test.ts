@@ -297,7 +297,7 @@ describe('API utilities', () => {
         })
 
         // Check that post IDs are correct for page 2
-        expect(result.posts[0].id).toBe(6) // (page 2 - 1) * limit 5 + 1
+        expect(result.posts[0]?.id).toBe(6) // (page 2 - 1) * limit 5 + 1
       })
 
       it('should handle empty results', async () => {
@@ -464,8 +464,8 @@ describe('API utilities', () => {
 
         const result = await getPosts()
 
-        expect(result.posts[0].title).toContain('🚀')
-        expect(result.posts[0].body).toContain('"quotes"')
+        expect(result.posts[0]?.title).toContain('🚀')
+        expect(result.posts[0]?.body).toContain('"quotes"')
       })
     })
   })
@@ -543,7 +543,7 @@ describe('API utilities', () => {
       expect(typeof result.pagination.totalPages).toBe('number')
 
       if (result.posts.length > 0) {
-        const post = result.posts[0]
+        const post = result.posts[0]!
         expect(typeof post.id).toBe('number')
         expect(typeof post.title).toBe('string')
         expect(typeof post.body).toBe('string')

@@ -9,5 +9,5 @@ console.log(schema.safeParse({ numArr: [] }))
 const schemaNoemptySchema = z.object({
   numArr: z.array(z.number()).nonempty(),
 })
-console.log(schema.safeParse({ numArr: [] }))
+console.log(schemaNoemptySchema.safeParse({ numArr: [] }))
 // { success: false, error: [Getter] }

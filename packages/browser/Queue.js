@@ -2,6 +2,7 @@
 
 /**
  * A concurrent task queue that processes tasks with configurable concurrency.
+ * Uses event-based waiting instead of polling for better performance.
  * Allows you to add tasks and process them with a limited number of concurrent executions.
  *
  * @example
@@ -37,6 +38,9 @@ class Queue {
     this.pendingEntries = []
     this.inFlight = 0
     this.err = null
+
+    // Event-based waiting system
+    this.waiters = []
   }
 
   /**
@@ -66,16 +70,21 @@ class Queue {
         this.err = err
       } finally {
         this.inFlight -= 1
+        // Notify waiters after task completion
+        this._notifyWaiters()
       }
 
       if (this.pendingEntries.length > 0) {
         this.process()
       }
     })
+
+    // Also notify waiters immediately in case conditions are already met
+    this._notifyWaiters()
   }
 
   /**
-   * Waits for queue conditions to be met.
+   * Waits for queue conditions to be met using event-based approach.
    *
    * @param {Object} [options={}] - Wait options
    * @param {boolean} [options.empty=false] - If true, waits for queue to be completely empty
@@ -94,18 +103,41 @@ class Queue {
     }
 
     return new Promise((resolve, reject) => {
-      const poll = () => {
-        try {
-          if (checkCondition()) {
-            resolve()
-          } else {
-            setTimeout(poll, 50)
-          }
-        } catch (err) {
-          reject(err)
+      // Check immediately if condition is already met
+      try {
+        if (checkCondition()) {
+          resolve()
+          return
         }
+      } catch (err) {
+        reject(err)
+        return
       }
-      poll()
+
+      // Register waiter to be notified when conditions change
+      const waiter = { checkCondition, resolve, reject, options }
+      this.waiters.push(waiter)
+    })
+  }
+
+  /**
+   * Notifies all waiting promises when queue state changes.
+   * This replaces the inefficient polling approach.
+   * @private
+   */
+  _notifyWaiters() {
+    // Process all waiters and remove those that can be resolved
+    this.waiters = this.waiters.filter((waiter) => {
+      try {
+        if (waiter.checkCondition()) {
+          waiter.resolve()
+          return false // Remove this waiter
+        }
+        return true // Keep this waiter
+      } catch (err) {
+        waiter.reject(err)
+        return false // Remove this waiter
+      }
     })
   }
 }

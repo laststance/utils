@@ -2,6 +2,15 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+# Task
+
+- Re impment all jQuery API with plain javascript in browser/jQuery folder.
+- first, create issue and write task requirement.
+- setup vitest browser test for testing within Real DOM.
+- start implementation. this must be TDD apprroch. Understand a API specification from document, read real test code from Github jQuery repository etc. end then write test with vitest browser spec.
+- start implemantation.
+- Passed test per API implementation, go ahead next API.
+
 ## Rules for Claude Code
 
 - Feel free to web search for information.
