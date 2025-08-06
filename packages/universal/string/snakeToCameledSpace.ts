@@ -1,6 +1,6 @@
 /**
  * Converts a kebab-case string to title case with spaces.
- * Splits on hyphens, capitalizes each word, and joins with spaces.
+ * Uses regex replacement for optimal performance and consistent behavior.
  *
  * @param str - The kebab-case string to convert
  * @returns Title case string with spaces
@@ -15,10 +15,16 @@
  * snakeToCameledSpace('api-key-example')    // "Api Key Example"
  * ```
  */
-const snakeToCameledSpace = (str: string): string =>
-  str
-    .split('-')
-    .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
-    .join(' ')
+const snakeToCameledSpace = (str: string): string => {
+  if (!str) return str
+  
+  // Replace hyphens with spaces, then capitalize first char and chars after spaces
+  return str
+    .replace(/-/g, ' ')
+    .replace(/^(\w)|(\s)(\w)/g, (match, first, space, afterSpace) => {
+      if (first) return first.toUpperCase()
+      return space + afterSpace.toUpperCase()
+    })
+}
 
 export default snakeToCameledSpace

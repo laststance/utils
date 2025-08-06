@@ -4,7 +4,8 @@
  * CLI utility to convert kebab-case strings to title case with spaces.
  *
  * Takes a kebab-case string as a command line argument and converts it to
- * title case with spaces between words.
+ * title case with spaces between words. Uses the same implementation as
+ * the universal snakeToCameledSpace function for consistency.
  *
  * @example
  * ```bash
@@ -22,34 +23,24 @@
  * ```
  */
 
-/*
-Development process log:
-
-> 'code-piece-of-complete-guide-to-react-client-rendering-behavior'.split('-')
-[
-  'code',     'piece',
-  'of',       'complete',
-  'guide',    'to',
-  'react-client',    'rendering',
-  'behavior'
-]
-> 'code-piece-of-complete-guide-to-react-client-rendering-behavior'.split('-').map(s => s.charAt(0).toUpperCase())
-[
-  'C', 'P', 'O',
-  'C', 'G', 'T',
-  'R', 'R', 'B'
-]
-> 'code-piece-of-complete-guide-to-react-client-rendering-behavior'.split('-').map(s => (s.charAt(0).toUpperCase() + s.slice(1)))
-[
-  'Code',     'Piece',
-  'Of',       'Complete',
-  'Guide',    'To',
-  'React',    'Rendering',
-  'Behavior'
-]
-> 'code-piece-of-complete-guide-to-react-client-rendering-behavior'.split('-').map(s => (s.charAt(0).toUpperCase() + s.slice(1))).join(' ')
-'Code Piece Of Complete Guide To React Client Rendering Behavior'
-*/
+/**
+ * Converts a kebab-case string to title case with spaces.
+ * This is the same implementation used in @utils/universal/string/snakeToCameledSpace.ts
+ * 
+ * @param {string} str - The kebab-case string to convert
+ * @returns {string} Title case string with spaces
+ */
+function snakeToCameledSpace(str) {
+  if (!str) return str
+  
+  // Replace hyphens with spaces, then capitalize first char and chars after spaces
+  return str
+    .replace(/-/g, ' ')
+    .replace(/^(\w)|(\s)(\w)/g, (match, first, space, afterSpace) => {
+      if (first) return first.toUpperCase()
+      return space + afterSpace.toUpperCase()
+    })
+}
 
 const str = process.argv[2]
 
@@ -58,11 +49,5 @@ if (!str) {
   process.exit(0)
 }
 
-// Replace hyphens with spaces, then capitalize first char and chars after spaces
-const result = str
-  .replace(/-/g, ' ')
-  .replace(/^(\w)|(\s)(\w)/g, (match, first, space, afterSpace) => {
-    if (first) return first.toUpperCase()
-    return space + afterSpace.toUpperCase()
-  })
+const result = snakeToCameledSpace(str)
 console.log(result)
