@@ -18,6 +18,38 @@ export { snakeToCameledSpace } from './string/snakeToCameledSpace.ts'
 export { removeSpecialCharacters } from './removeSpecialCharacters.ts'
 export { varToString } from './varToString.js'
 
+// String case conversion
+export { camelCase, kebabCase, pascalCase, constantCase } from './string/caseConversions.ts'
+
+// String text processing  
+export { truncate, capitalize, titleCase } from './string/textProcessing.ts'
+
+// String URL-safe operations
+export { slugify, escapeHtml, unescapeHtml } from './string/urlSafe.ts'
+
+// String templating
+export { template, templateAdvanced } from './string/template.ts'
+
+// String analysis
+export { 
+  wordCount, 
+  isBlank, 
+  lines, 
+  lineCount, 
+  characterCount, 
+  sentences, 
+  sentenceCount 
+} from './string/analysis.ts'
+
+// String advanced operations
+export { 
+  reverse, 
+  isPalindrome, 
+  levenshteinDistance, 
+  similarity, 
+  longestCommonSubsequence 
+} from './string/advanced.ts'
+
 // Type checking utilities
 export { isBoolean } from './isBoolean.ts'
 export { isError } from './isError.ts'
