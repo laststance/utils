@@ -84,7 +84,13 @@ export { default as retry } from './retry.js'
 
 // Math utilities
 export { positiveIntegerSum } from './positiveIntegerSum.js'
-export { random } from './random.ts'
+export { randomNumber, randomNumberRange, randomInArray, rand } from './random.ts'
+
+// Async utilities
+export { default as sleep } from './sleep.ts'
+
+// Function utilities
+export { debounce } from './debounce.ts'
 
 // Code transformation
 export { default as eqeqeqCodemod } from './eqeqeq.codemod.js'
