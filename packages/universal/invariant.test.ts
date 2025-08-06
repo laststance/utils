@@ -290,7 +290,7 @@ describe('invariant', () => {
     })
 
     it('should handle circular references gracefully', () => {
-      const circular: any = { name: 'test' }
+      const circular: { name: string; self?: unknown } = { name: 'test' }
       circular.self = circular
 
       expect(() => {

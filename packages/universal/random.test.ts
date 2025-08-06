@@ -301,7 +301,7 @@ describe('random utilities', () => {
 
     describe('edge cases', () => {
       it('should handle empty arrays', () => {
-        const emptyArray: any[] = []
+        const emptyArray: unknown[] = []
 
         // This should return undefined (accessing non-existent index)
         const result = randomInArray(emptyArray)
