@@ -1,0 +1,109 @@
+import { Meta } from '@storybook/addon-docs'
+
+<Meta title="Design System/Introduction" />
+
+# Apple-Inspired Design System
+
+A comprehensive design system inspired by Apple's Human Interface Guidelines, featuring 100+ glassmorphism themes, typography system, spacing/layout system, and core components.
+
+## 🎨 Design Principles
+
+Based on Apple's core design principles:
+
+### Clarity
+Throughout the system, text is legible at every size, icons are precise and lucid, adornments are subtle and appropriate, and a sharpened focus on functionality motivates the design.
+
+### Deference
+Fluid motion and a crisp, beautiful interface help people understand and interact with content while never competing with it.
+
+### Depth
+Distinct visual layers and realistic motion convey hierarchy, impart vitality, and facilitate understanding.
+
+## 🌈 100+ Glass UI Themes
+
+Our design system includes over 100 carefully crafted themes:
+
+- **Glass Themes**: Crystal-clear glassmorphism effects with varying opacity and blur
+- **Aurora Themes**: Vibrant, animated gradient backgrounds inspired by aurora borealis
+- **Gradient Themes**: Smooth color transitions for modern, dynamic interfaces
+- **Metallic Themes**: Premium finishes inspired by Apple's hardware design
+
+## 📐 Typography System
+
+Following San Francisco font principles:
+- **Dynamic Type**: Responsive font sizes that adapt to screen size
+- **Optical Sizing**: Optimized for readability at different scales
+- **Hierarchical Scale**: From Large Title to Caption sizes
+- **Accessibility**: Built-in support for increased contrast and larger text
+
+## 🔲 Spacing & Layout
+
+8-point grid system ensuring consistent, harmonious layouts:
+- **Touch Targets**: Minimum 44x44pt for comfortable interaction
+- **Responsive Containers**: Adaptive layouts for all screen sizes
+- **Visual Rhythm**: Consistent spacing scale from 4px to 96px
+
+## 🧩 Core Components
+
+### Layout Components
+- **Container**: Responsive wrapper with glass effects
+- **Header**: Navigation bar with multiple variants
+- **Sidebar**: Collapsible navigation panel
+- **Footer**: Comprehensive footer layouts
+
+### Interactive Components
+- **Button**: 8 variants with haptic feedback support
+- **Card**: Glass morphism cards with rich content areas
+
+## ♿ Accessibility
+
+WCAG 2.1 AA compliant with comprehensive ARIA support:
+- Screen reader optimized
+- Keyboard navigation
+- Focus management
+- High contrast mode support
+- Reduced motion support
+
+## 🚀 Getting Started
+
+```tsx
+import { 
+  Container, 
+  Header, 
+  Button, 
+  Card 
+} from '@/components/design-system'
+
+import { themes } from '@/lib/design-system/themes'
+
+// Use any of the 100+ themes
+<Container theme="glass-aurora">
+  <Header theme="glass-clear" variant="floating">
+    <Button variant="glass">Get Started</Button>
+  </Header>
+  
+  <Card variant="glass" glassIntensity="strong">
+    Your content here
+  </Card>
+</Container>
+```
+
+## 📚 Documentation Structure
+
+- **Design Tokens**: Colors, typography, spacing, shadows
+- **Layout**: Container, Header, Sidebar, Footer
+- **Components**: Buttons, Cards, Forms, Navigation
+- **Patterns**: Common UI patterns and compositions
+- **Examples**: Full page layouts and app examples
+
+## 🎯 Design Goals
+
+1. **Consistency**: Unified design language across all components
+2. **Performance**: Optimized for smooth 60fps animations
+3. **Accessibility**: Inclusive design for all users
+4. **Flexibility**: Composable components for any use case
+5. **Beauty**: Stunning visual design that delights users
+
+---
+
+Explore the sidebar to see all components, themes, and examples in action!
