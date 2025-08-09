@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest'
 
-import { 
-  reverse, 
-  isPalindrome, 
-  levenshteinDistance, 
-  similarity, 
-  longestCommonSubsequence 
+import {
+  reverse,
+  isPalindrome,
+  levenshteinDistance,
+  similarity,
+  longestCommonSubsequence,
 } from './advanced.js'
 
 describe('advanced', () => {
@@ -81,11 +81,11 @@ describe('advanced', () => {
     describe('performance', () => {
       it('should handle large strings efficiently', () => {
         const largeString = 'abcdefghij'.repeat(1000)
-        
+
         const startTime = performance.now()
         const result = reverse(largeString)
         const endTime = performance.now()
-        
+
         expect(result).toHaveLength(10000)
         expect(result.startsWith('jihgfedcba'))
         expect(endTime - startTime).toBeLessThan(50)
@@ -125,19 +125,25 @@ describe('advanced', () => {
     describe('non-strict mode', () => {
       it('should ignore spaces and punctuation', () => {
         expect(isPalindrome('race car', { strict: false })).toBe(true)
-        expect(isPalindrome('A man, a plan, a canal: Panama', { strict: false })).toBe(true)
+        expect(
+          isPalindrome('A man, a plan, a canal: Panama', { strict: false }),
+        ).toBe(true)
         expect(isPalindrome('race a car', { strict: false })).toBe(false)
       })
 
       it('should ignore punctuation and special characters', () => {
-        expect(isPalindrome('Madam, I\'m Adam', { strict: false })).toBe(true)
-        expect(isPalindrome('Was it a car or a cat I saw?', { strict: false })).toBe(true)
-        expect(isPalindrome('No \'x\' in Nixon', { strict: false })).toBe(true)
+        expect(isPalindrome("Madam, I'm Adam", { strict: false })).toBe(true)
+        expect(
+          isPalindrome('Was it a car or a cat I saw?', { strict: false }),
+        ).toBe(true)
+        expect(isPalindrome("No 'x' in Nixon", { strict: false })).toBe(true)
       })
 
       it('should be case insensitive', () => {
         expect(isPalindrome('RaceCar', { strict: false })).toBe(true)
-        expect(isPalindrome('A Man A Plan A Canal Panama', { strict: false })).toBe(true)
+        expect(
+          isPalindrome('A Man A Plan A Canal Panama', { strict: false }),
+        ).toBe(true)
       })
 
       it('should handle numbers and letters', () => {
@@ -192,22 +198,22 @@ describe('advanced', () => {
     describe('performance', () => {
       it('should handle large palindromes efficiently', () => {
         const largePalindrome = 'a'.repeat(5000) + 'b' + 'a'.repeat(5000)
-        
+
         const startTime = performance.now()
         const result = isPalindrome(largePalindrome)
         const endTime = performance.now()
-        
+
         expect(result).toBe(true)
         expect(endTime - startTime).toBeLessThan(50)
       })
 
       it('should handle large non-palindromes efficiently', () => {
         const largeString = 'abcdefghij'.repeat(1000)
-        
+
         const startTime = performance.now()
         const result = isPalindrome(largeString)
         const endTime = performance.now()
-        
+
         expect(result).toBe(false)
         expect(endTime - startTime).toBeLessThan(50)
       })
@@ -258,11 +264,15 @@ describe('advanced', () => {
           ['hello', 'world'],
           ['kitten', 'sitting'],
           ['cat', 'bat'],
-          ['', 'abc']
+          ['', 'abc'],
         ]
 
         pairs.forEach(([str1, str2]) => {
-          expect(levenshteinDistance(str1, str2)).toBe(levenshteinDistance(str2, str1))
+          if (str1 !== undefined && str2 !== undefined) {
+            expect(levenshteinDistance(str1, str2)).toBe(
+              levenshteinDistance(str2, str1),
+            )
+          }
         })
       })
     })
@@ -284,11 +294,11 @@ describe('advanced', () => {
       it('should handle moderately large strings efficiently', () => {
         const str1 = 'a'.repeat(100)
         const str2 = 'b'.repeat(100)
-        
+
         const startTime = performance.now()
         const result = levenshteinDistance(str1, str2)
         const endTime = performance.now()
-        
+
         expect(result).toBe(100)
         expect(endTime - startTime).toBeLessThan(100)
       })
@@ -296,11 +306,11 @@ describe('advanced', () => {
       it('should handle strings of different lengths', () => {
         const str1 = 'short'
         const str2 = 'a very long string with many characters'
-        
+
         const startTime = performance.now()
         const result = levenshteinDistance(str1, str2)
         const endTime = performance.now()
-        
+
         expect(result).toBeGreaterThan(30) // Mostly insertions
         expect(endTime - startTime).toBeLessThan(50)
       })
@@ -309,7 +319,7 @@ describe('advanced', () => {
     describe('algorithmic correctness', () => {
       it('should satisfy triangle inequality', () => {
         const strings = ['hello', 'world', 'help', 'helm']
-        
+
         // For any three strings a, b, c: distance(a,c) <= distance(a,b) + distance(b,c)
         for (let i = 0; i < strings.length; i++) {
           for (let j = 0; j < strings.length; j++) {
@@ -317,7 +327,7 @@ describe('advanced', () => {
               const dac = levenshteinDistance(strings[i]!, strings[k]!)
               const dab = levenshteinDistance(strings[i]!, strings[j]!)
               const dbc = levenshteinDistance(strings[j]!, strings[k]!)
-              
+
               expect(dac).toBeLessThanOrEqual(dab + dbc)
             }
           }
@@ -362,11 +372,13 @@ describe('advanced', () => {
         const pairs = [
           ['hello', 'world'],
           ['kitten', 'sitting'],
-          ['cat', 'bat']
+          ['cat', 'bat'],
         ]
 
         pairs.forEach(([str1, str2]) => {
-          expect(similarity(str1, str2)).toBe(similarity(str2, str1))
+          if (str1 !== undefined && str2 !== undefined) {
+            expect(similarity(str1, str2)).toBe(similarity(str2, str1))
+          }
         })
       })
 
@@ -376,13 +388,15 @@ describe('advanced', () => {
           ['kitten', 'sitting'],
           ['completely', 'different'],
           ['similar', 'similar'],
-          ['a', 'z']
+          ['a', 'z'],
         ]
 
         testCases.forEach(([str1, str2]) => {
-          const sim = similarity(str1, str2)
-          expect(sim).toBeGreaterThanOrEqual(0)
-          expect(sim).toBeLessThanOrEqual(100)
+          if (str1 !== undefined && str2 !== undefined) {
+            const sim = similarity(str1, str2)
+            expect(sim).toBeGreaterThanOrEqual(0)
+            expect(sim).toBeLessThanOrEqual(100)
+          }
         })
       })
     })
@@ -391,7 +405,9 @@ describe('advanced', () => {
       it('should give reasonable scores for similar words', () => {
         expect(similarity('color', 'colour')).toBeGreaterThan(80)
         expect(similarity('organize', 'organise')).toBeGreaterThan(85)
-        expect(similarity('JavaScript', 'Javascript')).toBeGreaterThanOrEqual(90)
+        expect(similarity('JavaScript', 'Javascript')).toBeGreaterThanOrEqual(
+          90,
+        )
       })
 
       it('should give low scores for different words', () => {
@@ -405,11 +421,11 @@ describe('advanced', () => {
       it('should handle moderately large strings efficiently', () => {
         const str1 = 'a'.repeat(50) + 'different' + 'b'.repeat(50)
         const str2 = 'a'.repeat(50) + 'similar' + 'b'.repeat(50)
-        
+
         const startTime = performance.now()
         const result = similarity(str1, str2)
         const endTime = performance.now()
-        
+
         expect(result).toBeGreaterThan(80) // Mostly similar
         expect(endTime - startTime).toBeLessThan(50)
       })
@@ -436,7 +452,9 @@ describe('advanced', () => {
       it('should handle substrings', () => {
         expect(longestCommonSubsequence('hello', 'ello')).toBe('ello')
         expect(longestCommonSubsequence('hello', 'hell')).toBe('hell')
-        expect(longestCommonSubsequence('programming', 'program')).toBe('program')
+        expect(longestCommonSubsequence('programming', 'program')).toBe(
+          'program',
+        )
       })
     })
 
@@ -457,7 +475,7 @@ describe('advanced', () => {
         const result1 = longestCommonSubsequence('abc', 'cba')
         expect(['a', 'b', 'c']).toContain(result1) // Could be any single character
         expect(result1).toHaveLength(1)
-        
+
         const result2 = longestCommonSubsequence('hello', 'olleh')
         expect(result2.length).toBeGreaterThanOrEqual(1) // Should find at least one common character
       })
@@ -468,7 +486,7 @@ describe('advanced', () => {
         const result1 = longestCommonSubsequence('programming', 'algorithm')
         expect(result1.length).toBeGreaterThanOrEqual(3) // Should find a reasonable LCS
         expect(result1).toMatch(/[gri]+/) // Should contain some combination of these chars
-        
+
         const result2 = longestCommonSubsequence('dynamic', 'programming')
         expect(result2.length).toBeGreaterThanOrEqual(2) // Should find at least 2 chars
       })
@@ -506,12 +524,16 @@ describe('advanced', () => {
           ['hello', 'world'],
           ['programming', 'algorithm'],
           ['abc', 'def'],
-          ['same', 'same']
+          ['same', 'same'],
         ]
 
         testCases.forEach(([str1, str2]) => {
-          const lcs = longestCommonSubsequence(str1, str2)
-          expect(lcs.length).toBeLessThanOrEqual(Math.min(str1.length, str2.length))
+          if (str1 !== undefined && str2 !== undefined) {
+            const lcs = longestCommonSubsequence(str1, str2)
+            expect(lcs.length).toBeLessThanOrEqual(
+              Math.min(str1.length, str2.length),
+            )
+          }
         })
       })
 
@@ -519,13 +541,15 @@ describe('advanced', () => {
         const pairs = [
           ['hello', 'world'],
           ['programming', 'algorithm'],
-          ['abc', 'xyz']
+          ['abc', 'xyz'],
         ]
 
         pairs.forEach(([str1, str2]) => {
-          const lcs1 = longestCommonSubsequence(str1, str2)
-          const lcs2 = longestCommonSubsequence(str2, str1)
-          expect(lcs1.length).toBe(lcs2.length)
+          if (str1 !== undefined && str2 !== undefined) {
+            const lcs1 = longestCommonSubsequence(str1, str2)
+            const lcs2 = longestCommonSubsequence(str2, str1)
+            expect(lcs1.length).toBe(lcs2.length)
+          }
         })
       })
     })
@@ -534,11 +558,11 @@ describe('advanced', () => {
       it('should handle moderately sized strings efficiently', () => {
         const str1 = 'abcdefghijklmnop'
         const str2 = 'acegikmo'
-        
+
         const startTime = performance.now()
         const result = longestCommonSubsequence(str1, str2)
         const endTime = performance.now()
-        
+
         expect(result).toBe('acegikmo') // All chars from str2 are in str1 in order
         expect(endTime - startTime).toBeLessThan(50)
       })
@@ -549,13 +573,13 @@ describe('advanced', () => {
     it('should work together for string analysis', () => {
       const str1 = 'programming'
       const str2 = 'algorithm'
-      
+
       const reversed1 = reverse(str1)
       const reversed2 = reverse(str2)
       const distance = levenshteinDistance(str1, str2)
       const sim = similarity(str1, str2)
       const lcs = longestCommonSubsequence(str1, str2)
-      
+
       expect(reversed1).toBe('gnimmargorp')
       expect(reversed2).toBe('mhtirogla')
       expect(distance).toBeGreaterThan(0)
@@ -566,14 +590,16 @@ describe('advanced', () => {
     it('should handle palindrome analysis', () => {
       const palindrome = 'racecar'
       const notPalindrome = 'hello'
-      
+
       expect(isPalindrome(palindrome)).toBe(true)
       expect(reverse(palindrome)).toBe(palindrome)
       expect(similarity(palindrome, reverse(palindrome))).toBe(100)
-      
+
       expect(isPalindrome(notPalindrome)).toBe(false)
       expect(reverse(notPalindrome)).not.toBe(notPalindrome)
-      expect(similarity(notPalindrome, reverse(notPalindrome))).toBeLessThan(100)
+      expect(similarity(notPalindrome, reverse(notPalindrome))).toBeLessThan(
+        100,
+      )
     })
 
     it('should maintain string immutability', () => {
@@ -581,13 +607,13 @@ describe('advanced', () => {
       const original2 = 'goodbye world'
       const original1Copy = original1
       const original2Copy = original2
-      
+
       reverse(original1)
       isPalindrome(original1)
       levenshteinDistance(original1, original2)
       similarity(original1, original2)
       longestCommonSubsequence(original1, original2)
-      
+
       expect(original1).toBe(original1Copy)
       expect(original2).toBe(original2Copy)
     })

@@ -1,6 +1,11 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
-import { randomNumber, randomNumberRange, randomInArray, rand } from './random.js'
+import {
+  randomNumber,
+  randomNumberRange,
+  randomInArray,
+  rand,
+} from './random.js'
 
 describe('random utilities', () => {
   describe('randomNumber', () => {

@@ -55,7 +55,7 @@ export function randomInArray(array: any) {
  * Generates random numbers between 0 and 100.
  *
  * @returns Random number between 0 and 100
- * 
+ *
  * @example
  * ```typescript
  * rand()  // Returns 0-99.999... (never quite 100)

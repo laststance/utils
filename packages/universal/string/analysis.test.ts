@@ -1,13 +1,13 @@
 import { describe, it, expect } from 'vitest'
 
-import { 
-  wordCount, 
-  isBlank, 
-  lines, 
-  lineCount, 
-  characterCount, 
-  sentences, 
-  sentenceCount 
+import {
+  wordCount,
+  isBlank,
+  lines,
+  lineCount,
+  characterCount,
+  sentences,
+  sentenceCount,
 } from './analysis.js'
 
 describe('analysis', () => {
@@ -96,11 +96,11 @@ describe('analysis', () => {
     describe('performance', () => {
       it('should handle large strings efficiently', () => {
         const largeString = 'word '.repeat(10000).trim()
-        
+
         const startTime = performance.now()
         const count = wordCount(largeString)
         const endTime = performance.now()
-        
+
         expect(count).toBe(10000)
         expect(endTime - startTime).toBeLessThan(50)
       })
@@ -162,15 +162,15 @@ describe('analysis', () => {
       it('should handle large strings efficiently', () => {
         const largeBlankString = ' '.repeat(10000)
         const largeNonBlankString = ' '.repeat(5000) + 'x' + ' '.repeat(5000)
-        
+
         const startTime1 = performance.now()
         const result1 = isBlank(largeBlankString)
         const endTime1 = performance.now()
-        
+
         const startTime2 = performance.now()
         const result2 = isBlank(largeNonBlankString)
         const endTime2 = performance.now()
-        
+
         expect(result1).toBe(true)
         expect(result2).toBe(false)
         expect(endTime1 - startTime1).toBeLessThan(10)
@@ -183,22 +183,44 @@ describe('analysis', () => {
     describe('basic functionality', () => {
       it('should split strings on Unix line endings', () => {
         expect(lines('hello\nworld')).toEqual(['hello', 'world'])
-        expect(lines('line1\nline2\nline3')).toEqual(['line1', 'line2', 'line3'])
+        expect(lines('line1\nline2\nline3')).toEqual([
+          'line1',
+          'line2',
+          'line3',
+        ])
       })
 
       it('should split strings on Windows line endings', () => {
         expect(lines('hello\r\nworld')).toEqual(['hello', 'world'])
-        expect(lines('line1\r\nline2\r\nline3')).toEqual(['line1', 'line2', 'line3'])
+        expect(lines('line1\r\nline2\r\nline3')).toEqual([
+          'line1',
+          'line2',
+          'line3',
+        ])
       })
 
       it('should split strings on classic Mac line endings', () => {
         expect(lines('hello\rworld')).toEqual(['hello', 'world'])
-        expect(lines('line1\rline2\rline3')).toEqual(['line1', 'line2', 'line3'])
+        expect(lines('line1\rline2\rline3')).toEqual([
+          'line1',
+          'line2',
+          'line3',
+        ])
       })
 
       it('should handle mixed line endings', () => {
-        expect(lines('unix\nwindows\r\nmac\r')).toEqual(['unix', 'windows', 'mac', ''])
-        expect(lines('line1\r\nline2\nline3\rline4')).toEqual(['line1', 'line2', 'line3', 'line4'])
+        expect(lines('unix\nwindows\r\nmac\r')).toEqual([
+          'unix',
+          'windows',
+          'mac',
+          '',
+        ])
+        expect(lines('line1\r\nline2\nline3\rline4')).toEqual([
+          'line1',
+          'line2',
+          'line3',
+          'line4',
+        ])
       })
 
       it('should preserve empty lines', () => {
@@ -247,11 +269,11 @@ describe('analysis', () => {
     describe('performance', () => {
       it('should handle large strings efficiently', () => {
         const largeString = 'line content\n'.repeat(10000)
-        
+
         const startTime = performance.now()
         const result = lines(largeString)
         const endTime = performance.now()
-        
+
         expect(result).toHaveLength(10001) // 10000 lines + 1 empty at end
         expect(endTime - startTime).toBeLessThan(100)
       })
@@ -283,8 +305,8 @@ describe('analysis', () => {
     describe('edge cases', () => {
       it('should handle edge cases consistently with lines function', () => {
         const testCases = ['', 'single', 'line1\nline2', '\n', 'line1\n\nline3']
-        
-        testCases.forEach(testCase => {
+
+        testCases.forEach((testCase) => {
           expect(lineCount(testCase)).toBe(lines(testCase).length)
         })
       })
@@ -352,11 +374,11 @@ describe('analysis', () => {
     describe('performance', () => {
       it('should handle large strings efficiently', () => {
         const largeString = 'Hello 👋 '.repeat(1000)
-        
+
         const startTime = performance.now()
         const count = characterCount(largeString)
         const endTime = performance.now()
-        
+
         expect(count).toBe(8000) // 8 characters * 1000 repetitions
         expect(endTime - startTime).toBeLessThan(50)
       })
@@ -366,28 +388,64 @@ describe('analysis', () => {
   describe('sentences', () => {
     describe('basic functionality', () => {
       it('should split sentences on periods', () => {
-        expect(sentences('Hello world. How are you.')).toEqual(['Hello world', 'How are you'])
-        expect(sentences('First sentence. Second sentence. Third sentence.')).toEqual(['First sentence', 'Second sentence', 'Third sentence'])
+        expect(sentences('Hello world. How are you.')).toEqual([
+          'Hello world',
+          'How are you',
+        ])
+        expect(
+          sentences('First sentence. Second sentence. Third sentence.'),
+        ).toEqual(['First sentence', 'Second sentence', 'Third sentence'])
       })
 
       it('should split sentences on question marks', () => {
-        expect(sentences('How are you? Fine thanks.')).toEqual(['How are you', 'Fine thanks'])
-        expect(sentences('Are you okay? Yes? Good!')).toEqual(['Are you okay', 'Yes', 'Good'])
+        expect(sentences('How are you? Fine thanks.')).toEqual([
+          'How are you',
+          'Fine thanks',
+        ])
+        expect(sentences('Are you okay? Yes? Good!')).toEqual([
+          'Are you okay',
+          'Yes',
+          'Good',
+        ])
       })
 
       it('should split sentences on exclamation marks', () => {
-        expect(sentences('Hello! How are you! Great!')).toEqual(['Hello', 'How are you', 'Great'])
-        expect(sentences('Wow! Amazing! Fantastic!')).toEqual(['Wow', 'Amazing', 'Fantastic'])
+        expect(sentences('Hello! How are you! Great!')).toEqual([
+          'Hello',
+          'How are you',
+          'Great',
+        ])
+        expect(sentences('Wow! Amazing! Fantastic!')).toEqual([
+          'Wow',
+          'Amazing',
+          'Fantastic',
+        ])
       })
 
       it('should handle mixed punctuation', () => {
-        expect(sentences('Hello world. How are you? Fine! Thanks.')).toEqual(['Hello world', 'How are you', 'Fine', 'Thanks'])
-        expect(sentences('Question? Answer! Statement.')).toEqual(['Question', 'Answer', 'Statement'])
+        expect(sentences('Hello world. How are you? Fine! Thanks.')).toEqual([
+          'Hello world',
+          'How are you',
+          'Fine',
+          'Thanks',
+        ])
+        expect(sentences('Question? Answer! Statement.')).toEqual([
+          'Question',
+          'Answer',
+          'Statement',
+        ])
       })
 
       it('should handle multiple consecutive punctuation marks', () => {
-        expect(sentences('Wow!!! Amazing... Really???')).toEqual(['Wow', 'Amazing', 'Really'])
-        expect(sentences('End. . . New sentence!')).toEqual(['End', 'New sentence'])
+        expect(sentences('Wow!!! Amazing... Really???')).toEqual([
+          'Wow',
+          'Amazing',
+          'Really',
+        ])
+        expect(sentences('End. . . New sentence!')).toEqual([
+          'End',
+          'New sentence',
+        ])
       })
     })
 
@@ -399,7 +457,9 @@ describe('analysis', () => {
 
       it('should handle single sentences', () => {
         expect(sentences('Single sentence')).toEqual(['Single sentence'])
-        expect(sentences('No ending punctuation')).toEqual(['No ending punctuation'])
+        expect(sentences('No ending punctuation')).toEqual([
+          'No ending punctuation',
+        ])
       })
 
       it('should handle strings with only punctuation', () => {
@@ -408,35 +468,59 @@ describe('analysis', () => {
       })
 
       it('should trim whitespace from sentences', () => {
-        expect(sentences('  Hello world.   How are you?  ')).toEqual(['Hello world', 'How are you'])
-        expect(sentences('Sentence 1 .  Sentence 2 ! ')).toEqual(['Sentence 1', 'Sentence 2'])
+        expect(sentences('  Hello world.   How are you?  ')).toEqual([
+          'Hello world',
+          'How are you',
+        ])
+        expect(sentences('Sentence 1 .  Sentence 2 ! ')).toEqual([
+          'Sentence 1',
+          'Sentence 2',
+        ])
       })
 
       it('should handle abbreviations (simple implementation limitation)', () => {
         // Note: This is a limitation of the simple implementation
-        expect(sentences('Mr. Smith went home. Mrs. Jones stayed.')).toEqual(['Mr', 'Smith went home', 'Mrs', 'Jones stayed'])
+        expect(sentences('Mr. Smith went home. Mrs. Jones stayed.')).toEqual([
+          'Mr',
+          'Smith went home',
+          'Mrs',
+          'Jones stayed',
+        ])
       })
     })
 
     describe('unicode and special characters', () => {
       it('should handle unicode content', () => {
-        expect(sentences('Hola! ¿Cómo estás? Bien, gracias.')).toEqual(['Hola', '¿Cómo estás', 'Bien, gracias'])
-        expect(sentences('测试句子。另一个句子！')).toEqual(['测试句子', '另一个句子'])
+        expect(sentences('Hola! ¿Cómo estás? Bien, gracias.')).toEqual([
+          'Hola',
+          '¿Cómo estás',
+          'Bien, gracias',
+        ])
+        expect(sentences('测试句子。另一个句子！')).toEqual([
+          '测试句子',
+          '另一个句子',
+        ])
       })
 
       it('should handle emojis', () => {
-        expect(sentences('Hello 👋! How are you 😊? Great 🎉!')).toEqual(['Hello 👋', 'How are you 😊', 'Great 🎉'])
+        expect(sentences('Hello 👋! How are you 😊? Great 🎉!')).toEqual([
+          'Hello 👋',
+          'How are you 😊',
+          'Great 🎉',
+        ])
       })
     })
 
     describe('performance', () => {
       it('should handle large strings efficiently', () => {
-        const largeSentence = 'This is sentence number X. '.replace('X', '').repeat(1000) + 'Final sentence.'
-        
+        const largeSentence =
+          'This is sentence number X. '.replace('X', '').repeat(1000) +
+          'Final sentence.'
+
         const startTime = performance.now()
         const result = sentences(largeSentence)
         const endTime = performance.now()
-        
+
         expect(result).toHaveLength(1001)
         expect(endTime - startTime).toBeLessThan(50)
       })
@@ -465,10 +549,10 @@ describe('analysis', () => {
           'Single sentence',
           'First. Second!',
           'One? Two! Three.',
-          'Hello world. How are you? Fine! Thanks.'
+          'Hello world. How are you? Fine! Thanks.',
         ]
-        
-        testCases.forEach(testCase => {
+
+        testCases.forEach((testCase) => {
           expect(sentenceCount(testCase)).toBe(sentences(testCase).length)
         })
       })
@@ -484,7 +568,7 @@ describe('analysis', () => {
         How many words does it have? Let's count them!
         We can also count characters: 123 & émojis 🎉.
       `.trim()
-      
+
       expect(wordCount(text)).toBeGreaterThan(20)
       expect(lineCount(text)).toBe(5)
       expect(characterCount(text)).toBeGreaterThan(text.length - 10) // Account for emojis
@@ -493,8 +577,9 @@ describe('analysis', () => {
     })
 
     it('should handle complex real-world text', () => {
-      const text = 'Dr. Johnson said, "Hello! How are you?" She replied, "Fine, thanks."'
-      
+      const text =
+        'Dr. Johnson said, "Hello! How are you?" She replied, "Fine, thanks."'
+
       // Note: Simple implementation limitations with abbreviations
       expect(wordCount(text)).toBe(11)
       expect(sentenceCount(text)).toBeGreaterThan(2) // May split on "Dr."
@@ -505,13 +590,13 @@ describe('analysis', () => {
     it('should maintain string immutability', () => {
       const original = 'Hello world!\nHow are you?'
       const originalCopy = original
-      
+
       wordCount(original)
       isBlank(original)
       lines(original)
       characterCount(original)
       sentences(original)
-      
+
       expect(original).toBe(originalCopy)
     })
   })

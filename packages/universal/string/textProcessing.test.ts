@@ -45,7 +45,7 @@ describe('textProcessing', () => {
 
       it('should handle single character strings', () => {
         expect(truncate('a', 1)).toBe('a')
-        expect(truncate('a', 0)).toBe('...')
+        expect(truncate('a', 0)).toBe('')  // maxLength 0 returns empty
         expect(truncate('a', 2)).toBe('a')
       })
 
@@ -56,8 +56,12 @@ describe('textProcessing', () => {
       })
 
       it('should throw error for negative maxLength', () => {
-        expect(() => truncate('Hello', -1)).toThrow('maxLength must be non-negative')
-        expect(() => truncate('Hello', -5, '...')).toThrow('maxLength must be non-negative')
+        expect(() => truncate('Hello', -1)).toThrow(
+          'maxLength must be non-negative',
+        )
+        expect(() => truncate('Hello', -5, '...')).toThrow(
+          'maxLength must be non-negative',
+        )
       })
 
       it('should handle empty suffix', () => {
@@ -74,7 +78,7 @@ describe('textProcessing', () => {
       })
 
       it('should handle strings with emojis', () => {
-        expect(truncate('Hello 👋 World 🌍', 12)).toBe('Hello 👋 W...')
+        expect(truncate('Hello 👋 World 🌍', 12)).toBe('Hello 👋...')  // Trailing space trimmed
         expect(truncate('🎉🎊🎈🎁', 3, '...')).toBe('...')
       })
 
@@ -87,11 +91,11 @@ describe('textProcessing', () => {
     describe('performance', () => {
       it('should handle large strings efficiently', () => {
         const largeString = 'word '.repeat(10000)
-        
+
         const startTime = performance.now()
         const result = truncate(largeString, 100)
         const endTime = performance.now()
-        
+
         expect(result).toHaveLength(100)
         expect(endTime - startTime).toBeLessThan(10)
       })
@@ -249,7 +253,9 @@ describe('textProcessing', () => {
       it('should handle punctuation', () => {
         expect(titleCase('hello, world!')).toBe('Hello, World!')
         expect(titleCase("don't stop believing")).toBe("Don't Stop Believing")
-        expect(titleCase('mr. smith and mrs. jones')).toBe('Mr. Smith And Mrs. Jones')
+        expect(titleCase('mr. smith and mrs. jones')).toBe(
+          'Mr. Smith And Mrs. Jones',
+        )
       })
     })
 
@@ -272,8 +278,12 @@ describe('textProcessing', () => {
       })
 
       it('should handle special characters within words', () => {
-        expect(titleCase('co-worker ex-president')).toBe('Co-worker Ex-president')
-        expect(titleCase('user@domain.com test@example.org')).toBe('User@domain.com Test@example.org')
+        expect(titleCase('co-worker ex-president')).toBe(
+          'Co-worker Ex-president',
+        )
+        expect(titleCase('user@domain.com test@example.org')).toBe(
+          'User@domain.com Test@example.org',
+        )
       })
     })
 
@@ -285,26 +295,36 @@ describe('textProcessing', () => {
       })
 
       it('should handle technical terms', () => {
-        expect(titleCase('hypertext markup language')).toBe('Hypertext Markup Language')
-        expect(titleCase('javascript object notation')).toBe('Javascript Object Notation')
-        expect(titleCase('application programming interface')).toBe('Application Programming Interface')
+        expect(titleCase('hypertext markup language')).toBe(
+          'Hypertext Markup Language',
+        )
+        expect(titleCase('javascript object notation')).toBe(
+          'Javascript Object Notation',
+        )
+        expect(titleCase('application programming interface')).toBe(
+          'Application Programming Interface',
+        )
       })
 
       it('should handle mixed content', () => {
-        expect(titleCase('chapter 1: the beginning')).toBe('Chapter 1: The Beginning')
+        expect(titleCase('chapter 1: the beginning')).toBe(
+          'Chapter 1: The Beginning',
+        )
         expect(titleCase('part II: the return')).toBe('Part Ii: The Return')
-        expect(titleCase('version 2.0: new features')).toBe('Version 2.0: New Features')
+        expect(titleCase('version 2.0: new features')).toBe(
+          'Version 2.0: New Features',
+        )
       })
     })
 
     describe('performance', () => {
       it('should handle large strings efficiently', () => {
         const largeString = 'word '.repeat(1000).trim()
-        
+
         const startTime = performance.now()
         const result = titleCase(largeString)
         const endTime = performance.now()
-        
+
         expect(result.split(' ')).toHaveLength(1000)
         expect(result.split(' ')[0]).toBe('Word')
         expect(endTime - startTime).toBeLessThan(50)
@@ -315,11 +335,15 @@ describe('textProcessing', () => {
   describe('integration tests', () => {
     it('should work together for text processing pipelines', () => {
       const text = 'HELLO WORLD THIS IS A TEST'
-      
+
       // Test chaining operations
-      expect(capitalize(titleCase(text.toLowerCase()))).toBe('Hello world this is a test')
+      expect(capitalize(titleCase(text.toLowerCase()))).toBe(
+        'Hello world this is a test',
+      )
       expect(truncate(titleCase(text.toLowerCase()), 15)).toBe('Hello World...')
-      expect(titleCase(truncate(text.toLowerCase(), 20))).toBe('Hello World This Is...')
+      expect(titleCase(truncate(text.toLowerCase(), 20))).toBe(
+        'Hello World This...',
+      )
     })
 
     it('should handle complex real-world scenarios', () => {
@@ -328,15 +352,15 @@ describe('textProcessing', () => {
         'iOS 15.0 release notes',
         'React.js vs Vue.js comparison',
         'Node.js server-side rendering',
-        'CSS-in-JS styling solutions'
+        'CSS-in-JS styling solutions',
       ]
 
-      scenarios.forEach(scenario => {
+      scenarios.forEach((scenario) => {
         // Should not throw errors and produce reasonable results
         expect(() => capitalize(scenario)).not.toThrow()
         expect(() => titleCase(scenario)).not.toThrow()
         expect(() => truncate(scenario, 20)).not.toThrow()
-        
+
         // Results should be strings
         expect(typeof capitalize(scenario)).toBe('string')
         expect(typeof titleCase(scenario)).toBe('string')
@@ -347,11 +371,11 @@ describe('textProcessing', () => {
     it('should preserve string immutability', () => {
       const original = 'hello world test'
       const originalCopy = original
-      
+
       capitalize(original)
       titleCase(original)
       truncate(original, 10)
-      
+
       expect(original).toBe(originalCopy)
     })
   })

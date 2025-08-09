@@ -17,11 +17,11 @@
  */
 const snakeToCameledSpace = (str: string): string => {
   if (!str) return str
-  
+
   // Replace hyphens with spaces, then capitalize first char and chars after spaces
   return str
     .replace(/-/g, ' ')
-    .replace(/^(\w)|(\s)(\w)/g, (match, first, space, afterSpace) => {
+    .replace(/^(\w)|(\s)(\w)/g, (_match, first, space, afterSpace) => {
       if (first) return first.toUpperCase()
       return space + afterSpace.toUpperCase()
     })

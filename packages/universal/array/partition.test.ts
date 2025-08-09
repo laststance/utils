@@ -116,7 +116,10 @@ describe('partition', () => {
 
     it('should handle null and undefined values', () => {
       const values = [1, null, 2, undefined, 3, null]
-      const [nullish, nonNullish] = partition(values, (v) => v === null || v === undefined)
+      const [nullish, nonNullish] = partition(
+        values,
+        (v) => v === null || v === undefined,
+      )
 
       expect(nullish).toEqual([null, undefined, null])
       expect(nonNullish).toEqual([1, 2, 3])

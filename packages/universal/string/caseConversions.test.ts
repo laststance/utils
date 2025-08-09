@@ -1,6 +1,11 @@
 import { describe, it, expect } from 'vitest'
 
-import { camelCase, kebabCase, pascalCase, constantCase } from './caseConversions.js'
+import {
+  camelCase,
+  kebabCase,
+  pascalCase,
+  constantCase,
+} from './caseConversions.js'
 
 describe('caseConversions', () => {
   describe('camelCase', () => {
@@ -249,7 +254,9 @@ describe('caseConversions', () => {
       })
 
       it('should handle mixed separators', () => {
-        expect(constantCase('hello-world_test case')).toBe('HELLO_WORLD_TEST_CASE')
+        expect(constantCase('hello-world_test case')).toBe(
+          'HELLO_WORLD_TEST_CASE',
+        )
         expect(constantCase('foo_bar-baz qux')).toBe('FOO_BAR_BAZ_QUX')
       })
     })
@@ -277,8 +284,12 @@ describe('caseConversions', () => {
       })
 
       it('should collapse multiple underscores', () => {
-        expect(constantCase('already_constant_case')).toBe('ALREADY_CONSTANT_CASE')
-        expect(constantCase('multiple____underscores')).toBe('MULTIPLE_UNDERSCORES')
+        expect(constantCase('already_constant_case')).toBe(
+          'ALREADY_CONSTANT_CASE',
+        )
+        expect(constantCase('multiple____underscores')).toBe(
+          'MULTIPLE_UNDERSCORES',
+        )
       })
 
       it('should handle single characters', () => {
@@ -300,7 +311,9 @@ describe('caseConversions', () => {
       })
 
       it('should preserve already constant case', () => {
-        expect(constantCase('ALREADY_CONSTANT_CASE')).toBe('ALREADY_CONSTANT_CASE')
+        expect(constantCase('ALREADY_CONSTANT_CASE')).toBe(
+          'ALREADY_CONSTANT_CASE',
+        )
         expect(constantCase('API_KEY')).toBe('API_KEY')
       })
     })
@@ -309,11 +322,13 @@ describe('caseConversions', () => {
   describe('integration tests', () => {
     it('should work together for round-trip conversions', () => {
       const original = 'hello world test case'
-      
+
       // Test different conversion chains
       expect(camelCase(kebabCase(original))).toBe('helloWorldTestCase')
       expect(kebabCase(pascalCase(original))).toBe('hello-world-test-case')
-      expect(pascalCase(constantCase(original).toLowerCase().replace(/_/g, ' '))).toBe('HelloWorldTestCase')
+      expect(
+        pascalCase(constantCase(original).toLowerCase().replace(/_/g, ' ')),
+      ).toBe('HelloWorldTestCase')
     })
 
     it('should handle complex real-world examples', () => {
@@ -323,10 +338,10 @@ describe('caseConversions', () => {
         'react-native-app',
         'API_BASE_URL',
         'user_profile_data',
-        'Component Name'
+        'Component Name',
       ]
 
-      examples.forEach(example => {
+      examples.forEach((example) => {
         // Should not throw errors
         expect(() => camelCase(example)).not.toThrow()
         expect(() => kebabCase(example)).not.toThrow()
@@ -337,8 +352,8 @@ describe('caseConversions', () => {
 
     it('should handle empty and whitespace-only strings consistently', () => {
       const emptyInputs = ['', '   ', '\t', '\n', '\t \n ']
-      
-      emptyInputs.forEach(input => {
+
+      emptyInputs.forEach((input) => {
         expect(camelCase(input)).toBe('')
         expect(kebabCase(input)).toBe('')
         expect(pascalCase(input)).toBe('')
@@ -350,22 +365,22 @@ describe('caseConversions', () => {
   describe('performance', () => {
     it('should handle large strings efficiently', () => {
       const largeString = 'word '.repeat(1000).trim()
-      
+
       const startTime = performance.now()
       camelCase(largeString)
       kebabCase(largeString)
       pascalCase(largeString)
       constantCase(largeString)
       const endTime = performance.now()
-      
+
       expect(endTime - startTime).toBeLessThan(100) // Should be reasonably fast
     })
 
     it('should not create excessive intermediate strings', () => {
       // Test that functions work with various string lengths
       const strings = ['a', 'hello world', 'a'.repeat(100), 'word '.repeat(50)]
-      
-      strings.forEach(str => {
+
+      strings.forEach((str) => {
         expect(typeof camelCase(str)).toBe('string')
         expect(typeof kebabCase(str)).toBe('string')
         expect(typeof pascalCase(str)).toBe('string')

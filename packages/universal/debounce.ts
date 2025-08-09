@@ -3,7 +3,7 @@
  * the specified timeout has elapsed since the last time it was invoked.
  *
  * @param timeout - The number of milliseconds to delay
- * @param callback - The function to debounce  
+ * @param callback - The function to debounce
  * @returns A debounced version of the callback function
  *
  * @example
@@ -11,7 +11,7 @@
  * const debouncedHandler = debounce(300, (event) => {
  *   console.log('Event handled:', event)
  * })
- * 
+ *
  * // Multiple rapid calls will be debounced
  * debouncedHandler(event1)
  * debouncedHandler(event2)  // Only this will execute after 300ms

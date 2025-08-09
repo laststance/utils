@@ -57,7 +57,7 @@ describe('debounce', () => {
 
       debouncedFn('test1')
       vi.advanceTimersByTime(150)
-      
+
       debouncedFn('test2') // This should reset the timer
       vi.advanceTimersByTime(150) // Total 300ms, but only 150ms since reset
       expect(mockFn).not.toHaveBeenCalled()
@@ -138,7 +138,7 @@ describe('debounce', () => {
     })
 
     it('should work with regular functions', () => {
-      const mockFn = vi.fn(function(this: any, value: string) {
+      const mockFn = vi.fn(function (this: any, value: string) {
         return value.toUpperCase()
       })
       const debouncedFn = debounce(300, mockFn)

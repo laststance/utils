@@ -1,12 +1,12 @@
 /**
  * Simple template string parser that replaces placeholders with values from a data object.
  * Supports both {key} and {{key}} syntax for placeholders.
- * 
+ *
  * @param str - The template string containing placeholders
  * @param data - Object containing key-value pairs for replacement
  * @param options - Configuration options
  * @returns The string with placeholders replaced by corresponding values
- * 
+ *
  * @example
  * ```typescript
  * template('Hello {name}!', { name: 'World' })                    // 'Hello World!'
@@ -17,26 +17,39 @@
  * ```
  */
 export function template(
-  str: string, 
-  data: Record<string, any>, 
+  str: string,
+  data: Record<string, any>,
   options: {
     /** String to use when a placeholder key is not found */
     fallback?: string
     /** Prefix to add before resolved values */
     prefix?: string
-    /** Suffix to add after resolved values */  
+    /** Suffix to add after resolved values */
     suffix?: string
     /** Whether to HTML escape the resolved values */
     escapeHtml?: boolean
-  } = {}
+  } = {},
 ): string {
-  const { fallback = '', prefix = '', suffix = '', escapeHtml = false } = options
+  const {
+    fallback = '',
+    prefix = '',
+    suffix = '',
+    escapeHtml = false,
+  } = options
+
+  // Process in the correct order to handle {{{x}}} correctly
+  // First replace single {{x}} patterns while protecting them from further processing
+  const PROTECT_START = '\x00\x01PROTECT_START\x01\x00'
+  const PROTECT_END = '\x00\x01PROTECT_END\x01\x00'
   
-  return str.replace(/\{([^}]+)\}/g, (match, key) => {
-    const value = getNestedValue(data, key.trim())
+  // Replace {{key}} with protected {value}
+  // Use non-greedy matching and ensure we only match content between exactly two braces
+  let processed = str.replace(/\{\{([^{}]+)\}\}/g, (_match, key) => {
+    const trimmedKey = key.trim()
+    const value = getNestedValue(data, trimmedKey)
     
     if (value === undefined || value === null) {
-      return fallback
+      return `${PROTECT_START}${fallback || trimmedKey}${PROTECT_END}`
     }
     
     let stringValue = String(value)
@@ -45,18 +58,48 @@ export function template(
       stringValue = htmlEscape(stringValue)
     }
     
+    return `${PROTECT_START}${prefix}${stringValue}${suffix}${PROTECT_END}`
+  })
+  
+  // Then handle single braces {key} -> value (won't match protected content)
+  processed = processed.replace(/\{([^}]*)\}/g, (_match, key) => {
+    const trimmedKey = key.trim()
+    
+    // Handle empty placeholder
+    if (!trimmedKey) {
+      return fallback
+    }
+    
+    const value = getNestedValue(data, trimmedKey)
+
+    if (value === undefined || value === null) {
+      return fallback
+    }
+
+    let stringValue = String(value)
+
+    if (escapeHtml) {
+      stringValue = htmlEscape(stringValue)
+    }
+
     return prefix + stringValue + suffix
   })
+  
+  // Finally, restore the protected content as {value}
+  const escapeRegex = (str: string) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  return processed
+    .replace(new RegExp(escapeRegex(PROTECT_START), 'g'), '{')
+    .replace(new RegExp(escapeRegex(PROTECT_END), 'g'), '}')
 }
 
 /**
  * Gets a nested value from an object using dot notation.
  * Supports array access and complex nested paths.
- * 
+ *
  * @param obj - The object to traverse
  * @param path - The dot-notation path to the desired value
  * @returns The value at the specified path, or undefined if not found
- * 
+ *
  * @example
  * ```typescript
  * getNestedValue({ user: { name: 'John' } }, 'user.name')      // 'John'
@@ -67,15 +110,15 @@ export function template(
  */
 function getNestedValue(obj: any, path: string): any {
   if (!path) return obj
-  
+
   const keys = path.split('.')
   let current = obj
-  
+
   for (const key of keys) {
     if (current === null || current === undefined) {
       return undefined
     }
-    
+
     // Handle array index access
     if (Array.isArray(current) && /^\d+$/.test(key)) {
       current = current[parseInt(key, 10)]
@@ -85,7 +128,7 @@ function getNestedValue(obj: any, path: string): any {
       return undefined
     }
   }
-  
+
   return current
 }
 
@@ -105,67 +148,92 @@ function htmlEscape(str: string): string {
 /**
  * Advanced template function with conditional logic and loops.
  * Supports more complex templating features for advanced use cases.
- * 
+ *
  * @param str - The template string with advanced syntax
- * @param data - Object containing key-value pairs for replacement  
+ * @param data - Object containing key-value pairs for replacement
  * @returns The processed template string
- * 
+ *
  * @example
  * ```typescript
  * // Simple conditionals with ternary-like syntax
  * templateAdvanced('Hello {user.name ? user.name : "Guest"}', { user: {} })
  * // 'Hello Guest'
- * 
+ *
  * // Multiple conditions
  * templateAdvanced('{count} item{count === 1 ? "" : "s"}', { count: 5 })
  * // '5 items'
  * ```
  */
-export function templateAdvanced(str: string, data: Record<string, any>): string {
+export function templateAdvanced(
+  str: string,
+  data: Record<string, any>,
+): string {
   // Handle ternary-like conditionals: {condition ? valueA : valueB}
-  return str.replace(/\{([^}]+)\?([^:}]+):([^}]+)\}/g, (match, condition, valueA, valueB) => {
-    const conditionResult = evaluateCondition(condition.trim(), data)
-    const selectedValue = conditionResult ? valueA.trim() : valueB.trim()
-    
-    // Check if selectedValue is a placeholder or literal
-    if (selectedValue.startsWith('"') && selectedValue.endsWith('"')) {
-      return selectedValue.slice(1, -1) // Remove quotes for literal strings
-    }
-    
-    return template(`{${selectedValue}}`, data)
-  }).replace(/\{([^}]+)\}/g, (match, key) => {
-    const value = getNestedValue(data, key.trim())
-    return value !== undefined ? String(value) : ''
-  })
+  return str
+    .replace(
+      /\{([^}]+)\?([^:}]+):([^}]+)\}/g,
+      (_match, condition, valueA, valueB) => {
+        const conditionResult = evaluateCondition(condition.trim(), data)
+        const selectedValue = conditionResult ? valueA.trim() : valueB.trim()
+
+        // Check if selectedValue is a placeholder or literal
+        if (selectedValue.startsWith('"') && selectedValue.endsWith('"')) {
+          return selectedValue.slice(1, -1) // Remove quotes for literal strings
+        }
+
+        return template(`{${selectedValue}}`, data)
+      },
+    )
+    .replace(/\{([^}]+)\}/g, (_match, key) => {
+      const value = getNestedValue(data, key.trim())
+      return value !== undefined ? String(value) : ''
+    })
 }
 
 /**
  * Evaluates a simple condition for template conditionals.
  * Supports basic equality, existence checks, and comparisons.
  */
-function evaluateCondition(condition: string, data: Record<string, any>): boolean {
+function evaluateCondition(
+  condition: string,
+  data: Record<string, any>,
+): boolean {
   // Handle existence checks: "user.name"
   if (!condition.includes(' ')) {
     const value = getNestedValue(data, condition)
+    // For boolean values, return the boolean directly
+    if (typeof value === 'boolean') {
+      return value
+    }
     return value !== undefined && value !== null && value !== ''
   }
-  
+
   // Handle equality checks: "count === 1"
   if (condition.includes('===')) {
-    const [left, right] = condition.split('===').map(s => s.trim())
+    const parts = condition.split('===').map((s) => s.trim())
+    const left = parts[0]
+    const right = parts[1]
+    if (!left || !right) return false
     const leftValue = getNestedValue(data, left)
-    const rightValue = isNaN(Number(right)) ? right.replace(/"/g, '') : Number(right)
+    const rightValue = isNaN(Number(right))
+      ? right.replace(/"/g, '')
+      : Number(right)
     return leftValue === rightValue
   }
-  
-  // Handle inequality checks: "count !== 1"  
+
+  // Handle inequality checks: "count !== 1"
   if (condition.includes('!==')) {
-    const [left, right] = condition.split('!==').map(s => s.trim())
+    const parts = condition.split('!==').map((s) => s.trim())
+    const left = parts[0]
+    const right = parts[1]
+    if (!left || !right) return false
     const leftValue = getNestedValue(data, left)
-    const rightValue = isNaN(Number(right)) ? right.replace(/"/g, '') : Number(right)
+    const rightValue = isNaN(Number(right))
+      ? right.replace(/"/g, '')
+      : Number(right)
     return leftValue !== rightValue
   }
-  
+
   // Default to truthiness check
   return Boolean(getNestedValue(data, condition))
 }

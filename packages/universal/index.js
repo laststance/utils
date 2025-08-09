@@ -19,9 +19,14 @@ export { removeSpecialCharacters } from './removeSpecialCharacters.ts'
 export { varToString } from './varToString.js'
 
 // String case conversion
-export { camelCase, kebabCase, pascalCase, constantCase } from './string/caseConversions.ts'
+export {
+  camelCase,
+  kebabCase,
+  pascalCase,
+  constantCase,
+} from './string/caseConversions.ts'
 
-// String text processing  
+// String text processing
 export { truncate, capitalize, titleCase } from './string/textProcessing.ts'
 
 // String URL-safe operations
@@ -31,23 +36,23 @@ export { slugify, escapeHtml, unescapeHtml } from './string/urlSafe.ts'
 export { template, templateAdvanced } from './string/template.ts'
 
 // String analysis
-export { 
-  wordCount, 
-  isBlank, 
-  lines, 
-  lineCount, 
-  characterCount, 
-  sentences, 
-  sentenceCount 
+export {
+  wordCount,
+  isBlank,
+  lines,
+  lineCount,
+  characterCount,
+  sentences,
+  sentenceCount,
 } from './string/analysis.ts'
 
 // String advanced operations
-export { 
-  reverse, 
-  isPalindrome, 
-  levenshteinDistance, 
-  similarity, 
-  longestCommonSubsequence 
+export {
+  reverse,
+  isPalindrome,
+  levenshteinDistance,
+  similarity,
+  longestCommonSubsequence,
 } from './string/advanced.ts'
 
 // Type checking utilities
@@ -84,7 +89,12 @@ export { default as retry } from './retry.js'
 
 // Math utilities
 export { positiveIntegerSum } from './positiveIntegerSum.js'
-export { randomNumber, randomNumberRange, randomInArray, rand } from './random.ts'
+export {
+  randomNumber,
+  randomNumberRange,
+  randomInArray,
+  rand,
+} from './random.ts'
 
 // Async utilities
 export { default as sleep } from './sleep.ts'
