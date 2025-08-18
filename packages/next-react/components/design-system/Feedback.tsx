@@ -4,16 +4,14 @@ import React, { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { themes } from '@/lib/design-system/themes'
 import { typography } from '@/lib/design-system/typography'
-import { padding, shadows, radius } from '@/lib/design-system/spacing'
-import { Button } from './Button'
+import { shadows, radius } from '@/lib/design-system/spacing'
 import { 
   X, 
   CheckCircle, 
   AlertCircle, 
   AlertTriangle, 
   Info,
-  Loader2,
-  ChevronRight
+  Loader2
 } from 'lucide-react'
 
 // Alert Component
@@ -160,7 +158,6 @@ export interface ToastProps {
 }
 
 export const Toast: React.FC<ToastProps> = ({
-  id,
   title,
   description,
   variant = 'default',
@@ -179,6 +176,8 @@ export const Toast: React.FC<ToastProps> = ({
       
       return () => clearTimeout(timer)
     }
+    return undefined
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [duration])
   
   const handleClose = () => {
@@ -400,7 +399,6 @@ export interface ProgressBarProps {
   showValue?: boolean
   variant?: 'default' | 'gradient' | 'striped'
   size?: 'sm' | 'md' | 'lg'
-  theme?: keyof typeof themes
   animated?: boolean
 }
 
@@ -411,11 +409,9 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   showValue = false,
   variant = 'default',
   size = 'md',
-  theme = 'glass-clear',
   animated = false,
 }) => {
   const percentage = Math.min((value / max) * 100, 100)
-  const selectedTheme = themes[theme]
   
   const sizeClasses = {
     sm: 'h-1',

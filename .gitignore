@@ -15,3 +15,4 @@ coverage/
 *.lcov
 coverage.json
 coverage-final.json
+test-results

@@ -41,35 +41,35 @@ export function template(
   // First replace single {{x}} patterns while protecting them from further processing
   const PROTECT_START = '\x00\x01PROTECT_START\x01\x00'
   const PROTECT_END = '\x00\x01PROTECT_END\x01\x00'
-  
+
   // Replace {{key}} with protected {value}
   // Use non-greedy matching and ensure we only match content between exactly two braces
   let processed = str.replace(/\{\{([^{}]+)\}\}/g, (_match, key) => {
     const trimmedKey = key.trim()
     const value = getNestedValue(data, trimmedKey)
-    
+
     if (value === undefined || value === null) {
       return `${PROTECT_START}${fallback || trimmedKey}${PROTECT_END}`
     }
-    
+
     let stringValue = String(value)
-    
+
     if (escapeHtml) {
       stringValue = htmlEscape(stringValue)
     }
-    
+
     return `${PROTECT_START}${prefix}${stringValue}${suffix}${PROTECT_END}`
   })
-  
+
   // Then handle single braces {key} -> value (won't match protected content)
   processed = processed.replace(/\{([^}]*)\}/g, (_match, key) => {
     const trimmedKey = key.trim()
-    
+
     // Handle empty placeholder
     if (!trimmedKey) {
       return fallback
     }
-    
+
     const value = getNestedValue(data, trimmedKey)
 
     if (value === undefined || value === null) {
@@ -84,9 +84,10 @@ export function template(
 
     return prefix + stringValue + suffix
   })
-  
+
   // Finally, restore the protected content as {value}
-  const escapeRegex = (str: string) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const escapeRegex = (str: string) =>
+    str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   return processed
     .replace(new RegExp(escapeRegex(PROTECT_START), 'g'), '{')
     .replace(new RegExp(escapeRegex(PROTECT_END), 'g'), '}')

@@ -45,7 +45,7 @@ describe('textProcessing', () => {
 
       it('should handle single character strings', () => {
         expect(truncate('a', 1)).toBe('a')
-        expect(truncate('a', 0)).toBe('')  // maxLength 0 returns empty
+        expect(truncate('a', 0)).toBe('') // maxLength 0 returns empty
         expect(truncate('a', 2)).toBe('a')
       })
 
@@ -78,7 +78,7 @@ describe('textProcessing', () => {
       })
 
       it('should handle strings with emojis', () => {
-        expect(truncate('Hello 👋 World 🌍', 12)).toBe('Hello 👋...')  // Trailing space trimmed
+        expect(truncate('Hello 👋 World 🌍', 12)).toBe('Hello 👋...') // Trailing space trimmed
         expect(truncate('🎉🎊🎈🎁', 3, '...')).toBe('...')
       })
 

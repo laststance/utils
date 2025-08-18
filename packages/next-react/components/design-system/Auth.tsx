@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { cn } from '@/lib/utils'
 import { themes } from '@/lib/design-system/themes'
 import { typography } from '@/lib/design-system/typography'
-import { padding, shadows, radius } from '@/lib/design-system/spacing'
+import { radius } from '@/lib/design-system/spacing'
 import { Button } from './Button'
 import { Card } from './Card'
 import { Eye, EyeOff, Mail, Lock, User, Check, X, ArrowLeft } from 'lucide-react'
@@ -262,7 +262,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       </form>
       
       <p className="text-center mt-8 text-sm text-foreground/60">
-        Don't have an account?{' '}
+        Don&apos;t have an account?{' '}
         <button
           onClick={onSignUp}
           className="text-primary hover:underline font-medium"
@@ -491,7 +491,7 @@ export const PasswordResetForm: React.FC<PasswordResetFormProps> = ({
               Reset Password
             </h1>
             <p className={cn(typography.body.className, 'text-foreground/60')}>
-              Enter your email and we'll send you instructions to reset your password
+              Enter your email and we&apos;ll send you instructions to reset your password
             </p>
           </div>
           
@@ -529,7 +529,7 @@ export const PasswordResetForm: React.FC<PasswordResetFormProps> = ({
             Check your email
           </h2>
           <p className={cn(typography.body.className, 'text-foreground/60 mb-6')}>
-            We've sent password reset instructions to {email}
+            We&apos;ve sent password reset instructions to {email}
           </p>
           <Button
             onClick={onBack}

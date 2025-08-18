@@ -26,13 +26,13 @@
 /**
  * Converts a kebab-case string to title case with spaces.
  * This is the same implementation used in @utils/universal/string/snakeToCameledSpace.ts
- * 
+ *
  * @param {string} str - The kebab-case string to convert
  * @returns {string} Title case string with spaces
  */
 function snakeToCameledSpace(str) {
   if (!str) return str
-  
+
   // Replace hyphens with spaces, then capitalize first char and chars after spaces
   return str
     .replace(/-/g, ' ')

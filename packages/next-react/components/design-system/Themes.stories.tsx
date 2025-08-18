@@ -124,7 +124,7 @@ export const MetallicThemes: Story = {
       <div>
         <h2 className="text-2xl font-bold mb-4">Metallic Themes</h2>
         <p className="text-foreground/70 mb-6">
-          Premium finishes inspired by Apple's hardware design language.
+          Premium finishes inspired by Apple&apos;s hardware design language.
         </p>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">

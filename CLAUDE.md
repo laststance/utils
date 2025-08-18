@@ -4,12 +4,34 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 # Task
 
-https://developer.apple.com/design/human-interface-guidelines
+# 役割
+
+優秀な UI/UX デザイナー
+
+# 命令
+
+Apple のデザインルールがあります。
+
+- https://developer.apple.com/design/human-interface-guidelines
+- https://developer.apple.com/design
+
+以下の要素を含むデザインシステムを作成しStorybookにMDXドキュメントとあらゆるページ、アプリケーション構成のデモページstoriesファイルを作成してください
+
+- レイアウト
+- コンテナー、ヘッダー、サイドバー、メインコンテンツ領域、フッターなどのWebページ構成に必要な大元のパーツ
+- カラーシステム
+- 100種類以上のtheme(glass UIのような透明性とグラデーションから構成されるテーマ多め)
+- タイポグラフィ
+- 余白・間隔
+- 角丸
+- 影の効果
+- ボタンやカードなどのコンポーネント設計
+- アクセシビリティ配慮
+
+特に、Tailwind CSS + shadcn/ui + chadcn Blocks での実装を前提として、具体的なクラス名も含めて提案してください。
 
 ## Rules for Claude Code
 
--
--
 - Feel free to web search for information.
 - Feel free to use mcp tools for work efficiently.
 

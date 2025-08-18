@@ -92,8 +92,8 @@ describe('urlSafe', () => {
 
       it('should handle combined characters', () => {
         // Note: Å decomposes to A but Ø doesn't decompose with NFD
-        expect(slugify('Åpple Ørånge')).toBe('apple-range')  // Å->A, å->a, Ø removed
-        expect(slugify('Ångström Œuvre')).toBe('angstrom-uvre')  // Å->A, å->a, ö->o, Œ removed
+        expect(slugify('Åpple Ørånge')).toBe('apple-range') // Å->A, å->a, Ø removed
+        expect(slugify('Ångström Œuvre')).toBe('angstrom-uvre') // Å->A, å->a, ö->o, Œ removed
       })
 
       it('should handle non-Latin scripts gracefully', () => {

@@ -12,7 +12,7 @@ import {
   type SelectOption,
   type RadioOption,
 } from '@/components/design-system/Forms'
-import { User, Mail, Phone, Home, Briefcase, Star } from 'lucide-react'
+import { User, Mail, Phone, Home, Briefcase } from 'lucide-react'
 
 const meta = {
   title: 'Components/Forms',
@@ -345,7 +345,6 @@ export const SliderVariants: StoryObj = {
           onChange={setValue2}
           min={0}
           max={100}
-          theme="glass-aurora"
         />
         
         <Slider

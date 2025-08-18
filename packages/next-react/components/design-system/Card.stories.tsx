@@ -340,7 +340,7 @@ export const Playground: Story = {
       <div>
         <h3 className="text-lg font-semibold mb-2">Interactive Playground</h3>
         <p className="text-foreground/70">
-          Use the controls to customize this card's appearance and behavior.
+          Use the controls to customize this card&apos;s appearance and behavior.
         </p>
       </div>
     ),

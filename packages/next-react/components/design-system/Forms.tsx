@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 import { themes } from '@/lib/design-system/themes'
 import { typography } from '@/lib/design-system/typography'
 import { radius, shadows } from '@/lib/design-system/spacing'
-import { Check, ChevronDown, Search, X, Calendar, Upload, Plus, Minus } from 'lucide-react'
+import { Check, ChevronDown, Search, X, Upload, Plus, Minus } from 'lucide-react'
 
 // Select Component
 export interface SelectOption {
@@ -390,7 +390,6 @@ export interface SwitchProps {
   onChange?: (checked: boolean) => void
   label?: string
   disabled?: boolean
-  theme?: keyof typeof themes
   size?: 'sm' | 'md' | 'lg'
 }
 
@@ -399,11 +398,8 @@ export const Switch: React.FC<SwitchProps> = ({
   onChange,
   label,
   disabled = false,
-  theme = 'glass-clear',
   size = 'md',
 }) => {
-  const selectedTheme = themes[theme]
-  
   const sizeClasses = {
     sm: { track: 'w-8 h-4', thumb: 'w-3 h-3' },
     md: { track: 'w-11 h-6', thumb: 'w-5 h-5' },
@@ -706,7 +702,6 @@ export interface SliderProps {
   step?: number
   label?: string
   showValue?: boolean
-  theme?: keyof typeof themes
   disabled?: boolean
 }
 
@@ -718,7 +713,6 @@ export const Slider: React.FC<SliderProps> = ({
   step = 1,
   label,
   showValue = true,
-  theme = 'glass-clear',
   disabled = false,
 }) => {
   const percentage = ((value - min) / (max - min)) * 100
