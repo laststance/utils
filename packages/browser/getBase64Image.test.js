@@ -29,8 +29,10 @@ describe('getBase64Image', () => {
       readAsDataURL: vi.fn(),
     }
 
-    // Mock FileReader constructor
-    global.FileReader = vi.fn(() => mockFileReader)
+    // Mock FileReader constructor (use function expression for Vitest 4.0 compatibility)
+    global.FileReader = vi.fn(function () {
+      return mockFileReader
+    })
 
     // Mock fetch
     global.fetch = vi.fn(async () =>

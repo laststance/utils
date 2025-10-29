@@ -35,7 +35,10 @@ describe('jwt-token-generator-tester', () => {
       refresh: vi.fn(),
     }
 
-    MockTokenGenerator = vi.fn(() => mockTokenGenerator)
+    // Use function expression for Vitest 4.0 compatibility with 'new' keyword
+    MockTokenGenerator = vi.fn(function () {
+      return mockTokenGenerator
+    })
 
     // Mock console.log
     originalConsoleLog = console.log

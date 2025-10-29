@@ -32,8 +32,8 @@ describe('getImageRect', () => {
       error: null,
     }
 
-    // Mock the Image constructor
-    global.Image = vi.fn(() => {
+    // Mock the Image constructor (use function expression for Vitest 4.0 compatibility)
+    global.Image = vi.fn(function () {
       // Store event handlers for manual triggering
       mockImage.addEventListener = vi.fn(
         (event: string, handler: (_error?: Error) => void) => {
@@ -410,7 +410,7 @@ describe('getImageRect', () => {
       let imageIndex = 0
       const mockImages: MockImage[] = []
 
-      global.Image = vi.fn(() => {
+      global.Image = vi.fn(function () {
         const currentIndex = imageIndex++
         const img: MockImage = {
           naturalWidth: images[currentIndex]?.width || 0,
@@ -467,7 +467,7 @@ describe('getImageRect', () => {
       let imageIndex = 0
       const mockImages: MockImage[] = []
 
-      global.Image = vi.fn(() => {
+      global.Image = vi.fn(function () {
         const currentIndex = imageIndex++
         const img: MockImage = {
           naturalWidth: requests[currentIndex]?.width || 0,
