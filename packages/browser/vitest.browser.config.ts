@@ -1,3 +1,4 @@
+import { playwright } from '@vitest/browser-playwright'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
@@ -9,7 +10,7 @@ export default defineConfig({
           browser: 'chromium',
         },
       ],
-      provider: 'playwright',
+      provider: playwright(),
       // Enable headless mode for CI
       headless: true,
       // Viewport size
