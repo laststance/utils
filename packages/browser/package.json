@@ -25,7 +25,8 @@
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/user-event": "^14.6.1",
-    "@vitest/browser": "^3.2.4",
+    "@vitest/browser": "^4.0.4",
+    "@vitest/browser-playwright": "^4.0.4",
     "happy-dom": "^18.0.1",
     "playwright": "^1.53.1",
     "should": "^13.2.3"

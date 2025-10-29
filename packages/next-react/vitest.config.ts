@@ -15,7 +15,6 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov', 'clover'],
       reportsDirectory: './coverage',
-      all: true,
       include: [
         'components/**/*.{ts,tsx}',
         'hooks/**/*.{ts,tsx}',
