@@ -20,17 +20,17 @@ const preview: Preview = {
     layout: 'centered',
 
     backgrounds: {
-      default: 'light',
-      values: [
-        {
+      options: {
+        light: {
           name: 'light',
           value: '#ffffff',
         },
-        {
+
+        dark: {
           name: 'dark',
           value: '#0a0a0a',
-        },
-      ],
+        }
+      }
     },
 
     a11y: {
@@ -40,7 +40,14 @@ const preview: Preview = {
       test: 'todo',
     },
   },
+
   tags: ['autodocs'],
+
+  initialGlobals: {
+    backgrounds: {
+      value: 'light'
+    }
+  }
 }
 
 export default preview
