@@ -27,22 +27,22 @@
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",
-    "@typescript-eslint/eslint-plugin": "^8.46.3",
-    "@typescript-eslint/parser": "^8.46.3",
-    "@vitest/browser": "^4.0.6",
-    "@vitest/coverage-v8": "^4.0.6",
-    "@vitest/ui": "^4.0.6",
+    "@typescript-eslint/eslint-plugin": "^8.47.0",
+    "@typescript-eslint/parser": "^8.47.0",
+    "@vitest/browser": "^4.0.10",
+    "@vitest/coverage-v8": "^4.0.10",
+    "@vitest/ui": "^4.0.10",
     "eslint": "^9.39.1",
-    "eslint-config-ts-prefixer": "^4.0.0",
+    "eslint-config-ts-prefixer": "^4.1.0",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.5.4",
     "playwright": "^1.56.1",
     "prettier": "^3.6.2",
     "rimraf": "^6.1.0",
-    "turbo": "^2.6.0",
+    "turbo": "^2.6.1",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.6"
+    "vitest": "^4.0.10"
   },
   "private": true
 }
