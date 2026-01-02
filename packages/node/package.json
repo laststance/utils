@@ -26,8 +26,14 @@
     "zod": "catalog:"
   },
   "devDependencies": {
+    "eslint": "catalog:",
+    "eslint-config-ts-prefixer": "catalog:",
+    "globals": "catalog:",
     "jsonwebtoken": "^9.0.3",
-    "tsx": "^4.21.0"
+    "tsx": "^4.21.0",
+    "typescript": "catalog:",
+    "typescript-eslint": "catalog:",
+    "vitest": "catalog:"
   },
   "type": "module"
 }

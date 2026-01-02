@@ -27,8 +27,14 @@
     "@testing-library/user-event": "catalog:",
     "@vitest/browser": "catalog:",
     "@vitest/browser-playwright": "^4.0.16",
+    "eslint": "catalog:",
+    "eslint-config-ts-prefixer": "catalog:",
+    "globals": "catalog:",
     "happy-dom": "catalog:",
     "playwright": "catalog:",
-    "should": "^13.2.3"
+    "should": "^13.2.3",
+    "typescript": "catalog:",
+    "typescript-eslint": "catalog:",
+    "vitest": "catalog:"
   }
 }

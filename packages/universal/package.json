@@ -17,5 +17,13 @@
     "lint": "eslint . --ext .ts,.js",
     "lint:fix": "eslint . --ext .ts,.js --fix"
   },
+  "devDependencies": {
+    "eslint": "catalog:",
+    "eslint-config-ts-prefixer": "catalog:",
+    "globals": "catalog:",
+    "typescript": "catalog:",
+    "typescript-eslint": "catalog:",
+    "vitest": "catalog:"
+  },
   "type": "module"
 }
