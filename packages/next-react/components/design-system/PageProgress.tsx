@@ -258,7 +258,7 @@ export function usePageProgress(props?: PageProgressProps) {
         progressRef.current.done()
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [])
   
   return {
@@ -291,7 +291,7 @@ export const PageProgressBar: React.FC<PageProgressProps & {
       progress.done()
       onDone?.()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [isLoading])
   
   return null
@@ -332,7 +332,7 @@ export function useRouterProgress(props?: PageProgressProps) {
         (window as any).navigation.removeEventListener('navigateerror', handleComplete);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [])
   
   return { isNavigating, progress }

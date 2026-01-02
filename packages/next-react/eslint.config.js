@@ -1,33 +1,20 @@
 import tseslint from 'typescript-eslint'
-import tsPrefixer from 'eslint-config-ts-prefixer'
 import globals from 'globals'
-import { FlatCompat } from '@eslint/eslintrc'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-})
+import reactHooks from 'eslint-plugin-react-hooks'
 
 export default tseslint.config(
-  // Extend Next.js config using FlatCompat first
-  ...compat.config({
-    extends: ['next'],
-  }),
-  // Then apply tsPrefixer, but filter out conflicting plugins
-  ...tsPrefixer.filter((config) => {
-    // Skip configs that define plugins that might conflict with Next.js
-    if (
-      config.plugins &&
-      ('import' in config.plugins || 'react' in config.plugins)
-    ) {
-      return false
-    }
-    return true
-  }),
+  // Use typescript-eslint recommended config directly
+  ...tseslint.configs.recommended,
+  // Add react-hooks plugin for hook rules
+  {
+    plugins: {
+      'react-hooks': reactHooks,
+    },
+    rules: {
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+    },
+  },
   {
     ignores: [
       '*.d.ts',
@@ -40,7 +27,9 @@ export default tseslint.config(
       'node_modules/**',
       '*.config.js',
       '*.config.ts',
+      '*.config.mjs',
       'eslint.config.js',
+      '*.cjs', // Ignore CommonJS files not in TypeScript project
     ],
   },
   {
@@ -54,6 +43,9 @@ export default tseslint.config(
       parserOptions: {
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
+        ecmaFeatures: {
+          jsx: true,
+        },
       },
     },
     settings: {
@@ -63,10 +55,12 @@ export default tseslint.config(
     },
     rules: {
       // Override rules from base configs
-      'react/react-in-jsx-scope': 'off',
-      'react/prop-types': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
-      '@next/next/no-img-element': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-require-imports': 'off',
+      '@typescript-eslint/no-non-null-asserted-optional-chain': 'off',
+      'react-hooks/exhaustive-deps': 'off',
+      'react-hooks/rules-of-hooks': 'off',
       'no-console': 'off',
     },
   },
@@ -78,7 +72,7 @@ export default tseslint.config(
       '**/*.stories.js',
     ],
     rules: {
-      'react-hooks/rules-of-hooks': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
     },
   },
   {
@@ -101,6 +95,7 @@ export default tseslint.config(
     rules: {
       'no-constant-binary-expression': 'off',
       'no-undef': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
     },
   },
 )

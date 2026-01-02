@@ -1,5 +1,5 @@
-import tseslint from 'typescript-eslint'
 import tsPrefixer from 'eslint-config-ts-prefixer'
+import tseslint from 'typescript-eslint'
 
 export default tseslint.config(
   ...tsPrefixer,

@@ -174,7 +174,7 @@ export const Carousel: React.FC<CarouselProps> = ({
         clearTimeout(autoplayTimerRef.current)
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [currentIndex, isPlaying, isPaused, autoplaySpeed])
   
   // Navigation functions

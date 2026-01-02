@@ -21,10 +21,10 @@ const meta = {
   },
 
   argTypes: {
-    direction: {
+    orientation: {
       control: { type: 'select' },
       options: ['horizontal', 'vertical'],
-      description: 'Direction of the panel group',
+      description: 'Orientation of the panel group',
     },
     className: {
       control: { type: 'text' },
@@ -38,12 +38,12 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    direction: 'horizontal',
+    orientation: 'horizontal',
   },
   render: (args) => (
     <ResizablePanelGroup
       {...args}
-      className="min-h-[200px] max-w-md rounded-lg border"
+      className="min-h-50 max-w-md rounded-lg border"
     >
       <ResizablePanel defaultSize={50}>
         <div className="flex h-full items-center justify-center p-6">
@@ -62,7 +62,7 @@ export const Default: Story = {
 
 export const Vertical: Story = {
   args: {
-    direction: 'vertical',
+    orientation: 'vertical',
   },
   render: (args) => (
     <ResizablePanelGroup
@@ -86,7 +86,7 @@ export const Vertical: Story = {
 
 export const WithHandle: Story = {
   args: {
-    direction: 'horizontal',
+    orientation: 'horizontal',
   },
   render: (args) => (
     <ResizablePanelGroup

@@ -139,7 +139,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
     
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [isOpen, currentIndex, keyboard, enableZoom, enableSlideshow])
   
   // Handle slideshow
@@ -155,7 +155,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
         clearTimeout(slideshowTimerRef.current)
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [isPlaying, currentIndex, enableSlideshow, slideshowInterval])
   
   // Navigation functions

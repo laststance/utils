@@ -3,7 +3,8 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { getImageRect } from './getImageRect.js'
 
 describe('getImageRect', () => {
-  interface MockImage extends Partial<HTMLImageElement> {
+  // Define MockImage without extending Partial<HTMLImageElement> to avoid type conflicts with vi.fn()
+  interface MockImage {
     naturalWidth: number
     naturalHeight: number
     src: string
