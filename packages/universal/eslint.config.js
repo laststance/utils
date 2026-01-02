@@ -8,7 +8,7 @@ export default tseslint.config(
     ignores: ['*.d.ts', 'coverage/**', 'dist/**', 'build/**'],
   },
   {
-    files: ['**/*.ts', '**/*.js'],
+    files: ['**/*.ts'],
     languageOptions: {
       globals: {
         ...globals.browser,
@@ -17,12 +17,19 @@ export default tseslint.config(
       parserOptions: {
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
-        allowDefaultProject: [
-          '**/*.js',
-          '**/*.mjs',
-          '**/*.cjs',
-          'eslint.config.js',
-        ],
+      },
+    },
+    rules: {
+      '@typescript-eslint/no-unused-vars': 'off',
+      'no-console': 'off',
+    },
+  },
+  {
+    files: ['**/*.js', '**/*.mjs', '**/*.cjs'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
       },
     },
     rules: {
