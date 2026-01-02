@@ -23,12 +23,12 @@
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.1",
-    "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/user-event": "^14.6.1",
-    "@vitest/browser": "^4.0.16",
+    "@testing-library/jest-dom": "catalog:",
+    "@testing-library/user-event": "catalog:",
+    "@vitest/browser": "catalog:",
     "@vitest/browser-playwright": "^4.0.16",
-    "happy-dom": "^20.0.11",
-    "playwright": "^1.57.0",
+    "happy-dom": "catalog:",
+    "playwright": "catalog:",
     "should": "^13.2.3"
   }
 }

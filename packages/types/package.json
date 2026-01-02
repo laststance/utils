@@ -17,10 +17,10 @@
   },
   "devDependencies": {
     "ts-expect": "^1.3.0",
-    "vitest": "^4.0.16"
+    "vitest": "catalog:"
   },
   "dependencies": {
-    "zod": "^4.3.4"
+    "zod": "catalog:"
   },
   "type": "module"
 }
