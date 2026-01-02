@@ -162,7 +162,8 @@ describe('or zodPlayground', () => {
         const issue = result.error.issues[0]
         expect(issue).toBeDefined()
         if (issue) {
-          expect(issue.code).toBe('invalid_union_discriminator')
+          // Zod v4 changed discriminator error to invalid_union
+          expect(issue.code).toBe('invalid_union')
         }
       }
     })

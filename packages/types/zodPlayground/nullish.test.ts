@@ -67,11 +67,11 @@ describe('nullish zodPlayground', () => {
         const flattenedErrors = result.error.flatten().fieldErrors
 
         // Should have errors for both missing nameList and invalid age
-        expect(flattenedErrors.nameList).toBeDefined()
-        expect(flattenedErrors.age).toBeDefined()
+        expect(flattenedErrors?.nameList).toBeDefined()
+        expect(flattenedErrors?.age).toBeDefined()
 
         // Age error should have custom message
-        expect(flattenedErrors.age).toContain('age should be greater than 10')
+        expect(flattenedErrors?.age).toContain('age should be greater than 10')
       }
     })
   })
@@ -144,9 +144,10 @@ describe('nullish zodPlayground', () => {
     })
 
     it('should handle special number values', () => {
+      // Zod v4 treats Infinity as invalid number type
       const specialNumbers = [
         { value: 11.5, shouldPass: true },
-        { value: Infinity, shouldPass: true },
+        { value: Infinity, shouldPass: false }, // Zod v4: Infinity is invalid
         { value: -Infinity, shouldPass: false },
         { value: NaN, shouldPass: false },
       ]
@@ -232,8 +233,8 @@ describe('nullish zodPlayground', () => {
         const flattenedErrors = result.error.flatten().fieldErrors
 
         // Should match the playground example output
-        expect(flattenedErrors.nameList).toBeDefined()
-        expect(flattenedErrors.age).toContain('age should be greater than 10')
+        expect(flattenedErrors?.nameList).toBeDefined()
+        expect(flattenedErrors?.age).toContain('age should be greater than 10')
       }
     })
 
@@ -282,7 +283,7 @@ describe('nullish zodPlayground', () => {
         expect(result.success).toBe(false)
         if (!result.success) {
           const flattenedErrors = result.error.flatten().fieldErrors
-          expect(Object.keys(flattenedErrors).length).toBeGreaterThan(0)
+          expect(Object.keys(flattenedErrors ?? {}).length).toBeGreaterThan(0)
         }
       })
     })
@@ -355,9 +356,9 @@ describe('nullish zodPlayground', () => {
         const flattenedErrors = result.error.flatten().fieldErrors
 
         // Should only have error for age, not nameList
-        expect(flattenedErrors.nameList).toBeUndefined()
-        expect(flattenedErrors.age).toBeDefined()
-        expect(flattenedErrors.age).toContain('age should be greater than 10')
+        expect(flattenedErrors?.nameList).toBeUndefined()
+        expect(flattenedErrors?.age).toBeDefined()
+        expect(flattenedErrors?.age).toContain('age should be greater than 10')
       }
     })
   })
@@ -383,10 +384,10 @@ describe('nullish zodPlayground', () => {
         expect(fieldErrors).not.toBeNull()
 
         // Should have string array values for each field
-        if (fieldErrors.nameList) {
+        if (fieldErrors?.nameList) {
           expect(Array.isArray(fieldErrors.nameList)).toBe(true)
         }
-        if (fieldErrors.age) {
+        if (fieldErrors?.age) {
           expect(Array.isArray(fieldErrors.age)).toBe(true)
         }
       }
@@ -405,10 +406,10 @@ describe('nullish zodPlayground', () => {
         const fieldErrors = result.error.flatten().fieldErrors
 
         // Age should have the custom message
-        expect(fieldErrors.age).toBeDefined()
+        expect(fieldErrors?.age).toBeDefined()
 
         // nameList should have type validation errors
-        expect(fieldErrors.nameList).toBeDefined()
+        expect(fieldErrors?.nameList).toBeDefined()
       }
     })
 

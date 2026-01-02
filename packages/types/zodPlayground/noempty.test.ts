@@ -144,7 +144,8 @@ describe('noempty zodPlayground', () => {
         const issue = result.error.issues[0]
         expect(issue).toBeDefined()
         if (issue) {
-          expect(issue.message).toContain('least 1 element')
+          // Zod v4 changed error message format
+          expect(issue.code).toBe('too_small')
         }
       }
     })
@@ -208,9 +209,6 @@ describe('noempty zodPlayground', () => {
         expect(issue).toBeDefined()
         if (issue) {
           expect(issue.code).toBe('invalid_type')
-          if (issue.code === 'invalid_type') {
-            expect(issue.received).toBe('null')
-          }
         }
       }
     })
@@ -224,9 +222,6 @@ describe('noempty zodPlayground', () => {
         expect(issue).toBeDefined()
         if (issue) {
           expect(issue.code).toBe('invalid_type')
-          if (issue.code === 'invalid_type') {
-            expect(issue.received).toBe('undefined')
-          }
         }
       }
     })
@@ -246,18 +241,12 @@ describe('noempty zodPlayground', () => {
           (issue) => issue.path.length === 2 && issue.path[1] === 2,
         )
         expect(stringError?.code).toBe('invalid_type')
-        if (stringError?.code === 'invalid_type') {
-          expect(stringError.received).toBe('string')
-        }
 
         // Check for null error
         const nullError = result.error.issues.find(
           (issue) => issue.path.length === 2 && issue.path[1] === 3,
         )
         expect(nullError?.code).toBe('invalid_type')
-        if (nullError?.code === 'invalid_type') {
-          expect(nullError.received).toBe('null')
-        }
       }
     })
 
@@ -274,13 +263,12 @@ describe('noempty zodPlayground', () => {
     })
 
     it('should handle arrays with special number values', () => {
+      // Zod v4 treats Infinity as invalid - test only finite special numbers
       const specialNumbers = [
         0,
         -0,
         1,
         -1,
-        Infinity,
-        -Infinity,
         Number.MAX_VALUE,
         Number.MIN_VALUE,
         Number.MAX_SAFE_INTEGER,
@@ -295,6 +283,13 @@ describe('noempty zodPlayground', () => {
       }
     })
 
+    it('should reject arrays with Infinity values', () => {
+      const result = nonemptySchema.safeParse({ numArr: [1, Infinity, 3] })
+
+      // Zod v4 rejects Infinity as invalid number
+      expect(result.success).toBe(false)
+    })
+
     it('should reject arrays with NaN values', () => {
       const result = nonemptySchema.safeParse({ numArr: [1, NaN, 3] })
 
@@ -304,9 +299,6 @@ describe('noempty zodPlayground', () => {
         expect(issue).toBeDefined()
         if (issue) {
           expect(issue.code).toBe('invalid_type')
-          if (issue.code === 'invalid_type') {
-            expect(issue.received).toBe('nan')
-          }
           expect(issue.path).toEqual(['numArr', 1])
         }
       }
