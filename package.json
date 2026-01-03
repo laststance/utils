@@ -24,6 +24,7 @@
     "sherif:fix": "pnpm run sherif --fix -r unsync-similar-dependencies"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "catalog:",
     "prettier": "^3.7.4",
     "rimraf": "^6.1.2",
     "turbo": "^2.7.2"
