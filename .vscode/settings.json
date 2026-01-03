@@ -1,0 +1,14 @@
+{
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/.hg/store/**": true,
+    "**/.git/**": true,
+    "**/node_modules/**": true,
+    "**/.vscode/**": true
+  },
+  "vitest.disableWorkspaceWarning": true,
+  "vitest.configPath": "./vitest.workspace.ts",
+  "vitest.workspaceConfig": "./vitest.workspace.ts",
+  "vitest.rootConfig": "./vitest.workspace.ts"
+}
