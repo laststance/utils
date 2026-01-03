@@ -1,10 +1,13 @@
 import { defineConfig } from 'eslint/config'
 import globals from 'globals'
+import reactYouMightNotNeedAnEffect from 'eslint-plugin-react-you-might-not-need-an-effect'
+import eslintReact from '@eslint-react/eslint-plugin'
 import reactHooks from 'eslint-plugin-react-hooks'
 import tsPreFixer from 'eslint-config-ts-prefixer'
 
 export default defineConfig([
   ...tsPreFixer,
+  reactYouMightNotNeedAnEffect.configs.recommended,
   // Use typescript-eslint recommended config directly
   // Add react-hooks plugin for hook rules
   {
@@ -45,10 +48,13 @@ export default defineConfig([
     },
     plugins: {
       'react-hooks': reactHooks,
+      'react-x': eslintReact
     },
     rules: {
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'error',
+      'react-x/no-forward-ref': 'error',
+      'react-x/no-context-provider':'error',
       // React Compiler rules
       'react-hooks/config': 'error',
       'react-hooks/error-boundaries': 'error',
@@ -76,6 +82,7 @@ export default defineConfig([
     ],
     rules: {
       '@typescript-eslint/no-unused-vars': 'off',
+      'react-hooks/rules-of-hooks': 'off',
     },
   },
   {
