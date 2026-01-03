@@ -46,11 +46,54 @@ This is a **monorepo organized by runtime environment**, not by feature. Turbo o
 
 ### Key Stack
 
-- **Package Manager**: pnpm with workspaces
-- **Build Orchestration**: Turborepo
-- **Testing**: Vitest 4 (workspace mode) + Playwright for E2E
+- **Package Manager**: pnpm 10 with workspaces (isolated mode)
+- **Build Orchestration**: Turborepo 2.7
+- **Testing**: Vitest 4.0 (workspace mode) + Playwright 1.57 for E2E
 - **UI**: Next.js 16 + React 19 + Tailwind CSS 4 + Radix UI + shadcn/ui patterns
 - **Storybook**: v10 with `@storybook/nextjs-vite`
+- **TypeScript**: 5.9 (strict mode)
+
+## Dependency Management
+
+### pnpm Isolated Mode
+
+This project uses **pnpm isolated mode** (default, no `.npmrc` overrides). This means:
+
+- **Each package must declare its own dependencies** - packages cannot access dependencies from other packages
+- **Root imports require root package.json declarations** - if `setupTests.ts` imports a package, it must be in root `package.json`
+- **No phantom dependencies** - all imports must be explicitly declared
+
+### pnpm Catalogs
+
+Shared dependency versions are managed via `catalog:` protocol in `pnpm-workspace.yaml`:
+
+```yaml
+# pnpm-workspace.yaml
+catalog:
+  vitest: ^4.0.16
+  typescript: ^5.9.3
+  eslint: ^9.39.2
+```
+
+```json
+// package.json - Use catalog: to reference
+{
+  "devDependencies": {
+    "vitest": "catalog:",
+    "typescript": "catalog:"
+  }
+}
+```
+
+### Adding New Dependencies
+
+| Scope | Action |
+|-------|--------|
+| Single package | `pnpm --filter <package> add <dep>` |
+| Shared version | Add to `catalog:` in `pnpm-workspace.yaml`, then use `"dep": "catalog:"` |
+| Root-level tool | `pnpm add -D -w <dep>` |
+
+**Important**: After adding dependencies, run `pnpm install` and verify with `pnpm validate`.
 
 ## Conventions
 
@@ -80,8 +123,8 @@ Each package has its own `CLAUDE.md` with environment-specific rules:
 - `packages/browser/CLAUDE.md` - Browser API usage, DOM testing
 - `packages/node/CLAUDE.md` - Node.js patterns, CLI tools
 - `packages/next-react/CLAUDE.md` - React components, Storybook, Server vs Client
-- `packages/types/CLAUDE.md` - Types-only patterns, no runtime code
-- `packages/universal/CLAUDE.md` - Zero dependencies, cross-platform code
+- `packages/types/CLAUDE.md` - Type definitions with schema validation (zod)
+- `packages/universal/CLAUDE.md` - Zero runtime dependencies, cross-platform code
 
 ## CI Workflows
 

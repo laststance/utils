@@ -56,3 +56,12 @@ export function saveToLocalStorage(key: string, value: any) {
 - Use named exports for individual utilities
 - Group related utilities in the same file
 - Re-export from `index.ts` for convenient importing
+
+## Dependencies
+
+This package uses pnpm isolated mode with **zero runtime dependencies** for maximum portability. Dev dependencies:
+- `typescript` - Use `catalog:` for shared version
+- `typescript-eslint` - Use `catalog:` for shared version
+- `vitest` - Use `catalog:` for shared version
+
+When adding dev dependencies, use `catalog:` for shared versions defined in `pnpm-workspace.yaml`. Never add runtime dependencies to maintain cross-platform compatibility.

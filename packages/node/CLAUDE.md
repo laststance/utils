@@ -75,3 +75,12 @@ export function saveToStorage(key: string, value: any) {
 - Implement proper backpressure handling
 - Cache expensive computations when appropriate
 - Use worker threads for CPU-intensive tasks
+
+## Dependencies
+
+This package uses pnpm isolated mode. Key dependencies:
+- `@types/node` - Required for TypeScript types (must be explicitly declared)
+- `typescript-eslint` - Use `catalog:` for shared version
+- `jsonwebtoken` - JWT operations
+
+When adding imports, ensure the package is declared in `package.json`. Use `catalog:` for shared versions defined in `pnpm-workspace.yaml`.

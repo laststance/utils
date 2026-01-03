@@ -9,7 +9,7 @@ Shared TypeScript type definitions, interfaces, and utility types used across th
 ## Key Rules
 
 - **Types only**: No runtime code, only TypeScript types and interfaces
-- **No dependencies**: This package should have zero runtime dependencies
+- **Minimal dependencies**: Only schema libraries (e.g., `zod`) for validation types
 - **Generic and reusable**: Types should be useful across multiple packages
 - **Well-documented**: Use JSDoc comments to explain complex types
 
@@ -87,3 +87,12 @@ export function isUser(obj: unknown): obj is User {
 - Use TypeScript's type testing utilities
 - Write type-level tests for complex utility types
 - Ensure types don't break when packages update
+
+## Dependencies
+
+This package uses pnpm isolated mode. Key dependencies:
+- `zod` - Schema validation library (use `catalog:` for shared version)
+- `typescript` - Use `catalog:` for shared version
+- `typescript-eslint` - Use `catalog:` for shared version
+
+When adding imports, ensure the package is declared in `package.json`. Use `catalog:` for shared versions defined in `pnpm-workspace.yaml`.

@@ -4,7 +4,7 @@ This file provides specific guidance for the `packages/next-react` directory whe
 
 ## Package Purpose
 
-React components built with Next.js 15 App Router, Tailwind CSS, and Radix UI. Includes Storybook for component documentation and testing.
+React components built with Next.js 16 App Router, Tailwind CSS 4, and Radix UI. Includes Storybook v10 for component documentation and testing.
 
 ## Key Rules
 
@@ -78,3 +78,13 @@ export function UserCard({ user }) {
 - Use Next.js Image component for images
 - Implement proper loading states
 - Minimize client-side JavaScript bundles
+
+## Dependencies
+
+This package uses pnpm isolated mode. Key dependencies:
+- `@storybook/react` - Required for story type imports (must be explicitly declared)
+- `typescript-eslint` - Use `catalog:` for shared version
+- `globals` - Use `catalog:` for shared version
+- `eslint-plugin-react-hooks` - React hooks linting rules
+
+When adding imports, ensure the package is declared in `package.json`. Use `catalog:` for shared versions defined in `pnpm-workspace.yaml`.

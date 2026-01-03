@@ -69,3 +69,12 @@ export function saveFile(content: string) {
 - Use `requestAnimationFrame` for animations
 - Debounce/throttle expensive operations
 - Consider using Web Workers for heavy computations
+
+## Dependencies
+
+This package uses pnpm isolated mode. Key dependencies:
+- `@testing-library/jest-dom` - Use `catalog:` for shared version
+- `@vitest/browser` - Browser-mode Vitest testing
+- `happy-dom` - DOM environment for tests
+
+When adding imports, ensure the package is declared in `package.json`. Use `catalog:` for shared versions defined in `pnpm-workspace.yaml`.
