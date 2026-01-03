@@ -8,7 +8,6 @@
     "**/.vscode/**": true
   },
   "vitest.disableWorkspaceWarning": true,
-  "vitest.configPath": "./vitest.workspace.ts",
   "vitest.workspaceConfig": "./vitest.workspace.ts",
   "vitest.rootConfig": "./vitest.workspace.ts"
 }
