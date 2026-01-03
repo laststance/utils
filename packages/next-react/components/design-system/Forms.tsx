@@ -1,11 +1,12 @@
 'use client'
 
+import { Check, ChevronDown, Search, X, Upload, Plus, Minus } from 'lucide-react'
 import React, { useState } from 'react'
-import { cn } from '@/lib/utils'
+
+import { radius, shadows } from '@/lib/design-system/spacing'
 import { themes } from '@/lib/design-system/themes'
 import { typography } from '@/lib/design-system/typography'
-import { radius, shadows } from '@/lib/design-system/spacing'
-import { Check, ChevronDown, Search, X, Upload, Plus, Minus } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 // Select Component
 export interface SelectOption {
@@ -456,20 +457,10 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
   resize?: 'none' | 'vertical' | 'horizontal' | 'both'
 }
 
-export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({
-  className,
-  label,
-  error,
-  hint,
-  theme = 'glass-clear',
-  variant = 'default',
-  resize = 'vertical',
-  disabled,
-  id,
-  ...props
-}, ref) => {
+export const Textarea = ({ ref, className, label, error, hint, theme = 'glass-clear', variant = 'default', resize = 'vertical', disabled, id, ...props }: TextareaProps & { ref?: React.RefObject<HTMLTextAreaElement | null> }) => {
   const selectedTheme = themes[theme]
-  const textareaId = id || `textarea-${Math.random().toString(36).substr(2, 9)}`
+  const generatedId = React.useId()
+  const textareaId = id || generatedId
   
   const variantClasses = {
     default: cn(
@@ -543,7 +534,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({
       )}
     </div>
   )
-})
+}
 
 Textarea.displayName = 'Textarea'
 

@@ -1,9 +1,10 @@
 'use client'
 
 import React from 'react'
-import { cn } from '@/lib/utils'
-import { themes } from '@/lib/design-system/themes'
+
 import { containers, padding } from '@/lib/design-system/spacing'
+import { themes } from '@/lib/design-system/themes'
+import { cn } from '@/lib/utils'
 
 export interface ContainerProps {
   children: React.ReactNode

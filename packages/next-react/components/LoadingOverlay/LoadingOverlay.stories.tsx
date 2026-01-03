@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
-import { LoadingOverlay } from './LoadingOverlay.js'
+
 import { Button } from '@/components/ui/button'
+
+import { LoadingOverlay } from './LoadingOverlay.js'
 export default {
   title: 'loading/LoadingOverlay',
   component: LoadingOverlay,

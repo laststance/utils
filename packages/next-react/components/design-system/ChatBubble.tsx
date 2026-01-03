@@ -1,10 +1,35 @@
 'use client'
 
+import { Check, CheckCheck, Clock, AlertCircle } from 'lucide-react'
 import React from 'react'
-import { cn } from '@/lib/utils'
+
 import { themes } from '@/lib/design-system/themes'
 import { typography } from '@/lib/design-system/typography'
-import { Check, CheckCheck, Clock, AlertCircle } from 'lucide-react'
+import { cn } from '@/lib/utils'
+
+type MessageStatus = 'sending' | 'sent' | 'delivered' | 'read' | 'error'
+
+/**
+ * Renders the appropriate status icon based on message delivery status.
+ * @param status - The current message status
+ * @returns The corresponding icon component or null
+ */
+function StatusIcon({ status }: { status?: MessageStatus }) {
+  switch (status) {
+    case 'sending':
+      return <Clock size={14} className="text-foreground/50" />
+    case 'sent':
+      return <Check size={14} className="text-foreground/50" />
+    case 'delivered':
+      return <CheckCheck size={14} className="text-foreground/50" />
+    case 'read':
+      return <CheckCheck size={14} className="text-primary" />
+    case 'error':
+      return <AlertCircle size={14} className="text-red-500" />
+    default:
+      return null
+  }
+}
 
 export interface ChatBubbleProps {
   message: string
@@ -12,7 +37,7 @@ export interface ChatBubbleProps {
   avatar?: string
   name?: string
   timestamp?: Date | string
-  status?: 'sending' | 'sent' | 'delivered' | 'read' | 'error'
+  status?: MessageStatus
   reactions?: Array<{ emoji: string; count: number; active?: boolean }>
   isTyping?: boolean
   theme?: keyof typeof themes
@@ -54,24 +79,7 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({
     glass: cn(selectedTheme?.card, selectedTheme?.blur),
     minimal: 'bg-transparent border border-border',
   }
-  
-  const StatusIcon = () => {
-    switch (status) {
-      case 'sending':
-        return <Clock size={14} className="text-foreground/50" />
-      case 'sent':
-        return <Check size={14} className="text-foreground/50" />
-      case 'delivered':
-        return <CheckCheck size={14} className="text-foreground/50" />
-      case 'read':
-        return <CheckCheck size={14} className="text-primary" />
-      case 'error':
-        return <AlertCircle size={14} className="text-red-500" />
-      default:
-        return null
-    }
-  }
-  
+
   if (sender === 'system') {
     return (
       <div className={cn('text-center py-2', className)}>
@@ -139,7 +147,7 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({
               {formatTime(timestamp)}
             </span>
           )}
-          {status && sender === 'user' && <StatusIcon />}
+          {status && sender === 'user' && <StatusIcon status={status} />}
         </div>
         
         {/* Reactions */}

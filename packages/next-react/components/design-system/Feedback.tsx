@@ -1,10 +1,5 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
-import { cn } from '@/lib/utils'
-import { themes } from '@/lib/design-system/themes'
-import { typography } from '@/lib/design-system/typography'
-import { shadows, radius } from '@/lib/design-system/spacing'
 import { 
   X, 
   CheckCircle, 
@@ -13,6 +8,12 @@ import {
   Info,
   Loader2
 } from 'lucide-react'
+import React, { useCallback, useEffect, useState } from 'react'
+
+import { shadows, radius } from '@/lib/design-system/spacing'
+import { themes } from '@/lib/design-system/themes'
+import { typography } from '@/lib/design-system/typography'
+import { cn } from '@/lib/utils'
 
 // Alert Component
 export interface AlertProps {
@@ -167,26 +168,26 @@ export const Toast: React.FC<ToastProps> = ({
 }) => {
   const [isVisible, setIsVisible] = useState(true)
   const [isLeaving, setIsLeaving] = useState(false)
-  
-  useEffect(() => {
-    if (duration > 0) {
-      const timer = setTimeout(() => {
-        handleClose()
-      }, duration)
-      
-      return () => clearTimeout(timer)
-    }
-    return undefined
-     
-  }, [duration])
-  
-  const handleClose = () => {
+
+  const handleClose = useCallback(() => {
     setIsLeaving(true)
     setTimeout(() => {
       setIsVisible(false)
       onClose?.()
     }, 300)
-  }
+  }, [onClose])
+
+  useEffect(() => {
+    if (duration > 0) {
+      const timer = setTimeout(() => {
+        handleClose()
+      }, duration)
+
+      return () => clearTimeout(timer)
+    }
+    return undefined
+
+  }, [duration, handleClose])
   
   if (!isVisible) return null
   

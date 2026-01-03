@@ -1,12 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import React, { useState } from 'react'
+import { Mail, Lock, User, Phone, CreditCard, Search } from 'lucide-react'
+import { useState } from 'react'
+
 import { 
   Input,
   LoginForm,
   SignUpForm,
   PasswordResetForm
 } from '@/components/design-system/Auth'
-import { Mail, Lock, User, Phone, CreditCard, Search } from 'lucide-react'
 
 const meta = {
   title: 'Components/Authentication',

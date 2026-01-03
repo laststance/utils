@@ -1,11 +1,12 @@
 'use client'
 
-import React, { forwardRef } from 'react'
-import { cn } from '@/lib/utils'
+import { Loader2 } from 'lucide-react'
+import React from 'react'
+
+import { shadows, radius, touchTargets } from '@/lib/design-system/spacing'
 import { themes } from '@/lib/design-system/themes'
 import { typography } from '@/lib/design-system/typography'
-import { shadows, radius, touchTargets } from '@/lib/design-system/spacing'
-import { Loader2 } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'default' | 'primary' | 'secondary' | 'ghost' | 'glass' | 'gradient' | 'destructive' | 'outline'
@@ -47,25 +48,7 @@ const sizeClasses = {
   ),
 }
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({
-    className,
-    variant = 'default',
-    size = 'md',
-    theme = 'glass-clear',
-    loading = false,
-    fullWidth = false,
-    icon,
-    iconPosition = 'left',
-    glow = false,
-    haptic = false,
-    rounded = false,
-    disabled = false,
-    asChild = false,
-    children,
-    onClick,
-    ...props
-  }, ref) => {
+const Button = ({ ref, className, variant = 'default', size = 'md', theme = 'glass-clear', loading = false, fullWidth = false, icon, iconPosition = 'left', glow = false, haptic = false, rounded = false, disabled = false, asChild = false, children, onClick, ...props }: ButtonProps & { ref?: React.RefObject<HTMLButtonElement | null> }) => {
     const selectedTheme = themes[theme]
     
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -214,7 +197,6 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       </Comp>
     )
   }
-)
 
 Button.displayName = 'Button'
 
@@ -262,8 +244,7 @@ export interface IconButtonProps extends Omit<ButtonProps, 'children' | 'icon' |
   label: string
 }
 
-export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
-  ({ icon, label, size = 'md', className, ...props }, ref) => {
+export const IconButton = ({ ref, icon, label, size = 'md', className, ...props }: IconButtonProps & { ref?: React.RefObject<HTMLButtonElement | null> }) => {
     const iconSizeClasses = {
       xs: 'h-7 w-7',
       sm: 'h-9 w-9',
@@ -271,10 +252,10 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
       lg: 'h-12 w-12',
       xl: 'h-14 w-14',
     }
-    
+
     return (
       <Button
-        ref={ref}
+        {...(ref ? { ref } : {})}
         size={size}
         className={cn(
           iconSizeClasses[size],
@@ -288,7 +269,6 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
       </Button>
     )
   }
-)
 
 IconButton.displayName = 'IconButton'
 
@@ -298,28 +278,22 @@ export interface FABProps extends ButtonProps {
   offset?: 'sm' | 'md' | 'lg'
 }
 
-export const FAB = forwardRef<HTMLButtonElement, FABProps>(
-  ({ 
-    position = 'bottom-right',
-    offset = 'md',
-    className,
-    ...props 
-  }, ref) => {
+export const FAB = ({ ref, position = 'bottom-right', offset = 'md', className, ...props }: FABProps & { ref?: React.RefObject<HTMLButtonElement | null> }) => {
     const positionClasses = {
       'bottom-right': 'bottom-0 right-0',
       'bottom-left': 'bottom-0 left-0',
       'bottom-center': 'bottom-0 left-1/2 -translate-x-1/2',
     }
-    
+
     const offsetClasses = {
       sm: 'm-4',
       md: 'm-6',
       lg: 'm-8',
     }
-    
+
     return (
       <Button
-        ref={ref}
+        {...(ref ? { ref } : {})}
         className={cn(
           'fixed z-50',
           positionClasses[position],
@@ -331,6 +305,5 @@ export const FAB = forwardRef<HTMLButtonElement, FABProps>(
       />
     )
   }
-)
 
 FAB.displayName = 'FAB'

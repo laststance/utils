@@ -1,4 +1,5 @@
-import axios, { AxiosError } from 'axios'
+import type { AxiosError } from 'axios';
+import axios from 'axios'
 
 export const nodeAxios = axios.create({
   baseURL: process.env.ENDPOINT_URL as string,

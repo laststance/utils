@@ -1,10 +1,5 @@
 'use client'
 
-import React, { useState, useRef, useEffect, useMemo } from 'react'
-import { cn } from '@/lib/utils'
-import { themes } from '@/lib/design-system/themes'
-import { typography } from '@/lib/design-system/typography'
-import { shadows, radius } from '@/lib/design-system/spacing'
 import { 
   ChevronDown,
   X,
@@ -13,6 +8,13 @@ import {
   Plus,
   Loader2
 } from 'lucide-react'
+import React, { useState, useRef, useEffect, useMemo } from 'react'
+
+import { shadows, radius } from '@/lib/design-system/spacing'
+import { themes } from '@/lib/design-system/themes'
+import { typography } from '@/lib/design-system/typography'
+import { cn } from '@/lib/utils'
+
 import { Badge } from './Feedback'
 
 export interface ComboboxOption {
@@ -305,7 +307,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
   }, [])
   
   // Get display value
-  const getDisplayValue = () => {
+  const getDisplayValue = async () => {
     if (renderValue) {
       return renderValue(multiple ? selectedValues : selectedValues[0] || '')
     }

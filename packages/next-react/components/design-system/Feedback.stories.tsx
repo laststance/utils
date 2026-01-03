@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import React, { useState } from 'react'
+import { useState } from 'react'
+
+import { Input } from '@/components/design-system/Auth'
+import { Button } from '@/components/design-system/Button'
 import {
   Alert,
   Toast,
@@ -10,8 +13,6 @@ import {
   Badge,
   Tooltip,
 } from '@/components/design-system/Feedback'
-import { Button } from '@/components/design-system/Button'
-import { Input } from '@/components/design-system/Auth'
 import { Textarea } from '@/components/design-system/Forms'
 
 const meta = {

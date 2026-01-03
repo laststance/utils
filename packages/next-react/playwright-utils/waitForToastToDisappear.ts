@@ -129,7 +129,7 @@ import type { Locator } from '@playwright/test';
 export const waitForToastToDisappear = async (toast: Locator): Promise<void> => {
   try {
     await toast.waitFor({ state: 'hidden', timeout: 5000 });
-  } catch (error) {
+  } catch {
     // Toast has already disappeared (auto-dismissed) - this is expected behavior
     // Continue test execution without throwing error
   }

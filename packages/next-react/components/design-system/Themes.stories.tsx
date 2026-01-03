@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import React from 'react'
-import { Card } from '@/components/design-system/Card'
-import { Button } from '@/components/design-system/Button'
-import { themes } from '@/lib/design-system/themes'
 import { Palette } from 'lucide-react'
+import React from 'react'
+
+import { Button } from '@/components/design-system/Button'
+import { Card } from '@/components/design-system/Card'
+import { themes } from '@/lib/design-system/themes'
 
 const meta = {
   title: 'Design System/Themes',

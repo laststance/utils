@@ -1,13 +1,15 @@
 'use client'
 
+import { Eye, EyeOff, Mail, Lock, User, Check, X, ArrowLeft } from 'lucide-react'
 import React, { useState } from 'react'
-import { cn } from '@/lib/utils'
+
+import { radius } from '@/lib/design-system/spacing'
 import { themes } from '@/lib/design-system/themes'
 import { typography } from '@/lib/design-system/typography'
-import { radius } from '@/lib/design-system/spacing'
+import { cn } from '@/lib/utils'
+
 import { Button } from './Button'
 import { Card } from './Card'
-import { Eye, EyeOff, Mail, Lock, User, Check, X, ArrowLeft } from 'lucide-react'
 
 // Input Component
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -20,23 +22,11 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   showPasswordToggle?: boolean
 }
 
-export const Input = React.forwardRef<HTMLInputElement, InputProps>(({
-  className,
-  label,
-  error,
-  hint,
-  icon,
-  theme = 'glass-clear',
-  variant = 'default',
-  type = 'text',
-  showPasswordToggle = false,
-  disabled,
-  id,
-  ...props
-}, ref) => {
+export const Input = ({ ref, className, label, error, hint, icon, theme = 'glass-clear', variant = 'default', type = 'text', showPasswordToggle = false, disabled, id, ...props }: InputProps & { ref?: React.RefObject<HTMLInputElement | null> }) => {
   const [showPassword, setShowPassword] = useState(false)
   const selectedTheme = themes[theme]
-  const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`
+  const generatedId = React.useId()
+  const inputId = id || generatedId
   
   const variantClasses = {
     default: cn(
@@ -140,7 +130,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({
       )}
     </div>
   )
-})
+}
 
 Input.displayName = 'Input'
 

@@ -1,9 +1,10 @@
 'use client'
 
-import React from 'react'
-import { cn } from '@/lib/utils'
-import { themes } from '@/lib/design-system/themes'
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, MoreHorizontal } from 'lucide-react'
+import React from 'react'
+
+import { themes } from '@/lib/design-system/themes'
+import { cn } from '@/lib/utils'
 
 export interface PaginationProps {
   currentPage: number

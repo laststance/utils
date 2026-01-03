@@ -1,50 +1,80 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { http, HttpResponse } from 'msw'
-import { describe, it, expect } from 'vitest'
+import * as React from 'react'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 
-import { server } from '../../mocks/server'
+import { UserProfile, UserProfileLoading, UserProfileError } from './UserProfile'
 
-import { UserProfile } from './UserProfile'
+interface User {
+  id: number
+  email: string
+  name: string
+  createdAt: string
+}
+
+/**
+ * Test wrapper that provides Suspense boundary for UserProfile.
+ * Renders UserProfile with loading and error fallbacks.
+ */
+function TestWrapper({ userPromise }: { userPromise: Promise<User> }) {
+  return (
+    <React.Suspense fallback={<UserProfileLoading />}>
+      <UserProfile userPromise={userPromise} />
+    </React.Suspense>
+  )
+}
 
 describe('UserProfile', () => {
-  describe('loading states', () => {
-    it('shows loading state while fetching user data', async () => {
-      // Mock a delayed response
-      server.use(
-        http.get('/api/user/:id', async () => {
-          await new Promise((resolve) => setTimeout(resolve, 100))
-          return HttpResponse.json({
-            id: 1,
-            email: 'test@example.com',
-            name: 'Test User',
-            createdAt: '2023-01-01T00:00:00.000Z',
-          })
-        }),
-      )
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
 
-      render(<UserProfile userId={1} />)
+  describe('loading states', () => {
+    it('shows loading state while promise is pending', () => {
+      // Create a promise that never resolves to keep loading state visible
+      const neverResolvingPromise = new Promise<User>(() => {})
+
+      render(<TestWrapper userPromise={neverResolvingPromise} />)
 
       expect(screen.getByText(/loading user profile/i)).toBeInTheDocument()
       expect(screen.getByRole('status')).toBeInTheDocument()
+    })
 
-      await waitFor(() => {
-        expect(
-          screen.queryByText(/loading user profile/i),
-        ).not.toBeInTheDocument()
+    it('transitions from loading to content when promise resolves', async () => {
+      const userPromise = Promise.resolve({
+        id: 1,
+        email: 'test@example.com',
+        name: 'Test User',
+        createdAt: '2023-01-01T00:00:00.000Z',
       })
+
+      await act(async () => {
+        render(<TestWrapper userPromise={userPromise} />)
+      })
+
+      // After promise resolves, loading should be gone and content should be visible
+      expect(
+        screen.queryByText(/loading user profile/i),
+      ).not.toBeInTheDocument()
+      expect(screen.getByText('Test User')).toBeInTheDocument()
     })
   })
 
   describe('successful data loading', () => {
     it('displays user information when data loads successfully', async () => {
-      render(<UserProfile userId={1} />)
+      const userPromise = Promise.resolve({
+        id: 1,
+        email: 'test@example.com',
+        name: 'Test User',
+        createdAt: '2023-01-01T00:00:00.000Z',
+      })
 
-      // Should show loading first
-      expect(screen.getByText(/loading user profile/i)).toBeInTheDocument()
+      await act(async () => {
+        render(<TestWrapper userPromise={userPromise} />)
+      })
 
-      // Wait for data to load and display
-      expect(await screen.findByText('Test User')).toBeInTheDocument()
+      // Data should be loaded and displayed
+      expect(screen.getByText('Test User')).toBeInTheDocument()
       expect(screen.getByText('test@example.com')).toBeInTheDocument()
       expect(screen.getByText(/member since/i)).toBeInTheDocument()
 
@@ -55,113 +85,84 @@ describe('UserProfile', () => {
     })
 
     it('formats the creation date correctly', async () => {
-      render(<UserProfile userId={1} />)
-
-      await waitFor(() => {
-        expect(screen.getByText('Test User')).toBeInTheDocument()
+      const userPromise = Promise.resolve({
+        id: 1,
+        email: 'test@example.com',
+        name: 'Test User',
+        createdAt: '2023-01-01T00:00:00.000Z',
       })
+
+      await act(async () => {
+        render(<TestWrapper userPromise={userPromise} />)
+      })
+
+      expect(screen.getByText('Test User')).toBeInTheDocument()
 
       // Should format the date nicely
       expect(screen.getByText(/January 1, 2023/)).toBeInTheDocument()
     })
   })
 
-  describe('error handling', () => {
-    it('displays error message when user fetch fails', async () => {
-      // Mock an error response
-      server.use(
-        http.get('/api/user/:id', () => {
-          return HttpResponse.json(
-            { message: 'User not found' },
-            { status: 404 },
-          )
-        }),
-      )
+  describe('UserProfileError component', () => {
+    it('displays error message', () => {
+      const error = new Error('User not found')
+      render(<UserProfileError error={error} />)
 
-      render(<UserProfile userId={999} />)
-
-      expect(
-        await screen.findByText(/failed to load user/i),
-      ).toBeInTheDocument()
+      expect(screen.getByText(/failed to load user/i)).toBeInTheDocument()
+      expect(screen.getByText('User not found')).toBeInTheDocument()
       expect(screen.getByRole('alert')).toBeInTheDocument()
     })
 
-    it('displays generic error for network failures', async () => {
-      // Mock a network error
-      server.use(
-        http.get('/api/user/:id', () => {
-          return HttpResponse.error()
-        }),
-      )
+    it('displays generic error when no error provided', () => {
+      render(<UserProfileError />)
 
-      render(<UserProfile userId={1} />)
-
-      expect(
-        await screen.findByText(/failed to load user/i),
-      ).toBeInTheDocument()
+      expect(screen.getByText(/failed to load user/i)).toBeInTheDocument()
+      expect(screen.getByText('An error occurred')).toBeInTheDocument()
     })
 
-    it('provides retry functionality on error', async () => {
-      let attemptCount = 0
+    it('provides retry functionality when onRetry is provided', async () => {
+      const onRetry = vi.fn()
+      render(<UserProfileError error={new Error('Server error')} onRetry={onRetry} />)
 
-      // Mock failure then success
-      server.use(
-        http.get('/api/user/:id', () => {
-          attemptCount++
-          if (attemptCount === 1) {
-            return HttpResponse.json(
-              { message: 'Server error' },
-              { status: 500 },
-            )
-          }
-          return HttpResponse.json({
-            id: 1,
-            email: 'test@example.com',
-            name: 'Test User',
-            createdAt: '2023-01-01T00:00:00.000Z',
-          })
-        }),
-      )
-
-      render(<UserProfile userId={1} />)
-
-      // Should show error first
-      expect(
-        await screen.findByText(/failed to load user/i),
-      ).toBeInTheDocument()
-
-      // Click retry button
       const retryButton = screen.getByRole('button', { name: /retry/i })
       expect(retryButton).toBeInTheDocument()
 
       await userEvent.setup().click(retryButton)
 
-      // Should show success after retry
-      expect(await screen.findByText('Test User')).toBeInTheDocument()
-      expect(screen.queryByText(/failed to load user/i)).not.toBeInTheDocument()
+      expect(onRetry).toHaveBeenCalledOnce()
+    })
+
+    it('does not show retry button when onRetry is not provided', () => {
+      render(<UserProfileError error={new Error('Server error')} />)
+
+      expect(screen.queryByRole('button', { name: /retry/i })).not.toBeInTheDocument()
+    })
+  })
+
+  describe('UserProfileLoading component', () => {
+    it('renders loading state with proper accessibility', () => {
+      render(<UserProfileLoading />)
+
+      const loadingStatus = screen.getByRole('status')
+      expect(loadingStatus).toHaveAttribute('aria-live', 'polite')
+      expect(loadingStatus).toHaveTextContent(/loading user profile/i)
     })
   })
 
   describe('different user data scenarios', () => {
-    it('handles users with different data structures', async () => {
-      // Mock user with minimal data
-      server.use(
-        http.get('/api/user/:id', () => {
-          return HttpResponse.json({
-            id: 2,
-            email: 'minimal@example.com',
-            name: '',
-            createdAt: '2023-06-15T10:30:00.000Z',
-          })
-        }),
-      )
-
-      render(<UserProfile userId={2} />)
-
-      await waitFor(() => {
-        expect(screen.getByText('minimal@example.com')).toBeInTheDocument()
+    it('handles users with empty name', async () => {
+      const userPromise = Promise.resolve({
+        id: 2,
+        email: 'minimal@example.com',
+        name: '',
+        createdAt: '2023-06-15T10:30:00.000Z',
       })
 
+      await act(async () => {
+        render(<TestWrapper userPromise={userPromise} />)
+      })
+
+      expect(screen.getByText('minimal@example.com')).toBeInTheDocument()
       // Should handle empty name gracefully
       expect(screen.getByText(/no name provided/i)).toBeInTheDocument()
     })
@@ -170,93 +171,93 @@ describe('UserProfile', () => {
       const recentDate = new Date()
       recentDate.setMinutes(recentDate.getMinutes() - 5) // 5 minutes ago
 
-      server.use(
-        http.get('/api/user/:id', () => {
-          return HttpResponse.json({
-            id: 3,
-            email: 'recent@example.com',
-            name: 'Recent User',
-            createdAt: recentDate.toISOString(),
-          })
-        }),
-      )
-
-      render(<UserProfile userId={3} />)
-
-      await waitFor(() => {
-        expect(screen.getByText('Recent User')).toBeInTheDocument()
+      const userPromise = Promise.resolve({
+        id: 3,
+        email: 'recent@example.com',
+        name: 'Recent User',
+        createdAt: recentDate.toISOString(),
       })
 
+      await act(async () => {
+        render(<TestWrapper userPromise={userPromise} />)
+      })
+
+      expect(screen.getByText('Recent User')).toBeInTheDocument()
       // Should show relative time for recent dates
       expect(screen.getByText(/a few minutes ago/i)).toBeInTheDocument()
     })
-  })
 
-  describe('component props', () => {
-    it('refetches data when userId prop changes', async () => {
-      const { rerender } = render(<UserProfile userId={1} />)
+    it('handles users with creation dates a few hours ago', async () => {
+      const hoursAgo = new Date()
+      hoursAgo.setHours(hoursAgo.getHours() - 3) // 3 hours ago
 
-      // Wait for first user to load
-      expect(await screen.findByText('Test User')).toBeInTheDocument()
+      const userPromise = Promise.resolve({
+        id: 4,
+        email: 'hours@example.com',
+        name: 'Hours User',
+        createdAt: hoursAgo.toISOString(),
+      })
 
-      // Mock different user data
-      server.use(
-        http.get('/api/user/2', () => {
-          return HttpResponse.json({
-            id: 2,
-            email: 'user2@example.com',
-            name: 'Second User',
-            createdAt: '2023-02-01T00:00:00.000Z',
-          })
-        }),
-      )
+      await act(async () => {
+        render(<TestWrapper userPromise={userPromise} />)
+      })
 
-      // Change the userId prop
-      rerender(<UserProfile userId={2} />)
+      expect(screen.getByText('Hours User')).toBeInTheDocument()
+      // Should show relative time for hours ago
+      expect(screen.getByText(/3 hours ago/i)).toBeInTheDocument()
+    })
 
-      // Should show loading and then new user data
-      expect(screen.getByText(/loading user profile/i)).toBeInTheDocument()
-      expect(await screen.findByText('Second User')).toBeInTheDocument()
-      expect(screen.getByText('user2@example.com')).toBeInTheDocument()
+    it('handles null user response', async () => {
+      const userPromise = Promise.resolve(null as unknown as User)
+
+      await act(async () => {
+        render(<TestWrapper userPromise={userPromise} />)
+      })
+
+      expect(screen.getByText(/no user found/i)).toBeInTheDocument()
     })
   })
 
   describe('accessibility', () => {
-    it('provides proper loading announcements', async () => {
-      render(<UserProfile userId={1} />)
+    it('provides proper loading announcements', () => {
+      // Create a promise that never resolves to keep loading state visible
+      const neverResolvingPromise = new Promise<User>(() => {})
+
+      render(<TestWrapper userPromise={neverResolvingPromise} />)
 
       const loadingStatus = screen.getByRole('status')
       expect(loadingStatus).toHaveAttribute('aria-live', 'polite')
       expect(loadingStatus).toHaveTextContent(/loading user profile/i)
-
-      await waitFor(() => {
-        expect(screen.queryByRole('status')).not.toBeInTheDocument()
-      })
     })
 
-    it('provides proper error announcements', async () => {
-      server.use(
-        http.get('/api/user/:id', () => {
-          return HttpResponse.json(
-            { message: 'User not found' },
-            { status: 404 },
-          )
-        }),
-      )
+    it('removes loading status after data loads', async () => {
+      const userPromise = Promise.resolve({
+        id: 1,
+        email: 'test@example.com',
+        name: 'Test User',
+        createdAt: '2023-01-01T00:00:00.000Z',
+      })
 
-      render(<UserProfile userId={999} />)
+      await act(async () => {
+        render(<TestWrapper userPromise={userPromise} />)
+      })
 
-      const errorAlert = await screen.findByRole('alert')
-      expect(errorAlert).toBeInTheDocument()
-      expect(errorAlert).toHaveTextContent(/failed to load user/i)
+      expect(screen.queryByRole('status')).not.toBeInTheDocument()
     })
 
     it('provides semantic structure for user information', async () => {
-      render(<UserProfile userId={1} />)
-
-      await waitFor(() => {
-        expect(screen.getByText('Test User')).toBeInTheDocument()
+      const userPromise = Promise.resolve({
+        id: 1,
+        email: 'test@example.com',
+        name: 'Test User',
+        createdAt: '2023-01-01T00:00:00.000Z',
       })
+
+      await act(async () => {
+        render(<TestWrapper userPromise={userPromise} />)
+      })
+
+      expect(screen.getByText('Test User')).toBeInTheDocument()
 
       // Should have proper heading structure
       expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(

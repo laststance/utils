@@ -1,11 +1,12 @@
 'use client'
 
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import React, { useState } from 'react'
-import { cn } from '@/lib/utils'
+
+import { padding, shadows, radius } from '@/lib/design-system/spacing'
 import { themes } from '@/lib/design-system/themes'
 import { typography } from '@/lib/design-system/typography'
-import { padding, shadows, radius } from '@/lib/design-system/spacing'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 export interface SidebarProps {
   children?: React.ReactNode

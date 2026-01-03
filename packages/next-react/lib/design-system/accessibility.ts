@@ -266,7 +266,7 @@ export function checkA11y(element: HTMLElement): string[] {
   headings.forEach(heading => {
     const tagChar = heading.tagName[1]
     if (tagChar) {
-      const level = parseInt(tagChar)
+      const level = parseInt(tagChar, 10)
       if (level > lastLevel + 1) {
         issues.push(`Heading hierarchy issue: h${lastLevel} followed by h${level}`)
       }

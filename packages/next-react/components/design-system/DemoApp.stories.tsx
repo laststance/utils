@@ -1,23 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import React, { useState } from 'react'
-import { 
-  Container, 
-  Header, 
-  NavItem,
-  Sidebar,
-  SidebarItem,
-  SidebarSection,
-  Footer,
-  FooterLink,
-  FooterSection,
-  SocialIcon,
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  CardGrid,
-} from '@/components/design-system'
-import { 
+import {
   Home,
   BarChart3,
   Users,
@@ -39,6 +21,25 @@ import {
   ArrowUpRight,
   ArrowDownRight,
 } from 'lucide-react'
+import { useState } from 'react'
+
+import { 
+  Container, 
+  Header, 
+  NavItem,
+  Sidebar,
+  SidebarItem,
+  SidebarSection,
+  Footer,
+  FooterLink,
+  FooterSection,
+  SocialIcon,
+  Button,
+  Card,
+  CardHeader,
+  CardBody,
+  CardGrid,
+} from '@/components/design-system'
 
 const meta = {
   title: 'Examples/Complete App Layout',

@@ -1,4 +1,5 @@
-import originalAxios, { AxiosError } from 'axios'
+import type { AxiosError } from 'axios';
+import originalAxios from 'axios'
 import { toast } from 'sonner'
 /**
  * Axios client for browser environment.
@@ -54,7 +55,7 @@ browserAxios.interceptors.request.use(
   async (config) => {
     return config
   },
-  (error) => {
+  async (error) => {
     return Promise.reject(error)
   },
 )

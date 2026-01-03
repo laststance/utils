@@ -1,16 +1,67 @@
 'use client'
 
-import React, { useState, useRef, useEffect, useCallback, Children } from 'react'
-import { cn } from '@/lib/utils'
-import { themes } from '@/lib/design-system/themes'
-import { typography } from '@/lib/design-system/typography'
-
 import { 
   ChevronLeft, 
   ChevronRight,
   Pause,
   Play
 } from 'lucide-react'
+import React, { useState, useRef, useEffect, useCallback, Children, useSyncExternalStore } from 'react'
+
+import { themes } from '@/lib/design-system/themes'
+import { typography } from '@/lib/design-system/typography'
+import { cn } from '@/lib/utils'
+
+
+// Arrow button component - defined outside to avoid recreation on each render
+interface ArrowButtonProps {
+  direction: 'prev' | 'next'
+  onClick: () => void
+  disabled?: boolean
+  arrowsPosition: 'inside' | 'outside' | 'corner'
+}
+
+const ArrowButton: React.FC<ArrowButtonProps> = ({
+  direction,
+  onClick,
+  disabled,
+  arrowsPosition,
+}) => {
+  const Icon = direction === 'prev' ? ChevronLeft : ChevronRight
+
+  const positionClasses = {
+    inside: cn(
+      'absolute top-1/2 -translate-y-1/2 z-10',
+      direction === 'prev' ? 'left-4' : 'right-4'
+    ),
+    outside: cn(
+      'absolute top-1/2 -translate-y-1/2',
+      direction === 'prev' ? '-left-12' : '-right-12'
+    ),
+    corner: cn(
+      'absolute',
+      direction === 'prev' ? 'top-4 left-4' : 'top-4 right-4'
+    ),
+  }
+
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={cn(
+        positionClasses[arrowsPosition],
+        'p-2 rounded-full',
+        'bg-white/10 backdrop-blur-md border border-white/20',
+        'hover:bg-white/20 transition-colors',
+        'disabled:opacity-50 disabled:cursor-not-allowed',
+        'text-foreground'
+      )}
+      aria-label={direction === 'prev' ? 'Previous slide' : 'Next slide'}
+    >
+      <Icon size={24} />
+    </button>
+  )
+}
 
 export interface CarouselProps {
   children: React.ReactNode
@@ -108,37 +159,50 @@ export const Carousel: React.FC<CarouselProps> = ({
   const [touchEnd, setTouchEnd] = useState<number | null>(null)
   const [isDragging, setIsDragging] = useState(false)
   const [dragOffset, setDragOffset] = useState(0)
+  const [containerWidth, setContainerWidth] = useState(0)
   const [slideHeight, setSlideHeight] = useState<number | 'auto'>('auto')
-  const [activeSettings, setActiveSettings] = useState<Partial<CarouselProps>>({})
-  
+
+  // Callback ref for container - measures width on mount (avoids useEffect for initialization)
   const containerRef = useRef<HTMLDivElement>(null)
+  const setContainerRef = useCallback((node: HTMLDivElement | null) => {
+    containerRef.current = node
+    if (node) {
+      setContainerWidth(node.offsetWidth)
+    }
+  }, [])
   const trackRef = useRef<HTMLDivElement>(null)
   const autoplayTimerRef = useRef<NodeJS.Timeout | null>(null)
   const slideRefs = useRef<(HTMLDivElement | null)[]>([])
   
   const slides = Children.toArray(children)
   const totalSlides = slides.length
-  
-  // Apply responsive settings
-  useEffect(() => {
-    const handleResize = () => {
-      const width = window.innerWidth
-      let settings: Partial<CarouselProps> = {}
-      
-      responsive.forEach(({ breakpoint, settings: breakpointSettings }) => {
-        if (width <= breakpoint) {
-          settings = { ...settings, ...breakpointSettings }
-        }
-      })
-      
-      setActiveSettings(settings)
-    }
-    
-    handleResize()
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
+
+  // Compute responsive settings during render using useSyncExternalStore
+  const getActiveSettings = useCallback(() => {
+    if (typeof window === 'undefined') return {}
+    const width = window.innerWidth
+    let computedSettings: Partial<CarouselProps> = {}
+
+    responsive.forEach(({ breakpoint, settings: breakpointSettings }) => {
+      if (width <= breakpoint) {
+        computedSettings = { ...computedSettings, ...breakpointSettings }
+      }
+    })
+
+    return computedSettings
   }, [responsive])
-  
+
+  const subscribeToResize = useCallback((callback: () => void) => {
+    window.addEventListener('resize', callback)
+    return () => window.removeEventListener('resize', callback)
+  }, [])
+
+  const activeSettings = useSyncExternalStore<Partial<CarouselProps>>(
+    subscribeToResize,
+    getActiveSettings,
+    () => ({}) // SSR fallback
+  )
+
   // Merge settings with responsive overrides
   const settings = {
     slidesToShow: activeSettings.slidesToShow || slidesToShow,
@@ -146,41 +210,15 @@ export const Carousel: React.FC<CarouselProps> = ({
     gap: activeSettings.gap ?? gap,
     // ... other settings
   }
-  
+
   // Calculate dimensions
   const slideWidth = variableWidth ? 'auto' : `${100 / settings.slidesToShow}%`
   const maxIndex = Math.ceil((totalSlides - settings.slidesToShow) / settings.slidesToScroll)
-  
-  // Update slide height for adaptive height
-  useEffect(() => {
-    if (!adaptiveHeight) return
-    
-    const currentSlideRef = slideRefs.current[currentIndex]
-    if (currentSlideRef) {
-      setSlideHeight(currentSlideRef.offsetHeight)
-    }
-  }, [currentIndex, adaptiveHeight])
-  
-  // Autoplay
-  useEffect(() => {
-    if (!isPlaying || isPaused) return
-    
-    autoplayTimerRef.current = setTimeout(() => {
-      goToNext()
-    }, autoplaySpeed)
-    
-    return () => {
-      if (autoplayTimerRef.current) {
-        clearTimeout(autoplayTimerRef.current)
-      }
-    }
-     
-  }, [currentIndex, isPlaying, isPaused, autoplaySpeed])
-  
-  // Navigation functions
+
+  // Navigation functions - declared before effects that use them
   const goToSlide = useCallback((index: number) => {
     let newIndex = index
-    
+
     if (!infinite) {
       newIndex = Math.max(0, Math.min(index, maxIndex))
     } else {
@@ -190,19 +228,44 @@ export const Carousel: React.FC<CarouselProps> = ({
         newIndex = 0
       }
     }
-    
+
     beforeChange?.(currentIndex, newIndex)
     setCurrentIndex(newIndex)
     afterChange?.(newIndex)
   }, [currentIndex, infinite, maxIndex, beforeChange, afterChange])
-  
+
   const goToNext = useCallback(() => {
     goToSlide(currentIndex + 1)
   }, [currentIndex, goToSlide])
-  
+
   const goToPrev = useCallback(() => {
     goToSlide(currentIndex - 1)
   }, [currentIndex, goToSlide])
+
+  // Callback ref factory for slides - measures height when current slide's element is set
+  const createSlideRef = useCallback((index: number) => (node: HTMLDivElement | null) => {
+    slideRefs.current[index] = node
+    // Measure height for adaptive height when current slide's element is set
+    if (adaptiveHeight && index === currentIndex && node) {
+      setSlideHeight(node.offsetHeight)
+    }
+  }, [adaptiveHeight, currentIndex])
+
+  // Autoplay effect - now goToNext is defined before this
+  useEffect(() => {
+    if (!isPlaying || isPaused) return
+
+    autoplayTimerRef.current = setTimeout(() => {
+      goToNext()
+    }, autoplaySpeed)
+
+    return () => {
+      if (autoplayTimerRef.current) {
+        clearTimeout(autoplayTimerRef.current)
+      }
+    }
+
+  }, [currentIndex, isPlaying, isPaused, autoplaySpeed, goToNext])
   
   // Touch/Mouse handling
   const handleTouchStart = (e: React.TouchEvent | React.MouseEvent) => {
@@ -249,13 +312,15 @@ export const Carousel: React.FC<CarouselProps> = ({
     setDragOffset(0)
   }
   
-  // Calculate transform
+  // Calculate transform - uses containerWidth state, not ref
   const getTransform = () => {
     if (fade) return 'none'
-    
+
     const baseOffset = currentIndex * settings.slidesToScroll * (100 / settings.slidesToShow)
-    const dragOffsetPercent = isDragging ? (dragOffset / containerRef.current?.offsetWidth!) * 100 : 0
-    
+    const dragOffsetPercent = isDragging && containerWidth > 0
+      ? (dragOffset / containerWidth) * 100
+      : 0
+
     if (vertical) {
       return `translateY(-${baseOffset + dragOffsetPercent}%)`
     }
@@ -273,52 +338,10 @@ export const Carousel: React.FC<CarouselProps> = ({
     ),
     testimonial: 'py-8',
   }
-  
-  // Arrow button component
-  const ArrowButton: React.FC<{
-    direction: 'prev' | 'next'
-    onClick: () => void
-    disabled?: boolean
-  }> = ({ direction, onClick, disabled }) => {
-    const Icon = direction === 'prev' ? ChevronLeft : ChevronRight
-    
-    const positionClasses = {
-      inside: cn(
-        'absolute top-1/2 -translate-y-1/2 z-10',
-        direction === 'prev' ? 'left-4' : 'right-4'
-      ),
-      outside: cn(
-        'absolute top-1/2 -translate-y-1/2',
-        direction === 'prev' ? '-left-12' : '-right-12'
-      ),
-      corner: cn(
-        'absolute',
-        direction === 'prev' ? 'top-4 left-4' : 'top-4 right-4'
-      ),
-    }
-    
-    return (
-      <button
-        onClick={onClick}
-        disabled={disabled}
-        className={cn(
-          positionClasses[arrowsPosition],
-          'p-2 rounded-full',
-          'bg-white/10 backdrop-blur-md border border-white/20',
-          'hover:bg-white/20 transition-colors',
-          'disabled:opacity-50 disabled:cursor-not-allowed',
-          'text-foreground'
-        )}
-        aria-label={direction === 'prev' ? 'Previous slide' : 'Next slide'}
-      >
-        <Icon size={24} />
-      </button>
-    )
-  }
-  
+
   return (
     <div
-      ref={containerRef}
+      ref={setContainerRef}
       className={cn(
         'relative',
         variantStyles[variant],
@@ -362,7 +385,7 @@ export const Carousel: React.FC<CarouselProps> = ({
           {slides.map((slide, index) => (
             <div
               key={index}
-              ref={el => { slideRefs.current[index] = el }}
+              ref={createSlideRef(index)}
               className={cn(
                 'flex-shrink-0',
                 slideClassName,
@@ -388,11 +411,13 @@ export const Carousel: React.FC<CarouselProps> = ({
             direction="prev"
             onClick={goToPrev}
             disabled={!infinite && currentIndex === 0}
+            arrowsPosition={arrowsPosition}
           />
           <ArrowButton
             direction="next"
             onClick={goToNext}
             disabled={!infinite && currentIndex >= maxIndex}
+            arrowsPosition={arrowsPosition}
           />
         </>
       )}

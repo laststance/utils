@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import React, { useState } from 'react'
+import { User, Mail, Phone, Home, Briefcase } from 'lucide-react'
+import { useState } from 'react'
+
 import {
   Select,
   Checkbox,
@@ -12,7 +14,6 @@ import {
   type SelectOption,
   type RadioOption,
 } from '@/components/design-system/Forms'
-import { User, Mail, Phone, Home, Briefcase } from 'lucide-react'
 
 const meta = {
   title: 'Components/Forms',

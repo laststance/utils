@@ -1,8 +1,5 @@
 'use client'
 
-import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { cn } from '@/lib/utils'
-import { themes } from '@/lib/design-system/themes'
 import { 
   X, 
   ChevronLeft, 
@@ -17,6 +14,11 @@ import {
   Grid3x3,
   Loader2
 } from 'lucide-react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
+
+import type { themes } from '@/lib/design-system/themes'
+import { cn } from '@/lib/utils'
+
 import { Button } from './Button'
 
 export interface MediaItem {
@@ -87,7 +89,13 @@ export const Lightbox: React.FC<LightboxProps> = ({
   overlayOpacity = 0.9,
   className,
 }) => {
-  const [currentIndex, setCurrentIndex] = useState(controlledIndex)
+  // Use controlled index directly - no derived state needed
+  // The parent controls the index via controlledIndex and onIndexChange
+  const currentIndex = controlledIndex
+  const setCurrentIndex = useCallback((index: number) => {
+    onIndexChange?.(index)
+  }, [onIndexChange])
+
   const [zoom, setZoom] = useState(1)
   const [isPlaying, setIsPlaying] = useState(false)
   const [, setIsFullscreen] = useState(false)
@@ -95,22 +103,81 @@ export const Lightbox: React.FC<LightboxProps> = ({
   const [isLoading, setIsLoading] = useState(true)
   const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null)
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
-  
+
   const containerRef = useRef<HTMLDivElement>(null)
   const mediaRef = useRef<HTMLImageElement | HTMLVideoElement>(null)
   const slideshowTimerRef = useRef<NodeJS.Timeout | null>(null)
-  
+
   const currentItem = items[currentIndex]
-  
-  // Update internal index when controlled index changes
-  useEffect(() => {
-    setCurrentIndex(controlledIndex)
-  }, [controlledIndex])
-  
-  // Handle keyboard navigation
+
+  // Navigation functions - declared BEFORE useEffects that use them
+  const navigateNext = useCallback(() => {
+    const nextIndex = currentIndex + 1
+    if (nextIndex >= items.length) {
+      if (infinite) {
+        setCurrentIndex(0)
+      }
+    } else {
+      setCurrentIndex(nextIndex)
+    }
+    setZoom(1)
+    setDragOffset({ x: 0, y: 0 })
+  }, [currentIndex, items.length, infinite, setCurrentIndex])
+
+  const navigatePrev = useCallback(() => {
+    const prevIndex = currentIndex - 1
+    if (prevIndex < 0) {
+      if (infinite) {
+        setCurrentIndex(items.length - 1)
+      }
+    } else {
+      setCurrentIndex(prevIndex)
+    }
+    setZoom(1)
+    setDragOffset({ x: 0, y: 0 })
+  }, [currentIndex, items.length, infinite, setCurrentIndex])
+
+  const navigateToIndex = useCallback((index: number) => {
+    setCurrentIndex(index)
+    setZoom(1)
+    setDragOffset({ x: 0, y: 0 })
+    setShowThumbnailGrid(false)
+  }, [setCurrentIndex])
+
+  // Zoom functions - declared BEFORE useEffects that use them
+  const handleZoomIn = useCallback(() => {
+    setZoom(prev => Math.min(prev * 1.5, 4))
+  }, [])
+
+  const handleZoomOut = useCallback(() => {
+    setZoom(prev => Math.max(prev / 1.5, 0.5))
+  }, [])
+
+  const handleZoomReset = useCallback(() => {
+    setZoom(1)
+    setDragOffset({ x: 0, y: 0 })
+  }, [])
+
+  // Fullscreen - declared BEFORE useEffects
+  const toggleFullscreen = useCallback(() => {
+    if (!document.fullscreenElement) {
+      containerRef.current?.requestFullscreen()
+      setIsFullscreen(true)
+    } else {
+      document.exitFullscreen()
+      setIsFullscreen(false)
+    }
+  }, [])
+
+  // Slideshow - declared BEFORE useEffects that use it
+  const toggleSlideshow = useCallback(() => {
+    setIsPlaying(prev => !prev)
+  }, [])
+
+  // Handle keyboard navigation - now all callbacks are declared above
   useEffect(() => {
     if (!isOpen || !keyboard) return
-    
+
     const handleKeyDown = (e: KeyboardEvent) => {
       switch (e.key) {
         case 'Escape':
@@ -136,96 +203,25 @@ export const Lightbox: React.FC<LightboxProps> = ({
           break
       }
     }
-    
+
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-     
-  }, [isOpen, currentIndex, keyboard, enableZoom, enableSlideshow])
-  
-  // Handle slideshow
+  }, [isOpen, keyboard, enableZoom, enableSlideshow, onClose, navigatePrev, navigateNext, handleZoomIn, handleZoomOut, toggleSlideshow])
+
+  // Handle slideshow - now navigateNext is declared above
   useEffect(() => {
     if (!isPlaying || !enableSlideshow) return
-    
+
     slideshowTimerRef.current = setTimeout(() => {
       navigateNext()
     }, slideshowInterval)
-    
+
     return () => {
       if (slideshowTimerRef.current) {
         clearTimeout(slideshowTimerRef.current)
       }
     }
-     
-  }, [isPlaying, currentIndex, enableSlideshow, slideshowInterval])
-  
-  // Navigation functions
-  const navigateNext = useCallback(() => {
-    const nextIndex = currentIndex + 1
-    if (nextIndex >= items.length) {
-      if (infinite) {
-        setCurrentIndex(0)
-        onIndexChange?.(0)
-      }
-    } else {
-      setCurrentIndex(nextIndex)
-      onIndexChange?.(nextIndex)
-    }
-    setZoom(1)
-    setDragOffset({ x: 0, y: 0 })
-  }, [currentIndex, items.length, infinite, onIndexChange])
-  
-  const navigatePrev = useCallback(() => {
-    const prevIndex = currentIndex - 1
-    if (prevIndex < 0) {
-      if (infinite) {
-        setCurrentIndex(items.length - 1)
-        onIndexChange?.(items.length - 1)
-      }
-    } else {
-      setCurrentIndex(prevIndex)
-      onIndexChange?.(prevIndex)
-    }
-    setZoom(1)
-    setDragOffset({ x: 0, y: 0 })
-  }, [currentIndex, items.length, infinite, onIndexChange])
-  
-  const navigateToIndex = (index: number) => {
-    setCurrentIndex(index)
-    onIndexChange?.(index)
-    setZoom(1)
-    setDragOffset({ x: 0, y: 0 })
-    setShowThumbnailGrid(false)
-  }
-  
-  // Zoom functions
-  const handleZoomIn = () => {
-    setZoom(prev => Math.min(prev * 1.5, 4))
-  }
-  
-  const handleZoomOut = () => {
-    setZoom(prev => Math.max(prev / 1.5, 0.5))
-  }
-  
-  const handleZoomReset = () => {
-    setZoom(1)
-    setDragOffset({ x: 0, y: 0 })
-  }
-  
-  // Fullscreen
-  const toggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      containerRef.current?.requestFullscreen()
-      setIsFullscreen(true)
-    } else {
-      document.exitFullscreen()
-      setIsFullscreen(false)
-    }
-  }
-  
-  // Slideshow
-  const toggleSlideshow = () => {
-    setIsPlaying(!isPlaying)
-  }
+  }, [isPlaying, enableSlideshow, slideshowInterval, navigateNext])
   
   // Download
   const handleDownload = () => {

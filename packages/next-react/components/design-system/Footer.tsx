@@ -1,10 +1,11 @@
 'use client'
 
 import React from 'react'
-import { cn } from '@/lib/utils'
+
+import { padding, shadows, radius } from '@/lib/design-system/spacing'
 import { themes } from '@/lib/design-system/themes'
 import { typography } from '@/lib/design-system/typography'
-import { padding, shadows, radius } from '@/lib/design-system/spacing'
+import { cn } from '@/lib/utils'
 
 export interface FooterProps {
   children?: React.ReactNode

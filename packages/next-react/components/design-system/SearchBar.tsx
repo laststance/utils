@@ -1,9 +1,5 @@
 'use client'
 
-import React, { useState, useRef, useEffect, useMemo } from 'react'
-import { cn } from '@/lib/utils'
-import { themes } from '@/lib/design-system/themes'
-import { shadows, radius } from '@/lib/design-system/spacing'
 import { 
   Search, 
   X, 
@@ -13,6 +9,12 @@ import {
   Loader2,
   ArrowRight
 } from 'lucide-react'
+import React, { useState, useRef, useEffect, useMemo } from 'react'
+
+import { shadows, radius } from '@/lib/design-system/spacing'
+import { themes } from '@/lib/design-system/themes'
+import { cn } from '@/lib/utils'
+
 import { Button } from './Button'
 import { Badge } from './Feedback'
 

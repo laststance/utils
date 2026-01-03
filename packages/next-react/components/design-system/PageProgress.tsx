@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useEffect, useState, useRef } from 'react'
+import type React from 'react';
+import { useEffect, useState, useRef, useCallback, useMemo } from 'react'
 
 export interface PageProgressProps {
   isLoading?: boolean
@@ -249,26 +250,63 @@ export class PageProgress {
 // React Hook
 export function usePageProgress(props?: PageProgressProps) {
   const progressRef = useRef<PageProgress | null>(null)
-  
+
+  // Memoize props to create a stable reference for the effect
+  const {
+    color,
+    height,
+    showSpinner,
+    spinnerPosition,
+    trickleSpeed,
+    minimum,
+    easing,
+    speed,
+    template,
+    zIndex,
+    parent,
+    className,
+  } = props ?? {}
+
   useEffect(() => {
-    progressRef.current = PageProgress.getInstance(props)
-    
+    // Build config object, only including defined values to satisfy exactOptionalPropertyTypes
+    const config: PageProgressProps = {}
+    if (color !== undefined) config.color = color
+    if (height !== undefined) config.height = height
+    if (showSpinner !== undefined) config.showSpinner = showSpinner
+    if (spinnerPosition !== undefined) config.spinnerPosition = spinnerPosition
+    if (trickleSpeed !== undefined) config.trickleSpeed = trickleSpeed
+    if (minimum !== undefined) config.minimum = minimum
+    if (easing !== undefined) config.easing = easing
+    if (speed !== undefined) config.speed = speed
+    if (template !== undefined) config.template = template
+    if (zIndex !== undefined) config.zIndex = zIndex
+    if (parent !== undefined) config.parent = parent
+    if (className !== undefined) config.className = className
+
+    progressRef.current = PageProgress.getInstance(config)
+
     return () => {
       if (progressRef.current?.isStarted()) {
         progressRef.current.done()
       }
     }
-     
-  }, [])
-  
-  return {
-    start: () => progressRef.current?.start(),
-    done: () => progressRef.current?.done(),
-    set: (n: number) => progressRef.current?.set(n),
-    inc: (amount?: number) => progressRef.current?.inc(amount),
-    configure: (props: PageProgressProps) => progressRef.current?.configure(props),
-    isStarted: () => progressRef.current?.isStarted() || false,
-  }
+  }, [color, height, showSpinner, spinnerPosition, trickleSpeed, minimum, easing, speed, template, zIndex, parent, className])
+
+  const start = useCallback(() => progressRef.current?.start(), [])
+  const done = useCallback(() => progressRef.current?.done(), [])
+  const set = useCallback((n: number) => progressRef.current?.set(n), [])
+  const inc = useCallback((amount?: number) => progressRef.current?.inc(amount), [])
+  const configure = useCallback((configProps: PageProgressProps) => progressRef.current?.configure(configProps), [])
+  const isStarted = useCallback(() => progressRef.current?.isStarted() || false, [])
+
+  return useMemo(() => ({
+    start,
+    done,
+    set,
+    inc,
+    configure,
+    isStarted,
+  }), [start, done, set, inc, configure, isStarted])
 }
 
 // React Component
@@ -282,18 +320,30 @@ export const PageProgressBar: React.FC<PageProgressProps & {
   ...props
 }) => {
   const progress = usePageProgress(props)
-  
+
+  // Memoize callbacks to prevent unnecessary effect re-runs
+  const handleStart = useCallback(() => {
+    progress.start()
+    onStart?.()
+  }, [progress, onStart])
+
+  const handleDone = useCallback(() => {
+    progress.done()
+    onDone?.()
+  }, [progress, onDone])
+
+  // Note: The lint warnings about "passing refs to parents" are false positives.
+  // We're calling methods from a hook-returned object, not passing refs.
+  /* eslint-disable react-you-might-not-need-an-effect/no-pass-ref-to-parent */
   useEffect(() => {
     if (isLoading) {
-      progress.start()
-      onStart?.()
+      handleStart()
     } else {
-      progress.done()
-      onDone?.()
+      handleDone()
     }
-     
-  }, [isLoading])
-  
+  }, [isLoading, handleStart, handleDone])
+  /* eslint-enable react-you-might-not-need-an-effect/no-pass-ref-to-parent */
+
   return null
 }
 
@@ -301,40 +351,45 @@ export const PageProgressBar: React.FC<PageProgressProps & {
 export function useRouterProgress(props?: PageProgressProps) {
   const [isNavigating, setIsNavigating] = useState(false)
   const progress = usePageProgress(props)
-  
+
+  // Store progress methods in refs to avoid re-triggering the effect
+  const progressRef = useRef(progress)
+  useEffect(() => {
+    progressRef.current = progress
+  }, [progress])
+
   useEffect(() => {
     // This would integrate with Next.js router events
     // For now, it's a placeholder that can be extended
     const handleStart = () => {
       setIsNavigating(true)
-      progress.start()
+      progressRef.current.start()
     }
-    
+
     const handleComplete = () => {
       setIsNavigating(false)
-      progress.done()
+      progressRef.current.done()
     }
-    
+
     // Listen for route changes (Next.js specific)
     if (typeof window !== 'undefined') {
       // Detect navigation using Navigation API if available
       if ('navigation' in window) {
-        (window as any).navigation.addEventListener('navigate', handleStart);
-        (window as any).navigation.addEventListener('navigatesuccess', handleComplete);
-        (window as any).navigation.addEventListener('navigateerror', handleComplete);
+        (window as unknown as { navigation: EventTarget }).navigation.addEventListener('navigate', handleStart);
+        (window as unknown as { navigation: EventTarget }).navigation.addEventListener('navigatesuccess', handleComplete);
+        (window as unknown as { navigation: EventTarget }).navigation.addEventListener('navigateerror', handleComplete);
       }
     }
-    
+
     return () => {
       if (typeof window !== 'undefined' && 'navigation' in window) {
-        (window as any).navigation.removeEventListener('navigate', handleStart);
-        (window as any).navigation.removeEventListener('navigatesuccess', handleComplete);
-        (window as any).navigation.removeEventListener('navigateerror', handleComplete);
+        (window as unknown as { navigation: EventTarget }).navigation.removeEventListener('navigate', handleStart);
+        (window as unknown as { navigation: EventTarget }).navigation.removeEventListener('navigatesuccess', handleComplete);
+        (window as unknown as { navigation: EventTarget }).navigation.removeEventListener('navigateerror', handleComplete);
       }
     }
-     
   }, [])
-  
+
   return { isNavigating, progress }
 }
 

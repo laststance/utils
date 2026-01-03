@@ -1,16 +1,70 @@
 'use client'
 
-import React, { useEffect, useState, useRef } from 'react'
-import { cn } from '@/lib/utils'
-import { themes } from '@/lib/design-system/themes'
-import { typography } from '@/lib/design-system/typography'
-import { shadows } from '@/lib/design-system/spacing'
-import { Button } from './Button'
-import { 
+import {
   ArrowRight,
   Play,
   ChevronDown
 } from 'lucide-react'
+import React, { useEffect, useState, useRef, useSyncExternalStore, useCallback } from 'react'
+
+import { shadows } from '@/lib/design-system/spacing'
+import { themes } from '@/lib/design-system/themes'
+import { typography } from '@/lib/design-system/typography'
+import { cn } from '@/lib/utils'
+
+import { Button } from './Button'
+
+/**
+ * Custom hook for intersection observer visibility using useSyncExternalStore.
+ * Properly handles SSR hydration by returning true on server (content visible by default).
+ * @param ref - React ref to the element to observe
+ * @param threshold - IntersectionObserver threshold (default 0.1)
+ * @returns Whether the element is currently intersecting (visible)
+ */
+function useIntersectionVisibility(
+  ref: React.RefObject<HTMLElement | null>,
+  threshold = 0.1
+): boolean {
+  const subscribe = useCallback(
+    (callback: () => void) => {
+      const element = ref.current
+      if (!element) return () => {}
+
+      const observer = new IntersectionObserver((entries) => {
+        const entry = entries[0]
+        if (entry?.isIntersecting) {
+          // Once visible, we can disconnect - animation triggers once
+          observer.disconnect()
+        }
+        callback()
+      }, { threshold })
+
+      observer.observe(element)
+      return () => observer.disconnect()
+    },
+    [ref, threshold]
+  )
+
+  const getSnapshot = useCallback(() => {
+    const element = ref.current
+    if (!element) return true // Default to visible if no element
+
+    // Check if element is in viewport
+    const rect = element.getBoundingClientRect()
+    const isVisible =
+      rect.top < window.innerHeight &&
+      rect.bottom > 0 &&
+      rect.left < window.innerWidth &&
+      rect.right > 0
+
+    return isVisible
+  }, [ref])
+
+  // SSR fallback: assume visible to avoid flash of un-animated content
+  const getServerSnapshot = useCallback(() => true, [])
+
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+}
 
 export interface HeroSectionProps {
   // Content
@@ -96,9 +150,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 }) => {
   const selectedTheme = themes[theme]
   const [scrollY, setScrollY] = useState(0)
-  const [isVisible, setIsVisible] = useState(false)
   const heroRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
+
+  // Use useSyncExternalStore for intersection visibility (SSR-safe)
+  const isVisible = useIntersectionVisibility(heroRef)
   
   // Height classes
   const heightClasses = {
@@ -136,33 +192,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   // Handle parallax scrolling
   useEffect(() => {
     if (!parallax) return
-    
+
     const handleScroll = () => {
       const scrolled = window.scrollY
       setScrollY(scrolled)
     }
-    
+
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [parallax])
-  
-  // Trigger animations when visible
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.1 }
-    )
-    
-    if (heroRef.current) {
-      observer.observe(heroRef.current)
-    }
-    
-    return () => observer.disconnect()
-  }, [])
   
   // Calculate parallax transform
   const parallaxTransform = parallax 

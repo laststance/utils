@@ -1,8 +1,9 @@
 'use client'
 
-import React, { useState, useRef, useEffect } from 'react'
-import { cn } from '@/lib/utils'
+import React, { useState, useRef, useMemo, useCallback } from 'react'
+
 import { themes } from '@/lib/design-system/themes'
+import { cn } from '@/lib/utils'
 
 export interface Tab {
   id: string
@@ -18,13 +19,13 @@ export interface TabViewProps {
   defaultTab?: string
   activeTab?: string
   onTabChange?: (tabId: string) => void
-  
+
   orientation?: 'horizontal' | 'vertical'
   variant?: 'default' | 'pills' | 'underline' | 'enclosed' | 'segments'
   size?: 'sm' | 'md' | 'lg'
   fullWidth?: boolean
   animated?: boolean
-  
+
   theme?: keyof typeof themes
   className?: string
   tabsClassName?: string
@@ -47,35 +48,46 @@ export const TabView: React.FC<TabViewProps> = ({
   contentClassName,
 }) => {
   const selectedTheme = themes[theme]
-  const [activeTab, setActiveTab] = useState(controlledActiveTab || defaultTab || tabs[0]?.id)
-  const [indicatorStyle, setIndicatorStyle] = useState<React.CSSProperties>({})
+  // Internal state only used when uncontrolled
+  const [internalActiveTab, setInternalActiveTab] = useState(defaultTab || tabs[0]?.id)
+  // Track active tab element for indicator positioning
+  const [activeTabElement, setActiveTabElement] = useState<HTMLButtonElement | null>(null)
   const tabRefs = useRef<Map<string, HTMLButtonElement>>(new Map())
-  
-  useEffect(() => {
-    if (controlledActiveTab) {
-      setActiveTab(controlledActiveTab)
+
+  // Controlled/uncontrolled pattern: use controlled value when provided
+  const activeTab = controlledActiveTab ?? internalActiveTab
+
+  // Compute indicator style during render using useMemo
+  const indicatorStyle = useMemo<React.CSSProperties>(() => {
+    if (variant !== 'underline' || !animated || !activeTabElement) {
+      return {}
     }
-  }, [controlledActiveTab])
-  
-  useEffect(() => {
-    if (variant === 'underline' && animated && activeTab) {
-      const activeTabElement = tabRefs.current.get(activeTab)
-      if (activeTabElement) {
-        const { offsetLeft, offsetWidth, offsetTop, offsetHeight } = activeTabElement
-        setIndicatorStyle(
-          orientation === 'horizontal'
-            ? { left: offsetLeft, width: offsetWidth }
-            : { top: offsetTop, height: offsetHeight }
-        )
+    const { offsetLeft, offsetWidth, offsetTop, offsetHeight } = activeTabElement
+    return orientation === 'horizontal'
+      ? { left: offsetLeft, width: offsetWidth }
+      : { top: offsetTop, height: offsetHeight }
+  }, [activeTabElement, variant, animated, orientation])
+
+  // Ref callback to track active tab element
+  const createTabRef = useCallback((tabId: string) => (el: HTMLButtonElement | null) => {
+    if (el) {
+      tabRefs.current.set(tabId, el)
+      // Update active tab element when this is the active tab
+      if (tabId === activeTab) {
+        setActiveTabElement(el)
       }
     }
-  }, [activeTab, variant, animated, orientation])
-  
+  }, [activeTab])
+
   const handleTabClick = (tabId: string) => {
     const tab = tabs.find(t => t.id === tabId)
     if (tab?.disabled) return
-    
-    setActiveTab(tabId)
+
+    // Update internal state (for uncontrolled mode)
+    setInternalActiveTab(tabId)
+    // Update active tab element for indicator
+    const el = tabRefs.current.get(tabId)
+    if (el) setActiveTabElement(el)
     onTabChange?.(tabId)
   }
   
@@ -148,9 +160,7 @@ export const TabView: React.FC<TabViewProps> = ({
           return (
             <button
               key={tab.id}
-              ref={el => {
-                if (el) tabRefs.current.set(tab.id, el)
-              }}
+              ref={createTabRef(tab.id)}
               onClick={() => handleTabClick(tab.id)}
               disabled={tab.disabled}
               className={cn(

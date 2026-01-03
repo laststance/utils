@@ -3,8 +3,11 @@
 /**
  * UserProfile component displays user information with loading and error states.
  *
+ * Uses React 19+ patterns with Suspense-compatible data fetching via use() hook.
+ * Loading and error states are handled declaratively.
+ *
  * Features:
- * - Fetches user data on mount and when userId changes
+ * - Suspense-compatible data fetching with use() hook
  * - Loading spinner with accessibility
  * - Error handling with retry functionality
  * - Relative date formatting for user creation date
@@ -13,13 +16,19 @@
  *
  * @example
  * ```tsx
+ * // Parent component creates the promise and handles Suspense boundary
  * function ProfilePage() {
  *   const [selectedUserId, setSelectedUserId] = useState(123)
+ *   const userPromise = useMemo(() => getUser(selectedUserId), [selectedUserId])
  *
  *   return (
  *     <div className="container mx-auto p-4">
  *       <h1>User Profile</h1>
- *       <UserProfile userId={selectedUserId} />
+ *       <ErrorBoundary fallback={<UserProfileError />}>
+ *         <Suspense fallback={<UserProfileLoading />}>
+ *           <UserProfile userPromise={userPromise} />
+ *         </Suspense>
+ *       </ErrorBoundary>
  *     </div>
  *   )
  * }
@@ -28,15 +37,12 @@
 
 import * as React from 'react'
 
-import { Button } from '@/components/ui/button'
-import { getUser } from '@/lib/api'
-
 /**
  * Props for the UserProfile component
  */
 interface UserProfileProps {
-  /** The ID of the user to display */
-  userId: number
+  /** Promise that resolves to the user data */
+  userPromise: Promise<User>
 }
 
 interface User {
@@ -46,83 +52,89 @@ interface User {
   createdAt: string
 }
 
-export function UserProfile({ userId }: UserProfileProps) {
-  const [user, setUser] = React.useState<User | null>(null)
-  const [loading, setLoading] = React.useState(true)
-  const [error, setError] = React.useState<string | null>(null)
+/**
+ * Formats a date string to a relative or absolute date display.
+ * @param dateString - ISO date string to format
+ * @returns Formatted date string (e.g., "a few minutes ago", "2 hours ago", or full date)
+ */
+function formatDate(dateString: string): string {
+  const date = new Date(dateString)
+  const now = new Date()
+  const diffInMinutes = Math.floor(
+    (now.getTime() - date.getTime()) / (1000 * 60),
+  )
 
-  const fetchUser = React.useCallback(async () => {
-    setLoading(true)
-    setError(null)
-
-    try {
-      const userData = await getUser(userId)
-      setUser(userData)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load user')
-    } finally {
-      setLoading(false)
-    }
-  }, [userId])
-
-  React.useEffect(() => {
-    fetchUser()
-  }, [fetchUser])
-
-  const formatDate = (dateString: string): string => {
-    const date = new Date(dateString)
-    const now = new Date()
-    const diffInMinutes = Math.floor(
-      (now.getTime() - date.getTime()) / (1000 * 60),
-    )
-
-    if (diffInMinutes < 60) {
-      return 'a few minutes ago'
-    } else if (diffInMinutes < 1440) {
-      // 24 hours
-      const hours = Math.floor(diffInMinutes / 60)
-      return `${hours} hour${hours === 1 ? '' : 's'} ago`
-    } else {
-      return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      })
-    }
+  if (diffInMinutes < 60) {
+    return 'a few minutes ago'
+  } else if (diffInMinutes < 1440) {
+    // 24 hours
+    const hours = Math.floor(diffInMinutes / 60)
+    return `${hours} hour${hours === 1 ? '' : 's'} ago`
+  } else {
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
   }
+}
 
-  if (loading) {
-    return (
-      <div
-        role="status"
-        aria-live="polite"
-        className="flex items-center justify-center p-4"
-      >
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-        <span className="ml-2">Loading user profile...</span>
-      </div>
-    )
-  }
+/**
+ * Loading fallback component for UserProfile.
+ * Use this as the Suspense fallback when rendering UserProfile.
+ */
+export function UserProfileLoading() {
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      className="flex items-center justify-center p-4"
+    >
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <span className="ml-2">Loading user profile...</span>
+    </div>
+  )
+}
 
-  if (error) {
-    return (
-      <div
-        role="alert"
-        className="p-4 bg-red-50 border border-red-200 rounded-md"
-      >
-        <h3 className="text-red-800 font-medium">Failed to load user</h3>
-        <p className="text-red-600 mt-1">{error}</p>
-        <Button
-          onClick={fetchUser}
-          variant="outline"
-          size="sm"
-          className="mt-2"
+/**
+ * Error fallback component for UserProfile.
+ * Use this as the ErrorBoundary fallback when rendering UserProfile.
+ */
+export function UserProfileError({
+  error,
+  onRetry,
+}: {
+  error?: Error
+  onRetry?: () => void
+}) {
+  return (
+    <div
+      role="alert"
+      className="p-4 bg-red-50 border border-red-200 rounded-md"
+    >
+      <h3 className="text-red-800 font-medium">Failed to load user</h3>
+      <p className="text-red-600 mt-1">
+        {error?.message ?? 'An error occurred'}
+      </p>
+      {onRetry && (
+        <button
+          onClick={onRetry}
+          type="button"
+          className="mt-2 px-3 py-1 text-sm border border-gray-300 rounded-md hover:bg-gray-50"
         >
           Retry
-        </Button>
-      </div>
-    )
-  }
+        </button>
+      )}
+    </div>
+  )
+}
+
+/**
+ * UserProfile displays user information using React 19+ Suspense patterns.
+ * Wrap with Suspense and ErrorBoundary for proper loading/error states.
+ */
+export function UserProfile({ userPromise }: UserProfileProps) {
+  const user = React.use(userPromise)
 
   if (!user) {
     return (

@@ -18,7 +18,11 @@ type CarouselProps = {
   opts?: CarouselOptions
   plugins?: CarouselPlugin
   orientation?: 'horizontal' | 'vertical'
-  setApi?: (api: CarouselApi) => void
+  /**
+   * Callback ref to receive the Embla API instance.
+   * Called synchronously when the API becomes available.
+   */
+  apiRef?: React.RefCallback<CarouselApi>
 }
 
 type CarouselContextProps = {
@@ -45,7 +49,7 @@ function useCarousel() {
 function Carousel({
   orientation = 'horizontal',
   opts,
-  setApi,
+  apiRef,
   plugins,
   className,
   children,
@@ -88,10 +92,12 @@ function Carousel({
     [scrollPrev, scrollNext],
   )
 
-  React.useEffect(() => {
-    if (!api || !setApi) return
-    setApi(api)
-  }, [api, setApi])
+  // Invoke apiRef callback synchronously before paint when api becomes available
+  React.useLayoutEffect(() => {
+    if (api && apiRef) {
+      apiRef(api)
+    }
+  }, [api, apiRef])
 
   React.useEffect(() => {
     if (!api) return
@@ -105,7 +111,7 @@ function Carousel({
   }, [api, onSelect])
 
   return (
-    <CarouselContext.Provider
+    <CarouselContext
       value={{
         carouselRef,
         api: api,
@@ -128,7 +134,7 @@ function Carousel({
       >
         {children}
       </div>
-    </CarouselContext.Provider>
+    </CarouselContext>
   )
 }
 

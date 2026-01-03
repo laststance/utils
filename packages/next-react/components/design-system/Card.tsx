@@ -1,10 +1,11 @@
 'use client'
 
-import React, { forwardRef } from 'react'
-import { cn } from '@/lib/utils'
+import React from 'react'
+
+import { padding, shadows, radius } from '@/lib/design-system/spacing'
 import { themes } from '@/lib/design-system/themes'
 import { typography } from '@/lib/design-system/typography'
-import { padding, shadows, radius } from '@/lib/design-system/spacing'
+import { cn } from '@/lib/utils'
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: 'default' | 'glass' | 'elevated' | 'outlined' | 'gradient' | 'interactive'
@@ -20,24 +21,7 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   asChild?: boolean
 }
 
-export const Card = forwardRef<HTMLDivElement, CardProps>(
-  ({
-    className,
-    variant = 'default',
-    theme = 'glass-clear',
-    padding: paddingSize = 'md',
-    rounded = 'lg',
-    shadow = 'md',
-    hoverable = false,
-    clickable = false,
-    selected = false,
-    disabled = false,
-    glassIntensity = 'medium',
-    asChild = false,
-    children,
-    onClick,
-    ...props
-  }, ref) => {
+export const Card = ({ ref, className, variant = 'default', theme = 'glass-clear', padding: paddingSize = 'md', rounded = 'lg', shadow = 'md', hoverable = false, clickable = false, selected = false, disabled = false, glassIntensity = 'medium', asChild = false, children, onClick, ...props }: CardProps & { ref?: React.RefObject<HTMLDivElement | null> }) => {
     const selectedTheme = themes[theme]
     
     const paddingClasses = {
@@ -156,7 +140,6 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
       </Comp>
     )
   }
-)
 
 Card.displayName = 'Card'
 
@@ -169,17 +152,7 @@ export interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   separator?: boolean
 }
 
-export const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(
-  ({ 
-    className,
-    title,
-    subtitle,
-    icon,
-    action,
-    separator = false,
-    children,
-    ...props 
-  }, ref) => {
+export const CardHeader = ({ ref, className, title, subtitle, icon, action, separator = false, children, ...props }: CardHeaderProps & { ref?: React.RefObject<HTMLDivElement | null> }) => {
     return (
       <div
         ref={ref}
@@ -226,7 +199,6 @@ export const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(
       </div>
     )
   }
-)
 
 CardHeader.displayName = 'CardHeader'
 
@@ -235,8 +207,7 @@ export interface CardBodyProps extends React.HTMLAttributes<HTMLDivElement> {
   prose?: boolean
 }
 
-export const CardBody = forwardRef<HTMLDivElement, CardBodyProps>(
-  ({ className, prose = false, children, ...props }, ref) => {
+export const CardBody = ({ ref, className, prose = false, children, ...props }: CardBodyProps & { ref?: React.RefObject<HTMLDivElement | null> }) => {
     return (
       <div
         ref={ref}
@@ -251,7 +222,6 @@ export const CardBody = forwardRef<HTMLDivElement, CardBodyProps>(
       </div>
     )
   }
-)
 
 CardBody.displayName = 'CardBody'
 
@@ -261,8 +231,7 @@ export interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {
   align?: 'left' | 'center' | 'right' | 'between'
 }
 
-export const CardFooter = forwardRef<HTMLDivElement, CardFooterProps>(
-  ({ className, separator = false, align = 'right', children, ...props }, ref) => {
+export const CardFooter = ({ ref, className, separator = false, align = 'right', children, ...props }: CardFooterProps & { ref?: React.RefObject<HTMLDivElement | null> }) => {
     const alignClasses = {
       left: 'justify-start',
       center: 'justify-center',
@@ -285,7 +254,6 @@ export const CardFooter = forwardRef<HTMLDivElement, CardFooterProps>(
       </div>
     )
   }
-)
 
 CardFooter.displayName = 'CardFooter'
 
@@ -296,15 +264,7 @@ export interface CardImageProps extends React.ImgHTMLAttributes<HTMLImageElement
   overlayGradient?: 'top' | 'bottom' | 'both'
 }
 
-export const CardImage = forwardRef<HTMLImageElement, CardImageProps>(
-  ({ 
-    className,
-    aspectRatio = 'video',
-    overlay = false,
-    overlayGradient = 'bottom',
-    alt = '',
-    ...props 
-  }, ref) => {
+export const CardImage = ({ ref, className, aspectRatio = 'video', overlay = false, overlayGradient = 'bottom', alt = '', ...props }: CardImageProps & { ref?: React.RefObject<HTMLImageElement | null> }) => {
     const aspectClasses = {
       square: 'aspect-square',
       video: 'aspect-video',
@@ -340,7 +300,6 @@ export const CardImage = forwardRef<HTMLImageElement, CardImageProps>(
       </div>
     )
   }
-)
 
 CardImage.displayName = 'CardImage'
 
@@ -351,15 +310,7 @@ export interface CardGridProps extends React.HTMLAttributes<HTMLDivElement> {
   responsive?: boolean
 }
 
-export const CardGrid = forwardRef<HTMLDivElement, CardGridProps>(
-  ({ 
-    className,
-    columns = 3,
-    gap = 'md',
-    responsive = true,
-    children,
-    ...props 
-  }, ref) => {
+export const CardGrid = ({ ref, className, columns = 3, gap = 'md', responsive = true, children, ...props }: CardGridProps & { ref?: React.RefObject<HTMLDivElement | null> }) => {
     const columnClasses = responsive
       ? {
           1: 'grid-cols-1',
@@ -400,6 +351,5 @@ export const CardGrid = forwardRef<HTMLDivElement, CardGridProps>(
       </div>
     )
   }
-)
 
 CardGrid.displayName = 'CardGrid'

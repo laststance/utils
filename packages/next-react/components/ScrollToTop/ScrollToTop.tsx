@@ -1,15 +1,41 @@
 'use client'
 
 import { MoveUp } from 'lucide-react'
-import React, { useState, useEffect, type ComponentProps } from 'react'
+import React, { useSyncExternalStore, useCallback, type ComponentProps } from 'react'
 
-import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 /**
  * Scroll threshold in pixels. The button will be displayed when the page is scrolled down this amount or more.
  */
 const SCROLL_THRESHOLD = 200
+
+/**
+ * Subscribe to window scroll events.
+ * @param callback - The callback to invoke when scroll position changes.
+ * @returns A cleanup function to unsubscribe.
+ */
+function subscribeToScroll(callback: () => void): () => void {
+  window.addEventListener('scroll', callback)
+  return () => window.removeEventListener('scroll', callback)
+}
+
+/**
+ * Get the current scroll visibility state.
+ * @returns true if scroll position exceeds threshold, false otherwise.
+ */
+function getScrollVisibility(): boolean {
+  return window.scrollY > SCROLL_THRESHOLD
+}
+
+/**
+ * SSR fallback for scroll visibility.
+ * @returns false since there is no scroll on the server.
+ */
+function getServerSnapshot(): boolean {
+  return false
+}
 
 type Props = {
   className?: string
@@ -37,31 +63,17 @@ export const ScrollToTop: React.FC<Props> = ({
   size = 'small',
   ...props
 }) => {
-  const [visible, setVisible] = useState(false)
+  const visible = useSyncExternalStore(
+    subscribeToScroll,
+    getScrollVisibility,
+    getServerSnapshot
+  )
 
-  const toggleVisibility = () => {
-    if (window.scrollY > SCROLL_THRESHOLD) {
-      setVisible(true)
-    } else {
-      setVisible(false)
-    }
-  }
-
-  const scrollToTop = () => {
+  const scrollToTop = useCallback(() => {
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     })
-  }
-
-  useEffect(() => {
-    // Check initial scroll position
-    toggleVisibility()
-    
-    window.addEventListener('scroll', toggleVisibility)
-    return () => {
-      window.removeEventListener('scroll', toggleVisibility)
-    }
   }, [])
 
   // Map size prop to Button component size
