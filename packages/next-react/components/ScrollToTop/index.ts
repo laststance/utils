@@ -1,1 +1,1 @@
-export { ScrollToTop } from './ScrollToTop.js'
+export { ScrollToTop } from './ScrollToTop'

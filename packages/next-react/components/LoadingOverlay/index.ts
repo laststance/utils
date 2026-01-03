@@ -1,1 +1,1 @@
-export * from './LoadingOverlay.js'
+export * from './LoadingOverlay'
