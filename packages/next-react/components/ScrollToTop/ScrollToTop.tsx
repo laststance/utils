@@ -6,6 +6,11 @@ import React, { useState, useEffect, type ComponentProps } from 'react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 
+/**
+ * Scroll threshold in pixels. The button will be displayed when the page is scrolled down this amount or more.
+ */
+const SCROLL_THRESHOLD = 200
+
 type Props = {
   className?: string
   circle?: boolean
@@ -35,7 +40,7 @@ export const ScrollToTop: React.FC<Props> = ({
   const [visible, setVisible] = useState(false)
 
   const toggleVisibility = () => {
-    if (window.scrollY > 200) {
+    if (window.scrollY > SCROLL_THRESHOLD) {
       setVisible(true)
     } else {
       setVisible(false)
@@ -50,6 +55,9 @@ export const ScrollToTop: React.FC<Props> = ({
   }
 
   useEffect(() => {
+    // Check initial scroll position
+    toggleVisibility()
+    
     window.addEventListener('scroll', toggleVisibility)
     return () => {
       window.removeEventListener('scroll', toggleVisibility)
@@ -86,10 +94,10 @@ export const ScrollToTop: React.FC<Props> = ({
     <Button
       type="button"
       onClick={scrollToTop}
-      size={circle ? undefined : buttonSize}
+      size={circle ? 'icon' : buttonSize}
       className={cn(
         'fixed bottom-5 right-5',
-        circle && 'rounded-full p-0',
+        circle && 'rounded-full p-0 flex items-center justify-center',
         !circle && 'p-4',
         visible ? 'block' : 'hidden',
         className,
@@ -103,7 +111,9 @@ export const ScrollToTop: React.FC<Props> = ({
       }}
       {...props}
     >
-      <MoveUp size={iconSize} />
+      <span className="flex items-center justify-center w-full h-full">
+        <MoveUp size={iconSize} />
+      </span>
     </Button>
   )
 }
