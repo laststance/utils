@@ -1,20 +1,12 @@
-import tseslint from 'typescript-eslint'
+import { defineConfig } from 'eslint/config'
 import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
+import tsPreFixer from 'eslint-config-ts-prefixer'
 
-export default tseslint.config(
+export default defineConfig([
+  ...tsPreFixer,
   // Use typescript-eslint recommended config directly
-  ...tseslint.configs.recommended,
   // Add react-hooks plugin for hook rules
-  {
-    plugins: {
-      'react-hooks': reactHooks,
-    },
-    rules: {
-      'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'warn',
-    },
-  },
   {
     ignores: [
       '*.d.ts',
@@ -33,15 +25,13 @@ export default tseslint.config(
     ],
   },
   {
-    files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
+    // Apply React rules to React components (TSX/JSX) and custom hooks in .ts files.
+    files: ['**/*.tsx', '**/*.jsx', '**/use*.ts'],
     languageOptions: {
       globals: {
-        ...globals.browser,
-        ...globals.node,
         React: 'readonly',
       },
       parserOptions: {
-        projectService: true,
         tsconfigRootDir: import.meta.dirname,
         ecmaFeatures: {
           jsx: true,
@@ -53,15 +43,28 @@ export default tseslint.config(
         version: 'detect',
       },
     },
+    plugins: {
+      'react-hooks': reactHooks,
+    },
     rules: {
-      // Override rules from base configs
-      '@typescript-eslint/no-unused-vars': 'off',
-      '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-require-imports': 'off',
-      '@typescript-eslint/no-non-null-asserted-optional-chain': 'off',
-      'react-hooks/exhaustive-deps': 'off',
-      'react-hooks/rules-of-hooks': 'off',
-      'no-console': 'off',
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'error',
+      // React Compiler rules
+      'react-hooks/config': 'error',
+      'react-hooks/error-boundaries': 'error',
+      'react-hooks/component-hook-factories': 'error',
+      'react-hooks/gating': 'error',
+      'react-hooks/globals': 'error',
+      'react-hooks/immutability': 'error',
+      'react-hooks/preserve-manual-memoization': 'error',
+      'react-hooks/purity': 'error',
+      'react-hooks/refs': 'error',
+      'react-hooks/set-state-in-effect': 'error',
+      'react-hooks/set-state-in-render': 'error',
+      'react-hooks/static-components': 'error',
+      'react-hooks/unsupported-syntax': 'error',
+      'react-hooks/use-memo': 'error',
+      'react-hooks/incompatible-library': 'error',
     },
   },
   {
@@ -98,4 +101,4 @@ export default tseslint.config(
       '@typescript-eslint/no-unused-vars': 'off',
     },
   },
-)
+])
