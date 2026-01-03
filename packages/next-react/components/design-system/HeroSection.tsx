@@ -330,7 +330,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <span className={cn(
                 typography.largeTitle.className,
                 'font-bold bg-clip-text text-transparent',
-                'bg-gradient-to-r from-foreground to-foreground/70'
+                'bg-linear-to-r from-foreground to-foreground/70'
               )}>
                 {title}
               </span>
