@@ -10,7 +10,7 @@ type Props = {
   className?: string
   circle?: boolean
   size?: 'normal' | 'large' | 'small'
-} & ComponentProps<typeof Button>
+} & Omit<ComponentProps<typeof Button>, 'size'>
 
 /**
 Although it doesn't work well on Storybook, it will be displayed at the bottom right of the screen regardless of where it's placed on the page.<br/>
@@ -56,20 +56,54 @@ export const ScrollToTop: React.FC<Props> = ({
     }
   }, [])
 
+  // Map size prop to Button component size
+  const buttonSizeMap: Record<'small' | 'normal' | 'large', 'sm' | 'default' | 'lg'> = {
+    small: 'sm',
+    normal: 'default',
+    large: 'lg',
+  }
+
+  // Map size prop to icon size
+  const iconSizeMap: Record<'small' | 'normal' | 'large', number> = {
+    small: 16,
+    normal: 20,
+    large: 24,
+  }
+
+  // Map size prop to button size when circle is true (icon size + padding)
+  const circleButtonSizeMap: Record<'small' | 'normal' | 'large', number> = {
+    small: 32, // icon 16px + padding 16px
+    normal: 40, // icon 20px + padding 20px
+    large: 48, // icon 24px + padding 24px
+  }
+
+  const sizeKey: 'small' | 'normal' | 'large' = size ?? 'small'
+  const buttonSize = buttonSizeMap[sizeKey]
+  const iconSize = iconSizeMap[sizeKey]
+  const circleButtonSize = circleButtonSizeMap[sizeKey]
+
   return (
     <Button
       type="button"
       onClick={scrollToTop}
+      size={circle ? undefined : buttonSize}
       className={cn(
-        'p-4 fixed bottom-5 right-5',
+        'fixed bottom-5 right-5',
+        circle && 'rounded-full p-0',
+        !circle && 'p-4',
         visible ? 'block' : 'hidden',
         className,
       )}
-      style={{ zIndex: 99 }}
+      style={{
+        zIndex: 99,
+        ...(circle && {
+          width: `${circleButtonSize}px`,
+          height: `${circleButtonSize}px`,
+        }),
+      }}
       {...props}
-      asChild
     >
-      <MoveUp size={16} />
+      <MoveUp size={iconSize} />
     </Button>
   )
 }
