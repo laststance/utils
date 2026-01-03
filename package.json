@@ -15,7 +15,9 @@
     "lint:fix": "turbo lint:fix",
     "typecheck": "turbo typecheck",
     "prettier": "prettier --write --ignore-unknown .",
-    "clean": "rimraf node_modules pnpm-lock.yaml",
+    "clean": "rimraf node_modules .turbo pnpm-lock.yaml packages/*/node_modules packages/*/.turbo",
+    "clean:build": "rimraf packages/*/.next packages/*/dist packages/*/storybook-static packages/*/coverage",
+    "clean:all": "pnpm clean && pnpm clean:build",
     "validate": "turbo validate",
     "storybook": "turbo storybook",
     "build-storybook": "turbo build-storybook",
@@ -27,6 +29,7 @@
     "@testing-library/jest-dom": "catalog:",
     "prettier": "^3.7.4",
     "rimraf": "^6.1.2",
-    "turbo": "^2.7.2"
+    "turbo": "^2.7.2",
+    "vitest": "catalog:"
   }
 }
