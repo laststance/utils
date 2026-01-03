@@ -48,13 +48,21 @@ export default defineConfig([
     },
     plugins: {
       'react-hooks': reactHooks,
-      'react-x': eslintReact
+      ...eslintReact.configs.all.plugins,
     },
     rules: {
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'error',
-      'react-x/no-forward-ref': 'error',
-      'react-x/no-context-provider':'error',
+      // eslint-plugin-react-x
+      '@eslint-react/no-forward-ref': 'error',
+      '@eslint-react/no-context-provider': 'error',
+      '@eslint-react/no-missing-key': 'error',
+      '@eslint-react/no-duplicate-key': 'error',
+      '@eslint-react/no-missing-component-display-name': 'error',
+      '@eslint-react/no-nested-component-definitions': 'error',
+      // eslint-plugin-react-x
+      '@eslint-react/dom/no-missing-button-type': 'error',
+      // 'react-x/dom/no-missing-button-type': 'error', // TODO: Check correct rule path
       // React Compiler rules
       'react-hooks/config': 'error',
       'react-hooks/error-boundaries': 'error',
@@ -106,6 +114,20 @@ export default defineConfig([
       'no-constant-binary-expression': 'off',
       'no-undef': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
+    },
+  },
+  {
+    // shadcn/ui blocks and design-system components - relax strict rules
+    files: [
+      'components/*.tsx',
+      'components/ui/*.tsx',
+      'components/blocks/**/*.tsx',
+      'components/design-system/**/*.tsx',
+    ],
+    rules: {
+      '@eslint-react/dom/no-missing-button-type': 'warn',
+      '@eslint-react/no-nested-component-definitions': 'warn',
+      'react-hooks/incompatible-library': 'warn',
     },
   },
 ])

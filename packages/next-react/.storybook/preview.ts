@@ -29,8 +29,8 @@ const preview: Preview = {
         dark: {
           name: 'dark',
           value: '#0a0a0a',
-        }
-      }
+        },
+      },
     },
 
     a11y: {
@@ -45,9 +45,9 @@ const preview: Preview = {
 
   initialGlobals: {
     backgrounds: {
-      value: 'light'
-    }
-  }
+      value: 'light',
+    },
+  },
 }
 
 export default preview

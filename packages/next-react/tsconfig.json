@@ -3,6 +3,8 @@
   "compilerOptions": {
     // Next.js/React-specific overrides
     "types": ["vitest/globals"],
+    // Relax for shadcn/ui generated blocks
+    "exactOptionalPropertyTypes": false,
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
     "jsx": "react-jsx",

@@ -14,7 +14,7 @@
     "lint": "turbo lint",
     "lint:fix": "turbo lint:fix",
     "typecheck": "turbo typecheck",
-    "prettier": "prettier --write --ignore-unknown .",
+    "prettier": "prettier --ignore-unknown --write .",
     "clean": "rimraf node_modules .turbo pnpm-lock.yaml packages/*/node_modules packages/*/.turbo",
     "clean:build": "rimraf packages/*/.next packages/*/dist packages/*/storybook-static packages/*/coverage",
     "clean:all": "pnpm clean && pnpm clean:build",
@@ -23,13 +23,19 @@
     "build-storybook": "turbo build-storybook",
     "dev": "turbo dev",
     "sherif": "pnpm dlx sherif -r unsync-similar-dependencies",
-    "sherif:fix": "pnpm run sherif --fix -r unsync-similar-dependencies"
+    "sherif:fix": "pnpm run sherif --fix -r unsync-similar-dependencies",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "catalog:",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "prettier": "^3.7.4",
     "rimraf": "^6.1.2",
     "turbo": "^2.7.2",
     "vitest": "catalog:"
+  },
+  "lint-staged": {
+    "*": "prettier --ignore-unknown --write"
   }
 }

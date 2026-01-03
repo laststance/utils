@@ -2,23 +2,18 @@ packages:
   - packages/*
 
 catalog:
-  # Runtime dependencies
-  zod: ^4.3.4
-
-  # Testing tools
-  vitest: ^4.0.16
-  playwright: ^1.57.0
-  happy-dom: ^20.0.11
-  "@vitest/browser": ^4.0.16
-  "@testing-library/user-event": ^14.6.1
-  "@testing-library/jest-dom": ^6.9.1
-
-  # Linting & TypeScript
+  '@testing-library/jest-dom': ^6.9.1
+  '@testing-library/user-event': ^14.6.1
+  '@vitest/browser': ^4.0.16
   eslint: ^9.39.2
-  typescript: ^5.9.3
-  typescript-eslint: ^8.51.0
   eslint-config-ts-prefixer: ^4.1.1
   globals: ^14.0.0
+  happy-dom: ^20.0.11
+  playwright: ^1.57.0
+  typescript: ^5.9.3
+  typescript-eslint: ^8.51.0
+  vitest: ^4.0.16
+  zod: 4.3.4
 
 onlyBuiltDependencies:
   - '@tailwindcss/oxide'
