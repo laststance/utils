@@ -9,5 +9,7 @@
   },
   "vitest.disableWorkspaceWarning": true,
   "vitest.workspaceConfig": "./vitest.workspace.ts",
-  "vitest.rootConfig": "./vitest.workspace.ts"
+  "vitest.rootConfig": "./vitest.workspace.ts",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }
