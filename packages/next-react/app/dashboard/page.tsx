@@ -1,11 +1,6 @@
 import { AppSidebar } from '@/components/blocks/app-sidebar'
 import { SiteHeader } from '@/components/blocks/site-header'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
-
-export const iframeHeight = '800px'
-
-export const description = 'A sidebar with a header and a search form.'
-
 export default function Page() {
   return (
     <div className="[--header-height:calc(--spacing(14))]">
@@ -20,7 +15,7 @@ export default function Page() {
                 <div className="bg-muted/50 aspect-video rounded-xl" />
                 <div className="bg-muted/50 aspect-video rounded-xl" />
               </div>
-              <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
+              <div className="bg-muted/50 min-h-screen flex-1 rounded-xl md:min-h-min" />
             </div>
           </SidebarInset>
         </div>
