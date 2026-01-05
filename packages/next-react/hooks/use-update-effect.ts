@@ -1,11 +1,16 @@
-import { useRef, useEffect } from 'react'
+import {
+  useRef,
+  useEffect,
+  type EffectCallback,
+  type DependencyList,
+} from 'react'
 /**
  * Simulate componentDidUpdate() method of Class Component
  * https://reactjs.org/docs/react-component.html#componentdidupdate
  */
 const useUpdateEffect = (
-  effect: Function,
-  deps: any[] | undefined = undefined,
+  effect: EffectCallback,
+  deps: DependencyList | undefined = undefined,
 ): void => {
   const mounted = useRef<boolean>(false)
   useEffect(() => {
