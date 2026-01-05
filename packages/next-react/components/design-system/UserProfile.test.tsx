@@ -3,7 +3,11 @@ import userEvent from '@testing-library/user-event'
 import * as React from 'react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
-import { UserProfile, UserProfileLoading, UserProfileError } from './UserProfile'
+import {
+  UserProfile,
+  UserProfileLoading,
+  UserProfileError,
+} from './UserProfile'
 
 interface User {
   id: number
@@ -120,22 +124,29 @@ describe('UserProfile', () => {
       expect(screen.getByText('An error occurred')).toBeInTheDocument()
     })
 
-    it('provides retry functionality when onRetry is provided', async () => {
-      const onRetry = vi.fn()
-      render(<UserProfileError error={new Error('Server error')} onRetry={onRetry} />)
+    it('provides retry functionality when onRetryAction is provided', async () => {
+      const onRetryAction = vi.fn()
+      render(
+        <UserProfileError
+          error={new Error('Server error')}
+          onRetryAction={onRetryAction}
+        />,
+      )
 
       const retryButton = screen.getByRole('button', { name: /retry/i })
       expect(retryButton).toBeInTheDocument()
 
       await userEvent.setup().click(retryButton)
 
-      expect(onRetry).toHaveBeenCalledOnce()
+      expect(onRetryAction).toHaveBeenCalledOnce()
     })
 
-    it('does not show retry button when onRetry is not provided', () => {
+    it('does not show retry button when onRetryAction is not provided', () => {
       render(<UserProfileError error={new Error('Server error')} />)
 
-      expect(screen.queryByRole('button', { name: /retry/i })).not.toBeInTheDocument()
+      expect(
+        screen.queryByRole('button', { name: /retry/i }),
+      ).not.toBeInTheDocument()
     })
   })
 

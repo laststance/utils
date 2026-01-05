@@ -102,10 +102,10 @@ export function UserProfileLoading() {
  */
 export function UserProfileError({
   error,
-  onRetry,
+  onRetryAction,
 }: {
   error?: Error
-  onRetry?: () => void
+  onRetryAction?: () => void
 }) {
   return (
     <div
@@ -116,9 +116,9 @@ export function UserProfileError({
       <p className="text-red-600 mt-1">
         {error?.message ?? 'An error occurred'}
       </p>
-      {onRetry && (
+      {onRetryAction && (
         <button
-          onClick={onRetry}
+          onClick={onRetryAction}
           type="button"
           className="mt-2 px-3 py-1 text-sm border border-gray-300 rounded-md hover:bg-gray-50"
         >
