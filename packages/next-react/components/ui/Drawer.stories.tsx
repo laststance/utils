@@ -44,7 +44,10 @@ export const Default: Story = {
   render: (args) => (
     <Drawer {...args}>
       <DrawerTrigger asChild>
-        <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+        <button
+          type="button"
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
           Open Drawer
         </button>
       </DrawerTrigger>
@@ -57,11 +60,17 @@ export const Default: Story = {
           </DrawerDescription>
         </DrawerHeader>
         <DrawerFooter>
-          <button className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+          <button
+            type="button"
+            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+          >
             Submit
           </button>
           <DrawerClose asChild>
-            <button className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+            <button
+              type="button"
+              className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+            >
               Cancel
             </button>
           </DrawerClose>
@@ -75,7 +84,10 @@ export const Simple: Story = {
   render: (args) => (
     <Drawer {...args}>
       <DrawerTrigger asChild>
-        <button className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+        <button
+          type="button"
+          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+        >
           Open Simple Drawer
         </button>
       </DrawerTrigger>
@@ -87,17 +99,27 @@ export const Simple: Story = {
           </DrawerHeader>
           <div className="p-4 pb-0">
             <div className="flex items-center justify-center space-x-2">
-              <button className="px-3 py-1 bg-gray-200 rounded">-</button>
+              <button type="button" className="px-3 py-1 bg-gray-200 rounded">
+                -
+              </button>
               <div className="text-2xl font-bold">350</div>
-              <button className="px-3 py-1 bg-gray-200 rounded">+</button>
+              <button type="button" className="px-3 py-1 bg-gray-200 rounded">
+                +
+              </button>
             </div>
           </div>
           <DrawerFooter>
-            <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+            <button
+              type="button"
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
               Submit
             </button>
             <DrawerClose asChild>
-              <button className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+              <button
+                type="button"
+                className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+              >
                 Cancel
               </button>
             </DrawerClose>

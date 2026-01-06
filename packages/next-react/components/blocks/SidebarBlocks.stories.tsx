@@ -4,8 +4,8 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 
 import { AppSidebar } from '@/components/blocks/app-sidebar'
 import { SidebarLeft } from '@/components/blocks/sidebar-left'
-import { SidebarRight } from '@/components/blocks/sidebar-right'
 import { SidebarOptInForm } from '@/components/blocks/sidebar-opt-in-form'
+import { SidebarRight } from '@/components/blocks/sidebar-right'
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar'
 
 const meta: Meta = {

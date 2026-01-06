@@ -3,8 +3,8 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 
 import { LoginForm } from '@/components/blocks/login-form'
-import { SignupForm } from '@/components/blocks/signup-form'
 import { OTPForm } from '@/components/blocks/otp-form'
+import { SignupForm } from '@/components/blocks/signup-form'
 
 const meta = {
   title: 'Blocks/Authentication',

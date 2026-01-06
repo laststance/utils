@@ -49,9 +49,12 @@ export const TabView: React.FC<TabViewProps> = ({
 }) => {
   const selectedTheme = themes[theme]
   // Internal state only used when uncontrolled
-  const [internalActiveTab, setInternalActiveTab] = useState(defaultTab || tabs[0]?.id)
+  const [internalActiveTab, setInternalActiveTab] = useState(
+    defaultTab || tabs[0]?.id,
+  )
   // Track active tab element for indicator positioning
-  const [activeTabElement, setActiveTabElement] = useState<HTMLButtonElement | null>(null)
+  const [activeTabElement, setActiveTabElement] =
+    useState<HTMLButtonElement | null>(null)
   const tabRefs = useRef<Map<string, HTMLButtonElement>>(new Map())
 
   // Controlled/uncontrolled pattern: use controlled value when provided
@@ -62,25 +65,29 @@ export const TabView: React.FC<TabViewProps> = ({
     if (variant !== 'underline' || !animated || !activeTabElement) {
       return {}
     }
-    const { offsetLeft, offsetWidth, offsetTop, offsetHeight } = activeTabElement
+    const { offsetLeft, offsetWidth, offsetTop, offsetHeight } =
+      activeTabElement
     return orientation === 'horizontal'
       ? { left: offsetLeft, width: offsetWidth }
       : { top: offsetTop, height: offsetHeight }
   }, [activeTabElement, variant, animated, orientation])
 
   // Ref callback to track active tab element
-  const createTabRef = useCallback((tabId: string) => (el: HTMLButtonElement | null) => {
-    if (el) {
-      tabRefs.current.set(tabId, el)
-      // Update active tab element when this is the active tab
-      if (tabId === activeTab) {
-        setActiveTabElement(el)
+  const createTabRef = useCallback(
+    (tabId: string) => (el: HTMLButtonElement | null) => {
+      if (el) {
+        tabRefs.current.set(tabId, el)
+        // Update active tab element when this is the active tab
+        if (tabId === activeTab) {
+          setActiveTabElement(el)
+        }
       }
-    }
-  }, [activeTab])
+    },
+    [activeTab],
+  )
 
   const handleTabClick = (tabId: string) => {
-    const tab = tabs.find(t => t.id === tabId)
+    const tab = tabs.find((t) => t.id === tabId)
     if (tab?.disabled) return
 
     // Update internal state (for uncontrolled mode)
@@ -90,13 +97,13 @@ export const TabView: React.FC<TabViewProps> = ({
     if (el) setActiveTabElement(el)
     onTabChange?.(tabId)
   }
-  
+
   const sizeClasses = {
     sm: 'px-3 py-1.5 text-sm',
     md: 'px-4 py-2 text-base',
     lg: 'px-5 py-3 text-lg',
   }
-  
+
   const variantClasses = {
     default: {
       tabs: 'bg-foreground/5 p-1 rounded-lg',
@@ -124,15 +131,17 @@ export const TabView: React.FC<TabViewProps> = ({
       activeTab: cn('bg-white/10 backdrop-blur-md', selectedTheme?.blur),
     },
   }
-  
-  const activeTabContent = tabs.find(tab => tab.id === activeTab)?.content
-  
+
+  const activeTabContent = tabs.find((tab) => tab.id === activeTab)?.content
+
   return (
-    <div className={cn(
-      'w-full',
-      orientation === 'vertical' && 'flex gap-4',
-      className
-    )}>
+    <div
+      className={cn(
+        'w-full',
+        orientation === 'vertical' && 'flex gap-4',
+        className,
+      )}
+    >
       {/* Tab buttons */}
       <div
         className={cn(
@@ -140,7 +149,7 @@ export const TabView: React.FC<TabViewProps> = ({
           orientation === 'vertical' ? 'flex-col' : 'flex-row',
           fullWidth && 'w-full',
           variantClasses[variant].tabs,
-          tabsClassName
+          tabsClassName,
         )}
       >
         {/* Animated indicator for underline variant */}
@@ -148,17 +157,18 @@ export const TabView: React.FC<TabViewProps> = ({
           <div
             className={cn(
               'absolute bg-primary transition-all duration-200',
-              orientation === 'horizontal' ? 'bottom-0 h-0.5' : 'right-0 w-0.5'
+              orientation === 'horizontal' ? 'bottom-0 h-0.5' : 'right-0 w-0.5',
             )}
             style={indicatorStyle}
           />
         )}
-        
-        {tabs.map(tab => {
+
+        {tabs.map((tab) => {
           const isActive = tab.id === activeTab
-          
+
           return (
             <button
+              type="button"
               key={tab.id}
               ref={createTabRef(tab.id)}
               onClick={() => handleTabClick(tab.id)}
@@ -170,16 +180,18 @@ export const TabView: React.FC<TabViewProps> = ({
                 sizeClasses[size],
                 variantClasses[variant].tab,
                 isActive && variantClasses[variant].activeTab,
-                !isActive && 'hover:bg-foreground/5'
+                !isActive && 'hover:bg-foreground/5',
               )}
             >
               {tab.icon}
               {tab.label}
               {tab.badge && (
-                <span className={cn(
-                  'px-1.5 py-0.5 text-xs rounded-full',
-                  'bg-primary/20 text-primary'
-                )}>
+                <span
+                  className={cn(
+                    'px-1.5 py-0.5 text-xs rounded-full',
+                    'bg-primary/20 text-primary',
+                  )}
+                >
                   {tab.badge}
                 </span>
               )}
@@ -187,16 +199,22 @@ export const TabView: React.FC<TabViewProps> = ({
           )
         })}
       </div>
-      
+
       {/* Tab content */}
-      <div className={cn(
-        'flex-1',
-        variant === 'enclosed' && 'border border-t-0 border-border rounded-b-lg p-4',
-        animated && 'transition-opacity duration-200',
-        contentClassName
-      )}>
+      <div
+        className={cn(
+          'flex-1',
+          variant === 'enclosed' &&
+            'border border-t-0 border-border rounded-b-lg p-4',
+          animated && 'transition-opacity duration-200',
+          contentClassName,
+        )}
+      >
         {animated ? (
-          <div key={activeTab} className="animate-in fade-in slide-in-from-bottom-2 duration-200">
+          <div
+            key={activeTab}
+            className="animate-in fade-in slide-in-from-bottom-2 duration-200"
+          >
             {activeTabContent}
           </div>
         ) : (

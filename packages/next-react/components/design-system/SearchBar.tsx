@@ -1,13 +1,13 @@
 'use client'
 
-import { 
-  Search, 
-  X, 
+import {
+  Search,
+  X,
   Filter,
   Clock,
   TrendingUp,
   Loader2,
-  ArrowRight
+  ArrowRight,
 } from 'lucide-react'
 import React, { useState, useRef, useEffect, useMemo } from 'react'
 
@@ -43,7 +43,7 @@ export interface SearchBarProps {
   onChange?: (value: string) => void
   onSearch?: (query: string, filters?: Record<string, any>) => void
   onClear?: () => void
-  
+
   // Autocomplete
   suggestions?: SearchSuggestion[]
   recentSearches?: string[]
@@ -51,19 +51,19 @@ export interface SearchBarProps {
   onSuggestionSelect?: (suggestion: SearchSuggestion) => void
   showAutocomplete?: boolean
   autocompleteDelay?: number
-  
+
   // Filters
   filters?: SearchFilter[]
   onFilterChange?: (filterId: string, value: any) => void
   filterPosition?: 'dropdown' | 'inline' | 'sidebar'
-  
+
   // Features
   voice?: boolean
   onVoiceSearch?: () => void
   clearable?: boolean
   loading?: boolean
   autoFocus?: boolean
-  
+
   // Appearance
   theme?: keyof typeof themes
   variant?: 'default' | 'glass' | 'minimal' | 'bold'
@@ -105,15 +105,17 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   const [, setIsFocused] = useState(false)
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [showFilterDropdown, setShowFilterDropdown] = useState(false)
-  const [selectedFilters, setSelectedFilters] = useState<Record<string, any>>({})
+  const [selectedFilters, setSelectedFilters] = useState<Record<string, any>>(
+    {},
+  )
   const [highlightedIndex, setHighlightedIndex] = useState(-1)
-  
+
   const inputRef = useRef<HTMLInputElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const autocompleteTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-  
+
   const value = controlledValue !== undefined ? controlledValue : internalValue
-  
+
   // Size configurations
   const sizeConfig = {
     sm: {
@@ -135,71 +137,75 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       height: 'h-12',
     },
   }
-  
+
   const variantClasses = {
     default: cn(
       'bg-background border border-border',
-      'focus-within:border-primary'
+      'focus-within:border-primary',
     ),
     glass: cn(
       selectedTheme?.card,
       selectedTheme?.blur,
       'border border-white/10',
-      'focus-within:border-white/20'
+      'focus-within:border-white/20',
     ),
     minimal: cn(
       'bg-transparent border-b border-border',
-      'focus-within:border-primary'
+      'focus-within:border-primary',
     ),
     bold: cn(
       'bg-background border-2 border-border',
-      'focus-within:border-primary'
+      'focus-within:border-primary',
     ),
   }
-  
+
   // Combine all suggestions
   const allSuggestions = useMemo(() => {
     const combined: SearchSuggestion[] = []
-    
+
     // Add recent searches
     if (recentSearches.length > 0) {
-      combined.push(...recentSearches.slice(0, 3).map(text => ({
-        id: `recent-${text}`,
-        text,
-        type: 'recent' as const,
-        icon: <Clock size={16} />,
-      })))
-    }
-    
-    // Add trending searches
-    if (trendingSearches.length > 0) {
-      combined.push(...trendingSearches.slice(0, 3).map(text => ({
-        id: `trending-${text}`,
-        text,
-        type: 'trending' as const,
-        icon: <TrendingUp size={16} />,
-      })))
-    }
-    
-    // Add custom suggestions
-    combined.push(...suggestions)
-    
-    // Filter by current value
-    if (value) {
-      return combined.filter(s => 
-        s.text.toLowerCase().includes(value.toLowerCase())
+      combined.push(
+        ...recentSearches.slice(0, 3).map((text) => ({
+          id: `recent-${text}`,
+          text,
+          type: 'recent' as const,
+          icon: <Clock size={16} />,
+        })),
       )
     }
-    
+
+    // Add trending searches
+    if (trendingSearches.length > 0) {
+      combined.push(
+        ...trendingSearches.slice(0, 3).map((text) => ({
+          id: `trending-${text}`,
+          text,
+          type: 'trending' as const,
+          icon: <TrendingUp size={16} />,
+        })),
+      )
+    }
+
+    // Add custom suggestions
+    combined.push(...suggestions)
+
+    // Filter by current value
+    if (value) {
+      return combined.filter((s) =>
+        s.text.toLowerCase().includes(value.toLowerCase()),
+      )
+    }
+
     return combined
   }, [suggestions, recentSearches, trendingSearches, value])
-  
+
   // Handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value
     setInternalValue(newValue)
     onChange?.(newValue)
-    
+
     // Show suggestions after delay
     if (showAutocomplete) {
       if (autocompleteTimeoutRef.current) {
@@ -210,7 +216,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       }, autocompleteDelay)
     }
   }
-  
+
   // Handle search submit
   const handleSearch = () => {
     if (value.trim()) {
@@ -218,7 +224,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       setShowSuggestions(false)
     }
   }
-  
+
   // Handle suggestion selection
   const handleSuggestionClick = (suggestion: SearchSuggestion) => {
     if (suggestion.action) {
@@ -232,7 +238,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     setShowSuggestions(false)
     inputRef.current?.focus()
   }
-  
+
   // Handle keyboard navigation
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!showSuggestions) {
@@ -241,18 +247,18 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       }
       return
     }
-    
+
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault()
-        setHighlightedIndex(prev => 
-          prev < allSuggestions.length - 1 ? prev + 1 : 0
+        setHighlightedIndex((prev) =>
+          prev < allSuggestions.length - 1 ? prev + 1 : 0,
         )
         break
       case 'ArrowUp':
         e.preventDefault()
-        setHighlightedIndex(prev => 
-          prev > 0 ? prev - 1 : allSuggestions.length - 1
+        setHighlightedIndex((prev) =>
+          prev > 0 ? prev - 1 : allSuggestions.length - 1,
         )
         break
       case 'Enter':
@@ -272,7 +278,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         break
     }
   }
-  
+
   // Handle clear
   const handleClear = () => {
     setInternalValue('')
@@ -280,62 +286,72 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     onClear?.()
     inputRef.current?.focus()
   }
-  
+
   // Handle filter change
   const handleFilterChange = (filterId: string, value: any) => {
     const newFilters = { ...selectedFilters, [filterId]: value }
     setSelectedFilters(newFilters)
     onFilterChange?.(filterId, value)
   }
-  
+
   // Click outside handler
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
         setShowSuggestions(false)
         setShowFilterDropdown(false)
       }
     }
-    
+
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
-  
+
   // Filter count
-  const activeFilterCount = Object.values(selectedFilters).filter(v => v).length
-  
+  const activeFilterCount = Object.values(selectedFilters).filter(
+    (v) => v,
+  ).length
+
   return (
-    <div 
+    <div
       ref={containerRef}
-      className={cn(
-        'relative',
-        fullWidth ? 'w-full' : 'w-96',
-        className
-      )}
+      className={cn('relative', fullWidth ? 'w-full' : 'w-96', className)}
     >
       {/* Main search input */}
-      <div className={cn(
-        'relative flex items-center',
-        radius.lg,
-        variantClasses[variant],
-        variant !== 'minimal' && shadows.sm,
-        'transition-all duration-200'
-      )}>
+      <div
+        className={cn(
+          'relative flex items-center',
+          radius.lg,
+          variantClasses[variant],
+          variant !== 'minimal' && shadows.sm,
+          'transition-all duration-200',
+        )}
+      >
         {/* Search icon */}
-        <div className={cn(
-          'flex-shrink-0',
-          variant === 'minimal' ? 'ml-0' : 'ml-3'
-        )}>
+        <div
+          className={cn(
+            'flex-shrink-0',
+            variant === 'minimal' ? 'ml-0' : 'ml-3',
+          )}
+        >
           {loading ? (
-            <Loader2 
-              size={sizeConfig[size].icon} 
+            <Loader2
+              size={sizeConfig[size].icon}
               className="animate-spin text-foreground/50"
             />
           ) : (
-            icon || <Search size={sizeConfig[size].icon} className="text-foreground/50" />
+            icon || (
+              <Search
+                size={sizeConfig[size].icon}
+                className="text-foreground/50"
+              />
+            )
           )}
         </div>
-        
+
         {/* Input field */}
         <input
           ref={inputRef}
@@ -356,20 +372,21 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             'flex-1 bg-transparent outline-none',
             sizeConfig[size].padding,
             sizeConfig[size].text,
-            'placeholder:text-foreground/40'
+            'placeholder:text-foreground/40',
           )}
         />
-        
+
         {/* Right side actions */}
         <div className="flex items-center gap-2 mr-3">
           {/* Filter button */}
           {filters.length > 0 && filterPosition === 'dropdown' && (
             <button
+              type="button"
               onClick={() => setShowFilterDropdown(!showFilterDropdown)}
               className={cn(
                 'p-1.5 rounded-md',
                 'hover:bg-foreground/10 transition-colors',
-                activeFilterCount > 0 && 'text-primary'
+                activeFilterCount > 0 && 'text-primary',
               )}
             >
               <Filter size={16} />
@@ -380,14 +397,22 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               )}
             </button>
           )}
-          
+
           {/* Voice search */}
           {voice && onVoiceSearch && (
             <button
+              type="button"
               onClick={onVoiceSearch}
               className="p-1.5 rounded-md hover:bg-foreground/10 transition-colors"
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
                 <path d="M12 1a4 4 0 0 0-4 4v7a4 4 0 0 0 8 0V5a4 4 0 0 0-4-4z" />
                 <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
                 <line x1="12" y1="19" x2="12" y2="23" />
@@ -395,17 +420,18 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               </svg>
             </button>
           )}
-          
+
           {/* Clear button */}
           {clearable && value && (
             <button
+              type="button"
               onClick={handleClear}
               className="p-1.5 rounded-md hover:bg-foreground/10 transition-colors"
             >
               <X size={16} />
             </button>
           )}
-          
+
           {/* Search button */}
           <Button
             variant="ghost"
@@ -417,11 +443,11 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           </Button>
         </div>
       </div>
-      
+
       {/* Inline filters */}
       {filters.length > 0 && filterPosition === 'inline' && (
         <div className="flex flex-wrap gap-2 mt-2">
-          {filters.map(filter => (
+          {filters.map((filter) => (
             <Badge
               key={filter.id}
               variant={selectedFilters[filter.id] ? 'primary' : 'default'}
@@ -435,18 +461,20 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           ))}
         </div>
       )}
-      
+
       {/* Filter dropdown */}
       {showFilterDropdown && filterPosition === 'dropdown' && (
-        <div className={cn(
-          'absolute top-full left-0 right-0 mt-2 p-4',
-          'bg-background border border-border rounded-lg',
-          shadows.lg,
-          'z-50'
-        )}>
+        <div
+          className={cn(
+            'absolute top-full left-0 right-0 mt-2 p-4',
+            'bg-background border border-border rounded-lg',
+            shadows.lg,
+            'z-50',
+          )}
+        >
           <h4 className="text-sm font-semibold mb-3">Filters</h4>
           <div className="space-y-3">
-            {filters.map(filter => (
+            {filters.map((filter) => (
               <div key={filter.id}>
                 <label className="text-sm text-foreground/70 mb-1 block">
                   {filter.label}
@@ -454,11 +482,13 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                 {filter.type === 'select' && (
                   <select
                     value={selectedFilters[filter.id] || ''}
-                    onChange={(e) => handleFilterChange(filter.id, e.target.value)}
+                    onChange={(e) =>
+                      handleFilterChange(filter.id, e.target.value)
+                    }
                     className="w-full px-3 py-1.5 bg-foreground/5 border border-border rounded-md text-sm"
                   >
                     <option value="">All</option>
-                    {filter.options?.map(opt => (
+                    {filter.options?.map((opt) => (
                       <option key={opt.value} value={opt.value}>
                         {opt.label}
                       </option>
@@ -467,12 +497,15 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                 )}
                 {filter.type === 'toggle' && (
                   <button
-                    onClick={() => handleFilterChange(filter.id, !selectedFilters[filter.id])}
+                    type="button"
+                    onClick={() =>
+                      handleFilterChange(filter.id, !selectedFilters[filter.id])
+                    }
                     className={cn(
                       'px-3 py-1.5 rounded-md text-sm',
-                      selectedFilters[filter.id] 
-                        ? 'bg-primary text-white' 
-                        : 'bg-foreground/5 hover:bg-foreground/10'
+                      selectedFilters[filter.id]
+                        ? 'bg-primary text-white'
+                        : 'bg-foreground/5 hover:bg-foreground/10',
                     )}
                   >
                     {selectedFilters[filter.id] ? 'Enabled' : 'Disabled'}
@@ -487,7 +520,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               size="sm"
               onClick={() => {
                 setSelectedFilters({})
-                filters.forEach(f => onFilterChange?.(f.id, null))
+                filters.forEach((f) => onFilterChange?.(f.id, null))
               }}
             >
               Clear All
@@ -502,82 +535,92 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           </div>
         </div>
       )}
-      
+
       {/* Autocomplete suggestions */}
       {showSuggestions && allSuggestions.length > 0 && (
-        <div className={cn(
-          'absolute top-full left-0 right-0 mt-2',
-          'bg-background border border-border rounded-lg',
-          shadows.lg,
-          'z-50 max-h-96 overflow-auto'
-        )}>
+        <div
+          className={cn(
+            'absolute top-full left-0 right-0 mt-2',
+            'bg-background border border-border rounded-lg',
+            shadows.lg,
+            'z-50 max-h-96 overflow-auto',
+          )}
+        >
           {/* Group suggestions by category */}
-          {allSuggestions.some(s => s.type === 'recent') && (
+          {allSuggestions.some((s) => s.type === 'recent') && (
             <div>
               <div className="px-3 py-2 text-xs font-semibold text-foreground/50">
                 Recent Searches
               </div>
               {allSuggestions
-                .filter(s => s.type === 'recent')
+                .filter((s) => s.type === 'recent')
                 .map((suggestion) => (
                   <SuggestionItem
                     key={suggestion.id}
                     suggestion={suggestion}
-                    highlighted={highlightedIndex === allSuggestions.indexOf(suggestion)}
+                    highlighted={
+                      highlightedIndex === allSuggestions.indexOf(suggestion)
+                    }
                     onClick={() => handleSuggestionClick(suggestion)}
                   />
                 ))}
             </div>
           )}
-          
-          {allSuggestions.some(s => s.type === 'trending') && (
+
+          {allSuggestions.some((s) => s.type === 'trending') && (
             <div>
               <div className="px-3 py-2 text-xs font-semibold text-foreground/50">
                 Trending
               </div>
               {allSuggestions
-                .filter(s => s.type === 'trending')
+                .filter((s) => s.type === 'trending')
                 .map((suggestion) => (
                   <SuggestionItem
                     key={suggestion.id}
                     suggestion={suggestion}
-                    highlighted={highlightedIndex === allSuggestions.indexOf(suggestion)}
+                    highlighted={
+                      highlightedIndex === allSuggestions.indexOf(suggestion)
+                    }
                     onClick={() => handleSuggestionClick(suggestion)}
                   />
                 ))}
             </div>
           )}
-          
-          {allSuggestions.some(s => s.type === 'suggestion' || !s.type) && (
+
+          {allSuggestions.some((s) => s.type === 'suggestion' || !s.type) && (
             <div>
               <div className="px-3 py-2 text-xs font-semibold text-foreground/50">
                 Suggestions
               </div>
               {allSuggestions
-                .filter(s => s.type === 'suggestion' || !s.type)
+                .filter((s) => s.type === 'suggestion' || !s.type)
                 .map((suggestion) => (
                   <SuggestionItem
                     key={suggestion.id}
                     suggestion={suggestion}
-                    highlighted={highlightedIndex === allSuggestions.indexOf(suggestion)}
+                    highlighted={
+                      highlightedIndex === allSuggestions.indexOf(suggestion)
+                    }
                     onClick={() => handleSuggestionClick(suggestion)}
                   />
                 ))}
             </div>
           )}
-          
-          {allSuggestions.some(s => s.type === 'command') && (
+
+          {allSuggestions.some((s) => s.type === 'command') && (
             <div>
               <div className="px-3 py-2 text-xs font-semibold text-foreground/50 border-t">
                 Commands
               </div>
               {allSuggestions
-                .filter(s => s.type === 'command')
+                .filter((s) => s.type === 'command')
                 .map((suggestion) => (
                   <SuggestionItem
                     key={suggestion.id}
                     suggestion={suggestion}
-                    highlighted={highlightedIndex === allSuggestions.indexOf(suggestion)}
+                    highlighted={
+                      highlightedIndex === allSuggestions.indexOf(suggestion)
+                    }
                     onClick={() => handleSuggestionClick(suggestion)}
                   />
                 ))}
@@ -597,12 +640,13 @@ const SuggestionItem: React.FC<{
 }> = ({ suggestion, highlighted, onClick }) => {
   return (
     <button
+      type="button"
       onClick={onClick}
       className={cn(
         'w-full px-3 py-2 flex items-center gap-3',
         'hover:bg-foreground/5 transition-colors text-left',
         highlighted && 'bg-foreground/10',
-        suggestion.type === 'command' && 'font-mono'
+        suggestion.type === 'command' && 'font-mono',
       )}
     >
       {suggestion.icon && (

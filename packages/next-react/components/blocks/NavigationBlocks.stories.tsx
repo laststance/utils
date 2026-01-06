@@ -1,31 +1,31 @@
 'use client'
 
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+import {
+  Calendar,
+  FileText,
+  Home,
+  LifeBuoy,
+  Send,
+  Settings,
+  Users,
+  type LucideIcon,
+} from 'lucide-react'
 
 import { NavFavorites } from '@/components/blocks/nav-favorites'
 import { NavMain } from '@/components/blocks/nav-main'
 import { NavProjects } from '@/components/blocks/nav-projects'
 import { NavSecondary } from '@/components/blocks/nav-secondary'
 import { NavUser } from '@/components/blocks/nav-user'
-import { SiteHeader } from '@/components/blocks/site-header'
 import { SearchForm } from '@/components/blocks/search-form'
+import { SiteHeader } from '@/components/blocks/site-header'
 import {
-  SidebarProvider,
   Sidebar,
-  SidebarHeader,
   SidebarContent,
   SidebarFooter,
+  SidebarHeader,
+  SidebarProvider,
 } from '@/components/ui/sidebar'
-import {
-  Home,
-  Settings,
-  Users,
-  FileText,
-  Calendar,
-  LifeBuoy,
-  Send,
-  type LucideIcon,
-} from 'lucide-react'
 
 const meta = {
   title: 'Blocks/Navigation',

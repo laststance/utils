@@ -12,7 +12,8 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component: 'Comprehensive showcase of 100+ glassmorphism and gradient themes.',
+        component:
+          'Comprehensive showcase of 100+ glassmorphism and gradient themes.',
       },
     },
   },
@@ -26,14 +27,9 @@ type Story = StoryObj<typeof meta>
 const ThemeCard = ({ themeName }: { themeName: keyof typeof themes }) => {
   const theme = themes[themeName]
   if (!theme) return null
-  
+
   return (
-    <Card 
-      variant="glass" 
-      theme={themeName}
-      hoverable
-      className="h-full"
-    >
+    <Card variant="glass" theme={themeName} hoverable className="h-full">
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <Palette size={16} className="text-primary" />
@@ -47,9 +43,7 @@ const ThemeCard = ({ themeName }: { themeName: keyof typeof themes }) => {
             Primary
           </Button>
         </div>
-        <div className="text-xs text-foreground/60">
-          {theme.category}
-        </div>
+        <div className="text-xs text-foreground/60">{theme.category}</div>
       </div>
     </Card>
   )
@@ -62,7 +56,8 @@ export const GlassThemes: Story = {
       <div>
         <h2 className="text-2xl font-bold mb-4">Glass Themes</h2>
         <p className="text-foreground/70 mb-6">
-          Crystal-clear glassmorphism effects with varying opacity and blur levels.
+          Crystal-clear glassmorphism effects with varying opacity and blur
+          levels.
         </p>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
@@ -83,7 +78,8 @@ export const AuroraThemes: Story = {
       <div>
         <h2 className="text-2xl font-bold mb-4">Aurora Themes</h2>
         <p className="text-foreground/70 mb-6">
-          Vibrant, animated gradient backgrounds inspired by the aurora borealis.
+          Vibrant, animated gradient backgrounds inspired by the aurora
+          borealis.
         </p>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
@@ -142,34 +138,38 @@ export const MetallicThemes: Story = {
 // All themes grid
 export const AllThemes: Story = {
   render: () => {
-    const categorizedThemes = Object.entries(themes).reduce((acc, [key, theme]) => {
-      const category = theme.category
-      if (!acc[category]) {
-        acc[category] = []
-      }
-      const categoryArray = acc[category]
-      if (categoryArray) {
-        categoryArray.push(key as keyof typeof themes)
-      }
-      return acc
-    }, {} as Record<string, (keyof typeof themes)[]>)
-    
+    const categorizedThemes = Object.entries(themes).reduce(
+      (acc, [key, theme]) => {
+        const category = theme.category
+        if (!acc[category]) {
+          acc[category] = []
+        }
+        const categoryArray = acc[category]
+        if (categoryArray) {
+          categoryArray.push(key as keyof typeof themes)
+        }
+        return acc
+      },
+      {} as Record<string, (keyof typeof themes)[]>,
+    )
+
     return (
       <div className="space-y-12">
         <div>
           <h1 className="text-3xl font-bold mb-4">100+ Design Themes</h1>
           <p className="text-foreground/70 text-lg">
-            A comprehensive collection of carefully crafted themes for every design need.
+            A comprehensive collection of carefully crafted themes for every
+            design need.
           </p>
         </div>
-        
+
         {Object.entries(categorizedThemes).map(([category, themeKeys]) => (
           <div key={category} className="space-y-4">
             <h2 className="text-xl font-semibold capitalize">
               {category} ({themeKeys.length} themes)
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
-              {themeKeys.map(key => (
+              {themeKeys.map((key) => (
                 <ThemeCard key={key} themeName={key} />
               ))}
             </div>
@@ -190,18 +190,19 @@ export const ThemeComparison: Story = {
       'gradient-sunset',
       'glass-metallic-gold',
     ]
-    
+
     return (
       <div className="space-y-8">
         <div>
           <h2 className="text-2xl font-bold mb-4">Theme Comparison</h2>
           <p className="text-foreground/70 mb-6">
-            Compare different themes side by side to find the perfect match for your design.
+            Compare different themes side by side to find the perfect match for
+            your design.
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-          {comparisonThemes.map(themeName => {
+          {comparisonThemes.map((themeName) => {
             const theme = themes[themeName]
             if (!theme) return null
             return (
@@ -212,19 +213,29 @@ export const ThemeComparison: Story = {
                     Category: {theme.category}
                   </p>
                 </Card>
-              
-              <div className="space-y-2">
-                <Button fullWidth size="sm" variant="primary" theme={themeName}>
-                  Primary
-                </Button>
-                <Button fullWidth size="sm" variant="glass" theme={themeName}>
-                  Glass
-                </Button>
-                <Button fullWidth size="sm" variant="outline" theme={themeName}>
-                  Outline
-                </Button>
+
+                <div className="space-y-2">
+                  <Button
+                    fullWidth
+                    size="sm"
+                    variant="primary"
+                    theme={themeName}
+                  >
+                    Primary
+                  </Button>
+                  <Button fullWidth size="sm" variant="glass" theme={themeName}>
+                    Glass
+                  </Button>
+                  <Button
+                    fullWidth
+                    size="sm"
+                    variant="outline"
+                    theme={themeName}
+                  >
+                    Outline
+                  </Button>
+                </div>
               </div>
-            </div>
             )
           })}
         </div>
@@ -236,26 +247,30 @@ export const ThemeComparison: Story = {
 // Interactive theme selector
 export const InteractiveSelector: Story = {
   render: () => {
-    const [selectedTheme, setSelectedTheme] = React.useState<keyof typeof themes>('glass-clear')
-    
+    const [selectedTheme, setSelectedTheme] =
+      React.useState<keyof typeof themes>('glass-clear')
+
     return (
       <div className="space-y-8">
         <div>
-          <h2 className="text-2xl font-bold mb-4">Interactive Theme Explorer</h2>
+          <h2 className="text-2xl font-bold mb-4">
+            Interactive Theme Explorer
+          </h2>
           <p className="text-foreground/70 mb-6">
             Select a theme to see it applied to various components.
           </p>
         </div>
-        
+
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-1">
             <h3 className="font-semibold mb-4">Select Theme</h3>
             <div className="space-y-2 max-h-[600px] overflow-y-auto">
-              {Object.keys(themes).map(key => {
+              {Object.keys(themes).map((key) => {
                 const theme = themes[key as keyof typeof themes]
                 if (!theme) return null
                 return (
                   <button
+                    type="button"
                     key={key}
                     onClick={() => setSelectedTheme(key as keyof typeof themes)}
                     className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${
@@ -271,16 +286,19 @@ export const InteractiveSelector: Story = {
               })}
             </div>
           </div>
-          
+
           <div className="lg:col-span-2 space-y-6">
             <div>
-              <h3 className="font-semibold mb-4">Preview: {themes[selectedTheme]?.name || selectedTheme}</h3>
-              
+              <h3 className="font-semibold mb-4">
+                Preview: {themes[selectedTheme]?.name || selectedTheme}
+              </h3>
+
               <div className="space-y-6">
                 <Card variant="glass" theme={selectedTheme}>
                   <h4 className="font-semibold mb-2">Glass Card</h4>
                   <p className="text-sm text-foreground/70 mb-4">
-                    This card demonstrates the glass morphism effect with the selected theme.
+                    This card demonstrates the glass morphism effect with the
+                    selected theme.
                   </p>
                   <div className="flex gap-2">
                     <Button size="sm" variant="primary" theme={selectedTheme}>
@@ -294,20 +312,30 @@ export const InteractiveSelector: Story = {
                     </Button>
                   </div>
                 </Card>
-                
+
                 <Card variant="gradient" theme={selectedTheme}>
                   <h4 className="font-semibold mb-2">Gradient Card</h4>
                   <p className="text-sm text-foreground/70">
                     Gradient variant with theme colors.
                   </p>
                 </Card>
-                
+
                 <div className="flex flex-wrap gap-2">
-                  <Button variant="primary" theme={selectedTheme}>Primary Button</Button>
-                  <Button variant="secondary" theme={selectedTheme}>Secondary</Button>
-                  <Button variant="glass" theme={selectedTheme}>Glass</Button>
-                  <Button variant="gradient" theme={selectedTheme}>Gradient</Button>
-                  <Button variant="outline" theme={selectedTheme}>Outline</Button>
+                  <Button variant="primary" theme={selectedTheme}>
+                    Primary Button
+                  </Button>
+                  <Button variant="secondary" theme={selectedTheme}>
+                    Secondary
+                  </Button>
+                  <Button variant="glass" theme={selectedTheme}>
+                    Glass
+                  </Button>
+                  <Button variant="gradient" theme={selectedTheme}>
+                    Gradient
+                  </Button>
+                  <Button variant="outline" theme={selectedTheme}>
+                    Outline
+                  </Button>
                 </div>
               </div>
             </div>

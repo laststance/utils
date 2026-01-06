@@ -176,14 +176,14 @@ describe('Card Components', () => {
             <CardTitle>Card Title</CardTitle>
             <CardDescription>Card description text</CardDescription>
             <CardAction>
-              <button>Action Button</button>
+              <button type="button">Action Button</button>
             </CardAction>
           </CardHeader>
           <CardContent>
             <p>This is the main card content.</p>
           </CardContent>
           <CardFooter>
-            <button>Footer Button</button>
+            <button type="button">Footer Button</button>
           </CardFooter>
         </Card>,
       )

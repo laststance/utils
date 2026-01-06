@@ -1,6 +1,14 @@
 'use client'
 
-import { Check, ChevronDown, Search, X, Upload, Plus, Minus } from 'lucide-react'
+import {
+  Check,
+  ChevronDown,
+  Search,
+  X,
+  Upload,
+  Plus,
+  Minus,
+} from 'lucide-react'
 import React, { useState } from 'react'
 
 import { radius, shadows } from '@/lib/design-system/spacing'
@@ -46,46 +54,48 @@ export const Select: React.FC<SelectProps> = ({
   const [isOpen, setIsOpen] = useState(false)
   const [search, setSearch] = useState('')
   const selectedTheme = themes[theme]
-  
-  const filteredOptions = searchable 
-    ? options.filter(opt => 
-        opt.label.toLowerCase().includes(search.toLowerCase())
+
+  const filteredOptions = searchable
+    ? options.filter((opt) =>
+        opt.label.toLowerCase().includes(search.toLowerCase()),
       )
     : options
-  
-  const selectedOption = options.find(opt => opt.value === value)
-  
+
+  const selectedOption = options.find((opt) => opt.value === value)
+
   const variantClasses = {
     default: cn(
       'bg-background/50',
       'border border-border',
-      'hover:border-primary/50'
+      'hover:border-primary/50',
     ),
     glass: cn(
       selectedTheme?.card,
       selectedTheme?.blur,
       'border border-white/10',
-      'hover:border-primary/50'
+      'hover:border-primary/50',
     ),
     minimal: cn(
       'bg-transparent',
       'border-b border-border',
       'rounded-none',
-      'hover:border-primary'
+      'hover:border-primary',
     ),
   }
-  
+
   return (
     <div className="space-y-1.5">
       {label && (
-        <label className={cn(
-          typography.subheadline.className,
-          'text-foreground/70 block'
-        )}>
+        <label
+          className={cn(
+            typography.subheadline.className,
+            'text-foreground/70 block',
+          )}
+        >
           {label}
         </label>
       )}
-      
+
       <div className="relative">
         <button
           type="button"
@@ -98,35 +108,42 @@ export const Select: React.FC<SelectProps> = ({
             radius.lg,
             variantClasses[variant],
             error && 'border-destructive',
-            disabled && 'opacity-50 cursor-not-allowed'
+            disabled && 'opacity-50 cursor-not-allowed',
           )}
         >
-          <span className={cn(
-            selectedOption ? 'text-foreground' : 'text-foreground/40'
-          )}>
+          <span
+            className={cn(
+              selectedOption ? 'text-foreground' : 'text-foreground/40',
+            )}
+          >
             {selectedOption?.label || placeholder}
           </span>
-          <ChevronDown 
-            size={18} 
+          <ChevronDown
+            size={18}
             className={cn(
               'text-foreground/50 transition-transform',
-              isOpen && 'rotate-180'
+              isOpen && 'rotate-180',
             )}
           />
         </button>
-        
+
         {isOpen && (
-          <div className={cn(
-            'absolute z-50 w-full mt-1',
-            'bg-background border border-border',
-            'max-h-60 overflow-auto',
-            radius.lg,
-            shadows.dropdown
-          )}>
+          <div
+            className={cn(
+              'absolute z-50 w-full mt-1',
+              'bg-background border border-border',
+              'max-h-60 overflow-auto',
+              radius.lg,
+              shadows.dropdown,
+            )}
+          >
             {searchable && (
               <div className="p-2 border-b border-border">
                 <div className="relative">
-                  <Search size={16} className="absolute left-2 top-1/2 -translate-y-1/2 text-foreground/50" />
+                  <Search
+                    size={16}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 text-foreground/50"
+                  />
                   <input
                     type="text"
                     value={search}
@@ -137,14 +154,15 @@ export const Select: React.FC<SelectProps> = ({
                 </div>
               </div>
             )}
-            
+
             {filteredOptions.length === 0 ? (
               <div className="p-3 text-center text-sm text-foreground/50">
                 No options found
               </div>
             ) : (
-              filteredOptions.map(option => (
+              filteredOptions.map((option) => (
                 <button
+                  type="button"
                   key={option.value}
                   onClick={() => {
                     if (!option.disabled) {
@@ -157,7 +175,7 @@ export const Select: React.FC<SelectProps> = ({
                     'w-full px-3 py-2 text-left flex items-center gap-2',
                     'hover:bg-foreground/5 transition-colors',
                     option.value === value && 'bg-primary/10 text-primary',
-                    option.disabled && 'opacity-50 cursor-not-allowed'
+                    option.disabled && 'opacity-50 cursor-not-allowed',
                   )}
                   disabled={option.disabled}
                 >
@@ -170,13 +188,13 @@ export const Select: React.FC<SelectProps> = ({
           </div>
         )}
       </div>
-      
+
       {hint && !error && (
         <p className={cn(typography.caption1.className, 'text-foreground/50')}>
           {hint}
         </p>
       )}
-      
+
       {error && (
         <p className={cn(typography.caption1.className, 'text-destructive')}>
           {error}
@@ -209,24 +227,26 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   size = 'md',
 }) => {
   const selectedTheme = themes[theme]
-  
+
   const sizeClasses = {
     sm: 'w-4 h-4',
     md: 'w-5 h-5',
     lg: 'w-6 h-6',
   }
-  
+
   const variantClasses = {
     default: 'rounded',
     glass: cn('rounded', selectedTheme?.card, selectedTheme?.blur),
     rounded: 'rounded-full',
   }
-  
+
   return (
-    <label className={cn(
-      'flex items-start gap-2.5 cursor-pointer',
-      disabled && 'opacity-50 cursor-not-allowed'
-    )}>
+    <label
+      className={cn(
+        'flex items-start gap-2.5 cursor-pointer',
+        disabled && 'opacity-50 cursor-not-allowed',
+      )}
+    >
       <div className="relative">
         <input
           type="checkbox"
@@ -235,31 +255,35 @@ export const Checkbox: React.FC<CheckboxProps> = ({
           disabled={disabled}
           className="sr-only"
         />
-        <div className={cn(
-          sizeClasses[size],
-          variantClasses[variant],
-          'border-2 transition-all duration-200',
-          checked 
-            ? 'bg-primary border-primary' 
-            : 'bg-background border-border hover:border-primary/50',
-          error && 'border-destructive'
-        )}>
+        <div
+          className={cn(
+            sizeClasses[size],
+            variantClasses[variant],
+            'border-2 transition-all duration-200',
+            checked
+              ? 'bg-primary border-primary'
+              : 'bg-background border-border hover:border-primary/50',
+            error && 'border-destructive',
+          )}
+        >
           {checked && (
-            <Check 
-              className="text-primary-foreground w-full h-full p-0.5" 
+            <Check
+              className="text-primary-foreground w-full h-full p-0.5"
               strokeWidth={3}
             />
           )}
         </div>
       </div>
-      
+
       {label && (
-        <span className={cn(
-          size === 'sm' && typography.caption1.className,
-          size === 'md' && typography.subheadline.className,
-          size === 'lg' && typography.body.className,
-          'text-foreground/80'
-        )}>
+        <span
+          className={cn(
+            size === 'sm' && typography.caption1.className,
+            size === 'md' && typography.subheadline.className,
+            size === 'lg' && typography.body.className,
+            'text-foreground/80',
+          )}
+        >
           {label}
         </span>
       )}
@@ -299,23 +323,27 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
   orientation = 'vertical',
 }) => {
   const selectedTheme = themes[theme]
-  
+
   return (
     <div className="space-y-2">
       {label && (
-        <label className={cn(
-          typography.subheadline.className,
-          'text-foreground/70 block mb-3'
-        )}>
+        <label
+          className={cn(
+            typography.subheadline.className,
+            'text-foreground/70 block mb-3',
+          )}
+        >
           {label}
         </label>
       )}
-      
-      <div className={cn(
-        'flex gap-3',
-        orientation === 'vertical' ? 'flex-col' : 'flex-row flex-wrap'
-      )}>
-        {options.map(option => (
+
+      <div
+        className={cn(
+          'flex gap-3',
+          orientation === 'vertical' ? 'flex-col' : 'flex-row flex-wrap',
+        )}
+      >
+        {options.map((option) => (
           <label
             key={option.value}
             className={cn(
@@ -323,11 +351,11 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
               variant === 'cards' && [
                 'flex-1 p-4 rounded-lg border-2 transition-all',
                 selectedTheme?.card,
-                value === option.value 
-                  ? 'border-primary bg-primary/10' 
+                value === option.value
+                  ? 'border-primary bg-primary/10'
                   : 'border-border hover:border-primary/50',
               ],
-              option.disabled && 'opacity-50 cursor-not-allowed'
+              option.disabled && 'opacity-50 cursor-not-allowed',
             )}
           >
             <div className="flex items-start gap-2.5">
@@ -341,32 +369,38 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
                   disabled={option.disabled}
                   className="sr-only"
                 />
-                <div className={cn(
-                  'w-5 h-5 rounded-full border-2 transition-all duration-200',
-                  'flex items-center justify-center',
-                  value === option.value 
-                    ? 'border-primary' 
-                    : 'border-border hover:border-primary/50',
-                  error && 'border-destructive'
-                )}>
+                <div
+                  className={cn(
+                    'w-5 h-5 rounded-full border-2 transition-all duration-200',
+                    'flex items-center justify-center',
+                    value === option.value
+                      ? 'border-primary'
+                      : 'border-border hover:border-primary/50',
+                    error && 'border-destructive',
+                  )}
+                >
                   {value === option.value && (
                     <div className="w-2.5 h-2.5 rounded-full bg-primary" />
                   )}
                 </div>
               </div>
-              
+
               <div className="flex-1">
-                <span className={cn(
-                  typography.subheadline.className,
-                  'text-foreground/80 block'
-                )}>
+                <span
+                  className={cn(
+                    typography.subheadline.className,
+                    'text-foreground/80 block',
+                  )}
+                >
                   {option.label}
                 </span>
                 {option.description && (
-                  <span className={cn(
-                    typography.caption1.className,
-                    'text-foreground/50 block mt-0.5'
-                  )}>
+                  <span
+                    className={cn(
+                      typography.caption1.className,
+                      'text-foreground/50 block mt-0.5',
+                    )}
+                  >
                     {option.description}
                   </span>
                 )}
@@ -375,9 +409,11 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
           </label>
         ))}
       </div>
-      
+
       {error && (
-        <p className={cn(typography.caption1.className, 'text-destructive mt-1')}>
+        <p
+          className={cn(typography.caption1.className, 'text-destructive mt-1')}
+        >
           {error}
         </p>
       )}
@@ -406,12 +442,14 @@ export const Switch: React.FC<SwitchProps> = ({
     md: { track: 'w-11 h-6', thumb: 'w-5 h-5' },
     lg: { track: 'w-14 h-8', thumb: 'w-7 h-7' },
   }
-  
+
   return (
-    <label className={cn(
-      'inline-flex items-center gap-3 cursor-pointer',
-      disabled && 'opacity-50 cursor-not-allowed'
-    )}>
+    <label
+      className={cn(
+        'inline-flex items-center gap-3 cursor-pointer',
+        disabled && 'opacity-50 cursor-not-allowed',
+      )}
+    >
       <div className="relative">
         <input
           type="checkbox"
@@ -420,24 +458,30 @@ export const Switch: React.FC<SwitchProps> = ({
           disabled={disabled}
           className="sr-only"
         />
-        <div className={cn(
-          sizeClasses[size].track,
-          'rounded-full transition-all duration-200',
-          checked 
-            ? 'bg-primary' 
-            : 'bg-gray-300 dark:bg-gray-600'
-        )}>
-          <div className={cn(
-            sizeClasses[size].thumb,
-            'bg-white rounded-full transition-all duration-200',
-            'absolute top-0.5',
-            checked 
-              ? size === 'sm' ? 'translate-x-4' : size === 'md' ? 'translate-x-5' : 'translate-x-6'
-              : 'translate-x-0.5'
-          )} />
+        <div
+          className={cn(
+            sizeClasses[size].track,
+            'rounded-full transition-all duration-200',
+            checked ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600',
+          )}
+        >
+          <div
+            className={cn(
+              sizeClasses[size].thumb,
+              'bg-white rounded-full transition-all duration-200',
+              'absolute top-0.5',
+              checked
+                ? size === 'sm'
+                  ? 'translate-x-4'
+                  : size === 'md'
+                    ? 'translate-x-5'
+                    : 'translate-x-6'
+                : 'translate-x-0.5',
+            )}
+          />
         </div>
       </div>
-      
+
       {label && (
         <span className={cn(typography.body.className, 'text-foreground/80')}>
           {label}
@@ -457,51 +501,63 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
   resize?: 'none' | 'vertical' | 'horizontal' | 'both'
 }
 
-export const Textarea = ({ ref, className, label, error, hint, theme = 'glass-clear', variant = 'default', resize = 'vertical', disabled, id, ...props }: TextareaProps & { ref?: React.RefObject<HTMLTextAreaElement | null> }) => {
+export const Textarea = ({
+  ref,
+  className,
+  label,
+  error,
+  hint,
+  theme = 'glass-clear',
+  variant = 'default',
+  resize = 'vertical',
+  disabled,
+  id,
+  ...props
+}: TextareaProps & { ref?: React.RefObject<HTMLTextAreaElement | null> }) => {
   const selectedTheme = themes[theme]
   const generatedId = React.useId()
   const textareaId = id || generatedId
-  
+
   const variantClasses = {
     default: cn(
       'bg-background/50',
       'border border-border',
-      'focus:border-primary'
+      'focus:border-primary',
     ),
     glass: cn(
       selectedTheme?.card,
       selectedTheme?.blur,
       'border border-white/10',
-      'focus:border-primary/50'
+      'focus:border-primary/50',
     ),
     minimal: cn(
       'bg-transparent',
       'border border-border',
-      'focus:border-primary'
+      'focus:border-primary',
     ),
   }
-  
+
   const resizeClasses = {
     none: 'resize-none',
     vertical: 'resize-y',
     horizontal: 'resize-x',
     both: 'resize',
   }
-  
+
   return (
     <div className="space-y-1.5">
       {label && (
-        <label 
+        <label
           htmlFor={textareaId}
           className={cn(
             typography.subheadline.className,
-            'text-foreground/70 block'
+            'text-foreground/70 block',
           )}
         >
           {label}
         </label>
       )}
-      
+
       <textarea
         ref={ref}
         id={textareaId}
@@ -516,17 +572,17 @@ export const Textarea = ({ ref, className, label, error, hint, theme = 'glass-cl
           resizeClasses[resize],
           error && 'border-destructive focus:border-destructive',
           disabled && 'opacity-50 cursor-not-allowed',
-          className
+          className,
         )}
         {...props}
       />
-      
+
       {hint && !error && (
         <p className={cn(typography.caption1.className, 'text-foreground/50')}>
           {hint}
         </p>
       )}
-      
+
       {error && (
         <p className={cn(typography.caption1.className, 'text-destructive')}>
           {error}
@@ -563,42 +619,42 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   const [isDragging, setIsDragging] = useState(false)
   const [files, setFiles] = useState<File[]>([])
   const selectedTheme = themes[theme]
-  
+
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault()
     setIsDragging(true)
   }
-  
+
   const handleDragLeave = () => {
     setIsDragging(false)
   }
-  
+
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault()
     setIsDragging(false)
     const droppedFiles = Array.from(e.dataTransfer.files)
     handleFiles(droppedFiles)
   }
-  
+
   const handleFiles = (fileList: File[]) => {
-    const validFiles = fileList.filter(file => {
+    const validFiles = fileList.filter((file) => {
       const sizeInMB = file.size / (1024 * 1024)
       return sizeInMB <= maxSize
     })
-    
+
     if (multiple) {
       setFiles([...files, ...validFiles])
     } else {
       setFiles(validFiles.slice(0, 1))
     }
-    
+
     onFileSelect?.(validFiles as any)
   }
-  
+
   const removeFile = (index: number) => {
     setFiles(files.filter((_, i) => i !== index))
   }
-  
+
   if (variant === 'dropzone') {
     return (
       <div className="space-y-3">
@@ -613,31 +669,43 @@ export const FileUpload: React.FC<FileUploadProps> = ({
             'hover:border-primary/50 hover:bg-primary/5',
             isDragging ? 'border-primary bg-primary/10' : 'border-border',
             selectedTheme?.card,
-            selectedTheme?.blur
+            selectedTheme?.blur,
           )}
         >
           <input
             type="file"
             accept={accept}
             multiple={multiple}
-            onChange={(e) => e.target.files && handleFiles(Array.from(e.target.files))}
+            onChange={(e) =>
+              e.target.files && handleFiles(Array.from(e.target.files))
+            }
             className="sr-only"
           />
-          
+
           <div className="text-center">
             <Upload className="mx-auto h-12 w-12 text-foreground/30 mb-3" />
             <p className={cn(typography.body.className, 'text-foreground/70')}>
               {label}
             </p>
-            <p className={cn(typography.caption1.className, 'text-foreground/50 mt-1')}>
+            <p
+              className={cn(
+                typography.caption1.className,
+                'text-foreground/50 mt-1',
+              )}
+            >
               {hint}
             </p>
-            <p className={cn(typography.caption2.className, 'text-foreground/40 mt-2')}>
+            <p
+              className={cn(
+                typography.caption2.className,
+                'text-foreground/40 mt-2',
+              )}
+            >
               Max file size: {maxSize}MB
             </p>
           </div>
         </label>
-        
+
         {files.length > 0 && (
           <div className="space-y-2">
             {files.map((file, index) => (
@@ -647,6 +715,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
               >
                 <span className="text-sm truncate">{file.name}</span>
                 <button
+                  type="button"
                   onClick={() => removeFile(index)}
                   className="text-destructive hover:text-destructive/80"
                 >
@@ -659,24 +728,28 @@ export const FileUpload: React.FC<FileUploadProps> = ({
       </div>
     )
   }
-  
+
   return (
     <label className="inline-block">
       <input
         type="file"
         accept={accept}
         multiple={multiple}
-        onChange={(e) => e.target.files && handleFiles(Array.from(e.target.files))}
+        onChange={(e) =>
+          e.target.files && handleFiles(Array.from(e.target.files))
+        }
         className="sr-only"
       />
-      <div className={cn(
-        'px-4 py-2 rounded-lg cursor-pointer',
-        'inline-flex items-center gap-2',
-        'transition-all duration-200',
-        selectedTheme?.card,
-        selectedTheme?.blur,
-        'border border-border hover:border-primary/50'
-      )}>
+      <div
+        className={cn(
+          'px-4 py-2 rounded-lg cursor-pointer',
+          'inline-flex items-center gap-2',
+          'transition-all duration-200',
+          selectedTheme?.card,
+          selectedTheme?.blur,
+          'border border-border hover:border-primary/50',
+        )}
+      >
         <Upload size={18} />
         <span>{label}</span>
       </div>
@@ -707,30 +780,31 @@ export const Slider: React.FC<SliderProps> = ({
   disabled = false,
 }) => {
   const percentage = ((value - min) / (max - min)) * 100
-  
+
   return (
     <div className="space-y-2">
       {(label || showValue) && (
         <div className="flex items-center justify-between">
           {label && (
-            <label className={cn(
-              typography.subheadline.className,
-              'text-foreground/70'
-            )}>
+            <label
+              className={cn(
+                typography.subheadline.className,
+                'text-foreground/70',
+              )}
+            >
               {label}
             </label>
           )}
           {showValue && (
-            <span className={cn(
-              typography.body.className,
-              'text-foreground/80'
-            )}>
+            <span
+              className={cn(typography.body.className, 'text-foreground/80')}
+            >
               {value}
             </span>
           )}
         </div>
       )}
-      
+
       <div className="relative">
         <input
           type="range"
@@ -743,7 +817,7 @@ export const Slider: React.FC<SliderProps> = ({
           className={cn(
             'w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer',
             'dark:bg-gray-700',
-            disabled && 'opacity-50 cursor-not-allowed'
+            disabled && 'opacity-50 cursor-not-allowed',
           )}
           style={{
             background: `linear-gradient(to right, rgb(var(--primary)) 0%, rgb(var(--primary)) ${percentage}%, rgb(229, 231, 235) ${percentage}%, rgb(229, 231, 235) 100%)`,
@@ -781,32 +855,34 @@ export const NumberInput: React.FC<NumberInputProps> = ({
   disabled = false,
 }) => {
   const selectedTheme = themes[theme]
-  
+
   const handleIncrement = () => {
     const newValue = value + step
     if (max === undefined || newValue <= max) {
       onChange?.(newValue)
     }
   }
-  
+
   const handleDecrement = () => {
     const newValue = value - step
     if (min === undefined || newValue >= min) {
       onChange?.(newValue)
     }
   }
-  
+
   return (
     <div className="space-y-1.5">
       {label && (
-        <label className={cn(
-          typography.subheadline.className,
-          'text-foreground/70 block'
-        )}>
+        <label
+          className={cn(
+            typography.subheadline.className,
+            'text-foreground/70 block',
+          )}
+        >
           {label}
         </label>
       )}
-      
+
       <div className="flex items-center gap-2">
         {showControls && (
           <button
@@ -819,13 +895,13 @@ export const NumberInput: React.FC<NumberInputProps> = ({
               'transition-all duration-200',
               selectedTheme?.card,
               selectedTheme?.blur,
-              'disabled:opacity-50 disabled:cursor-not-allowed'
+              'disabled:opacity-50 disabled:cursor-not-allowed',
             )}
           >
             <Minus size={16} />
           </button>
         )}
-        
+
         <input
           type="number"
           value={value}
@@ -840,10 +916,10 @@ export const NumberInput: React.FC<NumberInputProps> = ({
             'rounded-lg transition-all duration-200',
             'focus:outline-none focus:border-primary',
             error && 'border-destructive',
-            disabled && 'opacity-50 cursor-not-allowed'
+            disabled && 'opacity-50 cursor-not-allowed',
           )}
         />
-        
+
         {showControls && (
           <button
             type="button"
@@ -855,14 +931,14 @@ export const NumberInput: React.FC<NumberInputProps> = ({
               'transition-all duration-200',
               selectedTheme?.card,
               selectedTheme?.blur,
-              'disabled:opacity-50 disabled:cursor-not-allowed'
+              'disabled:opacity-50 disabled:cursor-not-allowed',
             )}
           >
             <Plus size={16} />
           </button>
         )}
       </div>
-      
+
       {error && (
         <p className={cn(typography.caption1.className, 'text-destructive')}>
           {error}

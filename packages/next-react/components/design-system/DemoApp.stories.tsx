@@ -23,9 +23,9 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 
-import { 
-  Container, 
-  Header, 
+import {
+  Container,
+  Header,
   NavItem,
   Sidebar,
   SidebarItem,
@@ -47,7 +47,8 @@ const meta = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component: 'Complete application layout showcasing all design system components working together.',
+        component:
+          'Complete application layout showcasing all design system components working together.',
       },
     },
   },
@@ -62,7 +63,7 @@ export const Dashboard: Story = {
   render: () => {
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-    
+
     return (
       <div className="min-h-screen bg-background">
         {/* Header */}
@@ -78,7 +79,9 @@ export const Dashboard: Story = {
           }
           navigation={
             <>
-              <NavItem href="#" active>Dashboard</NavItem>
+              <NavItem href="#" active>
+                Dashboard
+              </NavItem>
               <NavItem href="#">Analytics</NavItem>
               <NavItem href="#">Projects</NavItem>
               <NavItem href="#">Team</NavItem>
@@ -94,6 +97,7 @@ export const Dashboard: Story = {
                 New Project
               </Button>
               <button
+                type="button"
                 className="md:hidden"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
@@ -102,7 +106,7 @@ export const Dashboard: Story = {
             </>
           }
         />
-        
+
         <div className="flex">
           {/* Sidebar */}
           <Sidebar
@@ -149,8 +153,8 @@ export const Dashboard: Story = {
                 collapsed={sidebarCollapsed}
               />
             </SidebarSection>
-            
-            <SidebarSection title={!sidebarCollapsed ? "Settings" : ""}>
+
+            <SidebarSection title={!sidebarCollapsed ? 'Settings' : ''}>
               <SidebarItem
                 icon={<Settings size={20} />}
                 label="Settings"
@@ -158,7 +162,7 @@ export const Dashboard: Story = {
               />
             </SidebarSection>
           </Sidebar>
-          
+
           {/* Main Content */}
           <main className="flex-1 p-6 md:p-8">
             <Container theme="glass-clear" glass={false} maxWidth="full">
@@ -168,7 +172,9 @@ export const Dashboard: Story = {
                   <CardBody>
                     <div className="flex items-start justify-between">
                       <div>
-                        <p className="text-sm text-foreground/60 mb-1">Total Revenue</p>
+                        <p className="text-sm text-foreground/60 mb-1">
+                          Total Revenue
+                        </p>
                         <p className="text-2xl font-bold">$45,231</p>
                         <div className="flex items-center gap-1 mt-2">
                           <ArrowUpRight className="w-4 h-4 text-green-500" />
@@ -181,12 +187,14 @@ export const Dashboard: Story = {
                     </div>
                   </CardBody>
                 </Card>
-                
+
                 <Card variant="glass" theme="glass-frost" hoverable>
                   <CardBody>
                     <div className="flex items-start justify-between">
                       <div>
-                        <p className="text-sm text-foreground/60 mb-1">New Orders</p>
+                        <p className="text-sm text-foreground/60 mb-1">
+                          New Orders
+                        </p>
                         <p className="text-2xl font-bold">1,245</p>
                         <div className="flex items-center gap-1 mt-2">
                           <ArrowUpRight className="w-4 h-4 text-green-500" />
@@ -199,12 +207,14 @@ export const Dashboard: Story = {
                     </div>
                   </CardBody>
                 </Card>
-                
+
                 <Card variant="glass" theme="glass-smoke" hoverable>
                   <CardBody>
                     <div className="flex items-start justify-between">
                       <div>
-                        <p className="text-sm text-foreground/60 mb-1">Active Users</p>
+                        <p className="text-sm text-foreground/60 mb-1">
+                          Active Users
+                        </p>
                         <p className="text-2xl font-bold">8,423</p>
                         <div className="flex items-center gap-1 mt-2">
                           <ArrowDownRight className="w-4 h-4 text-red-500" />
@@ -217,12 +227,14 @@ export const Dashboard: Story = {
                     </div>
                   </CardBody>
                 </Card>
-                
+
                 <Card variant="glass" theme="glass-ice" hoverable>
                   <CardBody>
                     <div className="flex items-start justify-between">
                       <div>
-                        <p className="text-sm text-foreground/60 mb-1">Growth Rate</p>
+                        <p className="text-sm text-foreground/60 mb-1">
+                          Growth Rate
+                        </p>
                         <p className="text-2xl font-bold">24.8%</p>
                         <div className="flex items-center gap-1 mt-2">
                           <ArrowUpRight className="w-4 h-4 text-green-500" />
@@ -236,7 +248,7 @@ export const Dashboard: Story = {
                   </CardBody>
                 </Card>
               </div>
-              
+
               {/* Content Grid */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2">
@@ -245,24 +257,35 @@ export const Dashboard: Story = {
                       title="Recent Activity"
                       subtitle="Your latest transactions and events"
                       action={
-                        <Button size="sm" variant="ghost">View All</Button>
+                        <Button size="sm" variant="ghost">
+                          View All
+                        </Button>
                       }
                       separator
                     />
                     <CardBody>
                       <div className="space-y-4">
-                        {[1, 2, 3, 4, 5].map(i => (
-                          <div key={i} className="flex items-center justify-between py-2">
+                        {[1, 2, 3, 4, 5].map((i) => (
+                          <div
+                            key={i}
+                            className="flex items-center justify-between py-2"
+                          >
                             <div className="flex items-center gap-3">
                               <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full" />
                               <div>
-                                <p className="font-medium">Transaction #{1000 + i}</p>
-                                <p className="text-sm text-foreground/60">2 hours ago</p>
+                                <p className="font-medium">
+                                  Transaction #{1000 + i}
+                                </p>
+                                <p className="text-sm text-foreground/60">
+                                  2 hours ago
+                                </p>
                               </div>
                             </div>
                             <div className="text-right">
                               <p className="font-semibold">$1,234</p>
-                              <p className="text-sm text-green-500">Completed</p>
+                              <p className="text-sm text-green-500">
+                                Completed
+                              </p>
                             </div>
                           </div>
                         ))}
@@ -270,25 +293,38 @@ export const Dashboard: Story = {
                     </CardBody>
                   </Card>
                 </div>
-                
+
                 <div>
                   <Card variant="gradient" theme="gradient-sunset">
-                    <CardHeader
-                      title="Quick Actions"
-                      separator
-                    />
+                    <CardHeader title="Quick Actions" separator />
                     <CardBody>
                       <div className="space-y-3">
-                        <Button fullWidth variant="glass" theme="gradient-sunset">
+                        <Button
+                          fullWidth
+                          variant="glass"
+                          theme="gradient-sunset"
+                        >
                           Create Invoice
                         </Button>
-                        <Button fullWidth variant="glass" theme="gradient-sunset">
+                        <Button
+                          fullWidth
+                          variant="glass"
+                          theme="gradient-sunset"
+                        >
                           Add Customer
                         </Button>
-                        <Button fullWidth variant="glass" theme="gradient-sunset">
+                        <Button
+                          fullWidth
+                          variant="glass"
+                          theme="gradient-sunset"
+                        >
                           Generate Report
                         </Button>
-                        <Button fullWidth variant="glass" theme="gradient-sunset">
+                        <Button
+                          fullWidth
+                          variant="glass"
+                          theme="gradient-sunset"
+                        >
                           Export Data
                         </Button>
                       </div>
@@ -299,7 +335,7 @@ export const Dashboard: Story = {
             </Container>
           </main>
         </div>
-        
+
         {/* Footer */}
         <Footer
           theme="glass-clear"
@@ -345,14 +381,16 @@ export const LandingPage: Story = {
           }
           actions={
             <>
-              <Button variant="ghost" size="sm">Sign In</Button>
+              <Button variant="ghost" size="sm">
+                Sign In
+              </Button>
               <Button variant="gradient" theme="aurora-borealis" size="sm">
                 Get Started
               </Button>
             </>
           }
         />
-        
+
         {/* Hero Section */}
         <Container maxWidth="7xl" padding="xl" glass={false}>
           <div className="py-20 md:py-32 text-center">
@@ -360,7 +398,8 @@ export const LandingPage: Story = {
               Beautiful Design System
             </h1>
             <p className="text-xl md:text-2xl text-foreground/70 mb-8 max-w-3xl mx-auto">
-              Build stunning applications with our Apple-inspired design system featuring 100+ glassmorphism themes
+              Build stunning applications with our Apple-inspired design system
+              featuring 100+ glassmorphism themes
             </p>
             <div className="flex gap-4 justify-center">
               <Button size="lg" variant="gradient" theme="aurora-borealis" glow>
@@ -372,7 +411,7 @@ export const LandingPage: Story = {
             </div>
           </div>
         </Container>
-        
+
         {/* Features Section */}
         <Container maxWidth="7xl" padding="xl" glass={false}>
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
@@ -382,18 +421,19 @@ export const LandingPage: Story = {
             {[
               {
                 icon: <Star className="w-8 h-8 text-yellow-500" />,
-                title: "100+ Themes",
-                description: "Choose from a vast collection of carefully crafted themes"
+                title: '100+ Themes',
+                description:
+                  'Choose from a vast collection of carefully crafted themes',
               },
               {
                 icon: <Heart className="w-8 h-8 text-pink-500" />,
-                title: "Apple Inspired",
-                description: "Following Apple's Human Interface Guidelines"
+                title: 'Apple Inspired',
+                description: "Following Apple's Human Interface Guidelines",
               },
               {
                 icon: <TrendingUp className="w-8 h-8 text-green-500" />,
-                title: "Performance First",
-                description: "Optimized for smooth 60fps animations"
+                title: 'Performance First',
+                description: 'Optimized for smooth 60fps animations',
               },
             ].map((feature, i) => (
               <Card key={i} variant="glass" theme="glass-aurora" hoverable>
@@ -402,18 +442,26 @@ export const LandingPage: Story = {
                     <div className="inline-flex p-3 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl mb-4">
                       {feature.icon}
                     </div>
-                    <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-                    <p className="text-sm text-foreground/70">{feature.description}</p>
+                    <h3 className="text-lg font-semibold mb-2">
+                      {feature.title}
+                    </h3>
+                    <p className="text-sm text-foreground/70">
+                      {feature.description}
+                    </p>
                   </div>
                 </CardBody>
               </Card>
             ))}
           </CardGrid>
         </Container>
-        
+
         {/* CTA Section */}
         <Container maxWidth="7xl" padding="xl" glass={false}>
-          <Card variant="gradient" theme="aurora-borealis" className="text-center py-16">
+          <Card
+            variant="gradient"
+            theme="aurora-borealis"
+            className="text-center py-16"
+          >
             <CardBody>
               <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
               <p className="text-lg text-foreground/80 mb-8">
@@ -425,7 +473,7 @@ export const LandingPage: Story = {
             </CardBody>
           </Card>
         </Container>
-        
+
         {/* Footer */}
         <Footer
           theme="glass-clear"

@@ -45,6 +45,7 @@ export const Default: Story = {
     <div>
       <Toaster {...args} />
       <button
+        type="button"
         onClick={() => toast('Hello world!')}
         className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
       >
@@ -59,18 +60,21 @@ export const WithActions: Story = {
     <div className="space-y-2">
       <Toaster {...args} />
       <button
+        type="button"
         onClick={() => toast.success('Successfully saved!')}
         className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
       >
         Success Toast
       </button>
       <button
+        type="button"
         onClick={() => toast.error('Something went wrong!')}
         className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
       >
         Error Toast
       </button>
       <button
+        type="button"
         onClick={() =>
           toast('Event has been created', {
             description: 'Sunday, December 03, 2023 at 9:00 AM',

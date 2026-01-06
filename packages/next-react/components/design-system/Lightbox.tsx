@@ -1,8 +1,8 @@
 'use client'
 
-import { 
-  X, 
-  ChevronLeft, 
+import {
+  X,
+  ChevronLeft,
   ChevronRight,
   ZoomIn,
   ZoomOut,
@@ -12,7 +12,7 @@ import {
   Play,
   Pause,
   Grid3x3,
-  Loader2
+  Loader2,
 } from 'lucide-react'
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 
@@ -40,7 +40,7 @@ export interface LightboxProps {
   onClose: () => void
   currentIndex?: number
   onIndexChange?: (index: number) => void
-  
+
   // Features
   showThumbnails?: boolean
   showCaption?: boolean
@@ -51,16 +51,16 @@ export interface LightboxProps {
   enableFullscreen?: boolean
   enableSlideshow?: boolean
   slideshowInterval?: number
-  
+
   // Navigation
   infinite?: boolean
   swipeable?: boolean
   keyboard?: boolean
-  
+
   // Animations
   animationType?: 'fade' | 'slide' | 'zoom'
   animationDuration?: number
-  
+
   // Styling
   theme?: keyof typeof themes
   overlayOpacity?: number
@@ -92,16 +92,21 @@ export const Lightbox: React.FC<LightboxProps> = ({
   // Use controlled index directly - no derived state needed
   // The parent controls the index via controlledIndex and onIndexChange
   const currentIndex = controlledIndex
-  const setCurrentIndex = useCallback((index: number) => {
-    onIndexChange?.(index)
-  }, [onIndexChange])
+  const setCurrentIndex = useCallback(
+    (index: number) => {
+      onIndexChange?.(index)
+    },
+    [onIndexChange],
+  )
 
   const [zoom, setZoom] = useState(1)
   const [isPlaying, setIsPlaying] = useState(false)
   const [, setIsFullscreen] = useState(false)
   const [showThumbnailGrid, setShowThumbnailGrid] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null)
+  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(
+    null,
+  )
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
 
   const containerRef = useRef<HTMLDivElement>(null)
@@ -137,20 +142,23 @@ export const Lightbox: React.FC<LightboxProps> = ({
     setDragOffset({ x: 0, y: 0 })
   }, [currentIndex, items.length, infinite, setCurrentIndex])
 
-  const navigateToIndex = useCallback((index: number) => {
-    setCurrentIndex(index)
-    setZoom(1)
-    setDragOffset({ x: 0, y: 0 })
-    setShowThumbnailGrid(false)
-  }, [setCurrentIndex])
+  const navigateToIndex = useCallback(
+    (index: number) => {
+      setCurrentIndex(index)
+      setZoom(1)
+      setDragOffset({ x: 0, y: 0 })
+      setShowThumbnailGrid(false)
+    },
+    [setCurrentIndex],
+  )
 
   // Zoom functions - declared BEFORE useEffects that use them
   const handleZoomIn = useCallback(() => {
-    setZoom(prev => Math.min(prev * 1.5, 4))
+    setZoom((prev) => Math.min(prev * 1.5, 4))
   }, [])
 
   const handleZoomOut = useCallback(() => {
-    setZoom(prev => Math.max(prev / 1.5, 0.5))
+    setZoom((prev) => Math.max(prev / 1.5, 0.5))
   }, [])
 
   const handleZoomReset = useCallback(() => {
@@ -171,7 +179,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
 
   // Slideshow - declared BEFORE useEffects that use it
   const toggleSlideshow = useCallback(() => {
-    setIsPlaying(prev => !prev)
+    setIsPlaying((prev) => !prev)
   }, [])
 
   // Handle keyboard navigation - now all callbacks are declared above
@@ -206,7 +214,18 @@ export const Lightbox: React.FC<LightboxProps> = ({
 
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [isOpen, keyboard, enableZoom, enableSlideshow, onClose, navigatePrev, navigateNext, handleZoomIn, handleZoomOut, toggleSlideshow])
+  }, [
+    isOpen,
+    keyboard,
+    enableZoom,
+    enableSlideshow,
+    onClose,
+    navigatePrev,
+    navigateNext,
+    handleZoomIn,
+    handleZoomOut,
+    toggleSlideshow,
+  ])
 
   // Handle slideshow - now navigateNext is declared above
   useEffect(() => {
@@ -222,21 +241,21 @@ export const Lightbox: React.FC<LightboxProps> = ({
       }
     }
   }, [isPlaying, enableSlideshow, slideshowInterval, navigateNext])
-  
+
   // Download
   const handleDownload = () => {
     if (!currentItem) return
-    
+
     const link = document.createElement('a')
     link.href = currentItem.src
     link.download = currentItem.title || `media-${currentIndex}`
     link.click()
   }
-  
+
   // Share
   const handleShare = async () => {
     if (!currentItem) return
-    
+
     if (typeof navigator.share === 'function') {
       try {
         await navigator.share({
@@ -249,30 +268,30 @@ export const Lightbox: React.FC<LightboxProps> = ({
       }
     }
   }
-  
+
   // Touch handling
   const handleTouchStart = (e: React.TouchEvent) => {
     if (!swipeable || !e.touches[0]) return
     setTouchStart({ x: e.touches[0].clientX, y: e.touches[0].clientY })
   }
-  
+
   const handleTouchMove = (e: React.TouchEvent) => {
     if (!swipeable || !touchStart || !e.touches[0]) return
-    
+
     const deltaX = e.touches[0].clientX - touchStart.x
     const deltaY = e.touches[0].clientY - touchStart.y
-    
+
     if (zoom > 1) {
       setDragOffset({ x: deltaX, y: deltaY })
     }
   }
-  
+
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (!swipeable || !touchStart || !e.changedTouches[0]) return
-    
+
     const deltaX = e.changedTouches[0].clientX - touchStart.x
     const threshold = 50
-    
+
     if (zoom === 1) {
       if (deltaX > threshold) {
         navigatePrev()
@@ -280,19 +299,19 @@ export const Lightbox: React.FC<LightboxProps> = ({
         navigateNext()
       }
     }
-    
+
     setTouchStart(null)
   }
-  
+
   if (!isOpen) return null
-  
+
   // Animation classes
   const animationClasses = {
     fade: 'animate-in fade-in duration-300',
     slide: 'animate-in slide-in-from-bottom duration-300',
     zoom: 'animate-in zoom-in-95 duration-300',
   }
-  
+
   return (
     <div
       ref={containerRef}
@@ -300,7 +319,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
         'fixed inset-0 z-50',
         'flex flex-col',
         animationClasses[animationType],
-        className
+        className,
       )}
     >
       {/* Overlay */}
@@ -309,7 +328,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
         style={{ opacity: overlayOpacity }}
         onClick={onClose}
       />
-      
+
       {/* Toolbar */}
       {showToolbar && (
         <div className="relative z-10 flex items-center justify-between p-4">
@@ -318,7 +337,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
             <div className="px-3 py-1 bg-white/10 backdrop-blur-md rounded-lg text-white text-sm">
               {currentIndex + 1} / {items.length}
             </div>
-            
+
             {/* Title */}
             {currentItem?.title && (
               <div className="px-3 py-1 text-white text-sm font-medium">
@@ -326,7 +345,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
               </div>
             )}
           </div>
-          
+
           <div className="flex items-center gap-2">
             {/* Zoom controls */}
             {enableZoom && (
@@ -357,7 +376,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
                 </Button>
               </>
             )}
-            
+
             {/* Slideshow */}
             {enableSlideshow && (
               <Button
@@ -369,7 +388,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
                 {isPlaying ? <Pause size={20} /> : <Play size={20} />}
               </Button>
             )}
-            
+
             {/* Grid view */}
             {showThumbnails && (
               <Button
@@ -381,7 +400,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
                 <Grid3x3 size={20} />
               </Button>
             )}
-            
+
             {/* Download */}
             {enableDownload && (
               <Button
@@ -393,7 +412,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
                 <Download size={20} />
               </Button>
             )}
-            
+
             {/* Share */}
             {enableShare && typeof navigator.share === 'function' && (
               <Button
@@ -405,7 +424,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
                 <Share2 size={20} />
               </Button>
             )}
-            
+
             {/* Fullscreen */}
             {enableFullscreen && (
               <Button
@@ -417,7 +436,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
                 <Maximize2 size={20} />
               </Button>
             )}
-            
+
             {/* Close */}
             <Button
               variant="ghost"
@@ -430,11 +449,12 @@ export const Lightbox: React.FC<LightboxProps> = ({
           </div>
         </div>
       )}
-      
+
       {/* Main content area */}
       <div className="flex-1 relative flex items-center justify-center">
         {/* Previous button */}
         <button
+          type="button"
           onClick={navigatePrev}
           className={cn(
             'absolute left-4 z-10',
@@ -442,13 +462,13 @@ export const Lightbox: React.FC<LightboxProps> = ({
             'bg-white/10 backdrop-blur-md',
             'hover:bg-white/20 transition-colors',
             'text-white',
-            (!infinite && currentIndex === 0) && 'opacity-50 cursor-not-allowed'
+            !infinite && currentIndex === 0 && 'opacity-50 cursor-not-allowed',
           )}
           disabled={!infinite && currentIndex === 0}
         >
           <ChevronLeft size={24} />
         </button>
-        
+
         {/* Media display */}
         <div
           className="relative max-w-full max-h-full"
@@ -465,7 +485,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
               <Loader2 className="w-8 h-8 animate-spin text-white" />
             </div>
           )}
-          
+
           {currentItem?.type === 'video' ? (
             <video
               ref={mediaRef as React.RefObject<HTMLVideoElement>}
@@ -485,9 +505,10 @@ export const Lightbox: React.FC<LightboxProps> = ({
             />
           )}
         </div>
-        
+
         {/* Next button */}
         <button
+          type="button"
           onClick={navigateNext}
           className={cn(
             'absolute right-4 z-10',
@@ -495,14 +516,16 @@ export const Lightbox: React.FC<LightboxProps> = ({
             'bg-white/10 backdrop-blur-md',
             'hover:bg-white/20 transition-colors',
             'text-white',
-            (!infinite && currentIndex === items.length - 1) && 'opacity-50 cursor-not-allowed'
+            !infinite &&
+              currentIndex === items.length - 1 &&
+              'opacity-50 cursor-not-allowed',
           )}
           disabled={!infinite && currentIndex === items.length - 1}
         >
           <ChevronRight size={24} />
         </button>
       </div>
-      
+
       {/* Caption */}
       {showCaption && currentItem?.description && (
         <div className="relative z-10 p-4 text-center">
@@ -511,13 +534,14 @@ export const Lightbox: React.FC<LightboxProps> = ({
           </p>
         </div>
       )}
-      
+
       {/* Thumbnails */}
       {showThumbnails && !showThumbnailGrid && (
         <div className="relative z-10 p-4">
           <div className="flex gap-2 overflow-x-auto">
             {items.map((item, index) => (
               <button
+                type="button"
                 key={item.id}
                 onClick={() => navigateToIndex(index)}
                 className={cn(
@@ -525,7 +549,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
                   'border-2 transition-all',
                   index === currentIndex
                     ? 'border-white scale-110'
-                    : 'border-transparent opacity-60 hover:opacity-100'
+                    : 'border-transparent opacity-60 hover:opacity-100',
                 )}
               >
                 <img
@@ -538,13 +562,14 @@ export const Lightbox: React.FC<LightboxProps> = ({
           </div>
         </div>
       )}
-      
+
       {/* Thumbnail grid */}
       {showThumbnailGrid && (
         <div className="absolute inset-0 z-20 bg-black/95 overflow-auto p-8">
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {items.map((item, index) => (
               <button
+                type="button"
                 key={item.id}
                 onClick={() => navigateToIndex(index)}
                 className={cn(
@@ -553,7 +578,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
                   'hover:scale-105',
                   index === currentIndex
                     ? 'border-white'
-                    : 'border-transparent'
+                    : 'border-transparent',
                 )}
               >
                 <img
@@ -592,7 +617,7 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({
 }) => {
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [selectedIndex, setSelectedIndex] = useState(0)
-  
+
   const handleImageClick = (index: number) => {
     setSelectedIndex(index)
     setLightboxOpen(true)
@@ -601,26 +626,22 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({
       onClick?.(image, index)
     }
   }
-  
+
   return (
     <>
       <div
-        className={cn(
-          'grid',
-          `grid-cols-${columns}`,
-          `gap-${gap}`,
-          className
-        )}
+        className={cn('grid', `grid-cols-${columns}`, `gap-${gap}`, className)}
       >
         {images.map((image, index) => (
           <button
+            type="button"
             key={image.id}
             onClick={() => handleImageClick(index)}
             className={cn(
               'relative overflow-hidden group',
               'aspect-square',
               rounded && 'rounded-lg',
-              'hover:scale-105 transition-transform'
+              'hover:scale-105 transition-transform',
             )}
           >
             <img
@@ -628,19 +649,17 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({
               alt={image.alt || image.title}
               className="w-full h-full object-cover"
             />
-            
+
             {/* Overlay */}
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors" />
-            
+
             {/* Title */}
             {showTitle && image.title && (
               <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                <p className="text-white text-sm font-medium">
-                  {image.title}
-                </p>
+                <p className="text-white text-sm font-medium">{image.title}</p>
               </div>
             )}
-            
+
             {/* Zoom icon */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
               <ZoomIn className="w-8 h-8 text-white" />
@@ -648,7 +667,7 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({
           </button>
         ))}
       </div>
-      
+
       <Lightbox
         items={images}
         isOpen={lightboxOpen}

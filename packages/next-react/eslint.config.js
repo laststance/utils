@@ -7,7 +7,39 @@ import tsPreFixer from 'eslint-config-ts-prefixer'
 
 export default defineConfig([
   ...tsPreFixer,
-  reactYouMightNotNeedAnEffect.configs.recommended,
+  // eslint-plugin-react-you-might-not-need-an-effect
+  // Main doc: https://react.dev/learn/you-might-not-need-an-effect
+  // GitHub: https://github.com/NickvanDyke/eslint-plugin-react-you-might-not-need-an-effect
+  {
+    plugins: {
+      'react-you-might-not-need-an-effect': reactYouMightNotNeedAnEffect,
+    },
+    rules: {
+      // https://react.dev/learn/you-might-not-need-an-effect#updating-state-based-on-props-or-state
+      'react-you-might-not-need-an-effect/no-derived-state': 'error',
+      // https://react.dev/learn/you-might-not-need-an-effect#chains-of-computations
+      'react-you-might-not-need-an-effect/no-chain-state-updates': 'error',
+      // https://react.dev/learn/you-might-not-need-an-effect#sharing-logic-between-event-handlers
+      'react-you-might-not-need-an-effect/no-event-handler': 'error',
+      // https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes
+      'react-you-might-not-need-an-effect/no-adjust-state-on-prop-change':
+        'error',
+      // https://react.dev/learn/you-might-not-need-an-effect#resetting-all-state-when-a-prop-changes
+      'react-you-might-not-need-an-effect/no-reset-all-state-on-prop-change':
+        'error',
+      // https://react.dev/learn/you-might-not-need-an-effect#notifying-parent-components-about-state-changes
+      'react-you-might-not-need-an-effect/no-pass-live-state-to-parent':
+        'error',
+      // https://react.dev/learn/you-might-not-need-an-effect#passing-data-to-the-parent
+      'react-you-might-not-need-an-effect/no-pass-data-to-parent': 'error',
+      // https://react.dev/reference/react/forwardRef
+      'react-you-might-not-need-an-effect/no-pass-ref-to-parent': 'error',
+      // https://react.dev/learn/you-might-not-need-an-effect#initializing-the-application
+      'react-you-might-not-need-an-effect/no-initialize-state': 'error',
+      // Detects empty useEffect hooks that have no purpose
+      'react-you-might-not-need-an-effect/no-empty-effect': 'error',
+    },
+  },
   // Use typescript-eslint recommended config directly
   // Add react-hooks plugin for hook rules
   {

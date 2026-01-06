@@ -1,11 +1,13 @@
 'use client'
 
-import {
-  ArrowRight,
-  Play,
-  ChevronDown
-} from 'lucide-react'
-import React, { useEffect, useState, useRef, useSyncExternalStore, useCallback } from 'react'
+import { ArrowRight, Play, ChevronDown } from 'lucide-react'
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useSyncExternalStore,
+  useCallback,
+} from 'react'
 
 import { shadows } from '@/lib/design-system/spacing'
 import { themes } from '@/lib/design-system/themes'
@@ -23,26 +25,29 @@ import { Button } from './Button'
  */
 function useIntersectionVisibility(
   ref: React.RefObject<HTMLElement | null>,
-  threshold = 0.1
+  threshold = 0.1,
 ): boolean {
   const subscribe = useCallback(
     (callback: () => void) => {
       const element = ref.current
       if (!element) return () => {}
 
-      const observer = new IntersectionObserver((entries) => {
-        const entry = entries[0]
-        if (entry?.isIntersecting) {
-          // Once visible, we can disconnect - animation triggers once
-          observer.disconnect()
-        }
-        callback()
-      }, { threshold })
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0]
+          if (entry?.isIntersecting) {
+            // Once visible, we can disconnect - animation triggers once
+            observer.disconnect()
+          }
+          callback()
+        },
+        { threshold },
+      )
 
       observer.observe(element)
       return () => observer.disconnect()
     },
-    [ref, threshold]
+    [ref, threshold],
   )
 
   const getSnapshot = useCallback(() => {
@@ -71,7 +76,7 @@ export interface HeroSectionProps {
   title: string | React.ReactNode
   subtitle?: string | React.ReactNode
   description?: string | React.ReactNode
-  
+
   // Actions
   primaryAction?: {
     label: string
@@ -83,35 +88,35 @@ export interface HeroSectionProps {
     onClick: () => void
     icon?: React.ReactNode
   }
-  
+
   // Media
   backgroundImage?: string
   backgroundVideo?: string
   foregroundImage?: string
   overlay?: boolean
   overlayOpacity?: number
-  
+
   // Parallax
   parallax?: boolean
   parallaxSpeed?: number
   parallaxOffset?: number
-  
+
   // Animations
   animated?: boolean
   animationDelay?: number
   floatingElements?: React.ReactNode[]
-  
+
   // Layout
   height?: 'full' | 'large' | 'medium' | 'small' | 'auto'
   alignment?: 'left' | 'center' | 'right'
   contentWidth?: 'narrow' | 'medium' | 'wide' | 'full'
-  
+
   // Features
   stats?: Array<{ label: string; value: string | number }>
   badges?: Array<{ text: string; icon?: React.ReactNode }>
   scrollIndicator?: boolean
   onScrollClick?: () => void
-  
+
   // Styling
   theme?: keyof typeof themes
   variant?: 'default' | 'gradient' | 'glass' | 'dark' | 'light'
@@ -155,7 +160,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
   // Use useSyncExternalStore for intersection visibility (SSR-safe)
   const isVisible = useIntersectionVisibility(heroRef)
-  
+
   // Height classes
   const heightClasses = {
     full: 'min-h-screen',
@@ -164,14 +169,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     small: 'min-h-[40vh]',
     auto: 'min-h-[400px]',
   }
-  
+
   // Alignment classes
   const alignmentClasses = {
     left: 'text-left items-start',
     center: 'text-center items-center',
     right: 'text-right items-end',
   }
-  
+
   // Content width classes
   const contentWidthClasses = {
     narrow: 'max-w-2xl',
@@ -179,16 +184,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     wide: 'max-w-6xl',
     full: 'max-w-full',
   }
-  
+
   // Variant styles
   const variantStyles = {
     default: '',
-    gradient: 'bg-gradient-to-br from-primary/20 via-transparent to-secondary/20',
+    gradient:
+      'bg-gradient-to-br from-primary/20 via-transparent to-secondary/20',
     glass: cn(selectedTheme?.card, selectedTheme?.blur),
     dark: 'bg-gray-900 text-white',
     light: 'bg-white text-gray-900',
   }
-  
+
   // Handle parallax scrolling
   useEffect(() => {
     if (!parallax) return
@@ -201,12 +207,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [parallax])
-  
+
   // Calculate parallax transform
-  const parallaxTransform = parallax 
-    ? `translateY(${(scrollY * parallaxSpeed) + parallaxOffset}px)`
+  const parallaxTransform = parallax
+    ? `translateY(${scrollY * parallaxSpeed + parallaxOffset}px)`
     : undefined
-  
+
   return (
     <section
       ref={heroRef}
@@ -215,7 +221,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         heightClasses[height],
         'flex items-center',
         variantStyles[variant],
-        className
+        className,
       )}
     >
       {/* Background Video */}
@@ -232,7 +238,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <source src={backgroundVideo} type="video/mp4" />
         </video>
       )}
-      
+
       {/* Background Image */}
       {backgroundImage && !backgroundVideo && (
         <div
@@ -243,54 +249,61 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           }}
         />
       )}
-      
+
       {/* Overlay */}
       {overlay && (backgroundImage || backgroundVideo) && (
-        <div 
+        <div
           className="absolute inset-0 bg-black"
           style={{ opacity: overlayOpacity }}
         />
       )}
-      
+
       {/* Floating Elements */}
       {floatingElements.map((element, index) => (
         <div
           key={index}
-          className={cn(
-            'absolute',
-            animated && 'animate-float'
-          )}
+          className={cn('absolute', animated && 'animate-float')}
           style={{
             animationDelay: `${index * 0.5}s`,
             animationDuration: `${3 + index}s`,
-            top: `${20 + (index * 15)}%`,
-            left: `${10 + (index * 20)}%`,
-            transform: parallax ? `translateY(${scrollY * (0.3 + index * 0.1)}px)` : undefined,
+            top: `${20 + index * 15}%`,
+            left: `${10 + index * 20}%`,
+            transform: parallax
+              ? `translateY(${scrollY * (0.3 + index * 0.1)}px)`
+              : undefined,
           }}
         >
           {element}
         </div>
       ))}
-      
+
       {/* Content Container */}
-      <div className={cn(
-        'relative z-10 w-full px-4 sm:px-6 lg:px-8',
-        contentClassName
-      )}>
-        <div className={cn(
-          'mx-auto',
-          contentWidthClasses[contentWidth],
-          alignmentClasses[alignment]
-        )}>
+      <div
+        className={cn(
+          'relative z-10 w-full px-4 sm:px-6 lg:px-8',
+          contentClassName,
+        )}
+      >
+        <div
+          className={cn(
+            'mx-auto',
+            contentWidthClasses[contentWidth],
+            alignmentClasses[alignment],
+          )}
+        >
           {/* Badges */}
           {badges && badges.length > 0 && (
-            <div className={cn(
-              'flex flex-wrap gap-2 mb-6',
-              alignment === 'center' && 'justify-center',
-              alignment === 'right' && 'justify-end',
-              animated && isVisible && 'animate-in fade-in slide-in-from-bottom-4',
-              `animation-delay-${animationDelay}`
-            )}>
+            <div
+              className={cn(
+                'flex flex-wrap gap-2 mb-6',
+                alignment === 'center' && 'justify-center',
+                alignment === 'right' && 'justify-end',
+                animated &&
+                  isVisible &&
+                  'animate-in fade-in slide-in-from-bottom-4',
+                `animation-delay-${animationDelay}`,
+              )}
+            >
               {badges.map((badge, index) => (
                 <div
                   key={index}
@@ -298,7 +311,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     'inline-flex items-center gap-2 px-3 py-1.5',
                     'bg-white/10 backdrop-blur-md rounded-full',
                     'border border-white/20',
-                    'text-sm font-medium'
+                    'text-sm font-medium',
                   )}
                 >
                   {badge.icon}
@@ -307,62 +320,80 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               ))}
             </div>
           )}
-          
+
           {/* Subtitle */}
           {subtitle && (
-            <div className={cn(
-              typography.headline.className,
-              'mb-4 text-primary',
-              animated && isVisible && 'animate-in fade-in slide-in-from-bottom-4',
-              `animation-delay-${animationDelay + 100}`
-            )}>
+            <div
+              className={cn(
+                typography.headline.className,
+                'mb-4 text-primary',
+                animated &&
+                  isVisible &&
+                  'animate-in fade-in slide-in-from-bottom-4',
+                `animation-delay-${animationDelay + 100}`,
+              )}
+            >
               {subtitle}
             </div>
           )}
-          
+
           {/* Title */}
-          <h1 className={cn(
-            'mb-6',
-            animated && isVisible && 'animate-in fade-in slide-in-from-bottom-4',
-            `animation-delay-${animationDelay + 200}`
-          )}>
+          <h1
+            className={cn(
+              'mb-6',
+              animated &&
+                isVisible &&
+                'animate-in fade-in slide-in-from-bottom-4',
+              `animation-delay-${animationDelay + 200}`,
+            )}
+          >
             {typeof title === 'string' ? (
-              <span className={cn(
-                typography.largeTitle.className,
-                'font-bold bg-clip-text text-transparent',
-                'bg-linear-to-r from-foreground to-foreground/70'
-              )}>
+              <span
+                className={cn(
+                  typography.largeTitle.className,
+                  'font-bold bg-clip-text text-transparent',
+                  'bg-linear-to-r from-foreground to-foreground/70',
+                )}
+              >
                 {title}
               </span>
             ) : (
               title
             )}
           </h1>
-          
+
           {/* Description */}
           {description && (
-            <div className={cn(
-              typography.body.className,
-              'mb-8 text-foreground/70',
-              contentWidth === 'narrow' ? 'max-w-xl' : 'max-w-2xl',
-              alignment === 'center' && 'mx-auto',
-              alignment === 'right' && 'ml-auto',
-              animated && isVisible && 'animate-in fade-in slide-in-from-bottom-4',
-              `animation-delay-${animationDelay + 300}`
-            )}>
+            <div
+              className={cn(
+                typography.body.className,
+                'mb-8 text-foreground/70',
+                contentWidth === 'narrow' ? 'max-w-xl' : 'max-w-2xl',
+                alignment === 'center' && 'mx-auto',
+                alignment === 'right' && 'ml-auto',
+                animated &&
+                  isVisible &&
+                  'animate-in fade-in slide-in-from-bottom-4',
+                `animation-delay-${animationDelay + 300}`,
+              )}
+            >
               {description}
             </div>
           )}
-          
+
           {/* Actions */}
           {(primaryAction || secondaryAction) && (
-            <div className={cn(
-              'flex flex-wrap gap-4 mb-12',
-              alignment === 'center' && 'justify-center',
-              alignment === 'right' && 'justify-end',
-              animated && isVisible && 'animate-in fade-in slide-in-from-bottom-4',
-              `animation-delay-${animationDelay + 400}`
-            )}>
+            <div
+              className={cn(
+                'flex flex-wrap gap-4 mb-12',
+                alignment === 'center' && 'justify-center',
+                alignment === 'right' && 'justify-end',
+                animated &&
+                  isVisible &&
+                  'animate-in fade-in slide-in-from-bottom-4',
+                `animation-delay-${animationDelay + 400}`,
+              )}
+            >
               {primaryAction && (
                 <Button
                   variant="primary"
@@ -389,74 +420,87 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               )}
             </div>
           )}
-          
+
           {/* Stats */}
           {stats && stats.length > 0 && (
-            <div className={cn(
-              'grid grid-cols-2 md:grid-cols-4 gap-8',
-              animated && isVisible && 'animate-in fade-in slide-in-from-bottom-4',
-              `animation-delay-${animationDelay + 500}`
-            )}>
+            <div
+              className={cn(
+                'grid grid-cols-2 md:grid-cols-4 gap-8',
+                animated &&
+                  isVisible &&
+                  'animate-in fade-in slide-in-from-bottom-4',
+                `animation-delay-${animationDelay + 500}`,
+              )}
+            >
               {stats.map((stat, index) => (
                 <div
                   key={index}
                   className={cn(
                     'text-center',
                     alignment === 'left' && 'text-left',
-                    alignment === 'right' && 'text-right'
+                    alignment === 'right' && 'text-right',
                   )}
                 >
-                  <div className={cn(
-                    typography.title1.className,
-                    'font-bold text-primary mb-1'
-                  )}>
+                  <div
+                    className={cn(
+                      typography.title1.className,
+                      'font-bold text-primary mb-1',
+                    )}
+                  >
                     {stat.value}
                   </div>
-                  <div className={cn(
-                    typography.caption1.className,
-                    'text-foreground/60'
-                  )}>
+                  <div
+                    className={cn(
+                      typography.caption1.className,
+                      'text-foreground/60',
+                    )}
+                  >
                     {stat.label}
                   </div>
                 </div>
               ))}
             </div>
           )}
-          
+
           {/* Foreground Image */}
           {foregroundImage && (
-            <div className={cn(
-              'relative mt-12',
-              animated && isVisible && 'animate-in fade-in zoom-in-95',
-              `animation-delay-${animationDelay + 600}`
-            )}>
+            <div
+              className={cn(
+                'relative mt-12',
+                animated && isVisible && 'animate-in fade-in zoom-in-95',
+                `animation-delay-${animationDelay + 600}`,
+              )}
+            >
               <img
                 src={foregroundImage}
                 alt="Hero"
                 className={cn(
                   'w-full h-auto rounded-2xl',
                   shadows.xl,
-                  parallax && 'will-change-transform'
+                  parallax && 'will-change-transform',
                 )}
                 style={{
-                  transform: parallax ? `translateY(${scrollY * -0.2}px)` : undefined,
+                  transform: parallax
+                    ? `translateY(${scrollY * -0.2}px)`
+                    : undefined,
                 }}
               />
             </div>
           )}
         </div>
       </div>
-      
+
       {/* Scroll Indicator */}
       {scrollIndicator && (
         <button
+          type="button"
           onClick={onScrollClick}
           className={cn(
             'absolute bottom-8 left-1/2 -translate-x-1/2',
             'p-2 rounded-full',
             'bg-white/10 backdrop-blur-md border border-white/20',
             'hover:bg-white/20 transition-colors',
-            'animate-bounce'
+            'animate-bounce',
           )}
           aria-label="Scroll down"
         >
@@ -468,17 +512,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 }
 
 // Additional hero variations
-export const GradientHero: React.FC<Omit<HeroSectionProps, 'variant'>> = (props) => (
-  <HeroSection {...props} variant="gradient" />
-)
+export const GradientHero: React.FC<Omit<HeroSectionProps, 'variant'>> = (
+  props,
+) => <HeroSection {...props} variant="gradient" />
 
-export const VideoHero: React.FC<Omit<HeroSectionProps, 'backgroundVideo'> & { videoUrl: string }> = ({
-  videoUrl,
-  ...props
-}) => (
+export const VideoHero: React.FC<
+  Omit<HeroSectionProps, 'backgroundVideo'> & { videoUrl: string }
+> = ({ videoUrl, ...props }) => (
   <HeroSection {...props} backgroundVideo={videoUrl} />
 )
 
-export const ParallaxHero: React.FC<Omit<HeroSectionProps, 'parallax'>> = (props) => (
-  <HeroSection {...props} parallax={true} />
-)
+export const ParallaxHero: React.FC<Omit<HeroSectionProps, 'parallax'>> = (
+  props,
+) => <HeroSection {...props} parallax={true} />

@@ -9,8 +9,8 @@ import { ChartAreaIcons } from '@/components/blocks/chart-area-icons'
 import { ChartAreaInteractive } from '@/components/blocks/chart-area-interactive'
 import { ChartAreaLegend } from '@/components/blocks/chart-area-legend'
 import { ChartAreaLinear } from '@/components/blocks/chart-area-linear'
-import { ChartAreaStackedExpand } from '@/components/blocks/chart-area-stacked-expand'
 import { ChartAreaStacked } from '@/components/blocks/chart-area-stacked'
+import { ChartAreaStackedExpand } from '@/components/blocks/chart-area-stacked-expand'
 import { ChartAreaStep } from '@/components/blocks/chart-area-step'
 
 const meta = {

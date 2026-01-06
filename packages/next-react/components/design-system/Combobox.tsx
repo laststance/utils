@@ -1,13 +1,6 @@
 'use client'
 
-import { 
-  ChevronDown,
-  X,
-  Check,
-  Search,
-  Plus,
-  Loader2
-} from 'lucide-react'
+import { ChevronDown, X, Check, Search, Plus, Loader2 } from 'lucide-react'
 import React, { useState, useRef, useEffect, useMemo } from 'react'
 
 import { shadows, radius } from '@/lib/design-system/spacing'
@@ -31,29 +24,29 @@ export interface ComboboxProps {
   options: ComboboxOption[]
   value?: string | string[]
   onChange?: (value: string | string[]) => void
-  
+
   // Multi-select
   multiple?: boolean
   maxSelections?: number
-  
+
   // Search
   searchable?: boolean
   searchPlaceholder?: string
   onSearch?: (query: string) => void
   customFilter?: (option: ComboboxOption, query: string) => boolean
-  
+
   // Creation
   creatable?: boolean
   onCreate?: (value: string) => void
   createLabel?: (value: string) => string
-  
+
   // Loading
   loading?: boolean
   loadingText?: string
-  
+
   // Grouping
   groupBy?: keyof ComboboxOption | ((option: ComboboxOption) => string)
-  
+
   // Appearance
   placeholder?: string
   label?: string
@@ -61,12 +54,12 @@ export interface ComboboxProps {
   error?: string
   disabled?: boolean
   clearable?: boolean
-  
+
   // Custom rendering
   renderOption?: (option: ComboboxOption, selected: boolean) => React.ReactNode
   renderValue?: (value: string | string[]) => React.ReactNode
   renderTags?: (values: string[]) => React.ReactNode
-  
+
   // Styling
   theme?: keyof typeof themes
   variant?: 'default' | 'glass' | 'minimal' | 'bold'
@@ -112,11 +105,11 @@ export const Combobox: React.FC<ComboboxProps> = ({
   const [isOpen, setIsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [highlightedIndex, setHighlightedIndex] = useState(0)
-  
+
   const containerRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
-  
+
   // Size configurations
   const sizeConfig = {
     sm: {
@@ -135,128 +128,134 @@ export const Combobox: React.FC<ComboboxProps> = ({
       minHeight: 'min-h-[48px]',
     },
   }
-  
+
   const variantClasses = {
     default: cn(
       'bg-background border border-border',
       'hover:border-foreground/30',
-      'focus-within:border-primary focus-within:ring-1 focus-within:ring-primary/20'
+      'focus-within:border-primary focus-within:ring-1 focus-within:ring-primary/20',
     ),
     glass: cn(
       selectedTheme?.card,
       selectedTheme?.blur,
       'border border-white/10',
       'hover:border-white/20',
-      'focus-within:border-white/30'
+      'focus-within:border-white/30',
     ),
     minimal: cn(
       'bg-transparent border-b border-border',
       'hover:border-foreground/30',
-      'focus-within:border-primary'
+      'focus-within:border-primary',
     ),
     bold: cn(
       'bg-background border-2 border-border',
       'hover:border-foreground/30',
-      'focus-within:border-primary'
+      'focus-within:border-primary',
     ),
   }
-  
+
   // Normalize value to array for internal use
   const selectedValues = useMemo(() => {
     if (!value) return []
     return Array.isArray(value) ? value : [value]
   }, [value])
-  
+
   // Filter options based on search query
   const filteredOptions = useMemo(() => {
     if (!searchQuery) return options
-    
+
     if (customFilter) {
-      return options.filter(option => customFilter(option, searchQuery))
+      return options.filter((option) => customFilter(option, searchQuery))
     }
-    
-    return options.filter(option => 
-      option.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      option.description?.toLowerCase().includes(searchQuery.toLowerCase())
+
+    return options.filter(
+      (option) =>
+        option.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        option.description?.toLowerCase().includes(searchQuery.toLowerCase()),
     )
   }, [options, searchQuery, customFilter])
-  
+
   // Group options if groupBy is provided
   const groupedOptions = useMemo(() => {
     if (!groupBy) return { '': filteredOptions }
-    
+
     const groups: Record<string, ComboboxOption[]> = {}
-    
-    filteredOptions.forEach(option => {
-      const groupKey = typeof groupBy === 'function' 
-        ? groupBy(option) 
-        : option[groupBy] as string || 'Other'
-      
+
+    filteredOptions.forEach((option) => {
+      const groupKey =
+        typeof groupBy === 'function'
+          ? groupBy(option)
+          : (option[groupBy] as string) || 'Other'
+
       if (!groups[groupKey]) {
         groups[groupKey] = []
       }
       groups[groupKey].push(option)
     })
-    
+
     return groups
   }, [filteredOptions, groupBy])
-  
+
   // Check if we should show create option
-  const showCreateOption = creatable && searchQuery && 
-    !filteredOptions.some(opt => opt.label.toLowerCase() === searchQuery.toLowerCase())
-  
+  const showCreateOption =
+    creatable &&
+    searchQuery &&
+    !filteredOptions.some(
+      (opt) => opt.label.toLowerCase() === searchQuery.toLowerCase(),
+    )
+
   // Handle selection
   const handleSelect = (option: ComboboxOption) => {
     if (option.disabled) return
-    
+
     if (multiple) {
       const newValues = selectedValues.includes(option.value)
-        ? selectedValues.filter(v => v !== option.value)
+        ? selectedValues.filter((v) => v !== option.value)
         : [...selectedValues, option.value]
-      
+
       if (maxSelections && newValues.length > maxSelections) {
         return
       }
-      
+
       onChange?.(newValues)
     } else {
       onChange?.(option.value)
       setIsOpen(false)
     }
-    
+
     setSearchQuery('')
   }
-  
+
   // Handle create
   const handleCreate = () => {
     if (searchQuery) {
       onCreate?.(searchQuery)
-      
+
       if (multiple) {
         onChange?.([...selectedValues, searchQuery])
       } else {
         onChange?.(searchQuery)
       }
-      
+
       setSearchQuery('')
       setIsOpen(false)
     }
   }
-  
+
   // Handle clear
   const handleClear = (e: React.MouseEvent) => {
     e.stopPropagation()
     onChange?.(multiple ? [] : '')
   }
-  
+
   // Handle remove tag
   const handleRemoveTag = (valueToRemove: string, e?: React.MouseEvent) => {
     e?.stopPropagation()
     if (multiple) {
-      onChange?.(selectedValues.filter(v => v !== valueToRemove))
+      onChange?.(selectedValues.filter((v) => v !== valueToRemove))
     }
   }
-  
+
   // Handle keyboard navigation
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!isOpen && (e.key === 'Enter' || e.key === ' ')) {
@@ -264,19 +263,20 @@ export const Combobox: React.FC<ComboboxProps> = ({
       setIsOpen(true)
       return
     }
-    
+
     if (!isOpen) return
-    
-    const totalOptions = Object.values(groupedOptions).flat().length + (showCreateOption ? 1 : 0)
-    
+
+    const totalOptions =
+      Object.values(groupedOptions).flat().length + (showCreateOption ? 1 : 0)
+
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault()
-        setHighlightedIndex(prev => (prev + 1) % totalOptions)
+        setHighlightedIndex((prev) => (prev + 1) % totalOptions)
         break
       case 'ArrowUp':
         e.preventDefault()
-        setHighlightedIndex(prev => (prev - 1 + totalOptions) % totalOptions)
+        setHighlightedIndex((prev) => (prev - 1 + totalOptions) % totalOptions)
         break
       case 'Enter':
         e.preventDefault()
@@ -293,36 +293,39 @@ export const Combobox: React.FC<ComboboxProps> = ({
         break
     }
   }
-  
+
   // Click outside handler
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
         setIsOpen(false)
       }
     }
-    
+
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
-  
+
   // Get display value
   const getDisplayValue = async () => {
     if (renderValue) {
       return renderValue(multiple ? selectedValues : selectedValues[0] || '')
     }
-    
+
     if (multiple && renderTags) {
       return renderTags(selectedValues)
     }
-    
+
     if (multiple) {
       if (selectedValues.length === 0) return null
-      
+
       return (
         <div className="flex flex-wrap gap-1">
-          {selectedValues.map(val => {
-            const option = options.find(opt => opt.value === val)
+          {selectedValues.map((val) => {
+            const option = options.find((opt) => opt.value === val)
             return (
               <Badge
                 key={val}
@@ -337,30 +340,30 @@ export const Combobox: React.FC<ComboboxProps> = ({
         </div>
       )
     }
-    
-    const selectedOption = options.find(opt => opt.value === selectedValues[0])
+
+    const selectedOption = options.find(
+      (opt) => opt.value === selectedValues[0],
+    )
     return selectedOption?.label
   }
-  
+
   return (
-    <div 
+    <div
       ref={containerRef}
-      className={cn(
-        'relative',
-        fullWidth ? 'w-full' : 'w-64',
-        className
-      )}
+      className={cn('relative', fullWidth ? 'w-full' : 'w-64', className)}
     >
       {/* Label */}
       {label && (
-        <label className={cn(
-          typography.caption1.className,
-          'block mb-1.5 font-medium text-foreground/70'
-        )}>
+        <label
+          className={cn(
+            typography.caption1.className,
+            'block mb-1.5 font-medium text-foreground/70',
+          )}
+        >
           {label}
         </label>
       )}
-      
+
       {/* Main trigger */}
       <div
         onClick={() => !disabled && setIsOpen(!isOpen)}
@@ -376,7 +379,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
           sizeConfig[size].minHeight,
           'transition-all duration-200',
           disabled && 'opacity-50 cursor-not-allowed',
-          error && 'border-red-500'
+          error && 'border-red-500',
         )}
       >
         {/* Value or placeholder */}
@@ -385,38 +388,41 @@ export const Combobox: React.FC<ComboboxProps> = ({
             <span className="text-foreground/40">{placeholder}</span>
           )}
         </div>
-        
+
         {/* Actions */}
         <div className="flex items-center gap-1">
           {clearable && selectedValues.length > 0 && !disabled && (
             <button
+              type="button"
               onClick={handleClear}
               className="p-1 hover:bg-foreground/10 rounded transition-colors"
             >
               <X size={16} />
             </button>
           )}
-          <ChevronDown 
-            size={16} 
+          <ChevronDown
+            size={16}
             className={cn(
               'transition-transform text-foreground/50',
-              isOpen && 'rotate-180'
+              isOpen && 'rotate-180',
             )}
           />
         </div>
       </div>
-      
+
       {/* Hint or error */}
       {(hint || error) && (
-        <p className={cn(
-          typography.caption2.className,
-          'mt-1.5',
-          error ? 'text-red-500' : 'text-foreground/50'
-        )}>
+        <p
+          className={cn(
+            typography.caption2.className,
+            'mt-1.5',
+            error ? 'text-red-500' : 'text-foreground/50',
+          )}
+        >
           {error || hint}
         </p>
       )}
-      
+
       {/* Dropdown */}
       {isOpen && (
         <div
@@ -426,14 +432,17 @@ export const Combobox: React.FC<ComboboxProps> = ({
             'bg-background border border-border rounded-lg',
             shadows.lg,
             'z-50 max-h-80 overflow-auto',
-            dropdownClassName
+            dropdownClassName,
           )}
         >
           {/* Search input */}
           {searchable && (
             <div className="p-2 border-b border-border">
               <div className="relative">
-                <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/50" />
+                <Search
+                  size={16}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/50"
+                />
                 <input
                   ref={inputRef}
                   type="text"
@@ -447,14 +456,14 @@ export const Combobox: React.FC<ComboboxProps> = ({
                     'w-full pl-9 pr-3 py-2',
                     'bg-foreground/5 rounded-md',
                     'outline-none focus:bg-foreground/10',
-                    'text-sm'
+                    'text-sm',
                   )}
                   autoFocus
                 />
               </div>
             </div>
           )}
-          
+
           {/* Loading state */}
           {loading ? (
             <div className="p-8 text-center">
@@ -464,63 +473,68 @@ export const Combobox: React.FC<ComboboxProps> = ({
           ) : (
             <>
               {/* Options */}
-              {Object.entries(groupedOptions).map(([group, groupOptions], groupIndex) => (
-                <div key={group}>
-                  {group && (
-                    <div className="px-3 py-2 text-xs font-semibold text-foreground/50 uppercase">
-                      {group}
-                    </div>
-                  )}
-                  {groupOptions.map((option, optionIndex) => {
-                    const isSelected = selectedValues.includes(option.value)
-                    const globalIndex = Object.values(groupedOptions)
-                      .slice(0, groupIndex)
-                      .flat()
-                      .length + optionIndex
-                    const isHighlighted = highlightedIndex === globalIndex
-                    
-                    return (
-                      <div
-                        key={option.value}
-                        onClick={() => handleSelect(option)}
-                        className={cn(
-                          'px-3 py-2 cursor-pointer',
-                          'hover:bg-foreground/5 transition-colors',
-                          isHighlighted && 'bg-foreground/10',
-                          isSelected && 'bg-primary/10',
-                          option.disabled && 'opacity-50 cursor-not-allowed'
-                        )}
-                      >
-                        {renderOption ? (
-                          renderOption(option, isSelected)
-                        ) : (
-                          <div className="flex items-center gap-3">
-                            {option.icon && (
-                              <div className="flex-shrink-0">
-                                {option.icon}
-                              </div>
-                            )}
-                            <div className="flex-1">
-                              <div className="text-sm font-medium">
-                                {option.label}
-                              </div>
-                              {option.description && (
-                                <div className="text-xs text-foreground/50">
-                                  {option.description}
+              {Object.entries(groupedOptions).map(
+                ([group, groupOptions], groupIndex) => (
+                  <div key={group}>
+                    {group && (
+                      <div className="px-3 py-2 text-xs font-semibold text-foreground/50 uppercase">
+                        {group}
+                      </div>
+                    )}
+                    {groupOptions.map((option, optionIndex) => {
+                      const isSelected = selectedValues.includes(option.value)
+                      const globalIndex =
+                        Object.values(groupedOptions)
+                          .slice(0, groupIndex)
+                          .flat().length + optionIndex
+                      const isHighlighted = highlightedIndex === globalIndex
+
+                      return (
+                        <div
+                          key={option.value}
+                          onClick={() => handleSelect(option)}
+                          className={cn(
+                            'px-3 py-2 cursor-pointer',
+                            'hover:bg-foreground/5 transition-colors',
+                            isHighlighted && 'bg-foreground/10',
+                            isSelected && 'bg-primary/10',
+                            option.disabled && 'opacity-50 cursor-not-allowed',
+                          )}
+                        >
+                          {renderOption ? (
+                            renderOption(option, isSelected)
+                          ) : (
+                            <div className="flex items-center gap-3">
+                              {option.icon && (
+                                <div className="flex-shrink-0">
+                                  {option.icon}
                                 </div>
                               )}
+                              <div className="flex-1">
+                                <div className="text-sm font-medium">
+                                  {option.label}
+                                </div>
+                                {option.description && (
+                                  <div className="text-xs text-foreground/50">
+                                    {option.description}
+                                  </div>
+                                )}
+                              </div>
+                              {isSelected && (
+                                <Check
+                                  size={16}
+                                  className="flex-shrink-0 text-primary"
+                                />
+                              )}
                             </div>
-                            {isSelected && (
-                              <Check size={16} className="flex-shrink-0 text-primary" />
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    )
-                  })}
-                </div>
-              ))}
-              
+                          )}
+                        </div>
+                      )
+                    })}
+                  </div>
+                ),
+              )}
+
               {/* Create option */}
               {showCreateOption && (
                 <div
@@ -528,14 +542,14 @@ export const Combobox: React.FC<ComboboxProps> = ({
                   className={cn(
                     'px-3 py-2 cursor-pointer border-t border-border',
                     'hover:bg-foreground/5 transition-colors',
-                    'flex items-center gap-2'
+                    'flex items-center gap-2',
                   )}
                 >
                   <Plus size={16} />
                   <span className="text-sm">{createLabel(searchQuery)}</span>
                 </div>
               )}
-              
+
               {/* No results */}
               {filteredOptions.length === 0 && !showCreateOption && (
                 <div className="p-8 text-center text-sm text-foreground/50">

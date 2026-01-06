@@ -38,7 +38,10 @@ export const Default: Story = {
   render: (args) => (
     <Popover {...args}>
       <PopoverTrigger asChild>
-        <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+        <button
+          type="button"
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
           Open Popover
         </button>
       </PopoverTrigger>
@@ -76,7 +79,10 @@ export const Simple: Story = {
   render: (args) => (
     <Popover {...args}>
       <PopoverTrigger asChild>
-        <button className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+        <button
+          type="button"
+          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+        >
           Click me
         </button>
       </PopoverTrigger>

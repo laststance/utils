@@ -1,6 +1,15 @@
 'use client'
 
-import { Eye, EyeOff, Mail, Lock, User, Check, X, ArrowLeft } from 'lucide-react'
+import {
+  Eye,
+  EyeOff,
+  Mail,
+  Lock,
+  User,
+  Check,
+  X,
+  ArrowLeft,
+} from 'lucide-react'
 import React, { useState } from 'react'
 
 import { radius } from '@/lib/design-system/spacing'
@@ -22,62 +31,75 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   showPasswordToggle?: boolean
 }
 
-export const Input = ({ ref, className, label, error, hint, icon, theme = 'glass-clear', variant = 'default', type = 'text', showPasswordToggle = false, disabled, id, ...props }: InputProps & { ref?: React.RefObject<HTMLInputElement | null> }) => {
+export const Input = ({
+  ref,
+  className,
+  label,
+  error,
+  hint,
+  icon,
+  theme = 'glass-clear',
+  variant = 'default',
+  type = 'text',
+  showPasswordToggle = false,
+  disabled,
+  id,
+  ...props
+}: InputProps & { ref?: React.RefObject<HTMLInputElement | null> }) => {
   const [showPassword, setShowPassword] = useState(false)
   const selectedTheme = themes[theme]
   const generatedId = React.useId()
   const inputId = id || generatedId
-  
+
   const variantClasses = {
     default: cn(
       'bg-background/50',
       'border border-border',
-      'focus:border-primary'
+      'focus:border-primary',
     ),
     glass: cn(
       selectedTheme?.card,
       selectedTheme?.blur,
       'border border-white/10',
-      'focus:border-primary/50'
+      'focus:border-primary/50',
     ),
     minimal: cn(
       'bg-transparent',
       'border-b border-border',
       'rounded-none',
-      'focus:border-primary'
+      'focus:border-primary',
     ),
-    bold: cn(
-      'bg-background',
-      'border-2 border-border',
-      'focus:border-primary'
-    ),
+    bold: cn('bg-background', 'border-2 border-border', 'focus:border-primary'),
   }
-  
-  const inputType = showPasswordToggle && type === 'password' 
-    ? (showPassword ? 'text' : 'password')
-    : type
-  
+
+  const inputType =
+    showPasswordToggle && type === 'password'
+      ? showPassword
+        ? 'text'
+        : 'password'
+      : type
+
   return (
     <div className="space-y-1.5">
       {label && (
-        <label 
+        <label
           htmlFor={inputId}
           className={cn(
             typography.subheadline.className,
-            'text-foreground/70 block'
+            'text-foreground/70 block',
           )}
         >
           {label}
         </label>
       )}
-      
+
       <div className="relative">
         {icon && (
           <div className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/50">
             {icon}
           </div>
         )}
-        
+
         <input
           ref={ref}
           id={inputId}
@@ -94,11 +116,11 @@ export const Input = ({ ref, className, label, error, hint, icon, theme = 'glass
             showPasswordToggle && type === 'password' && 'pr-10',
             error && 'border-destructive focus:border-destructive',
             disabled && 'opacity-50 cursor-not-allowed',
-            className
+            className,
           )}
           {...props}
         />
-        
+
         {showPasswordToggle && type === 'password' && (
           <button
             type="button"
@@ -109,21 +131,20 @@ export const Input = ({ ref, className, label, error, hint, icon, theme = 'glass
           </button>
         )}
       </div>
-      
+
       {hint && !error && (
-        <p className={cn(
-          typography.caption1.className,
-          'text-foreground/50'
-        )}>
+        <p className={cn(typography.caption1.className, 'text-foreground/50')}>
           {hint}
         </p>
       )}
-      
+
       {error && (
-        <p className={cn(
-          typography.caption1.className,
-          'text-destructive flex items-center gap-1'
-        )}>
+        <p
+          className={cn(
+            typography.caption1.className,
+            'text-destructive flex items-center gap-1',
+          )}
+        >
           <X size={12} />
           {error}
         </p>
@@ -154,12 +175,12 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     onSubmit?.({ email, password })
   }
-  
+
   return (
     <Card variant="glass" theme={theme} className="w-full max-w-md mx-auto p-8">
       <div className="text-center mb-8">
@@ -170,14 +191,14 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           Sign in to continue to your account
         </p>
       </div>
-      
+
       <form onSubmit={handleSubmit} className="space-y-6">
         {error && (
           <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-3">
             <p className="text-sm text-destructive">{error}</p>
           </div>
         )}
-        
+
         <Input
           label="Email"
           type="email"
@@ -189,7 +210,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           variant="glass"
           required
         />
-        
+
         <Input
           label="Password"
           type="password"
@@ -202,13 +223,13 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           showPasswordToggle
           required
         />
-        
+
         <div className="flex items-center justify-between">
           <label className="flex items-center gap-2">
             <input type="checkbox" className="rounded" />
             <span className="text-sm text-foreground/70">Remember me</span>
           </label>
-          
+
           <button
             type="button"
             onClick={onForgotPassword}
@@ -217,7 +238,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             Forgot password?
           </button>
         </div>
-        
+
         <Button
           type="submit"
           fullWidth
@@ -228,16 +249,18 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         >
           Sign In
         </Button>
-        
+
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-border/50" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="bg-background/50 px-2 text-foreground/50">Or continue with</span>
+            <span className="bg-background/50 px-2 text-foreground/50">
+              Or continue with
+            </span>
           </div>
         </div>
-        
+
         <div className="grid grid-cols-3 gap-3">
           <Button variant="outline" theme={theme}>
             Google
@@ -250,10 +273,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           </Button>
         </div>
       </form>
-      
+
       <p className="text-center mt-8 text-sm text-foreground/60">
         Don&apos;t have an account?{' '}
         <button
+          type="button"
           onClick={onSignUp}
           className="text-primary hover:underline font-medium"
         >
@@ -285,7 +309,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [passwordError, setPasswordError] = useState('')
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (password !== confirmPassword) {
@@ -295,7 +319,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
     setPasswordError('')
     onSubmit?.({ name, email, password })
   }
-  
+
   const passwordStrength = () => {
     if (!password) return 0
     let strength = 0
@@ -305,13 +329,22 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
     if (/[^a-zA-Z\d]/.test(password)) strength++
     return strength
   }
-  
+
   const strength = passwordStrength()
-  const strengthColors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-green-500']
+  const strengthColors = [
+    'bg-red-500',
+    'bg-orange-500',
+    'bg-yellow-500',
+    'bg-green-500',
+  ]
   const strengthLabels = ['Weak', 'Fair', 'Good', 'Strong']
-  
+
   return (
-    <Card variant="gradient" theme={theme} className="w-full max-w-md mx-auto p-8">
+    <Card
+      variant="gradient"
+      theme={theme}
+      className="w-full max-w-md mx-auto p-8"
+    >
       <div className="text-center mb-8">
         <h1 className={cn(typography.title2.className, 'mb-2')}>
           Create Account
@@ -320,14 +353,14 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
           Get started with your free account
         </p>
       </div>
-      
+
       <form onSubmit={handleSubmit} className="space-y-5">
         {error && (
           <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-3">
             <p className="text-sm text-destructive">{error}</p>
           </div>
         )}
-        
+
         <Input
           label="Full Name"
           type="text"
@@ -339,7 +372,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
           variant="glass"
           required
         />
-        
+
         <Input
           label="Email"
           type="email"
@@ -351,7 +384,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
           variant="glass"
           required
         />
-        
+
         <div>
           <Input
             label="Password"
@@ -365,7 +398,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
             showPasswordToggle
             required
           />
-          
+
           {password && (
             <div className="mt-2 space-y-1">
               <div className="flex gap-1">
@@ -374,7 +407,9 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
                     key={i}
                     className={cn(
                       'h-1 flex-1 rounded-full',
-                      i < strength ? strengthColors[strength - 1] : 'bg-gray-300'
+                      i < strength
+                        ? strengthColors[strength - 1]
+                        : 'bg-gray-300',
                     )}
                   />
                 ))}
@@ -385,7 +420,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
             </div>
           )}
         </div>
-        
+
         <Input
           label="Confirm Password"
           type="password"
@@ -399,7 +434,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
           error={passwordError}
           required
         />
-        
+
         <div className="space-y-3">
           <label className="flex items-start gap-2">
             <input type="checkbox" className="mt-0.5 rounded" required />
@@ -407,7 +442,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
               I agree to the Terms of Service and Privacy Policy
             </span>
           </label>
-          
+
           <label className="flex items-start gap-2">
             <input type="checkbox" className="mt-0.5 rounded" />
             <span className="text-sm text-foreground/70">
@@ -415,7 +450,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
             </span>
           </label>
         </div>
-        
+
         <Button
           type="submit"
           fullWidth
@@ -427,10 +462,11 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
           Create Account
         </Button>
       </form>
-      
+
       <p className="text-center mt-8 text-sm text-foreground/60">
         Already have an account?{' '}
         <button
+          type="button"
           onClick={onLogin}
           className="text-primary hover:underline font-medium"
         >
@@ -458,33 +494,35 @@ export const PasswordResetForm: React.FC<PasswordResetFormProps> = ({
   success = false,
 }) => {
   const [email, setEmail] = useState('')
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     onSubmit?.(email)
   }
-  
+
   return (
     <Card variant="glass" theme={theme} className="w-full max-w-md mx-auto p-8">
       {!success ? (
         <>
           <button
+            type="button"
             onClick={onBack}
             className="flex items-center gap-2 text-foreground/60 hover:text-foreground mb-6 transition-colors"
           >
             <ArrowLeft size={18} />
             <span className="text-sm">Back to login</span>
           </button>
-          
+
           <div className="text-center mb-8">
             <h1 className={cn(typography.title2.className, 'mb-2')}>
               Reset Password
             </h1>
             <p className={cn(typography.body.className, 'text-foreground/60')}>
-              Enter your email and we&apos;ll send you instructions to reset your password
+              Enter your email and we&apos;ll send you instructions to reset
+              your password
             </p>
           </div>
-          
+
           <form onSubmit={handleSubmit} className="space-y-6">
             <Input
               label="Email"
@@ -497,7 +535,7 @@ export const PasswordResetForm: React.FC<PasswordResetFormProps> = ({
               variant="glass"
               required
             />
-            
+
             <Button
               type="submit"
               fullWidth
@@ -518,15 +556,12 @@ export const PasswordResetForm: React.FC<PasswordResetFormProps> = ({
           <h2 className={cn(typography.title3.className, 'mb-2')}>
             Check your email
           </h2>
-          <p className={cn(typography.body.className, 'text-foreground/60 mb-6')}>
+          <p
+            className={cn(typography.body.className, 'text-foreground/60 mb-6')}
+          >
             We&apos;ve sent password reset instructions to {email}
           </p>
-          <Button
-            onClick={onBack}
-            variant="glass"
-            theme={theme}
-            fullWidth
-          >
+          <Button onClick={onBack} variant="glass" theme={theme} fullWidth>
             Back to Login
           </Button>
         </div>

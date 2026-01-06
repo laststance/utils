@@ -1,17 +1,23 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { Heart, MessageCircle, Share2, Star, TrendingUp, User } from 'lucide-react'
+import {
+  Heart,
+  MessageCircle,
+  Share2,
+  Star,
+  TrendingUp,
+  User,
+} from 'lucide-react'
 
 import { Button } from '@/components/design-system/Button'
-import { 
-  Card, 
-  CardHeader, 
-  CardBody, 
-  CardFooter, 
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
   CardImage,
-  CardGrid 
+  CardGrid,
 } from '@/components/design-system/Card'
 import { themes } from '@/lib/design-system/themes'
-
 
 const meta = {
   title: 'Components/Card',
@@ -20,7 +26,8 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Versatile card component with glassmorphism effects for content presentation.',
+        component:
+          'Versatile card component with glassmorphism effects for content presentation.',
       },
     },
   },
@@ -28,7 +35,14 @@ const meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['default', 'glass', 'elevated', 'outlined', 'gradient', 'interactive'],
+      options: [
+        'default',
+        'glass',
+        'elevated',
+        'outlined',
+        'gradient',
+        'interactive',
+      ],
       description: 'Visual style variant',
     },
     theme: {
@@ -85,7 +99,8 @@ export const Default: Story = {
       <div>
         <h3 className="text-lg font-semibold mb-2">Default Card</h3>
         <p className="text-foreground/70">
-          This is a basic card with default styling. It provides a clean container for your content.
+          This is a basic card with default styling. It provides a clean
+          container for your content.
         </p>
       </div>
     ),
@@ -100,27 +115,27 @@ export const Variants: Story = {
         <h3 className="font-semibold mb-2">Default</h3>
         <p className="text-sm text-foreground/70">Standard card appearance</p>
       </Card>
-      
+
       <Card variant="glass" theme="glass-clear">
         <h3 className="font-semibold mb-2">Glass</h3>
         <p className="text-sm text-foreground/70">Glassmorphism effect</p>
       </Card>
-      
+
       <Card variant="elevated">
         <h3 className="font-semibold mb-2">Elevated</h3>
         <p className="text-sm text-foreground/70">Raised with shadow</p>
       </Card>
-      
+
       <Card variant="outlined">
         <h3 className="font-semibold mb-2">Outlined</h3>
         <p className="text-sm text-foreground/70">Border only style</p>
       </Card>
-      
+
       <Card variant="gradient" theme="aurora-borealis">
         <h3 className="font-semibold mb-2">Gradient</h3>
         <p className="text-sm text-foreground/70">Gradient background</p>
       </Card>
-      
+
       <Card variant="interactive">
         <h3 className="font-semibold mb-2">Interactive</h3>
         <p className="text-sm text-foreground/70">Hover and click effects</p>
@@ -161,8 +176,12 @@ export const StructuredContent: Story = {
         </div>
       </CardBody>
       <CardFooter separator>
-        <Button variant="primary" size="sm">Generate Report</Button>
-        <Button variant="ghost" size="sm">Export Data</Button>
+        <Button variant="primary" size="sm">
+          Generate Report
+        </Button>
+        <Button variant="ghost" size="sm">
+          Export Data
+        </Button>
       </CardFooter>
     </Card>
   ),
@@ -171,7 +190,12 @@ export const StructuredContent: Story = {
 // Card with image
 export const WithImage: Story = {
   render: () => (
-    <Card variant="glass" theme="glass-clear" padding="none" className="w-[400px]">
+    <Card
+      variant="glass"
+      theme="glass-clear"
+      padding="none"
+      className="w-[400px]"
+    >
       <CardImage
         src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=300&fit=crop"
         alt="Abstract design"
@@ -186,21 +210,30 @@ export const WithImage: Story = {
         />
         <CardBody>
           <p className="text-foreground/70">
-            Discover how modern design principles can transform your user experience
-            with stunning visuals and intuitive interactions.
+            Discover how modern design principles can transform your user
+            experience with stunning visuals and intuitive interactions.
           </p>
         </CardBody>
         <CardFooter>
           <div className="flex gap-4 text-foreground/60">
-            <button className="flex items-center gap-1 hover:text-foreground transition-colors">
+            <button
+              type="button"
+              className="flex items-center gap-1 hover:text-foreground transition-colors"
+            >
               <Heart size={16} />
               <span className="text-sm">234</span>
             </button>
-            <button className="flex items-center gap-1 hover:text-foreground transition-colors">
+            <button
+              type="button"
+              className="flex items-center gap-1 hover:text-foreground transition-colors"
+            >
               <MessageCircle size={16} />
               <span className="text-sm">45</span>
             </button>
-            <button className="flex items-center gap-1 hover:text-foreground transition-colors">
+            <button
+              type="button"
+              className="flex items-center gap-1 hover:text-foreground transition-colors"
+            >
               <Share2 size={16} />
             </button>
           </div>
@@ -214,17 +247,32 @@ export const WithImage: Story = {
 export const GlassIntensity: Story = {
   render: () => (
     <div className="flex gap-6">
-      <Card variant="glass" glassIntensity="light" theme="glass-ocean" className="w-48">
+      <Card
+        variant="glass"
+        glassIntensity="light"
+        theme="glass-ocean"
+        className="w-48"
+      >
         <h3 className="font-semibold mb-2">Light Glass</h3>
         <p className="text-sm text-foreground/70">30% opacity</p>
       </Card>
-      
-      <Card variant="glass" glassIntensity="medium" theme="glass-ocean" className="w-48">
+
+      <Card
+        variant="glass"
+        glassIntensity="medium"
+        theme="glass-ocean"
+        className="w-48"
+      >
         <h3 className="font-semibold mb-2">Medium Glass</h3>
         <p className="text-sm text-foreground/70">50% opacity</p>
       </Card>
-      
-      <Card variant="glass" glassIntensity="strong" theme="glass-ocean" className="w-48">
+
+      <Card
+        variant="glass"
+        glassIntensity="strong"
+        theme="glass-ocean"
+        className="w-48"
+      >
         <h3 className="font-semibold mb-2">Strong Glass</h3>
         <p className="text-sm text-foreground/70">70% opacity</p>
       </Card>
@@ -243,15 +291,20 @@ export const InteractiveCards: Story = {
           <p className="text-sm text-foreground/70 mt-1">Lifts on hover</p>
         </div>
       </Card>
-      
-      <Card clickable variant="glass" theme="glass-frost" onClick={() => alert('Card clicked!')}>
+
+      <Card
+        clickable
+        variant="glass"
+        theme="glass-frost"
+        onClick={() => alert('Card clicked!')}
+      >
         <div className="text-center py-4">
           <User className="w-12 h-12 mx-auto mb-3 text-blue-500" />
           <h3 className="font-semibold">Clickable</h3>
           <p className="text-sm text-foreground/70 mt-1">Click to interact</p>
         </div>
       </Card>
-      
+
       <Card selected variant="glass" theme="glass-lavender">
         <div className="text-center py-4">
           <Heart className="w-12 h-12 mx-auto mb-3 text-pink-500" />
@@ -280,7 +333,9 @@ export const GridLayout: Story = {
             </p>
           </CardBody>
           <CardFooter>
-            <Button size="sm" variant="ghost">Learn More</Button>
+            <Button size="sm" variant="ghost">
+              Learn More
+            </Button>
           </CardFooter>
         </Card>
       ))}
@@ -296,27 +351,27 @@ export const ThemedCards: Story = {
         <h3 className="font-semibold mb-2">Aurora</h3>
         <p className="text-sm">Northern lights inspired theme</p>
       </Card>
-      
+
       <Card variant="gradient" theme="gradient-sunset">
         <h3 className="font-semibold mb-2">Sunset</h3>
         <p className="text-sm">Warm sunset gradients</p>
       </Card>
-      
+
       <Card variant="gradient" theme="gradient-ocean">
         <h3 className="font-semibold mb-2">Ocean</h3>
         <p className="text-sm">Deep ocean blues</p>
       </Card>
-      
+
       <Card variant="glass" theme="glass-metallic-silver">
         <h3 className="font-semibold mb-2">Silver</h3>
         <p className="text-sm">Metallic silver finish</p>
       </Card>
-      
+
       <Card variant="glass" theme="glass-metallic-gold">
         <h3 className="font-semibold mb-2">Gold</h3>
         <p className="text-sm">Premium gold appearance</p>
       </Card>
-      
+
       <Card variant="glass" theme="glass-metallic-bronze">
         <h3 className="font-semibold mb-2">Bronze</h3>
         <p className="text-sm">Classic bronze style</p>
@@ -342,7 +397,8 @@ export const Playground: Story = {
       <div>
         <h3 className="text-lg font-semibold mb-2">Interactive Playground</h3>
         <p className="text-foreground/70">
-          Use the controls to customize this card&apos;s appearance and behavior.
+          Use the controls to customize this card&apos;s appearance and
+          behavior.
         </p>
       </div>
     ),

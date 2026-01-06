@@ -1,12 +1,12 @@
 'use client'
 
-import { 
-  X, 
-  CheckCircle, 
-  AlertCircle, 
-  AlertTriangle, 
+import {
+  X,
+  CheckCircle,
+  AlertCircle,
+  AlertTriangle,
   Info,
-  Loader2
+  Loader2,
 } from 'lucide-react'
 import React, { useCallback, useEffect, useState } from 'react'
 
@@ -42,7 +42,7 @@ export const Alert: React.FC<AlertProps> = ({
   className,
 }) => {
   const selectedTheme = themes[theme]
-  
+
   const variantConfig = {
     info: {
       bg: 'bg-blue-500/10',
@@ -75,9 +75,9 @@ export const Alert: React.FC<AlertProps> = ({
       icon: icon || <Info size={20} />,
     },
   }
-  
+
   const config = variantConfig[variant]
-  
+
   return (
     <div
       role="alert"
@@ -87,7 +87,7 @@ export const Alert: React.FC<AlertProps> = ({
         config.bg,
         config.border,
         selectedTheme?.blur,
-        className
+        className,
       )}
     >
       <div className="flex gap-3">
@@ -96,43 +96,44 @@ export const Alert: React.FC<AlertProps> = ({
             {config.icon}
           </div>
         )}
-        
+
         <div className="flex-1 space-y-1">
           {title && (
-            <h3 className={cn(
-              typography.subheadline.className,
-              'font-semibold',
-              config.text
-            )}>
+            <h3
+              className={cn(
+                typography.subheadline.className,
+                'font-semibold',
+                config.text,
+              )}
+            >
               {title}
             </h3>
           )}
-          
+
           {description && (
-            <p className={cn(
-              typography.caption1.className,
-              'text-foreground/70'
-            )}>
+            <p
+              className={cn(
+                typography.caption1.className,
+                'text-foreground/70',
+              )}
+            >
               {description}
             </p>
           )}
-          
+
           {children}
-          
-          {action && (
-            <div className="mt-3">
-              {action}
-            </div>
-          )}
+
+          {action && <div className="mt-3">{action}</div>}
         </div>
-        
+
         {dismissible && (
           <button
+            type="button"
             onClick={onDismiss}
             className={cn(
               'flex-shrink-0 p-1 rounded-lg',
               'hover:bg-foreground/10 transition-colors',
-              config.text
+              config.text,
             )}
             aria-label="Dismiss"
           >
@@ -186,11 +187,10 @@ export const Toast: React.FC<ToastProps> = ({
       return () => clearTimeout(timer)
     }
     return undefined
-
   }, [duration, handleClose])
-  
+
   if (!isVisible) return null
-  
+
   const variantConfig = {
     info: {
       bg: 'bg-blue-500',
@@ -213,9 +213,9 @@ export const Toast: React.FC<ToastProps> = ({
       icon: <Info size={20} />,
     },
   }
-  
+
   const config = variantConfig[variant]
-  
+
   return (
     <div
       className={cn(
@@ -223,42 +223,60 @@ export const Toast: React.FC<ToastProps> = ({
         'bg-background border border-border',
         'rounded-xl shadow-2xl',
         'transform transition-all duration-300',
-        isLeaving ? 'translate-x-full opacity-0' : 'translate-x-0 opacity-100'
+        isLeaving ? 'translate-x-full opacity-0' : 'translate-x-0 opacity-100',
       )}
     >
       <div className={cn('h-1 rounded-t-xl', config.bg)} />
-      
+
       <div className="p-4">
         <div className="flex gap-3">
-          <div className={cn('flex-shrink-0', config.bg, 'text-white rounded-lg p-2')}>
+          <div
+            className={cn(
+              'flex-shrink-0',
+              config.bg,
+              'text-white rounded-lg p-2',
+            )}
+          >
             {config.icon}
           </div>
-          
+
           <div className="flex-1">
             {title && (
-              <h4 className={cn(typography.subheadline.className, 'font-semibold mb-1')}>
+              <h4
+                className={cn(
+                  typography.subheadline.className,
+                  'font-semibold mb-1',
+                )}
+              >
                 {title}
               </h4>
             )}
             {description && (
-              <p className={cn(typography.caption1.className, 'text-foreground/70')}>
+              <p
+                className={cn(
+                  typography.caption1.className,
+                  'text-foreground/70',
+                )}
+              >
                 {description}
               </p>
             )}
-            
+
             {action && (
               <button
+                type="button"
                 onClick={action.onClick}
                 className={cn(
-                  'mt-2 text-sm font-medium text-primary hover:underline'
+                  'mt-2 text-sm font-medium text-primary hover:underline',
                 )}
               >
                 {action.label}
               </button>
             )}
           </div>
-          
+
           <button
+            type="button"
             onClick={handleClose}
             className="flex-shrink-0 p-1 rounded-lg hover:bg-foreground/10 transition-colors"
             aria-label="Close"
@@ -298,21 +316,21 @@ export const Modal: React.FC<ModalProps> = ({
   showCloseButton = true,
 }) => {
   const selectedTheme = themes[theme]
-  
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
     } else {
       document.body.style.overflow = 'unset'
     }
-    
+
     return () => {
       document.body.style.overflow = 'unset'
     }
   }, [isOpen])
-  
+
   if (!isOpen) return null
-  
+
   const sizeClasses = {
     sm: 'max-w-sm',
     md: 'max-w-md',
@@ -320,7 +338,7 @@ export const Modal: React.FC<ModalProps> = ({
     xl: 'max-w-xl',
     full: 'max-w-full mx-4',
   }
-  
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Overlay */}
@@ -328,23 +346,25 @@ export const Modal: React.FC<ModalProps> = ({
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
         onClick={closeOnOverlayClick ? onClose : undefined}
       />
-      
+
       {/* Modal */}
       <div
         className={cn(
           'relative w-full',
           sizeClasses[size],
-          'animate-in fade-in zoom-in-95 duration-200'
+          'animate-in fade-in zoom-in-95 duration-200',
         )}
       >
-        <div className={cn(
-          'bg-background',
-          'border border-border',
-          'rounded-2xl',
-          shadows.modal,
-          selectedTheme?.card,
-          selectedTheme?.blur
-        )}>
+        <div
+          className={cn(
+            'bg-background',
+            'border border-border',
+            'rounded-2xl',
+            shadows.modal,
+            selectedTheme?.card,
+            selectedTheme?.blur,
+          )}
+        >
           {/* Header */}
           {(title || showCloseButton) && (
             <div className="flex items-start justify-between p-6 border-b border-border">
@@ -355,14 +375,20 @@ export const Modal: React.FC<ModalProps> = ({
                   </h2>
                 )}
                 {description && (
-                  <p className={cn(typography.body.className, 'text-foreground/70')}>
+                  <p
+                    className={cn(
+                      typography.body.className,
+                      'text-foreground/70',
+                    )}
+                  >
                     {description}
                   </p>
                 )}
               </div>
-              
+
               {showCloseButton && (
                 <button
+                  type="button"
                   onClick={onClose}
                   className="p-2 rounded-lg hover:bg-foreground/10 transition-colors -mr-2 -mt-1"
                   aria-label="Close modal"
@@ -372,14 +398,10 @@ export const Modal: React.FC<ModalProps> = ({
               )}
             </div>
           )}
-          
+
           {/* Content */}
-          {children && (
-            <div className="p-6">
-              {children}
-            </div>
-          )}
-          
+          {children && <div className="p-6">{children}</div>}
+
           {/* Footer */}
           {footer && (
             <div className="flex items-center justify-end gap-3 p-6 border-t border-border">
@@ -413,13 +435,13 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   animated = false,
 }) => {
   const percentage = Math.min((value / max) * 100, 100)
-  
+
   const sizeClasses = {
     sm: 'h-1',
     md: 'h-2',
     lg: 'h-3',
   }
-  
+
   const variantClasses = {
     default: 'bg-primary',
     gradient: 'bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500',
@@ -427,35 +449,47 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
       'bg-primary',
       'bg-gradient-to-r from-transparent via-white/20 to-transparent',
       'bg-[length:20px_100%]',
-      animated && 'animate-[shimmer_1s_linear_infinite]'
+      animated && 'animate-[shimmer_1s_linear_infinite]',
     ),
   }
-  
+
   return (
     <div className="space-y-2">
       {(label || showValue) && (
         <div className="flex items-center justify-between">
           {label && (
-            <span className={cn(typography.caption1.className, 'text-foreground/70')}>
+            <span
+              className={cn(
+                typography.caption1.className,
+                'text-foreground/70',
+              )}
+            >
               {label}
             </span>
           )}
           {showValue && (
-            <span className={cn(typography.caption1.className, 'text-foreground/70')}>
+            <span
+              className={cn(
+                typography.caption1.className,
+                'text-foreground/70',
+              )}
+            >
               {Math.round(percentage)}%
             </span>
           )}
         </div>
       )}
-      
-      <div className={cn(
-        'w-full bg-foreground/10 rounded-full overflow-hidden',
-        sizeClasses[size]
-      )}>
+
+      <div
+        className={cn(
+          'w-full bg-foreground/10 rounded-full overflow-hidden',
+          sizeClasses[size],
+        )}
+      >
         <div
           className={cn(
             'h-full rounded-full transition-all duration-500',
-            variantClasses[variant]
+            variantClasses[variant],
           )}
           style={{ width: `${percentage}%` }}
           role="progressbar"
@@ -486,24 +520,26 @@ export const Spinner: React.FC<SpinnerProps> = ({
     lg: 'w-8 h-8',
     xl: 'w-12 h-12',
   }
-  
+
   const variantClasses = {
     default: 'text-foreground/30',
     primary: 'text-primary',
     white: 'text-white',
   }
-  
+
   return (
     <div className="flex flex-col items-center gap-2">
-      <Loader2 
+      <Loader2
         className={cn(
           sizeClasses[size],
           variantClasses[variant],
-          'animate-spin'
+          'animate-spin',
         )}
       />
       {label && (
-        <span className={cn(typography.caption1.className, 'text-foreground/60')}>
+        <span
+          className={cn(typography.caption1.className, 'text-foreground/60')}
+        >
           {label}
         </span>
       )}
@@ -533,20 +569,27 @@ export const Skeleton: React.FC<SkeletonProps> = ({
     rectangular: 'rounded-none',
     rounded: 'rounded-lg',
   }
-  
+
   const dimensions = {
     width: width ? (typeof width === 'number' ? `${width}px` : width) : '100%',
-    height: height ? (typeof height === 'number' ? `${height}px` : height) : 
-            variant === 'circular' ? width : variant === 'text' ? '1rem' : '100px',
+    height: height
+      ? typeof height === 'number'
+        ? `${height}px`
+        : height
+      : variant === 'circular'
+        ? width
+        : variant === 'text'
+          ? '1rem'
+          : '100px',
   }
-  
+
   return (
     <div
       className={cn(
         'bg-foreground/10',
         variantClasses[variant],
         animated && 'animate-pulse',
-        className
+        className,
       )}
       style={dimensions}
     />
@@ -581,36 +624,46 @@ export const Badge: React.FC<BadgeProps> = ({
     error: 'bg-red-500/10 text-red-600 dark:text-red-400',
     info: 'bg-blue-500/10 text-blue-600 dark:text-blue-400',
   }
-  
+
   const sizeClasses = {
     sm: 'px-2 py-0.5 text-xs',
     md: 'px-2.5 py-1 text-sm',
     lg: 'px-3 py-1.5 text-base',
   }
-  
+
   return (
-    <span className={cn(
-      'inline-flex items-center gap-1.5 font-medium rounded-full',
-      variantClasses[variant],
-      sizeClasses[size],
-      className
-    )}>
-      {dot && (
-        <span className={cn(
-          'w-1.5 h-1.5 rounded-full',
-          variant === 'default' ? 'bg-foreground' :
-          variant === 'primary' ? 'bg-primary' :
-          variant === 'success' ? 'bg-green-500' :
-          variant === 'warning' ? 'bg-amber-500' :
-          variant === 'error' ? 'bg-red-500' :
-          'bg-blue-500'
-        )} />
+    <span
+      className={cn(
+        'inline-flex items-center gap-1.5 font-medium rounded-full',
+        variantClasses[variant],
+        sizeClasses[size],
+        className,
       )}
-      
+    >
+      {dot && (
+        <span
+          className={cn(
+            'w-1.5 h-1.5 rounded-full',
+            variant === 'default'
+              ? 'bg-foreground'
+              : variant === 'primary'
+                ? 'bg-primary'
+                : variant === 'success'
+                  ? 'bg-green-500'
+                  : variant === 'warning'
+                    ? 'bg-amber-500'
+                    : variant === 'error'
+                      ? 'bg-red-500'
+                      : 'bg-blue-500',
+          )}
+        />
+      )}
+
       {children}
-      
+
       {removable && (
         <button
+          type="button"
           onClick={onRemove}
           className="ml-0.5 hover:opacity-70 transition-opacity"
           aria-label="Remove"
@@ -638,12 +691,12 @@ export const Tooltip: React.FC<TooltipProps> = ({
 }) => {
   const [isVisible, setIsVisible] = useState(false)
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null)
-  
+
   const showTooltip = () => {
     const id = setTimeout(() => setIsVisible(true), delay)
     setTimeoutId(id)
   }
-  
+
   const hideTooltip = () => {
     if (timeoutId) {
       clearTimeout(timeoutId)
@@ -651,23 +704,20 @@ export const Tooltip: React.FC<TooltipProps> = ({
     }
     setIsVisible(false)
   }
-  
+
   const positionClasses = {
     top: 'bottom-full left-1/2 -translate-x-1/2 mb-2',
     bottom: 'top-full left-1/2 -translate-x-1/2 mt-2',
     left: 'right-full top-1/2 -translate-y-1/2 mr-2',
     right: 'left-full top-1/2 -translate-y-1/2 ml-2',
   }
-  
+
   return (
     <div className="relative inline-block">
-      <div
-        onMouseEnter={showTooltip}
-        onMouseLeave={hideTooltip}
-      >
+      <div onMouseEnter={showTooltip} onMouseLeave={hideTooltip}>
         {children}
       </div>
-      
+
       {isVisible && (
         <div
           className={cn(
@@ -675,7 +725,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
             'bg-gray-900 text-white text-xs rounded-md',
             'whitespace-nowrap',
             'animate-in fade-in zoom-in-95 duration-100',
-            positionClasses[position]
+            positionClasses[position],
           )}
         >
           {content}

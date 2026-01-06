@@ -48,21 +48,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const [internalCollapsed, setInternalCollapsed] = useState(false)
   const collapsed = controlledCollapsed ?? internalCollapsed
-  
+
   const handleCollapse = () => {
     const newValue = !collapsed
     setInternalCollapsed(newValue)
     onCollapsedChange?.(newValue)
   }
-  
+
   const selectedTheme = themes[theme]
-  
+
   const variantClasses = {
     default: cn(
       selectedTheme?.card,
       selectedTheme?.border,
       position === 'left' ? 'border-r' : 'border-l',
-      shadows.card
+      shadows.card,
     ),
     floating: cn(
       selectedTheme?.card,
@@ -70,22 +70,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
       radius.xl,
       shadows['glass-elevated'],
       'm-4',
-      'h-[calc(100vh-2rem)]'
+      'h-[calc(100vh-2rem)]',
     ),
     minimal: cn(
       'bg-background/50',
       'backdrop-blur-sm',
       position === 'left' ? 'border-r' : 'border-l',
-      'border-border/30'
+      'border-border/30',
     ),
     bold: cn(
       selectedTheme?.background,
       selectedTheme?.border,
       position === 'left' ? 'border-r-2' : 'border-l-2',
-      shadows.lg
+      shadows.lg,
     ),
   }
-  
+
   return (
     <>
       {/* Overlay for mobile */}
@@ -95,7 +95,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           onClick={handleCollapse}
         />
       )}
-      
+
       <aside
         className={cn(
           'h-full flex flex-col transition-all duration-300 ease-in-out',
@@ -104,56 +104,69 @@ export const Sidebar: React.FC<SidebarProps> = ({
           selectedTheme?.blur,
           variantClasses[variant],
           overlay && 'fixed top-0 z-50 h-screen',
-          className
+          className,
         )}
       >
         {/* Header */}
         {header && (
-          <div className={cn(
-            'flex-shrink-0 border-b',
-            selectedTheme?.border,
-            collapsed ? 'p-2' : padding.card.sm
-          )}>
+          <div
+            className={cn(
+              'flex-shrink-0 border-b',
+              selectedTheme?.border,
+              collapsed ? 'p-2' : padding.card.sm,
+            )}
+          >
             {header}
           </div>
         )}
-        
+
         {/* Collapse Button */}
         {collapsible && (
           <button
+            type="button"
             onClick={handleCollapse}
             className={cn(
               'absolute top-4 -right-3 p-1.5 rounded-full',
               'bg-background border shadow-md',
               'hover:shadow-lg transition-all duration-200',
               'z-10',
-              position === 'right' && '-left-3 -right-auto'
+              position === 'right' && '-left-3 -right-auto',
             )}
             aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           >
             {collapsed ? (
-              position === 'left' ? <ChevronRight size={14} /> : <ChevronLeft size={14} />
+              position === 'left' ? (
+                <ChevronRight size={14} />
+              ) : (
+                <ChevronLeft size={14} />
+              )
+            ) : position === 'left' ? (
+              <ChevronLeft size={14} />
             ) : (
-              position === 'left' ? <ChevronLeft size={14} /> : <ChevronRight size={14} />
+              <ChevronRight size={14} />
             )}
           </button>
         )}
-        
+
         {/* Content */}
-        <div className={cn(
-          'flex-1 overflow-y-auto',
-          collapsed ? 'p-2' : padding.card.sm
-        )}>
+        <div
+          className={cn(
+            'flex-1 overflow-y-auto',
+            collapsed ? 'p-2' : padding.card.sm,
+          )}
+        >
           {children}
         </div>
-        
+
         {/* Footer */}
         {footer && (
-          <div className={cn(
-            'flex-shrink-0 border-t',
-            selectedTheme?.border,
-            collapsed ? 'p-2' : padding.card.sm
-          )}>
+          <div
+            className={cn(
+              'flex-shrink-0 border-t',
+              selectedTheme?.border,
+              collapsed ? 'p-2' : padding.card.sm,
+            )}
+          >
             {footer}
           </div>
         )}
@@ -187,7 +200,7 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
   className,
 }) => {
   const Component = href ? 'a' : 'button'
-  
+
   return (
     <Component
       href={href}
@@ -198,30 +211,21 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
         active
           ? 'bg-primary/10 text-primary font-medium'
           : 'text-foreground/70 hover:text-foreground hover:bg-foreground/5',
-        className
+        className,
       )}
       title={collapsed ? label : undefined}
     >
       <div className="flex items-center gap-3">
         {icon && (
-          <span className={cn(
-            'flex-shrink-0',
-            collapsed && 'mx-auto'
-          )}>
+          <span className={cn('flex-shrink-0', collapsed && 'mx-auto')}>
             {icon}
           </span>
         )}
         {!collapsed && (
-          <span className={typography.subheadline.className}>
-            {label}
-          </span>
+          <span className={typography.subheadline.className}>{label}</span>
         )}
       </div>
-      {!collapsed && badge && (
-        <span className="flex-shrink-0">
-          {badge}
-        </span>
-      )}
+      {!collapsed && badge && <span className="flex-shrink-0">{badge}</span>}
     </Component>
   )
 }
@@ -245,16 +249,16 @@ export const SidebarSection: React.FC<SidebarSectionProps> = ({
   return (
     <div className={cn('mb-6', className)}>
       {title && !collapsed && (
-        <h3 className={cn(
-          typography.caption1.className,
-          'text-foreground/50 uppercase mb-2 px-3'
-        )}>
+        <h3
+          className={cn(
+            typography.caption1.className,
+            'text-foreground/50 uppercase mb-2 px-3',
+          )}
+        >
           {title}
         </h3>
       )}
-      <div className="space-y-1">
-        {children}
-      </div>
+      <div className="space-y-1">{children}</div>
     </div>
   )
 }

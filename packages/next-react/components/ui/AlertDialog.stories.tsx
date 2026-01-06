@@ -41,7 +41,10 @@ export const Default: Story = {
   render: (args) => (
     <AlertDialog {...args}>
       <AlertDialogTrigger asChild>
-        <button className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+        <button
+          type="button"
+          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+        >
           Delete Account
         </button>
       </AlertDialogTrigger>
@@ -66,7 +69,10 @@ export const Simple: Story = {
   render: (args) => (
     <AlertDialog {...args}>
       <AlertDialogTrigger asChild>
-        <button className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600">
+        <button
+          type="button"
+          className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600"
+        >
           Show Alert
         </button>
       </AlertDialogTrigger>

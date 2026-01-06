@@ -241,7 +241,7 @@ describe('Badge', () => {
     it('should preserve data-slot when using asChild', () => {
       const { container } = render(
         <Badge asChild>
-          <button>Button Badge</button>
+          <button type="button">Button Badge</button>
         </Badge>,
       )
 
@@ -254,7 +254,9 @@ describe('Badge', () => {
         <a key="link" href="/test">
           Link
         </a>,
-        <button key="button">Button</button>,
+        <button type="button" key="button">
+          Button
+        </button>,
         <div key="div">Div</div>,
       ]
 

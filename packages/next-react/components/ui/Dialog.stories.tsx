@@ -42,7 +42,10 @@ export const Default: Story = {
   render: (args) => (
     <Dialog {...args}>
       <DialogTrigger asChild>
-        <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+        <button
+          type="button"
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
           Edit Profile
         </button>
       </DialogTrigger>
@@ -76,7 +79,10 @@ export const Default: Story = {
           </div>
         </div>
         <DialogFooter>
-          <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+          <button
+            type="button"
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
             Save changes
           </button>
         </DialogFooter>
@@ -89,7 +95,10 @@ export const Confirmation: Story = {
   render: (args) => (
     <Dialog {...args}>
       <DialogTrigger asChild>
-        <button className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+        <button
+          type="button"
+          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+        >
           Delete Account
         </button>
       </DialogTrigger>
@@ -102,10 +111,16 @@ export const Confirmation: Story = {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <button className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+          <button
+            type="button"
+            className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+          >
             Cancel
           </button>
-          <button className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+          <button
+            type="button"
+            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+          >
             Continue
           </button>
         </DialogFooter>
