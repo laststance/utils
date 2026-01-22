@@ -52,6 +52,7 @@ export default defineConfig([
       '.storybook/**',
       'storybook-static/**',
       'node_modules/**',
+      'generated/**', // Prisma generated files
       '*.config.js',
       '*.config.ts',
       '*.config.mjs',
