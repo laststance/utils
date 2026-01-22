@@ -1,0 +1,33 @@
+// Prisma schema for Gmail Clone
+// Using SQLite for local development (file-based, zero-config)
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+/// Email model for Gmail clone
+/// Stores all email data with support for starring, reading, archiving
+model Email {
+  id        String   @id @default(cuid())
+  from      String   /// Sender display name
+  email     String   /// Sender email address
+  subject   String   /// Email subject line
+  preview   String   /// Short preview text
+  body      String   /// Full email body content
+  date      DateTime @default(now()) /// Email received date
+  read      Boolean  @default(false) /// Read status
+  starred   Boolean  @default(false) /// Starred/favorite status
+  archived  Boolean  @default(false) /// Archived status (soft delete)
+  labels    String   @default("[]") /// JSON array of label strings
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([date(sort: Desc)])
+  @@index([starred])
+  @@index([archived])
+}
