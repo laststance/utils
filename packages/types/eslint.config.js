@@ -11,6 +11,8 @@ export default tseslint.config(
       'coverage/**',
       'dist/**',
       'build/**',
+      'eslint.config.js',
+      'vitest.config.ts',
     ],
   },
   {

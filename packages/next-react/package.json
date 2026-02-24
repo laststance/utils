@@ -13,6 +13,7 @@
     "build-storybook": "storybook build",
     "serve-storybook": "serve -s storybook-static",
     "test": "vitest run",
+    "postinstall": "prisma generate",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
