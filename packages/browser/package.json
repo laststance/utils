@@ -26,7 +26,7 @@
     "@testing-library/jest-dom": "catalog:",
     "@testing-library/user-event": "catalog:",
     "@vitest/browser": "catalog:",
-    "@vitest/browser-playwright": "^4.0.16",
+    "@vitest/browser-playwright": "^4.0.18",
     "eslint": "catalog:",
     "eslint-config-ts-prefixer": "catalog:",
     "globals": "catalog:",
