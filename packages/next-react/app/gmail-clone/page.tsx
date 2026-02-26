@@ -1,6 +1,8 @@
 import { getEmails, getStarredCount, getUnreadCount } from './actions'
 import { GmailClient } from './gmail-client'
 
+export const dynamic = 'force-dynamic'
+
 /**
  * Gmail Clone page - Server Component that fetches initial data
  * and passes it to the client component for interactive UI
