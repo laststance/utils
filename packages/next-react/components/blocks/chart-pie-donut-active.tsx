@@ -1,8 +1,7 @@
 'use client'
 
 import { TrendingUp } from 'lucide-react'
-import { Pie, PieChart, Sector } from 'recharts'
-import { type PieSectorDataItem } from 'recharts/types/polar/Pie'
+import { type PieSectorDataItem, Pie, PieChart, Sector } from 'recharts'
 
 import {
   Card,
@@ -78,7 +77,6 @@ export function ChartPieDonutActive() {
               nameKey="browser"
               innerRadius={60}
               strokeWidth={5}
-              activeIndex={0}
               activeShape={({
                 outerRadius = 0,
                 ...props

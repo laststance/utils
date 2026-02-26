@@ -32,8 +32,6 @@ export default defineConfig([
         'error',
       // https://react.dev/learn/you-might-not-need-an-effect#passing-data-to-the-parent
       'react-you-might-not-need-an-effect/no-pass-data-to-parent': 'error',
-      // https://react.dev/reference/react/forwardRef
-      'react-you-might-not-need-an-effect/no-pass-ref-to-parent': 'error',
       // https://react.dev/learn/you-might-not-need-an-effect#initializing-the-application
       'react-you-might-not-need-an-effect/no-initialize-state': 'error',
       // Detects empty useEffect hooks that have no purpose

@@ -79,8 +79,8 @@ export function ChartLineDotsCustom() {
                 return (
                   <GitCommitVertical
                     key={payload.month}
-                    x={cx - r / 2}
-                    y={cy - r / 2}
+                    x={(cx ?? 0) - r / 2}
+                    y={(cy ?? 0) - r / 2}
                     width={r}
                     height={r}
                     fill="hsl(var(--background))"

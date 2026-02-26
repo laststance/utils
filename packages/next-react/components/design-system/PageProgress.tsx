@@ -1,6 +1,6 @@
 'use client'
 
-import type React from 'react';
+import type React from 'react'
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react'
 
 export interface PageProgressProps {
@@ -26,7 +26,7 @@ export class PageProgress {
   private trickleTimer: NodeJS.Timeout | null = null
   private settings: Required<PageProgressProps>
   private barElement: HTMLDivElement | null = null
-  
+
   constructor(props: PageProgressProps = {}) {
     this.settings = {
       isLoading: false,
@@ -43,69 +43,69 @@ export class PageProgress {
       parent: 'body',
       className: '',
     }
-    
+
     this.configure(props)
   }
-  
+
   static getInstance(props?: PageProgressProps): PageProgress {
     if (!PageProgress.instance) {
       PageProgress.instance = new PageProgress(props)
     }
     return PageProgress.instance
   }
-  
+
   configure(props: PageProgressProps) {
     this.settings = { ...this.settings, ...props }
   }
-  
+
   start() {
     if (this.status === 'loading') return this
-    
+
     this.status = 'loading'
     this.render()
     this.set(this.settings.minimum)
     this.trickle()
-    
+
     return this
   }
-  
+
   done() {
     if (this.status === 'idle') return this
-    
+
     this.inc(0.3 + 0.5 * Math.random())
     this.set(1)
-    
+
     setTimeout(() => {
       this.hide()
       this.status = 'idle'
       this.progress = 0
     }, this.settings.speed)
-    
+
     return this
   }
-  
+
   set(n: number) {
     n = Math.max(this.settings.minimum, Math.min(1, n))
     this.progress = n
-    
+
     if (this.barElement) {
       this.barElement.style.transform = `translate3d(${-100 + n * 100}%, 0, 0)`
       this.barElement.style.transition = `transform ${this.settings.speed}ms ${this.settings.easing}`
     }
-    
+
     if (n === 1) {
       if (this.trickleTimer) {
         clearTimeout(this.trickleTimer)
         this.trickleTimer = null
       }
     }
-    
+
     return this
   }
-  
+
   inc(amount?: number) {
     let n = this.progress
-    
+
     if (!amount) {
       if (n < 0.2) amount = 0.1
       else if (n < 0.5) amount = 0.04
@@ -113,11 +113,11 @@ export class PageProgress {
       else if (n < 0.99) amount = 0.005
       else amount = 0
     }
-    
+
     n = Math.min(n + amount, 0.994)
     return this.set(n)
   }
-  
+
   trickle() {
     this.trickleTimer = setTimeout(() => {
       this.inc()
@@ -126,13 +126,13 @@ export class PageProgress {
       }
     }, this.settings.trickleSpeed)
   }
-  
+
   render() {
     if (this.barElement) return
-    
+
     const parent = document.querySelector(this.settings.parent)
     if (!parent) return
-    
+
     // Create container
     const container = document.createElement('div')
     container.id = 'page-progress'
@@ -145,7 +145,7 @@ export class PageProgress {
       z-index: ${this.settings.zIndex};
       pointer-events: none;
     `
-    
+
     // Create bar
     const bar = document.createElement('div')
     bar.className = 'page-progress-bar'
@@ -160,7 +160,7 @@ export class PageProgress {
       transition: transform ${this.settings.speed}ms ${this.settings.easing};
       box-shadow: 0 0 10px ${this.settings.color}, 0 0 5px ${this.settings.color};
     `
-    
+
     // Create peg (leading edge glow)
     const peg = document.createElement('div')
     peg.className = 'page-progress-peg'
@@ -174,28 +174,28 @@ export class PageProgress {
       opacity: 1;
       transform: rotate(3deg) translate(0, -4px);
     `
-    
+
     bar.appendChild(peg)
     container.appendChild(bar)
-    
+
     // Create spinner if enabled
     if (this.settings.showSpinner) {
       const spinner = document.createElement('div')
       spinner.className = 'page-progress-spinner'
-      
+
       const positions = {
         'top-left': 'top: 15px; left: 15px;',
         'top-right': 'top: 15px; right: 15px;',
         'bottom-left': 'bottom: 15px; left: 15px;',
         'bottom-right': 'bottom: 15px; right: 15px;',
       }
-      
+
       spinner.style.cssText = `
         position: fixed;
         ${positions[this.settings.spinnerPosition]}
         z-index: ${this.settings.zIndex};
       `
-      
+
       const spinnerIcon = document.createElement('div')
       spinnerIcon.style.cssText = `
         width: 18px;
@@ -207,12 +207,12 @@ export class PageProgress {
         border-radius: 50%;
         animation: page-progress-spinner 400ms linear infinite;
       `
-      
+
       spinner.appendChild(spinnerIcon)
       container.appendChild(spinner)
       // Spinner element created
     }
-    
+
     // Add styles
     if (!document.querySelector('#page-progress-styles')) {
       const style = document.createElement('style')
@@ -229,11 +229,11 @@ export class PageProgress {
       `
       document.head.appendChild(style)
     }
-    
+
     parent.appendChild(container)
     this.barElement = bar
   }
-  
+
   hide() {
     const container = document.querySelector('#page-progress')
     if (container) {
@@ -241,7 +241,7 @@ export class PageProgress {
     }
     this.barElement = null
   }
-  
+
   isStarted() {
     return this.status === 'loading'
   }
@@ -290,35 +290,58 @@ export function usePageProgress(props?: PageProgressProps) {
         progressRef.current.done()
       }
     }
-  }, [color, height, showSpinner, spinnerPosition, trickleSpeed, minimum, easing, speed, template, zIndex, parent, className])
+  }, [
+    color,
+    height,
+    showSpinner,
+    spinnerPosition,
+    trickleSpeed,
+    minimum,
+    easing,
+    speed,
+    template,
+    zIndex,
+    parent,
+    className,
+  ])
 
   const start = useCallback(() => progressRef.current?.start(), [])
   const done = useCallback(() => progressRef.current?.done(), [])
   const set = useCallback((n: number) => progressRef.current?.set(n), [])
-  const inc = useCallback((amount?: number) => progressRef.current?.inc(amount), [])
-  const configure = useCallback((configProps: PageProgressProps) => progressRef.current?.configure(configProps), [])
-  const isStarted = useCallback(() => progressRef.current?.isStarted() || false, [])
+  const inc = useCallback(
+    (amount?: number) => progressRef.current?.inc(amount),
+    [],
+  )
+  const configure = useCallback(
+    (configProps: PageProgressProps) =>
+      progressRef.current?.configure(configProps),
+    [],
+  )
+  const isStarted = useCallback(
+    () => progressRef.current?.isStarted() || false,
+    [],
+  )
 
-  return useMemo(() => ({
-    start,
-    done,
-    set,
-    inc,
-    configure,
-    isStarted,
-  }), [start, done, set, inc, configure, isStarted])
+  return useMemo(
+    () => ({
+      start,
+      done,
+      set,
+      inc,
+      configure,
+      isStarted,
+    }),
+    [start, done, set, inc, configure, isStarted],
+  )
 }
 
 // React Component
-export const PageProgressBar: React.FC<PageProgressProps & {
-  onStart?: () => void
-  onDone?: () => void
-}> = ({
-  isLoading = false,
-  onStart,
-  onDone,
-  ...props
-}) => {
+export const PageProgressBar: React.FC<
+  PageProgressProps & {
+    onStart?: () => void
+    onDone?: () => void
+  }
+> = ({ isLoading = false, onStart, onDone, ...props }) => {
   const progress = usePageProgress(props)
 
   // Memoize callbacks to prevent unnecessary effect re-runs
@@ -332,9 +355,6 @@ export const PageProgressBar: React.FC<PageProgressProps & {
     onDone?.()
   }, [progress, onDone])
 
-  // Note: The lint warnings about "passing refs to parents" are false positives.
-  // We're calling methods from a hook-returned object, not passing refs.
-  /* eslint-disable react-you-might-not-need-an-effect/no-pass-ref-to-parent */
   useEffect(() => {
     if (isLoading) {
       handleStart()
@@ -342,7 +362,6 @@ export const PageProgressBar: React.FC<PageProgressProps & {
       handleDone()
     }
   }, [isLoading, handleStart, handleDone])
-  /* eslint-enable react-you-might-not-need-an-effect/no-pass-ref-to-parent */
 
   return null
 }
@@ -375,17 +394,29 @@ export function useRouterProgress(props?: PageProgressProps) {
     if (typeof window !== 'undefined') {
       // Detect navigation using Navigation API if available
       if ('navigation' in window) {
-        (window as unknown as { navigation: EventTarget }).navigation.addEventListener('navigate', handleStart);
-        (window as unknown as { navigation: EventTarget }).navigation.addEventListener('navigatesuccess', handleComplete);
-        (window as unknown as { navigation: EventTarget }).navigation.addEventListener('navigateerror', handleComplete);
+        ;(
+          window as unknown as { navigation: EventTarget }
+        ).navigation.addEventListener('navigate', handleStart)
+        ;(
+          window as unknown as { navigation: EventTarget }
+        ).navigation.addEventListener('navigatesuccess', handleComplete)
+        ;(
+          window as unknown as { navigation: EventTarget }
+        ).navigation.addEventListener('navigateerror', handleComplete)
       }
     }
 
     return () => {
       if (typeof window !== 'undefined' && 'navigation' in window) {
-        (window as unknown as { navigation: EventTarget }).navigation.removeEventListener('navigate', handleStart);
-        (window as unknown as { navigation: EventTarget }).navigation.removeEventListener('navigatesuccess', handleComplete);
-        (window as unknown as { navigation: EventTarget }).navigation.removeEventListener('navigateerror', handleComplete);
+        ;(
+          window as unknown as { navigation: EventTarget }
+        ).navigation.removeEventListener('navigate', handleStart)
+        ;(
+          window as unknown as { navigation: EventTarget }
+        ).navigation.removeEventListener('navigatesuccess', handleComplete)
+        ;(
+          window as unknown as { navigation: EventTarget }
+        ).navigation.removeEventListener('navigateerror', handleComplete)
       }
     }
   }, [])
