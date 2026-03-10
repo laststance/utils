@@ -5,13 +5,13 @@ catalog:
   '@testing-library/jest-dom': ^6.9.1
   '@testing-library/user-event': ^14.6.1
   '@vitest/browser': ^4.0.18
-  eslint: ^9.39.3
-  eslint-config-ts-prefixer: ^4.1.5
-  globals: ^17.3.0
-  happy-dom: ^20.7.0
+  eslint: ^9.39.4
+  eslint-config-ts-prefixer: ^4.1.6
+  globals: ^17.4.0
+  happy-dom: ^20.8.3
   playwright: ^1.58.2
   typescript: ^5.9.3
-  typescript-eslint: ^8.56.1
+  typescript-eslint: ^8.57.0
   vitest: ^4.0.18
   zod: 4.3.6
 
