@@ -1,4 +1,4 @@
-import z from 'zod'
+import * as z from 'zod'
 
 const schema = z
   .object({
@@ -10,5 +10,5 @@ const schema = z
 const res = schema.safeParse({ age: 9 })
 
 if (!res.success) {
-  console.log(res.error.flatten().fieldErrors)
+  console.log(z.flattenError(res.error).fieldErrors)
 }
