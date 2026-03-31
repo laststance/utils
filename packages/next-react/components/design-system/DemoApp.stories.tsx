@@ -1,5 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import {
+  IconBrandGithub,
+  IconBrandTwitter,
+  IconBrandLinkedin,
+} from '@tabler/icons-react'
+import {
   Home,
   BarChart3,
   Users,
@@ -12,9 +17,6 @@ import {
   DollarSign,
   ShoppingCart,
   Package,
-  Github,
-  Twitter,
-  Linkedin,
   Mail,
   Heart,
   Star,
@@ -505,9 +507,15 @@ export const LandingPage: Story = {
           }
           social={
             <>
-              <SocialIcon icon={<Github size={18} />} label="GitHub" />
-              <SocialIcon icon={<Twitter size={18} />} label="Twitter" />
-              <SocialIcon icon={<Linkedin size={18} />} label="LinkedIn" />
+              <SocialIcon icon={<IconBrandGithub size={18} />} label="GitHub" />
+              <SocialIcon
+                icon={<IconBrandTwitter size={18} />}
+                label="Twitter"
+              />
+              <SocialIcon
+                icon={<IconBrandLinkedin size={18} />}
+                label="LinkedIn"
+              />
               <SocialIcon icon={<Mail size={18} />} label="Email" />
             </>
           }
