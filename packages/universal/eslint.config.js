@@ -5,7 +5,7 @@ import tseslint from 'typescript-eslint'
 export default tseslint.config(
   ...tsPrefixer,
   {
-    ignores: ['*.d.ts', 'coverage/**', 'dist/**', 'build/**'],
+    ignores: ['*.d.ts', 'coverage/**', 'dist/**', 'build/**', 'playground/**'],
   },
   {
     files: ['**/*.ts'],

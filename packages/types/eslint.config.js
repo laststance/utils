@@ -8,6 +8,7 @@ export default tseslint.config(
     ignores: [
       '*.d.ts',
       'zodPlayground/**',
+      'playground/**',
       'coverage/**',
       'dist/**',
       'build/**',

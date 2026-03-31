@@ -1,0 +1,80 @@
+[
+  {
+    "id": "2026-03-24-mdn-array-from",
+    "date": "2026-03-24",
+    "category": "mdn-javascript-api",
+    "taskTitle": "Array.from helper",
+    "context": "utils/universal",
+    "repository": "utils",
+    "effortMinutes": 45,
+    "contributionLevel": 3,
+    "outcome": "Added a helper and tests for iterable conversion.",
+    "learned": ["array-like vs iterable", "mapFn timing"],
+    "nextIdea": "Try NodeList conversion next."
+  },
+  {
+    "id": "2026-03-23-web-ui-tabs",
+    "date": "2026-03-23",
+    "category": "web-ui",
+    "taskTitle": "Tabs prototype",
+    "context": "next-play",
+    "repository": "next-play",
+    "effortMinutes": 30,
+    "contributionLevel": 2,
+    "outcome": "Built a keyboard-friendly tabs prototype.",
+    "learned": ["focus visibility", "arrow key navigation"],
+    "nextIdea": "Add URL state syncing."
+  },
+  {
+    "id": "2026-03-21-utils-group-by",
+    "date": "2026-03-21",
+    "category": "library-internals",
+    "taskTitle": "groupBy utility",
+    "context": "utils/universal",
+    "repository": "utils",
+    "effortMinutes": 60,
+    "contributionLevel": 4,
+    "outcome": "Implemented groupBy and coverage tests.",
+    "learned": ["reducer composition", "stable grouping keys"],
+    "nextIdea": "Benchmark large inputs."
+  },
+  {
+    "id": "2026-03-20-utils-url-params",
+    "date": "2026-03-20",
+    "category": "mdn-javascript-api",
+    "taskTitle": "URLSearchParams serializer",
+    "context": "utils/universal",
+    "repository": "utils",
+    "effortMinutes": 25,
+    "contributionLevel": 1,
+    "outcome": "Created a tiny query serializer.",
+    "learned": ["duplicate keys handling"],
+    "nextIdea": "Add parse support."
+  },
+  {
+    "id": "2026-03-18-python-cli-practice",
+    "date": "2026-03-18",
+    "category": "python-rust",
+    "taskTitle": "Python mini CLI",
+    "context": "practice/python",
+    "repository": "sandbox",
+    "effortMinutes": 40,
+    "contributionLevel": 2,
+    "outcome": "Built a small CLI parser with file output.",
+    "learned": ["argparse defaults", "pathlib basics"],
+    "nextIdea": "Try the same task in Rust."
+  },
+  {
+    "id": "2026-03-16-laststance-next-play",
+    "date": "2026-03-16",
+    "category": "laststance-repo",
+    "taskTitle": "next-play dashboard card",
+    "context": "next-play/app",
+    "repository": "next-play",
+    "effortMinutes": 50,
+    "contributionLevel": 3,
+    "outcome": "Added a new dashboard card prototype.",
+    "learned": ["card density tuning", "header alignment"],
+    "nextIdea": "Compare three layout variants."
+  }
+]

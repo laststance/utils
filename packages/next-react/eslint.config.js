@@ -56,6 +56,7 @@ export default defineConfig([
       '*.config.mjs',
       'eslint.config.js',
       '*.cjs', // Ignore CommonJS files not in TypeScript project
+      'playground/**',
     ],
   },
   {

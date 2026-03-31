@@ -1,0 +1,11 @@
+services:
+  i-write-code-dashboard:
+    build:
+      context: ../..
+      dockerfile: packages/next-react/Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      I_WRITE_CODE_ACTIVITY_FILE: /app/data/i-write-code-activity.json
+    volumes:
+      - ./data:/app/data

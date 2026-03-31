@@ -408,3 +408,52 @@ Check out these example test files for reference:
 - [`use-mobile.test.ts`](./hooks/use-mobile.test.ts) - Custom hook testing with media queries
 - [`LoginForm.test.tsx`](./components/LoginForm.test.tsx) - Form testing with validation and API calls
 - [`UserProfile.test.tsx`](./components/UserProfile.test.tsx) - Data fetching and error handling
+
+## i-write-code Dashboard
+
+This package now includes a local reflection dashboard at `/dashboard` for the
+`i-write-code` skill.
+
+### What it shows
+
+- A GitHub-style contribution heatmap for the last six months
+- Current streak, longest streak, active days, and total effort
+- Recent sessions with learning notes
+- Category breakdown across `laststance`, `web-ui`, `mdn-javascript-api`,
+  `library-internals`, and `python-rust`
+
+### Local activity log
+
+The dashboard reads from `data/i-write-code-activity.json` by default.
+
+When `i-write-code` runs inside the `utils` repo, it should append reflection
+entries to:
+
+```text
+packages/next-react/data/i-write-code-activity.json
+```
+
+You can override the path with:
+
+```bash
+I_WRITE_CODE_ACTIVITY_FILE=/absolute/path/to/i-write-code-activity.json
+```
+
+### Run locally with pnpm
+
+```bash
+pnpm --filter next-react dev
+```
+
+Open [http://localhost:3000/dashboard](http://localhost:3000/dashboard).
+
+### Run locally with Docker
+
+From `packages/next-react/`:
+
+```bash
+docker compose up --build
+```
+
+This mounts the local `data/` directory into the container so activity history
+persists across restarts.
