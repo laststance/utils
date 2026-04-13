@@ -11,19 +11,25 @@ test('Exact accepts object with matching properties', () => {
 })
 
 test('Exact rejects object with excess properties', () => {
-  //@ts-expect-error 'id' maps to never in $Exact<User, ...>
   expectType<$Exact<User, { name: string; age: number; id: number }>>({
     name: 'Alice',
     age: 30,
+    // @ts-expect-error 'id' maps to never in $Exact<User, ...>
     id: 1,
   })
 })
 
 test('Exact rejects multiple excess properties', () => {
-  //@ts-expect-error 'id' and 'role' map to never in $Exact<User, ...>
   expectType<
     $Exact<User, { name: string; age: number; id: number; role: string }>
-  >({ name: 'Alice', age: 30, id: 1, role: 'admin' })
+  >({
+    name: 'Alice',
+    age: 30,
+    // @ts-expect-error 'id' maps to never in $Exact<User, ...>
+    id: 1,
+    // @ts-expect-error 'role' maps to never in $Exact<User, ...>
+    role: 'admin',
+  })
 })
 
 test('Exact preserves optional properties', () => {
@@ -35,9 +41,9 @@ test('Exact preserves optional properties', () => {
 })
 
 test('Exact rejects excess on types with optional properties', () => {
-  //@ts-expect-error 'role' maps to never in $Exact<WithOptional, ...>
   expectType<$Exact<WithOptional, { name: string; role: string }>>({
     name: 'Alice',
+    // @ts-expect-error 'role' maps to never in $Exact<WithOptional, ...>
     role: 'admin',
   })
 })
