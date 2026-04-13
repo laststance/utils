@@ -116,6 +116,16 @@ describe('Home Page', () => {
     expect(vercelLogo).toHaveAttribute('height', '20')
   })
 
+  it('should render app demo links', () => {
+    const { getByText } = render(<Home />)
+
+    const gmailDemoLink = getByText('Gmail Clone Demo').closest('a')
+    const useStudyLink = getByText('React use Study').closest('a')
+
+    expect(gmailDemoLink).toHaveAttribute('href', '/gmail-clone')
+    expect(useStudyLink).toHaveAttribute('href', '/use')
+  })
+
   it('should render footer links', () => {
     const { getByText } = render(<Home />)
 
@@ -219,6 +229,17 @@ describe('Home Page', () => {
       expect(link).toHaveAttribute('rel', 'noopener noreferrer')
       expect(link).toHaveAttribute('target', '_blank')
     })
+  })
+
+  it('should render the demo links in a responsive row', () => {
+    const { getByText } = render(<Home />)
+
+    const gmailDemoLink = getByText('Gmail Clone Demo').closest('a')
+    const demoContainer = gmailDemoLink?.parentElement
+
+    expect(demoContainer).toHaveClass('flex')
+    expect(demoContainer).toHaveClass('flex-col')
+    expect(demoContainer).toHaveClass('sm:flex-row')
   })
 
   it('should render ordered list correctly', () => {

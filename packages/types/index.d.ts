@@ -9,6 +9,7 @@ export type { UnwrapPromise } from './UnwrapPromise'
 
 // Object manipulation types
 export type { Concrete } from './Concrete'
+export type { $Exact } from './Exact'
 export type { DistributiveOmit } from './DistributiveOmit'
 export type { DistributivePick } from './DistributivePick'
 export type { EmptyObject } from './EmptyObject'

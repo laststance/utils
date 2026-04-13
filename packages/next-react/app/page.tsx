@@ -1,5 +1,8 @@
 import Image from 'next/image'
 
+/**
+ * Renders the Next.js app home page.
+ */
 export default function Home() {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -51,7 +54,7 @@ export default function Home() {
           </a>
         </div>
 
-        <div className="mt-4">
+        <div className="mt-4 flex flex-col gap-3 sm:flex-row">
           <a
             className="rounded-full border border-solid border-red-500/50 transition-colors flex items-center justify-center bg-red-500 text-white gap-2 hover:bg-red-600 font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
             href="/gmail-clone"
@@ -71,6 +74,27 @@ export default function Home() {
               <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
             </svg>
             Gmail Clone Demo
+          </a>
+          <a
+            className="rounded-full border border-solid border-violet-500/50 transition-colors flex items-center justify-center bg-violet-500 text-white gap-2 hover:bg-violet-600 font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
+            href="/use"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M12 3v18" />
+              <path d="M7 8h8" />
+              <path d="M7 16h8" />
+            </svg>
+            React use Study
           </a>
         </div>
       </main>
