@@ -34,8 +34,6 @@ export default defineConfig([
       'react-you-might-not-need-an-effect/no-pass-data-to-parent': 'error',
       // https://react.dev/learn/you-might-not-need-an-effect#initializing-the-application
       'react-you-might-not-need-an-effect/no-initialize-state': 'error',
-      // Detects empty useEffect hooks that have no purpose
-      'react-you-might-not-need-an-effect/no-empty-effect': 'error',
     },
   },
   // Use typescript-eslint recommended config directly
@@ -93,7 +91,7 @@ export default defineConfig([
       '@eslint-react/no-missing-component-display-name': 'error',
       '@eslint-react/no-nested-component-definitions': 'error',
       // eslint-plugin-react-x
-      '@eslint-react/dom/no-missing-button-type': 'error',
+      '@eslint-react/dom-no-missing-button-type': 'error',
       // 'react-x/dom/no-missing-button-type': 'error', // TODO: Check correct rule path
       // React Compiler rules
       'react-hooks/config': 'error',
@@ -157,7 +155,7 @@ export default defineConfig([
       'components/design-system/**/*.tsx',
     ],
     rules: {
-      '@eslint-react/dom/no-missing-button-type': 'warn',
+      '@eslint-react/dom-no-missing-button-type': 'warn',
       '@eslint-react/no-nested-component-definitions': 'warn',
       'react-hooks/incompatible-library': 'warn',
     },

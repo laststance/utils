@@ -4,25 +4,16 @@ packages:
 catalog:
   '@testing-library/jest-dom': ^6.9.1
   '@testing-library/user-event': ^14.6.1
-  '@vitest/browser': ^4.1.2
-  eslint: ^9.39.4
+  '@vitest/browser': ^4.1.5
+  eslint: ^10.3.0
   eslint-config-ts-prefixer: ^4.2.0
-  globals: ^17.4.0
-  happy-dom: ^20.8.9
-  playwright: ^1.58.2
-  typescript: ^5.9.3
-  typescript-eslint: ^8.58.0
-  vitest: ^4.1.2
-  zod: 4.3.6
-
-onlyBuiltDependencies:
-  - '@prisma/engines'
-  - '@tailwindcss/oxide'
-  - esbuild
-  - msw
-  - prisma
-  - sharp
-  - unrs-resolver
+  globals: ^17.6.0
+  happy-dom: ^20.9.0
+  playwright: ^1.59.1
+  typescript: ^6.0.3
+  typescript-eslint: ^8.59.2
+  vitest: ^4.1.5
+  zod: 4.4.3
 
 # Supply-chain security (migrated from .npmrc 2026-05-07)
 minimumReleaseAge: 1440
@@ -45,4 +36,13 @@ minimumReleaseAgeExclude:
   - eslint-config-ts-prefixer
   - '@laststance/redux-storage-middleware'
   - '@laststance/react-next-eslint-plugin'
+
+onlyBuiltDependencies:
+  - '@prisma/engines'
+  - '@tailwindcss/oxide'
+  - esbuild
+  - msw
+  - prisma
+  - sharp
+  - unrs-resolver
 verifyStoreIntegrity: true

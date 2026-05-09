@@ -12,8 +12,8 @@
     "test": "vitest --run",
     "test:types": "tsd",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint . --ext .ts,.js",
-    "lint:fix": "eslint . --ext .ts,.js --fix"
+    "lint": "eslint . --ext .ts,.js --max-warnings=0",
+    "lint:fix": "eslint . --ext .ts,.js --fix --max-warnings=0"
   },
   "devDependencies": {
     "eslint": "catalog:",

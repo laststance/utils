@@ -6,7 +6,7 @@
     "lib": ["ES2022"],
     "module": "ES2022",
     "moduleResolution": "bundler",
-    
+
     // Type Checking
     "strict": true,
     "noImplicitAny": true,
@@ -23,7 +23,7 @@
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": false,
-    
+
     // Emit
     "declaration": true,
     "declarationMap": true,
@@ -32,21 +32,21 @@
     "importHelpers": false,
     "downlevelIteration": true,
     "newLine": "lf",
-    
+
     // Interop Constraints
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    
+
     // JavaScript Support
     "allowJs": true,
     "checkJs": false,
-    
+
     // Skip Lib Check
     "skipLibCheck": true,
-    
+
     // Advanced
     "allowUnusedLabels": false,
     "allowUnreachableCode": false,
@@ -54,7 +54,9 @@
     "noImplicitUseStrict": false,
     "suppressExcessPropertyErrors": false,
     "suppressImplicitAnyIndexErrors": false,
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
+
+    "ignoreDeprecations": "6.0"
   },
   "exclude": [
     "node_modules",

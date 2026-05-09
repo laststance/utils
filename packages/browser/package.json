@@ -15,8 +15,8 @@
   "scripts": {
     "test": "vitest --run",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint . --ext .ts,.js",
-    "lint:fix": "eslint . --ext .ts,.js --fix"
+    "lint": "eslint . --ext .ts,.js --max-warnings=0",
+    "lint:fix": "eslint . --ext .ts,.js --fix --max-warnings=0"
   },
   "dependencies": {
     "buffer": "^6.0.3"
@@ -26,7 +26,7 @@
     "@testing-library/jest-dom": "catalog:",
     "@testing-library/user-event": "catalog:",
     "@vitest/browser": "catalog:",
-    "@vitest/browser-playwright": "^4.1.2",
+    "@vitest/browser-playwright": "^4.1.5",
     "eslint": "catalog:",
     "eslint-config-ts-prefixer": "catalog:",
     "globals": "catalog:",

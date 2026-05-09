@@ -152,7 +152,7 @@ function Calendar({
             : 'rounded-md pl-2 pr-1 flex items-center gap-1 text-sm h-8 [&>svg]:text-muted-foreground [&>svg]:size-3.5',
           defaultClassNames.caption_label,
         ),
-        table: 'w-full border-collapse',
+        month_grid: 'w-full border-collapse',
         weekdays: cn('flex', defaultClassNames.weekdays),
         weekday: cn(
           'text-muted-foreground rounded-md flex-1 font-normal text-[0.8rem] select-none',
@@ -216,8 +216,12 @@ function CalendarDayButton({
   const defaultClassNames = getDefaultClassNames()
 
   const ref = React.useRef<HTMLButtonElement>(null)
+  /* DayPicker does not expose a focus callback; we sync `modifiers.focused` to the button for a11y. */
   React.useEffect(() => {
-    if (modifiers.focused) ref.current?.focus()
+    // eslint-disable-next-line react-you-might-not-need-an-effect/no-event-handler
+    if (modifiers.focused) {
+      ref.current?.focus()
+    }
   }, [modifiers.focused])
 
   return (

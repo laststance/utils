@@ -101,12 +101,16 @@ function Carousel({
 
   React.useEffect(() => {
     if (!api) return
-    onSelect(api)
+    // Defer scroll-state sync so it is not a synchronous setState inside the effect body (Embla + React Compiler)
+    queueMicrotask(() => {
+      onSelect(api)
+    })
     api.on('reInit', onSelect)
     api.on('select', onSelect)
 
     return () => {
-      api?.off('select', onSelect)
+      api.off('reInit', onSelect)
+      api.off('select', onSelect)
     }
   }, [api, onSelect])
 

@@ -27,7 +27,7 @@ export function UseStudyDemo({ messagePromise }: UseStudyDemoProps) {
   const [isThemeVisible, setIsThemeVisible] = useState(true)
 
   return (
-    <ThemeContext.Provider value={selectedTheme}>
+    <ThemeContext value={selectedTheme}>
       <div className="flex flex-col gap-6">
         <div className="grid gap-4 rounded-2xl border border-black/10 bg-black/3 p-5 dark:border-white/10 dark:bg-white/4 sm:grid-cols-2">
           <label className="flex min-h-11 flex-col gap-2 text-sm font-medium">
@@ -67,7 +67,7 @@ export function UseStudyDemo({ messagePromise }: UseStudyDemoProps) {
           messagePromise={messagePromise}
         />
       </div>
-    </ThemeContext.Provider>
+    </ThemeContext>
   )
 }
 

@@ -19,12 +19,11 @@ const theme = showTheme ? use(ThemeContext) : 'hidden';`
 /**
  * Creates a stable Promise for the React `use()` learning page.
  */
-function createStudyMessagePromise() {
-  return new Promise<string>((resolve) => {
-    setTimeout(() => {
-      resolve('Server Promise resolved. `use(messagePromise)` can now read it.')
-    }, MESSAGE_DELAY_MS)
+async function createStudyMessagePromise(): Promise<string> {
+  await new Promise<void>((resolve) => {
+    setTimeout(resolve, MESSAGE_DELAY_MS)
   })
+  return 'Server Promise resolved. `use(messagePromise)` can now read it.'
 }
 
 /**
