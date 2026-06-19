@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 
-import { useInitialEffect } from './use-initial-efect'
+import { useInitialEffect } from './use-initial-effect'
 
 describe('useInitialEffect', () => {
   it('call effect in initial render', () => {

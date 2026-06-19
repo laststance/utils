@@ -11,7 +11,7 @@ import { useEffect, type EffectCallback, type DependencyList } from 'react'
 type NonEmptyDependencyList = readonly [unknown, ...unknown[]]
 
 /**
- * Fires the given effect on render.
+ * Run an effect on every render, or on mount plus non-empty dependency changes.
  *
  * Two call shapes are supported:
  * - `useRenderEffect(effect)` — fires on every render (mount + every re-render)
@@ -60,8 +60,7 @@ export function useRenderEffect(
   effect: EffectCallback,
   deps?: DependencyList,
 ): void {
-  // Pass deps straight through so consumers get exact useEffect semantics
-  // for the non-empty branch, and "every render" for the no-deps branch.
+  // Pass deps through so consumers get exact useEffect semantics for each branch.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(effect, deps)
 }
